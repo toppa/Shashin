@@ -1,0 +1,51 @@
+/**
+ * This file is part of Shashin. Please see the Shashin.phl file for
+ * copyright and license information.
+ *
+ * @author Michael Toppa
+ * @version 2.4
+ */
+
+.shashin_widget dt {
+   float: left;
+   clear: left;
+   width: 100px;
+   text-align: right;
+}
+
+.shashin_widget dd {
+   padding: 0 0 0.5em 0;
+   margin: 0 0 0 110px;
+}
+
+.shashin_help dt {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.shashin_help dd {
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.shashin_admin_heading {
+    text-decoration: none;
+}
+
+.shashin_admin_heading img {
+    padding-right: 2px;
+    padding-bottom: 2px;
+}
+
+.shashin_examples_list {
+    display: none;
+}
+
+.shashin_examples_list dd {
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.shashin_center {
+    text-align: center !important;
+}

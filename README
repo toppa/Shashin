@@ -1,0 +1,15 @@
+This is a development version of Shashin 3.
+
+You must also install the toppa-libs plugin to use Shashin 3.
+
+Information about the current stable release, Shashin 2, is here:
+http://www.toppa.com/shashin-wordpress-plugin/
+
+This version currently has only a working admin menu, for adding Shashin
+albums. The options menu is not built yet, and the tags are not
+implemented yet.
+
+ Shashin 3 is a total rewrite from previous versions. Album syncing
+ is done in a new and more efficient way. Testing of the syncing is
+ appreciated. If you encounter a problem, please submit an issue
+ ticket at https://github.com/toppa/Shashin/issues
