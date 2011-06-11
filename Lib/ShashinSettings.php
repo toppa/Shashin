@@ -1,11 +1,11 @@
 <?php
 
-class ShashinSettings {
+class Lib_ShashinSettings {
     private $dbFacade;
     private $name = 'shashin3alpha';
     private $data = array();
 
-    public function __construct(&$dbFacade) {
+    public function __construct(ToppaDatabaseFacade &$dbFacade) {
         $this->dbFacade = $dbFacade;
     }
 
@@ -47,7 +47,9 @@ class ShashinSettings {
     }
 
     public function delete() {
-        if (!$this->dbFacade->deleteSetting($this->name)) {
+        $this->dbFacade->deleteSetting($this->name);
+
+        if ($this->dbFacade->getSetting($this->name)) {
             throw new Exception(__('Failed to delete settings', 'shashin'));
         }
 

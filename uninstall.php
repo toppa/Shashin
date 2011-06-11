@@ -4,21 +4,13 @@ if (!defined( 'ABSPATH') && !defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-//require_once(dirname(__FILE__) . '/../toppa-libs/ToppaFunctions.php');
-//require_once(ToppaFunctions::path() . '/ToppaWpDatabaseFacade.php');
-require_once('ShashinSettings.php');
-require_once('ShashinUninstaller.php');
-require_once('ShashinPhotoRef.php');
-require_once('ShashinAlbumRef.php');
+require_once(dirname(__FILE__) . '/../toppa-libs/ToppaAutoLoaderWp.php');
 
-$dbFacade = new ToppaWpDatabaseFacade();
-$shashinSettings = new ShashinSettings($dbFacade);
-$albumRef = new ShashinAlbumRef($dbFacade);
-$photoRef = new ShashinPhotoRef($dbFacade);
-$shashinUninstaller = new ShashinUninstaller($dbFacade, $albumRef, $photoRef, $shashinSettings);
-$uninstallStatus = $shashinUninstaller->run();
+$shashinAutoLoader = new ToppaAutoLoaderWp('/shashin3alpha');
+$shashinAdminContainer = new Admin_ShashinContainer($shashinAutoLoader);
+$shashinUninstaller = $shashinAdminContainer->getUninstaller();
+$shashinUninstallStatus = $shashinUninstaller->run();
 
-if ($uninstallStatus !== true) {
-    trigger_error(__('Uninstall failed: ', 'shashin') . $uninstallStatus, E_USER_ERROR);
+if ($shashinUninstallStatus !== true) {
+    trigger_error(__('Uninstall failed: ', 'shashin') . $shashinUninstallStatus, E_USER_ERROR);
 }
-

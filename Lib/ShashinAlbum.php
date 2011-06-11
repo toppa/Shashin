@@ -1,12 +1,10 @@
 <?php
 
-require_once('ShashinDataObject.php');
-
-class Shashin3AlphaAlbum extends ShashinDataObject {
+class Lib_ShashinAlbum extends Lib_ShashinDataObject {
     private $clonablePhoto;
     private $photos = array();
 
-    public function __construct(&$dbFacade, &$clonablePhoto) {
+    public function __construct(ToppaDatabaseFacade &$dbFacade, Lib_ShashinPhoto &$clonablePhoto) {
         $this->clonablePhoto = $clonablePhoto;
         $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_album_3alpha';
         $this->refData = array(
@@ -18,8 +16,10 @@ class Shashin3AlphaAlbum extends ShashinDataObject {
                     'other' => 'AUTO_INCREMENT')),
             'albumId' => array(
                 'db' => array(
-                    'type' => 'bigint unsigned',
-                    'not_null' => true),
+                    'type' => 'varchar',
+                    'length' => '255',
+                    'not_null' => true,
+                    'unique_key' => true),
                 'picasa' => array('gphoto$id', '$t')),
             'albumType' => array(
                 'db' => array(
@@ -98,7 +98,7 @@ class Shashin3AlphaAlbum extends ShashinDataObject {
                     'other' => "default 'Y'"),
                 'input' => array(
                     'type' => 'radio',
-                    'subgroup' => array('Y' => 'Yes', 'N' => 'No')),
+                    'subgroup' => array('Y' => 'Yes', 'N' => 'No'))),
             'login' => array(
                 'db' => array(
                     'type' => 'varchar',
@@ -111,7 +111,6 @@ class Shashin3AlphaAlbum extends ShashinDataObject {
                     'length' => '100'),
                 'input' => array(
                     'type' => 'password'))
-            )
         );
 
         parent::__construct($dbFacade);
@@ -150,6 +149,16 @@ class Shashin3AlphaAlbum extends ShashinDataObject {
         return $albumData;
     }
 
+    public function flush() {
+        $insertId = $this->dbFacade->sqlInsert($this->tableName, $this->data, true);
+
+        if (!$this->albumKey) {
+            $this->albumKey = $insertId;
+        }
+
+        return true;
+    }
+
     public function getAlbumPhotos($orderByClause = null) {
         $photosTableName = $this->clonablePhoto->getTableName();
         $where = array('albumKey' => $this->data['albumKey']);
@@ -157,7 +166,7 @@ class Shashin3AlphaAlbum extends ShashinDataObject {
 
         foreach ($photosData as $data) {
             $photo = clone $this->clonablePhoto;
-            $photo->setPhoto($data);
+            $photo->set($data);
             $this->photos[$photo->photoKey] = $photo;
         }
 

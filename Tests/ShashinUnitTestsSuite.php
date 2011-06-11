@@ -6,20 +6,14 @@ set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__));
 class ShashinUnitTestsSuite extends TestSuite {
    function __construct() {
        parent::__construct();
-
-       $this->addFile('UnitToppaFunctions.php');
-       $this->addFile('UnitShashinPhoto.php');
-       $this->addFile('UnitShashinAlbum.php');
-       $this->addFile('UnitShashinSettings.php');
-
-/*
-       $this->addFile('UnitShashinAlbumRef.php');
-       $this->addFile('UnitShashinInstaller.php');
-       $this->addFile('UnitShashinShortcodeTransformer.php');
-       $this->addFile('UnitShashinShortcodeValidator.php');
-       $this->addFile('UnitShashinSynchronizerPicasa.php');
-
- */
+       $this->addFile('UnitAdmin_ShashinInstaller.php');
+       $this->addFile('UnitLib_ShashinSettings.php');
+       $this->addFile('UnitLib_ShashinPhoto.php');
+       $this->addFile('UnitLib_ShashinAlbum.php');
+       $this->addFile('UnitAdmin_ShashinMenuDisplayerAlbums.php');
+       $this->addFile('UnitAdmin_ShashinSynchronizerPicasa.php');
+       $this->addFile('UnitPublic_ShashinShortcodeValidator.php');
+       $this->addFile('UnitPublic_ShashinShortcodeTransformer.php');
    }
 }
 

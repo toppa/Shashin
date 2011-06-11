@@ -1,10 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../toppa-libs/ToppaWpDatabaseFacade.php');
-require_once(dirname(__FILE__) . '/../ShashinAlbumRef.php');
-require_once(dirname(__FILE__) . '/../ShashinPhotoRef.php');
-require_once(dirname(__FILE__) . '/../ShashinSettings.php');
-require_once(dirname(__FILE__) . '/../ShashinInstaller.php');
+require_once(dirname(__FILE__) . '/../../toppa-libs/ToppaAutoLoaderWp.php');
 
 class IntegrationShashinInstaller extends UnitTestCase {
     private $installer;
@@ -14,15 +10,16 @@ class IntegrationShashinInstaller extends UnitTestCase {
     }
 
     public function setUp() {
-        $dbFacade = new ToppaWpDatabaseFacade();
-        $albumRef = new ShashinAlbumRef($dbFacade);
-        $photoRef = new ShashinPhotoRef($dbFacade);
-        $settings = new ShashinSettings($dbFacade);
-
-        $this->installer = new ShashinInstaller($dbFacade, $albumRef, $photoRef, $settings);
+        $autoLoader = new ToppaAutoLoaderWp('/shashin3alpha');
+        $adminContainer = new Admin_ShashinContainer($autoLoader);
+        $this->installer = $adminContainer->getInstaller();
     }
 
     public function testCreateAndVerifyTables() {
         $this->assertTrue($this->installer->createAndVerifyTables());
+    }
+
+    public function testSetDefaultSettings() {
+        $this->assertTrue($this->installer->setDefaultSettings());
     }
 }

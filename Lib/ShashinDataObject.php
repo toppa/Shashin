@@ -1,12 +1,12 @@
 <?php
 
-abstract class ShashinDataObject {
+abstract class Lib_ShashinDataObject {
     protected $dbFacade;
     protected $tableName;
     protected $data = array();
     protected $refData = array();
 
-    public function __construct(&$dbFacade) {
+    public function __construct(ToppaDatabaseFacade &$dbFacade) {
         $this->dbFacade = $dbFacade;
     }
 
@@ -35,22 +35,17 @@ abstract class ShashinDataObject {
         throw New Exception(__("Invalid data property __set", "shashin"));
     }
 
-    abstract public function get($key = null);
-    abstract public function refresh($key);
-
     public function getData() {
         return $this->data;
     }
 
-    public function set($fields) {
+    public function set(array $fields) {
         $this->data = array_merge($this->data, $fields);
         return true;
     }
 
-    public function flush() {
-        $this->dbFacade->sqlInsert($this->tableName, $this->data, true);
-        return true;
-    }
-
+    abstract public function get($key = null);
+    abstract public function refresh($key);
+    abstract public function flush();
     abstract public function delete();
 }

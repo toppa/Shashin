@@ -1,9 +1,7 @@
 <?php
 
-require_once('ShashinDataObject.php');
-
-class Shashin3AlphaPhoto extends ShashinDataObject {
-    public function __construct(&$dbFacade) {
+class Lib_ShashinPhoto extends Lib_ShashinDataObject {
+    public function __construct(ToppaDatabaseFacade &$dbFacade) {
         $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_photo_3alpha';
         $this->refData = array(
             'photoKey' => array(
@@ -16,13 +14,13 @@ class Shashin3AlphaPhoto extends ShashinDataObject {
                 'db' => array(
                     'type' => 'varchar',
                     'length' => '255',
-                    'not_null' => true),
+                    'not_null' => true,
+                    'unique_key' => true),
                 'picasa' => array('gphoto$id', '$t')),
             'albumKey' => array(
                 'db' => array(
                     'type' => 'smallint unsigned',
-                    'not_null' => true),
-                'picasa' => array('gphoto$albumid', '$t')),
+                    'not_null' => true)),
             'title' => array(
                 'db' => array(
                     'type' => 'varchar',
@@ -94,12 +92,12 @@ class Shashin3AlphaPhoto extends ShashinDataObject {
             'make' => array(
                 'db' => array(
                     'type' => 'varchar',
-                    'length' => '20'),
+                    'length' => '100'),
                 'picasa' => array('exif$tags', 'exif$make', '$t')),
             'model' => array(
                 'db' => array(
                     'type' => 'varchar',
-                    'length' => '20'),
+                    'length' => '100'),
                 'picasa' => array('exif$tags', 'exif$model', '$t')),
             'exposure' => array(
                 'db' => array(
@@ -150,5 +148,15 @@ class Shashin3AlphaPhoto extends ShashinDataObject {
         $photoData = $this->data;
         unset($this->data);
         return $photoData;
+    }
+
+    public function flush() {
+        $insertId = $this->dbFacade->sqlInsert($this->tableName, $this->data, true);
+
+        if (!$this->photoKey) {
+            $this->photoKey = $insertId;
+        }
+
+        return true;
     }
 }

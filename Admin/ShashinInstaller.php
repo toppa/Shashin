@@ -1,6 +1,6 @@
 <?php
 
-class ShashinInstaller {
+class Admin_ShashinInstaller {
     private $dbFacade;
     private $album;
     private $photo;
@@ -45,7 +45,7 @@ class ShashinInstaller {
     public function run() {
         try {
             $this->createAndVerifyTables();
-            $this->settings->set($this->settingsDefaults);
+            $this->setDefaultSettings();
         }
 
         catch (Exception $e) {
@@ -73,5 +73,9 @@ class ShashinInstaller {
         }
 
         return true;
+    }
+
+    public function setDefaultSettings() {
+        return $this->settings->set($this->settingsDefaults);
     }
 }
