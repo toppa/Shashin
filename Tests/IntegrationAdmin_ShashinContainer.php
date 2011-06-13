@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../toppa-libs/ToppaAutoLoaderWp.php');
+require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php');
 
 class IntegrationAdmin_ShashinContainer extends UnitTestCase {
     private $autoLoader;

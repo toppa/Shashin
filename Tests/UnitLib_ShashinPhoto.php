@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../toppa-libs/ToppaDatabaseFacadeWp.php');
+require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaDatabaseFacadeWp.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinPhoto.php');
 Mock::generate('ToppaDatabaseFacadeWp');
 

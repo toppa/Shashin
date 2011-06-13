@@ -1,7 +1,7 @@
 <?php
 
 // can't use the autoloader when mocking :-(
-require_once(dirname(__FILE__) . '/../../toppa-libs/ToppaDatabaseFacadeWp.php');
+require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaDatabaseFacadeWp.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinDataObject.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinAlbum.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinPhoto.php');

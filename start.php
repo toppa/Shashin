@@ -8,10 +8,9 @@ Version: 3.0
 Author URI: http://www.toppa.com
 */
 
-require_once(dirname(__FILE__) . '/../toppa-libs/ToppaAutoLoaderWp.php');
-require_once(dirname(__FILE__) . '/../toppa-libs/ToppaFunctionsFacadeWp.php');
+require_once(dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php');
+require_once(dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaFunctionsFacadeWp.php');
 $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin3alpha');
-require_once('ShashinWp.php');
 $shashin = new ShashinWp($shashinAutoLoader);
 $shashin->run();
 
