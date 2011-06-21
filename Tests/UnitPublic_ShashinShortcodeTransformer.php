@@ -6,7 +6,7 @@ class UnitPublic_ShortcodeTransformer extends UnitTestCase {
     private $validTestCases = array(
         'photosKeysXsmallThumbs' => array('type' => 'photos', 'keys' => '1,2,3', 'size' => 'x-small', 'thumbnails' => '4,5,6'),
         'keysMediumCenter' => array('keys' => '1,2,3', 'size' => 'medium', 'position' => 'center'),
-        'albumsKeysServerClear' => array('type' => 'albums', 'keys' => '1,2,3', 'order' => 'server', 'clear' => 'both'),
+        'albumsKeysNaturalClear' => array('type' => 'albums', 'keys' => '1,2,3', 'order' => 'natural', 'clear' => 'both'),
         'random160ListCaption' => array('type' => 'random', 'size' => 160, 'format' => 'list', 'caption' => 'y'),
         'newKeysPubdateTable' => array('type' => 'new', 'keys' => '1,2,3', 'order' => 'pub_date', 'format' => 'table', 'count' => 3),
     );
@@ -41,6 +41,6 @@ class UnitPublic_ShortcodeTransformer extends UnitTestCase {
         $transformer = new Public_ShashinShortcodeTransformer($this->validTestCases['photosKeysXsmallThumbs']);
         $transformer->assignDefaultValuesIfEmpty();
         $thisShortcode = $transformer->getShortcode();
-        $this->assertEqual('server', $thisShortcode['order']);
+        $this->assertEqual('natural', $thisShortcode['order']);
     }
 }

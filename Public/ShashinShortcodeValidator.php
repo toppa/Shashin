@@ -7,7 +7,7 @@ class Public_ShashinShortcodeValidator {
         'size' => array('', 'x-small', 'small', 'medium', 'large', 'max'),
         'format' => array('', 'table', 'list'),
         'caption' => array('', 'y', 'n', 'c'),
-        'order' => array('', 'pub_date', 'filename', 'location', 'last_updated', 'server'),
+        'order' => array('', 'pub_date', 'filename', 'location', 'last_updated', 'natural'),
         'position' => array('', 'left', 'right', 'none', 'inherit', 'center'),
         'clear' => array('', 'left', 'right', 'none', 'both', 'inherit')
     );

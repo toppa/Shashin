@@ -2,24 +2,25 @@
 
 class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     private $clonableAlbum;
-    private $albumSet;
+    private $albumCollection;
 
     public function __construct(
-      ToppaFunctionsFacade &$functionsFacade,
+      ToppaFunctionsFacade $functionsFacade,
       array &$requests,
-      Lib_ShashinAlbum &$clonableAlbum,
-      Lib_ShashinAlbumSet &$albumSet) {
+      Lib_ShashinAlbum $clonableAlbum,
+      Lib_ShashinAlbumCollection $albumCollection) {
         $this->defaultOrderBy = 'title';
         $this->relativePathToTemplate = 'Display/menuAlbums.php';
         $this->clonableAlbum = $clonableAlbum;
-        $this->albumSet = $albumSet;
+        $this->albumCollection = $albumCollection;
         parent::__construct($functionsFacade, $requests);
     }
 
     public function run($message = null) {
-        $orderByClause = $this->setOrderByClause();
         $this->checkOrderByNonce();
-        $albums = $this->albumSet->getAllAlbums($orderByClause);
+        $orderByClause = $this->setOrderByClause();
+        $this->albumCollection->setOrderByClause($orderByClause);
+        $albums = $this->albumCollection->getCollection();
         $refData = $this->clonableAlbum->getRefData();
         ob_start();
         require_once($this->relativePathToTemplate);

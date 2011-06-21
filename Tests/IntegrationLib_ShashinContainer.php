@@ -36,10 +36,10 @@ class IntegrationLib_ShashinContainer extends UnitTestCase {
         $this->assertTrue($album instanceof Lib_ShashinAlbum);
     }
 
-    public function testGetClonableAlbumSet() {
+    public function testGetClonableAlbumCollection() {
         $libContainer = new Lib_ShashinContainer($this->autoLoader);
-        $albumSet = $libContainer->getClonableAlbumSet();
-        $this->assertTrue($albumSet instanceof Lib_ShashinAlbumSet);
+        $albumCollection = $libContainer->getClonableAlbumCollection();
+        $this->assertTrue($albumCollection instanceof Lib_ShashinAlbumCollection);
     }
 
     public function testGetSettings() {

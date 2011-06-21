@@ -10,6 +10,7 @@ class ShashinWp {
 
     public function run() {
         add_action('admin_menu', array($this, 'initToolsMenu'));
+        add_shortcode('shashin', array($this, 'handleShortcode'));
     }
 
     public function getVersion() {
@@ -66,11 +67,8 @@ class ShashinWp {
         wp_localize_script('shashin_admin_js', 'shashin_display', array('url' => $menuDisplayUrl));
     }
 
-/*
-
-
     public function handleShortcode($shortcode) {
-        $photoSet = $objectsSetup->setupPhotoSet();
+        $autoLoader = new Public_ShashinContainer($this->autoLoader);
         $transformer = new ShashinShortcodeTransformer($shortcode);
         $cleanShortcode = $transformer->cleanShortcode();
         $validator = new ShashinShortcodeValidator($cleanShortcode);
@@ -80,9 +78,17 @@ class ShashinWp {
             return $validatorResult;
         }
 
+        if ($cleanShortcode['type'] == 'albums') {
+            $albumCollection = $autoLoader->getClonableAlbumCollection();
+            $transformer->setDataObjectSet($albumCollection);
+        }
+
+        else {
+            $photoCollection = $autoLoader->getClonablePhotoCollection();
+            $transformer->setDataObjectSet($photoCollection);
+        }
+
         return $transformer->run();
     }
-
-
- */
 }
+

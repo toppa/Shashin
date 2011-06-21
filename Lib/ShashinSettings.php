@@ -1,12 +1,12 @@
 <?php
 
 class Lib_ShashinSettings {
-    private $dbFacade;
+    private $functionsFacade;
     private $name = 'shashin3alpha';
     private $data = array();
 
-    public function __construct(ToppaDatabaseFacade &$dbFacade) {
-        $this->dbFacade = $dbFacade;
+    public function __construct(ToppaFunctionsFacade $functionsFacade) {
+        $this->functionsFacade = $functionsFacade;
     }
 
     public function get() {
@@ -18,7 +18,7 @@ class Lib_ShashinSettings {
     }
 
     public function refresh() {
-        $this->data = $this->dbFacade->getSetting($this->name);
+        $this->data = $this->functionsFacade->getSetting($this->name);
         return $this->data;
     }
 
@@ -38,7 +38,7 @@ class Lib_ShashinSettings {
         }
 
         if ($this->data != $oldSettings) {
-            if (!$this->dbFacade->setSetting($this->name, $this->data)) {
+            if (!$this->functionsFacade->setSetting($this->name, $this->data)) {
                 throw new Exception(__('Failed to update settings', 'shashin'));
             }
         }
@@ -47,9 +47,9 @@ class Lib_ShashinSettings {
     }
 
     public function delete() {
-        $this->dbFacade->deleteSetting($this->name);
+        $this->functionsFacade->deleteSetting($this->name);
 
-        if ($this->dbFacade->getSetting($this->name)) {
+        if ($this->functionsFacade->getSetting($this->name)) {
             throw new Exception(__('Failed to delete settings', 'shashin'));
         }
 

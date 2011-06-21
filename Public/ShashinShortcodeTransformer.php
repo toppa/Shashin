@@ -2,6 +2,7 @@
 
 class Public_ShashinShortcodeTransformer {
     private $shortcode;
+    private $dataObjectSet;
     private $defaults = array(
         'type' => 'photos',
         'keys' => '',
@@ -9,7 +10,7 @@ class Public_ShashinShortcodeTransformer {
         'format' => 'table',
         'caption' => 'n',
         'count' => '',
-        'order' => 'server',
+        'order' => 'natural',
         'position' => '',
         'clear' => '',
         'thumbnails' => ''
@@ -17,6 +18,10 @@ class Public_ShashinShortcodeTransformer {
 
     public function __construct(array $shortcode) {
         $this->shortcode = $shortcode;
+    }
+
+    public function setDataObjectSet(Lib_ShashinDataObjectCollection $dataObjectSet) {
+        $this->dataObjectSet = $dataObjectSet;
     }
 
     public function getShortcode() {
@@ -31,12 +36,13 @@ class Public_ShashinShortcodeTransformer {
 
     public function run() {
         $this->assignDefaultValuesIfEmpty();
-        switch ($this->shortcode['type']) {
-            case 'photos':
-                $htmlForPhotos = $this->getHtmlForPhotoKeys();
-        }
-
-        return $htmlForPhotos;
+        $this->dataObjectSet->setTagType($this->shortcode['type']);
+        $this->dataObjectSet->setKeysString($this->shortcode['keys']);
+        $this->dataObjectSet->setThumbnailSize($this->shortcode['size']);
+        $this->dataObjectSet->setHowManyPhotos($this->shortcode['count']);
+        $this->dataObjectSet->setOrderBy($this->shortcode['order']);
+        $this->dataObjectSet->setThumbnailsKeysString($this->shortcode['thumbnails']);
+        //return $htmlForPhotos;
     }
 
     public function assignDefaultValuesIfEmpty() {
@@ -45,9 +51,5 @@ class Public_ShashinShortcodeTransformer {
                 $this->shortcode[$k] = $v;
             }
         }
-    }
-
-    public function getHtmlForPhotoKeys() {
-
     }
 }

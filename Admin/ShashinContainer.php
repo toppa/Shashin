@@ -55,12 +55,12 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         if (!$this->menuDisplayerAlbums) {
             $this->getFunctionsFacade();
             $this->getClonableAlbum();
-            $this->getClonableAlbumSet();
+            $this->getClonableAlbumCollection();
             $this->menuDisplayerAlbums = new Admin_ShashinMenuDisplayerAlbums(
                 $this->functionsFacade,
                 $_REQUEST,
                 $this->clonableAlbum,
-                $this->clonableAlbumSet);
+                $this->clonableAlbumCollection);
         }
         return $this->menuDisplayerAlbums;
     }

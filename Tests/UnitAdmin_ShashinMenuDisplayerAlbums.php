@@ -2,15 +2,15 @@
 
 require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaFunctionsFacadeWp.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinAlbum.php');
-require_once(dirname(__FILE__) . '/../Lib/ShashinAlbumSet.php');
+require_once(dirname(__FILE__) . '/../Lib/ShashinAlbumCollection.php');
 Mock::generate('ToppaFunctionsFacadeWp');
 Mock::generate('Lib_ShashinAlbum');
-Mock::generate('Lib_ShashinAlbumSet');
+Mock::generate('Lib_ShashinAlbumCollection');
 
 class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
     private $functionsFacade;
     private $clonableAlbum;
-    private $albumSet;
+    private $albumCollection;
     private $sampleAlbumData;
 
     public function __construct() {
@@ -20,7 +20,7 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
     public function setUp() {
         $this->functionsFacade = new MockToppaFunctionsFacadeWp();
         $this->clonableAlbum = new MockLib_ShashinAlbum();
-        $this->albumSet = new MockLib_ShashinAlbumSet();
+        $this->albumCollection = new MockLib_ShashinAlbumCollection();
 
         $this->sampleAlbumData = array(
             array(
@@ -71,7 +71,7 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
     public function testSetOrderByClause() {
         $requests['shashinOrderBy'] = 'title';
         $requests['shashinSort'] = 'asc';
-        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumSet);
+        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumCollection);
         $orderByClause = $menuDisplayer->setOrderByClause();
         $this->assertEqual($orderByClause, "order by title asc");
     }
@@ -80,7 +80,7 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
         $requests['shashinOrderBy'] = null;
         $requests['shashinSort'] = null;
         $expectedUrl = '?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=title&amp;shashinSort=desc';
-        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumSet);
+        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumCollection);
         $url = $menuDisplayer->setSortArrowAndOrderByUrl('title');
         $this->assertEqual($expectedUrl, $url);
         $this->assertEqual('&darr;', $menuDisplayer->getSortArrow());
@@ -90,7 +90,7 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
         $requests['shashinOrderBy'] = 'title';
         $requests['shashinSort'] = 'asc';
         $expectedUrl = '?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=title&amp;shashinSort=desc';
-        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumSet);
+        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumCollection);
         $url = $menuDisplayer->setSortArrowAndOrderByUrl('title');
         $this->assertEqual($expectedUrl, $url);
         $this->assertEqual('&darr;', $menuDisplayer->getSortArrow());

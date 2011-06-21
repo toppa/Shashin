@@ -1,11 +1,11 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaDatabaseFacadeWp.php');
+require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaFunctionsFacadeWp.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinSettings.php');
-Mock::generate('ToppaDatabaseFacadeWp');
+Mock::generate('ToppaFunctionsFacadeWp');
 
 class UnitLib_ShashinSettings extends UnitTestCase {
-    private $dbFacade;
+    private $functionsFacade;
     private $sampleSettings = array(
         'divPadding' => 10,
         'thumbPadding' => 6,
@@ -41,20 +41,20 @@ class UnitLib_ShashinSettings extends UnitTestCase {
     }
 
     public function setUp() {
-        $this->dbFacade = new MockToppaDatabaseFacadeWp();
-        $this->dbFacade->setReturnValue('setSetting', true);
-        $this->dbFacade->setReturnValue('getSetting', $this->sampleSettings);
+        $this->functionsFacade = new MockToppaFunctionsFacadeWp();
+        $this->functionsFacade->setReturnValue('setSetting', true);
+        $this->functionsFacade->setReturnValue('getSetting', $this->sampleSettings);
     }
 
     public function testGetSettings() {
-        $settings = new Lib_ShashinSettings($this->dbFacade);
+        $settings = new Lib_ShashinSettings($this->functionsFacade);
         $settingsData = $settings->get();
         $this->assertEqual($settingsData, $this->sampleSettings);
     }
 
     public function testAddNewSetting() {
         $testSettingToAdd = array('test' => 'testing');
-        $settings = new Lib_ShashinSettings($this->dbFacade);
+        $settings = new Lib_ShashinSettings($this->functionsFacade);
         $settings->set($testSettingToAdd);
         $settingsData = $settings->get();
         $this->assertEqual($settingsData['test'], 'testing');
@@ -63,7 +63,7 @@ class UnitLib_ShashinSettings extends UnitTestCase {
 
     public function testAddInvalidSetting() {
         try {
-            $settings = new Lib_ShashinSettings($this->dbFacade);
+            $settings = new Lib_ShashinSettings($this->functionsFacade);
             $settings->set('a string');
             $this->fail("Exception was expected");
          }

@@ -8,7 +8,7 @@ IMPORTANT: When downloading from GitHub, rename the folder to
 shashin3alpha before uploading to your WordPress plugin directory.
 
 ALSO IMPORTANT: install the toppa-libs plugin before installing this one,
-as it contains required libraries
+as it contains required libraries: https://github.com/toppa/toppa-libs/
 
 GitHub contains the latest revisions of code for this project, which may
 not always be thoroughly tested.

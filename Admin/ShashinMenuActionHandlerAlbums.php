@@ -90,8 +90,8 @@ class Admin_ShashinMenuActionHandlerAlbums {
     }
 
     public function runSynchronizerForAllExistingAlbums() {
-        $albumSet = $this->adminContainer->getClonableAlbumSet();
-        $albumsToSync = $albumSet->getAllAlbums();
+        $albumCollection = $this->adminContainer->getClonableAlbumCollection();
+        $albumsToSync = $albumCollection->getCollection();
 
         $albumCount = 0;
         foreach ($albumsToSync as $album) {
@@ -110,8 +110,8 @@ class Admin_ShashinMenuActionHandlerAlbums {
     }
 
     public function runUpdateIncludeInRandom() {
-        $albumSet = $this->adminContainer->getClonableAlbumSet();
-        $albums = $albumSet->getAllAlbums();
+        $albumCollection = $this->adminContainer->getClonableAlbumCollection();
+        $albums = $albumCollection->getCollection();
 
         foreach ($this->request['includeInRandom'] as $k=>$v) {
             $albumData = array('includeInRandom' => $v);

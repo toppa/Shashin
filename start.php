@@ -10,6 +10,7 @@ Author URI: http://www.toppa.com
 
 require_once(dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php');
 require_once(dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaFunctionsFacadeWp.php');
+$toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
 $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin3alpha');
 $shashin = new ShashinWp($shashinAutoLoader);
 $shashin->run();

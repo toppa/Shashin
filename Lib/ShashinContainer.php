@@ -6,7 +6,8 @@ class Lib_ShashinContainer {
     protected $functionsFacade;
     protected $clonablePhoto;
     protected $clonableAlbum;
-    protected $clonableAlbumSet;
+    protected $clonableAlbumCollection;
+    protected $photoCollection;
     protected $settings;
     protected $photoDisplayer;
 
@@ -38,6 +39,17 @@ class Lib_ShashinContainer {
         return $this->clonablePhoto;
     }
 
+    public function getClonablePhotoCollection() {
+        if (!$this->photoCollection) {
+            $this->getDatabaseFacade();
+            $this->getClonablePhoto();
+            $this->getClonableAlbum();
+            $this->photoCollection = new Lib_ShashinPhotoCollection($this->dbFacade, $this->clonablePhoto, $this->clonableAlbum);
+        }
+
+        return $this->photoCollection;
+    }
+
     public function getClonableAlbum() {
         if (!$this->clonableAlbum) {
             $this->getDatabaseFacade();
@@ -48,20 +60,20 @@ class Lib_ShashinContainer {
         return $this->clonableAlbum;
     }
 
-    public function getClonableAlbumSet() {
-        if (!$this->clonableAlbumSet) {
+    public function getClonableAlbumCollection() {
+        if (!$this->clonableAlbumCollection) {
             $this->getDatabaseFacade();
             $this->getClonableAlbum();
-            $this->clonableAlbumSet = new Lib_ShashinAlbumSet($this->dbFacade, $this->clonableAlbum);
+            $this->clonableAlbumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
         }
 
-        return $this->clonableAlbumSet;
+        return $this->clonableAlbumCollection;
     }
 
     public function getSettings() {
         if (!$this->settings) {
-            $this->getDatabaseFacade();
-            $this->settings = new Lib_ShashinSettings($this->dbFacade);
+            $this->getFunctionsFacade();
+            $this->settings = new Lib_ShashinSettings($this->functionsFacade);
         }
 
         return $this->settings;
