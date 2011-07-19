@@ -3,11 +3,12 @@
 class Public_ShashinShortcodeValidator {
     private $shortcode = array();
     private $validInputValues = array(
-        'type' => array('', 'photos', 'albums', 'random', 'new'),
+        'type' => array('photo', 'album'),
         'size' => array('', 'x-small', 'small', 'medium', 'large', 'max'),
         'format' => array('', 'table', 'list'),
         'caption' => array('', 'y', 'n', 'c'),
-        'order' => array('', 'pub_date', 'filename', 'location', 'last_updated', 'natural'),
+        'order' => array('', 'date', 'filename', 'title', 'location', 'random', 'source', 'user'),
+        'reverse' => array('', 'y', 'n'),
         'position' => array('', 'left', 'right', 'none', 'inherit', 'center'),
         'clear' => array('', 'left', 'right', 'none', 'both', 'inherit')
     );
@@ -19,12 +20,13 @@ class Public_ShashinShortcodeValidator {
     public function run() {
         try {
             $this->validateType();
-            $this->validateKeys();
+            $this->validateId();
             $this->validateSize();
             $this->validateFormat();
             $this->validateCaption();
-            $this->validateCount();
+            $this->validateLimit();
             $this->validateOrder();
+            $this->validateReverse();
             $this->validatePosition();
             $this->validateClear();
             $this->validateThumbnails();
@@ -41,8 +43,8 @@ class Public_ShashinShortcodeValidator {
         return $this->isInListOfValidValues('type');
     }
 
-    public function validateKeys() {
-        return $this->isAStringOfNumbersOrNull($this->shortcode['keys']);
+    public function validateId() {
+        return $this->isAStringOfNumbersOrNull($this->shortcode['id']);
     }
 
     public function validateSize() {
@@ -61,12 +63,9 @@ class Public_ShashinShortcodeValidator {
         return $this->isInListOfValidValues('caption');
     }
 
-    public function validateCount() {
-        if (!$this->shortcode['count'] || ToppaFunctions::isPositiveNumber($this->shortcode['count'])) {
-        }
-
-        else {
-            throw new Exception($this->shortcode['count'] . " " . __("is not a valid count"));
+    public function validateLimit() {
+        if ($this->shortcode['limit'] && !ToppaFunctions::isPositiveNumber($this->shortcode['limit'])) {
+            throw new Exception($this->shortcode['limit'] . " " . __("is not a valid limit"));
         }
 
         return true;
@@ -74,6 +73,10 @@ class Public_ShashinShortcodeValidator {
 
     public function validateOrder() {
         return $this->isInListOfValidValues('order');
+    }
+
+    public function validateReverse() {
+        return $this->isInListOfValidValues('reverse');
     }
 
     public function validatePosition() {
@@ -97,7 +100,7 @@ class Public_ShashinShortcodeValidator {
     }
 
     private function isAStringOfNumbersOrNull($stringOfNumbers = null) {
-        // we want comma seperated numbers or a null value
+        // we want comma separated numbers or a null value
         if (preg_match("/^\d+(,\d+)*$/", $stringOfNumbers) || !$stringOfNumbers) {
         }
 
