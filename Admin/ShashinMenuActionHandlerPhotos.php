@@ -7,10 +7,10 @@ class Admin_ShashinMenuActionHandlerPhotos {
     private $request;
 
     public function __construct(
-      ToppaFunctionsFacade &$functionsFacade,
-      Admin_ShashinMenuDisplayer &$menuDisplayer,
-      Admin_ShashinContainer &$adminContainer,
-      array &$request) {
+      ToppaFunctionsFacade $functionsFacade,
+      Admin_ShashinMenuDisplayer $menuDisplayer,
+      Admin_ShashinContainer $adminContainer,
+      array $request) {
         $this->functionsFacade = $functionsFacade;
         $this->menuDisplayer = $menuDisplayer;
         $this->adminContainer = $adminContainer;
@@ -20,7 +20,7 @@ class Admin_ShashinMenuActionHandlerPhotos {
     public function run() {
         try {
             if ($this->request['switchingFromAlbumsMenu']) {
-                $this->functionsFacade->checkAdminNonceFields("shashinNoncePhotosMenu_" . $this->request['albumKey']);
+                $this->functionsFacade->checkAdminNonceFields("shashinNoncePhotosMenu_" . $this->request['id']);
             }
 
             if ($this->request['shashinAction'] == 'updateIncludeInRandom') {
@@ -39,9 +39,11 @@ class Admin_ShashinMenuActionHandlerPhotos {
     }
 
     public function runUpdateIncludeInRandom() {
-        $album = $this->adminContainer->getClonableAlbum();
-        $album->get($this->request['albumKey']);
-        $photos = $album->getAlbumPhotos();
+        $photoCollection = $this->adminContainer->getClonablePhotoCollection();
+        $photoCollection->setLimitNeeded(false);
+        $shortcodeMimic = array('id' => $this->request['id'], 'type' => 'albumphotos');
+        $photoCollection->setProperties($shortcodeMimic);
+        $photos = $photoCollection->getCollection();
 
         foreach ($this->request['includeInRandom'] as $k=>$v) {
             $photoData = array('includeInRandom'=> $v);

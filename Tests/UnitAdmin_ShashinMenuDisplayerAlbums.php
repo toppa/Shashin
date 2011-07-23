@@ -9,7 +9,6 @@ Mock::generate('Lib_ShashinAlbumCollection');
 
 class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
     private $functionsFacade;
-    private $clonableAlbum;
     private $albumCollection;
     private $sampleAlbumData;
 
@@ -19,13 +18,12 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
 
     public function setUp() {
         $this->functionsFacade = new MockToppaFunctionsFacadeWp();
-        $this->clonableAlbum = new MockLib_ShashinAlbum();
         $this->albumCollection = new MockLib_ShashinAlbumCollection();
 
         $this->sampleAlbumData = array(
             array(
-                "albumKey" => 2,
-                "albumId" => 5590273039059471873,
+                "id" => 2,
+                "sourceId" => 5590273039059471873,
                 "albumType" => "picasa",
                 "dataUrl" => "https://picasaweb.google.com/data/feed/api/user/michaeltoppa/albumid/5590273039059471873?alt=json",
                 "user" => "michaeltoppa",
@@ -44,8 +42,8 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
                 "password" => null
             ),
             array(
-                "albumKey" => 3,
-                "albumId" => 5590273039059471874,
+                "id" => 3,
+                "sourceId" => 5590273039059471874,
                 "albumType" => "picasa",
                 "dataUrl" => "https://picasaweb.google.com/data/feed/api/user/michaeltoppa/albumid/5590273039059471874?alt=json",
                 "user" => "michaeltoppa",
@@ -66,21 +64,17 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
         );
     }
 
-    // not sure how to test checkOrderByNonce(), given the environment setup needed in WP
-
-    public function testSetOrderByClause() {
-        $requests['shashinOrderBy'] = 'title';
-        $requests['shashinSort'] = 'asc';
-        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumCollection);
-        $orderByClause = $menuDisplayer->setOrderByClause();
-        $this->assertEqual($orderByClause, "order by title asc");
+    public function testSetShortcodeMimic() {
+        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, array(), $this->albumCollection);
+        $shortcodeMimic = $menuDisplayer->setShortcodeMimic('title', 'y');
+        $this->assertEqual($shortcodeMimic, array('order' => 'title', 'reverse' => 'y'));
     }
 
     public function testSetSortAndOrderByUrlOrderOnTitle() {
         $requests['shashinOrderBy'] = null;
-        $requests['shashinSort'] = null;
-        $expectedUrl = '?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=title&amp;shashinSort=desc';
-        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumCollection);
+        $requests['shashinReverse'] = null;
+        $expectedUrl = '?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=title&amp;shashinReverse=y';
+        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->albumCollection);
         $url = $menuDisplayer->setSortArrowAndOrderByUrl('title');
         $this->assertEqual($expectedUrl, $url);
         $this->assertEqual('&darr;', $menuDisplayer->getSortArrow());
@@ -88,11 +82,11 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
 
     public function testSetSortAndOrderByUrlReverseOrderOnTitle() {
         $requests['shashinOrderBy'] = 'title';
-        $requests['shashinSort'] = 'asc';
-        $expectedUrl = '?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=title&amp;shashinSort=desc';
-        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->clonableAlbum, $this->albumCollection);
+        $requests['shashinReverse'] = 'y';
+        $expectedUrl = '?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=title&amp;shashinReverse=n';
+        $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, $requests, $this->albumCollection);
         $url = $menuDisplayer->setSortArrowAndOrderByUrl('title');
         $this->assertEqual($expectedUrl, $url);
-        $this->assertEqual('&darr;', $menuDisplayer->getSortArrow());
+        $this->assertEqual('&uarr;', $menuDisplayer->getSortArrow());
     }
 }

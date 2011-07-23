@@ -6,24 +6,29 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     public function __construct(ToppaDatabaseFacade &$dbFacade) {
         $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_photo_3alpha';
         $this->refData = array(
-            'photoKey' => array(
+            'id' => array(
                 'db' => array(
                     'type' => 'int unsigned',
                     'not_null' => true,
                     'primary_key' => true,
                     'other' => 'AUTO_INCREMENT')),
-            'photoId' => array(
+            'sourceId' => array(
                 'db' => array(
                     'type' => 'varchar',
                     'length' => '255',
                     'not_null' => true,
                     'unique_key' => true),
                 'picasa' => array('gphoto$id', '$t')),
-            'albumKey' => array(
+            'albumId' => array(
                 'db' => array(
                     'type' => 'smallint unsigned',
                     'not_null' => true)),
-            'title' => array(
+            'albumType' => array(
+                'db' => array(
+                    'type' => 'varchar',
+                    'length' => '20',
+                    'not_null' => true)),
+            'filename' => array(
                 'db' => array(
                     'type' => 'varchar',
                     'length' => '255'),
@@ -83,7 +88,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
                 'input' => array(
                     'type' => 'radio',
                     'subgroup' => array('Y' => 'Yes', 'N' => 'No'))),
-            'userOrder' => array(
+            'sourceOrder' => array(
                 'db' => array(
                     'type' => 'int unsigned')),
             'fstop' => array(
@@ -121,21 +126,21 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
         parent::__construct($dbFacade);
     }
 
-    public function get($photoKey = null) {
+    public function get($id = null) {
         // check a field we would have only if we have a fully constructed photo
-        if (!$this->data['photoId']) {
-            return $this->refresh($photoKey);
+        if (!$this->data['sourceId']) {
+            return $this->refresh($id);
         }
 
         return $this->data;
     }
 
-    public function refresh($photoKey) {
-        if (!is_numeric($photoKey)) {
+    public function refresh($id) {
+        if (!is_numeric($id)) {
             throw New Exception(__("Invalid photo key", "shashin"));
         }
 
-        $where = array("photoKey" => $photoKey);
+        $where = array("id" => $id);
         $this->data = $this->dbFacade->sqlSelectRow($this->tableName, null, $where);
 
         if (empty($this->data)) {
@@ -146,7 +151,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     }
 
     public function delete() {
-        $this->dbFacade->sqlDelete($this->tableName, array('photoKey' => $this->data['photoKey']));
+        $this->dbFacade->sqlDelete($this->tableName, array('id' => $this->data['id']));
         $photoData = $this->data;
         unset($this->data);
         return $photoData;
@@ -155,8 +160,8 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     public function flush() {
         $insertId = $this->dbFacade->sqlInsert($this->tableName, $this->data, true);
 
-        if (!$this->photoKey) {
-            $this->photoKey = $insertId;
+        if (!$this->id) {
+            $this->id = $insertId;
         }
 
         return true;

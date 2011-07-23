@@ -15,41 +15,40 @@ echo '<h3>' . __('Photos for Album: ', 'shashin') . $this->album->title . '</h3>
 echo '<form method="post">' . PHP_EOL;
 echo '<input type="hidden" name="shashinAction" value="updateIncludeInRandom" />' . PHP_EOL;
 $this->functionsFacade->createNonceFields('shashinNonceUpdate', 'shashinNonceUpdate');
-echo '<input type="hidden" name="albumKey" value="' . $this->album->albumKey . '" />' . PHP_EOL;
+echo '<input type="hidden" name="id" value="' . $this->album->id . '" />' . PHP_EOL;
 echo '<table class="widefat">' . PHP_EOL;
 echo '<tr>' . PHP_EOL;
 echo '<th class="manage-column shashin_center">'
-    . $this->generateOrderByLink('userOrder', __('Server Order', 'shashin'))
+    . $this->generateOrderByLink('source', __('Source Order', 'shashin'))
     . '</th>' . PHP_EOL;
 echo '<th class="manage-column shashin_center">'
-    . $this->generateOrderByLink('photoKey', __('Photo Key', 'shashin'))
+    . $this->generateOrderByLink('id', __('Photo ID', 'shashin'))
     . '</th>' . PHP_EOL;
 echo '<th class="manage-column shashin_center">'
-    . $this->generateOrderByLink('title', __('Filename', 'shashin'))
+    . $this->generateOrderByLink('filename', __('Filename', 'shashin'))
     . '</th>' . PHP_EOL;
 echo '<th class="manage-column shashin_center">'
-    . $this->generateOrderByLink('takenTimestamp', __('Date Taken', 'shashin'))
+    . $this->generateOrderByLink('date', __('Date Taken', 'shashin'))
     . '</th>' . PHP_EOL;
 echo '<th class="manage-column shashin_center">' . __("Include in Random?", 'shashin') . '</th>' . PHP_EOL;
 echo '</tr>' . PHP_EOL;
 
 $i = 1;
 
-foreach ($this->photos as $photo) {
-    $this->photoDisplayer->setPhoto($photo);
-    $this->photoDisplayer->setRequestedSize('xsmall');
+foreach ($dataObjects as $photo) {
+    $photoDisplayer = $this->container->getPhotoDisplayer($photo);
 
     echo(($i % 2 == 0) ? '<tr class="shashin_center">' : '<tr class="alternate shashin_center">');
     echo PHP_EOL;
-    echo '<td>' . $this->photoDisplayer->run() . '</td>' . PHP_EOL;
-    echo '<td>' . $photo->photoKey . '</td>' . PHP_EOL;
-    echo '<td>' . $photo->title . '</td>' . PHP_EOL;
+    echo '<td>' . $photoDisplayer->run('xsmall') . '</td>' . PHP_EOL;
+    echo '<td>' . $photo->id . '</td>' . PHP_EOL;
+    echo '<td>' . $photo->filename . '</td>' . PHP_EOL;
     echo '<td>' . (($photo->takenTimestamp == 0)
         ? 'Unknown' : date("d-M-Y H:i", $photo->takenTimestamp))
         . '</td>' . PHP_EOL;
     echo '<td>';
     echo ToppaHtmlFormField::quickBuild(
-        "includeInRandom[{$photo->photoKey}]",
+        "includeInRandom[{$photo->id}]",
         $refData['includeInRandom'],
         $photo->includeInRandom);
     echo '</td>' . PHP_EOL;

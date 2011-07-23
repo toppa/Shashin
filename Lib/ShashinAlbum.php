@@ -2,19 +2,21 @@
 
 class Lib_ShashinAlbum extends Lib_ShashinDataObject {
     private $clonablePhoto;
+    private $photoOrderBy;
+    private $photoSort;
     private $photos = array();
 
     public function __construct(ToppaDatabaseFacade &$dbFacade, Lib_ShashinPhoto &$clonablePhoto) {
         $this->clonablePhoto = $clonablePhoto;
         $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_album_3alpha';
         $this->refData = array(
-            'albumKey' => array(
+            'id' => array(
                 'db' => array(
                     'type' => 'smallint unsigned',
                     'not_null' => true,
                     'primary_key' => true,
                     'other' => 'AUTO_INCREMENT')),
-            'albumId' => array(
+            'sourceId' => array(
                 'db' => array(
                     'type' => 'varchar',
                     'length' => '255',
@@ -116,21 +118,21 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
         parent::__construct($dbFacade);
     }
 
-    public function get($albumKey = null) {
+    public function get($id = null) {
         // check a field we would have only if we have a fully constructed album
-        if (!$this->data['albumId']) {
-            return $this->refresh($albumKey);
+        if (!$this->data['sourceId']) {
+            return $this->refresh($id);
         }
 
         return $this->data;
     }
 
-    public function refresh($albumKey) {
-        if (!is_numeric($albumKey)) {
+    public function refresh($id) {
+        if (!is_numeric($id)) {
             throw New Exception(__("Invalid album key", "shashin"));
         }
 
-        $where = array("albumKey" => $albumKey);
+        $where = array("id" => $id);
         $this->data = $this->dbFacade->sqlSelectRow($this->tableName, null, $where);
 
         if (empty($this->data)) {
@@ -142,8 +144,8 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
 
     public function delete() {
         $photosTableName = $this->clonablePhoto->getTableName();
-        $this->dbFacade->sqlDelete($photosTableName, array('albumKey' => $this->data['albumKey']));
-        $this->dbFacade->sqlDelete($this->tableName, array('albumKey' => $this->data['albumKey']));
+        $this->dbFacade->sqlDelete($photosTableName, array('albumId' => $this->data['id']));
+        $this->dbFacade->sqlDelete($this->tableName, array('id' => $this->data['id']));
         $albumData = $this->data;
         unset($this->data);
         return $albumData;
@@ -152,24 +154,10 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
     public function flush() {
         $insertId = $this->dbFacade->sqlInsert($this->tableName, $this->data, true);
 
-        if (!$this->albumKey) {
-            $this->albumKey = $insertId;
+        if (!$this->id) {
+            $this->id = $insertId;
         }
 
         return true;
-    }
-
-    public function getAlbumPhotos($orderByClause = null) {
-        $photosTableName = $this->clonablePhoto->getTableName();
-        $where = array('albumKey' => $this->data['albumKey']);
-        $photosData = $this->dbFacade->sqlSelectMultipleRows($photosTableName, null, $where, $orderByClause);
-
-        foreach ($photosData as $data) {
-            $photo = clone $this->clonablePhoto;
-            $photo->set($data);
-            $this->photos[$photo->photoKey] = $photo;
-        }
-
-        return $this->photos;
     }
 }

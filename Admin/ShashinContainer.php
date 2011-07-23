@@ -38,28 +38,26 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
 
     public function getMenuDisplayerPhotos($albumKey) {
         $this->getFunctionsFacade();
-        $this->getClonablePhoto();
+        $this->getClonablePhotoCollection();
         $album = $this->getClonableAlbum();
         $album->get($albumKey);
-        $this->getPhotoDisplayer($album);
         $this->menuDisplayerPhotos = new Admin_ShashinMenuDisplayerPhotos(
             $this->functionsFacade,
             $_REQUEST,
-            $this->clonablePhoto,
+            $this->clonablePhotoCollection,
             $album,
-            $this->photoDisplayer);
+            $this
+        );
         return $this->menuDisplayerPhotos;
     }
 
     public function getMenuDisplayerAlbums() {
         if (!$this->menuDisplayerAlbums) {
             $this->getFunctionsFacade();
-            $this->getClonableAlbum();
             $this->getClonableAlbumCollection();
             $this->menuDisplayerAlbums = new Admin_ShashinMenuDisplayerAlbums(
                 $this->functionsFacade,
                 $_REQUEST,
-                $this->clonableAlbum,
                 $this->clonableAlbumCollection);
         }
         return $this->menuDisplayerAlbums;

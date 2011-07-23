@@ -1,46 +1,28 @@
 <?php
 
 require_once(dirname(__FILE__) . '/../Public/ShashinShortcodeTransformer.php');
+require_once(dirname(__FILE__) . '/../Lib/ShashinContainer.php');
+Mock::generate('Lib_ShashinContainer');
 
 class UnitPublic_ShortcodeTransformer extends UnitTestCase {
-    private $validTestCases = array(
-        'photosKeysXsmallThumbs' => array('type' => 'photos', 'keys' => '1,2,3', 'size' => 'x-small', 'thumbnails' => '4,5,6'),
-        'keysMediumCenter' => array('keys' => '1,2,3', 'size' => 'medium', 'position' => 'center'),
-        'albumsKeysNaturalClear' => array('type' => 'albums', 'keys' => '1,2,3', 'order' => 'natural', 'clear' => 'both'),
-        'random160ListCaption' => array('type' => 'random', 'size' => 160, 'format' => 'list', 'caption' => 'y'),
-        'newKeysPubdateTable' => array('type' => 'new', 'keys' => '1,2,3', 'order' => 'pub_date', 'format' => 'table', 'count' => 3),
-    );
-    private $invalidTestCases = array(
-        'invalid' => array(
-            'type' => 'ahoy',
-            'keys' => '1,2,b,3',
-            'size' => 'n',
-            'format' => 'nonsense',
-            'caption' => 'x',
-            'count' => 'z',
-            'order' => 'y',
-            'position' => 'a',
-            'clear' => 'b',
-            'thumbnails' => '1,2,b,3'
-        ),
-    );
+    private $container;
 
     public function __construct() {
         $this->UnitTestCase();
     }
 
     public function setUp() {
+        $this->container = new MockLib_ShashinContainer();
     }
 
-    public function testAssignDefaultValuesIfEmpty() {
-        $transformer = new Public_ShashinShortcodeTransformer($this->validTestCases['keysMediumCenter']);
-        $transformer->assignDefaultValuesIfEmpty();
-        $thisShortcode = $transformer->getShortcode();
-        $this->assertEqual('photos', $thisShortcode['type']);
-
-        $transformer = new Public_ShashinShortcodeTransformer($this->validTestCases['photosKeysXsmallThumbs']);
-        $transformer->assignDefaultValuesIfEmpty();
-        $thisShortcode = $transformer->getShortcode();
-        $this->assertEqual('natural', $thisShortcode['order']);
+    public function testCleanShortcode() {
+        $testCase = array('type' => 'photo ', 'id' => '1,2,3', 'order' => 'Date', 'reverse' => 'Y', 'format' => ' table', 'limit' => '3 ');
+        $transformer = new Public_ShashinShortcodeTransformer($testCase, $this->container);
+        $cleanShortcode = $transformer->cleanShortcode();
+        $this->assertEqual($cleanShortcode['type'], 'photo');
+        $this->assertEqual($cleanShortcode['order'], 'date');
+        $this->assertEqual($cleanShortcode['reverse'], 'y');
+        $this->assertEqual($cleanShortcode['format'], 'table');
+        $this->assertEqual($cleanShortcode['limit'], '3');
     }
 }

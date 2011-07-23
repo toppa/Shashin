@@ -45,21 +45,22 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         $photoRefData = $this->clonablePhoto->getRefData();
 
         // the order photos appear in the feed reflects the user's preferred order
-        $userPhotoOrder = 0;
+        $sourceOrder = 0;
 
         foreach ($decodedAlbumData['feed']['entry'] as $entry) {
             $photoData = $this->extractFieldsFromDecodedData($entry, $photoRefData, 'picasa');
-            $photoData['albumKey'] = $this->album->albumKey;
+            $photoData['albumId'] = $this->album->id;
+            $photoData['albumType'] = $this->album->albumType;
             $photoData['takenTimestamp'] = ToppaFunctions::makeTimestampPhpSafe($photoData['takenTimestamp']);
             $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
-            $photoData['userOrder'] = ++$userPhotoOrder;
+            $photoData['sourceOrder'] = ++$sourceOrder;
             $photoData['lastSync'] = time();
             $photo = clone $this->clonablePhoto;
             $photo->set($photoData);
             $photo->flush();
         }
 
-        return $userPhotoOrder;
+        return $sourceOrder;
     }
 
 }

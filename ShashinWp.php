@@ -46,7 +46,7 @@ class ShashinWp {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
 
         if ($_REQUEST['shashinMenu'] == 'photos') {
-            $menuActionHandler = $adminContainer->getMenuActionHandlerPhotos($_REQUEST['albumKey']);
+            $menuActionHandler = $adminContainer->getMenuActionHandlerPhotos($_REQUEST['id']);
         }
 
         else {
@@ -68,24 +68,18 @@ class ShashinWp {
     }
 
     public function handleShortcode($shortcode) {
-        $autoLoader = new Public_ShashinContainer($this->autoLoader);
-        $transformer = new ShashinShortcodeTransformer($shortcode);
+        $libContainer = new Lib_ShashinContainer($this->autoLoader);
+        $transformer = new Public_ShashinShortcodeTransformer($shortcode, $libContainer);
         $cleanShortcode = $transformer->cleanShortcode();
-        $validator = new ShashinShortcodeValidator($cleanShortcode);
-        $validatorResult = $validator->run();
 
-        if ($validatorResult !== true) {
-            return $validatorResult;
-        }
-
-        if ($cleanShortcode['type'] == 'albums') {
-            $albumCollection = $autoLoader->getClonableAlbumCollection();
-            $transformer->setDataObjectSet($albumCollection);
+        if ($cleanShortcode['type'] == 'album') {
+            $albumCollection = $libContainer->getClonableAlbumCollection();
+            $transformer->setDataObjectCollection($albumCollection);
         }
 
         else {
-            $photoCollection = $autoLoader->getClonablePhotoCollection();
-            $transformer->setDataObjectSet($photoCollection);
+            $photoCollection = $libContainer->getClonablePhotoCollection();
+            $transformer->setDataObjectCollection($photoCollection);
         }
 
         return $transformer->run();

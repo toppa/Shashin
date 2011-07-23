@@ -3,10 +3,7 @@
 
 abstract class Lib_ShashinPhotoDisplayer {
     protected $photo;
-    protected $requestedSize;
-    protected $numericSize;
     protected $actualSize;
-    protected $requestedCropped = false;
     protected $displayCropped = false;
     protected $imgHeight;
     protected $imgWidth;
@@ -14,6 +11,10 @@ abstract class Lib_ShashinPhotoDisplayer {
     protected $imgAltAndTitle;
     protected $imgClass;
     protected $imgTag;
+    protected $aHref;
+    protected $aTag;
+    protected $aId;
+    protected $combinedTags;
     protected $validSizes = array();
     protected $validCropSizes = array();
     protected $sizesMap = array();
@@ -44,75 +45,64 @@ abstract class Lib_ShashinPhotoDisplayer {
         }
     }
 
-    public function setRequestedSize($requestedSize) {
-        $this->requestedSize = $requestedSize;
-    }
-
-    public function setRequestedCropped($requestedCropped) {
-        $this->requestedCropped = $requestedCropped;
-    }
-
-    public function run() {
+    public function run($requestedSize = 'small', $requestedCropped = 'false') {
         try {
-            $this->setNumericSizeFromRequestedSize();
-            $this->checkNumericSizeIsNumeric();
-            $this->setActualSizeFromValidSizes();
-            $this->setDisplayCroppedIfRequested();
+            $numericSize = $this->setNumericSizeFromRequestedSize($requestedSize);
+            $this->setActualSizeFromValidSizes($numericSize);
+            $this->setDisplayCroppedIfRequested($requestedCropped);
             $this->setImgWidthAndHeight();
             $this->setImgSrc();
             $this->setImgAltAndTitle();
             $this->setImgTag();
-            $_SESSION['shashin_id_counter']++;
+            $this->setAHref();
+            $this->setAId();
+            $this->setATag();
+            $this->setCombinedTags();
+            $this->incrementSessionIdCounter();
         }
 
         catch (Exception $e) {
             return "<strong>" . $e->getMessage() . "</strong>";
         }
 
-        return $this->imgTag;
-//<img src="' . $photo['enclosure_url'] . '?imgmax=72&amp;crop=1" />
-
+        return $this->combinedTags;
     }
 
-    public function setNumericSizeFromRequestedSize() {
-        if (array_key_exists($this->requestedSize, $this->sizesMap)) {
-            $this->numericSize = $this->sizesMap[$this->requestedSize];
+    public function setNumericSizeFromRequestedSize($requestedSize = 'small') {
+        if (array_key_exists($requestedSize, $this->sizesMap)) {
+            $numericSize = $this->sizesMap[$requestedSize];
         }
 
         else {
-            $this->numericSize = $this->requestedSize;
+            $numericSize = $requestedSize;
         }
 
-        return true;
-    }
-
-    public function checkNumericSizeIsNumeric() {
-        if (!is_numeric($this->numericSize)) {
+        if (!is_numeric($numericSize)) {
             throw New Exception("invalid size requested");
         }
 
-        return true;
+        return $numericSize;
     }
 
-    public function setActualSizeFromValidSizes() {
+    public function setActualSizeFromValidSizes($numericSize) {
         foreach ($this->validSizes as $size) {
-            if ($this->numericSize <= $size) {
+            if ($numericSize <= $size) {
                 $this->actualSize = $size;
                 break;
             }
         }
 
-        return true;
+        return $this->actualSize;
     }
 
-    public function setDisplayCroppedIfRequested() {
-        if ($this->requestedCropped) {
+    public function setDisplayCroppedIfRequested($requestedCropped = 'false') {
+        if ($requestedCropped) {
             if (in_array($this->actualSize, $this->validCropSizes)) {
                 $this->displayCropped = true;
             }
         }
 
-        return true;
+        return $this->displayCropped;
     }
 
     public function setImgWidthAndHeight() {
@@ -165,5 +155,29 @@ abstract class Lib_ShashinPhotoDisplayer {
         }
 
         $this->imgTag .= ' />';
+    }
+
+    abstract public function setAHref();
+
+    public function setAId() {
+        $this->aId = 'shashin_thumb_link_' . $_SESSION['shashin_id_counter'];
+        return $this->aId;
+    }
+
+    public function incrementSessionIdCounter() {
+        $_SESSION['shashin_id_counter']++;
+    }
+
+    public function setATag() {
+        $this->aTag =
+            '<a href="' . $this->aHref
+            . '" id="' . $this->aId
+            . '">';
+        return $this->aTag;
+    }
+
+    public function setCombinedTags() {
+        $this->combinedTags = $this->aTag . $this->imgTag . '</a>' . PHP_EOL;
+        return $this->combinedTags;
     }
 }

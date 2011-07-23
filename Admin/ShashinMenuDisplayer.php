@@ -4,60 +4,83 @@ abstract class Admin_ShashinMenuDisplayer {
     protected $functionsFacade;
     protected $requests;
     protected $defaultOrderBy;
-    protected $orderBy;
-    protected $defaultSort = 'asc';
-    protected $sort;
+    protected $defaultReverse = 'n';
+    protected $shortcodeMimic = array();
     protected $sortArrow;
-    protected $needToCheckOrderByNonce = false;
     protected $relativePathToTemplate;
+    protected $collection;
 
-    public function __construct(ToppaFunctionsFacade &$functionsFacade, array &$requests) {
+    public function __construct(
+      ToppaFunctionsFacade $functionsFacade,
+      array $requests,
+      Lib_ShashinDataObjectCollection $collection) {
         $this->functionsFacade = $functionsFacade;
         $this->requests = $requests;
-        $this->orderBy = $this->defaultOrderBy;
-        $this->sort = $this->defaultSort;
+        $this->collection = $collection;
     }
 
-    abstract public function run($message = null);
+    public function run($message = null) {
+        if ($this->requests['shashinOrderBy']) {
+            $this->checkOrderByNonce();
+        }
+
+        $this->collection->setLimitNeeded(false);
+        $this->collection->setProperties($this->shortcodeMimic);
+        $dataObjects = $this->collection->getCollection();
+        $currentObject = current($dataObjects);
+        $refData = $currentObject->getRefData();
+        ob_start();
+        require_once($this->relativePathToTemplate);
+        $toolsMenu = ob_get_contents();
+        ob_end_clean();
+        return $toolsMenu;
+    }
+
+    public function setShortcodeMimic($orderBy = null, $reverse = null, $albumId = null) {
+        if (!is_string($orderBy)) {
+            $orderBy = $this->defaultOrderBy;
+        }
+
+        if (!is_string($reverse)) {
+            $reverse = $this->defaultReverse;
+        }
+
+        $this->shortcodeMimic = array(
+            'order' => $orderBy,
+            'reverse' => $reverse
+        );
+
+        if ($albumId) {
+            $this->shortcodeMimic['id'] = $albumId;
+            $this->shortcodeMimic['type'] = 'albumphotos';
+        }
+
+        return $this->shortcodeMimic;
+    }
 
     abstract public function generateOrderByLink($column, $columnLabel);
 
     public function checkOrderByNonce() {
-        if ($this->needToCheckOrderByNonce === true) {
-            $nonceName = "shashinNonce_" . $this->orderBy . "_" . $this->sort;
-            return $this->functionsFacade->checkAdminNonceFields($nonceName);
-        }
-
-        return null;
-    }
-
-    public function setOrderByClause() {
-        if ($this->requests['shashinOrderBy']) {
-            $this->orderBy = $this->requests['shashinOrderBy'];
-            $this->sort = $this->requests['shashinSort'];
-            $this->needToCheckOrderByNonce = true;
-        }
-
-        $orderByClause = "order by " . $this->orderBy . " " . $this->sort;
-        return $orderByClause;
+        $nonceName = "shashinNonce_" . $this->requests['shashinOrderBy'];
+        return $this->functionsFacade->checkAdminNonceFields($nonceName);
     }
 
     public function setSortArrowAndOrderByUrl($column) {
-        switch ($this->requests['shashinSort']) {
-        case 'asc':
-            $this->sort = 'desc';
-            $this->sortArrow = ($this->requests['shashinOrderBy'] == $column) ? '&darr;' : '';
-            break;
-        case 'desc':
-            $this->sort = 'asc';
+        switch ($this->requests['shashinReverse']) {
+        case 'y':
+            $reverse = 'n';
             $this->sortArrow = ($this->requests['shashinOrderBy'] == $column) ? '&uarr;' : '';
             break;
+        case 'n':
+            $reverse = 'y';
+            $this->sortArrow = ($this->requests['shashinOrderBy'] == $column) ? '&darr;' : '';
+            break;
         default:
-            $this->sort = 'desc';
+            $reverse = 'y';
             $this->sortArrow = ($this->defaultOrderBy == $column) ? '&darr;' : '';
         }
 
-        return "?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=$column&amp;shashinSort=" . $this->sort;
+        return "?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=$column&amp;shashinReverse=" . $reverse;
     }
 
     public function getSortArrow() {
@@ -65,7 +88,7 @@ abstract class Admin_ShashinMenuDisplayer {
     }
 
     protected function setOrderByNonce($column, $orderByUrl) {
-        $nonceName = "shashinNonce_" . $column . "_" . $this->sort;
+        $nonceName = "shashinNonce_" . $column;
         return $this->functionsFacade->addNonceToUrl($orderByUrl, $nonceName);
     }
 }

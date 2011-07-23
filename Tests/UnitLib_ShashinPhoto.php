@@ -14,10 +14,10 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
 
     public function setUp() {
         $this->samplePhotoData = array(
-            'photoKey' => 1,
+            'id' => 1,
             'photoId' => 5590273098322362706,
-            'albumKey' => 2,
-            'title' => 'IMG_0360.JPG',
+            'albumId' => 2,
+            'filename' => 'IMG_0360.JPG',
             'description' => 'Kai is not so sure about his new friend',
             'linkUrl' => 'https://picasaweb.google.com/michaeltoppa/2011Honolulu',
             'contentUrl' => 'https://lh5.googleusercontent.com/_e1IlgcNcTSg/TZSjw67tQVI/AAAAAAAAIik/LI3EeUEGJYs/IMG_0360.JPG',
@@ -29,7 +29,7 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
             'tags' => null,
             'lastSync' => 1304249789,
             'includeInRandom' => 'Y',
-            'userOrder' => 1,
+            'sourceOrder' => 1,
             'fstop' => 3.2,
             'make' => 'Canon',
             'model' => 'Canon PowerShot SD78',
@@ -59,8 +59,8 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
 
     public function testMagicSetAndGetWithValidProperty() {
         $photo = new Lib_ShashinPhoto($this->dbFacade);
-        $photo->title = 'test title';
-        $this->assertEqual($photo->title, 'test title');
+        $photo->filename = 'test filename';
+        $this->assertEqual($photo->filename, 'test filename');
     }
 
     public function testMagicGetWithInvalidProperty() {
@@ -90,7 +90,7 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
     public function testGetPhoto() {
         $photo = new Lib_ShashinPhoto($this->dbFacade);
         $photoData = $photo->get(1);
-        $this->assertEqual($photo->title, $this->samplePhotoData['title']);
+        $this->assertEqual($photo->filename, $this->samplePhotoData['filename']);
         $this->assertEqual($photo->width, $this->samplePhotoData['width']);
         $this->assertEqual($this->samplePhotoData, $photoData);
     }
@@ -115,7 +115,7 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $photo->set($originalFields);
         $photo->set($revisedFields);
         $photoData = $photo->getData();
-        $this->assertEqual($expectedFinalFields['title'], $photo->title);
+        $this->assertEqual($expectedFinalFields['filename'], $photo->filename);
         $this->assertEqual($expectedFinalFields['description'], $photo->description);
         $this->assertEqual($expectedFinalFields, $photoData);
     }
@@ -123,12 +123,12 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
     public function testDeletePhoto() {
         $photo = new Lib_ShashinPhoto($this->dbFacade);
         $photo->get(1);
-        $photoTitle = $photo->title;
+        $photoFilename = $photo->filename;
         $photoData = $photo->delete();
-        $this->assertEqual($photoData['title'], $photoTitle);
+        $this->assertEqual($photoData['filename'], $photoFilename);
 
         try {
-            $photo->title;
+            $photo->filename;
             $this->fail("Exception was expected - invalid test case");
         }
 

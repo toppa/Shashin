@@ -1,44 +1,54 @@
 <?php
 
 class Lib_ShashinAlbumCollection extends Lib_ShashinDataObjectCollection {
-    private $clonableAlbum;
-    private $albumTableName;
-
     public function __construct($dbFacade, $clonableAlbum) {
-        $this->clonableAlbum = $clonableAlbum;
-        $this->albumTableName = $this->clonableAlbum->getTableName();
-        parent::__construct($dbFacade);
+        parent::__construct($dbFacade, $clonableAlbum);
     }
 
-    public function getCollection() {
-        $rows = $this->getData();
+    public function setOrderBy($orderBy = null) {
+        $this->isInListOfValidValues('order', $orderBy);
 
-        foreach ($rows as $row) {
-            $album = clone $this->clonableAlbum;
-            $album->set($row);
-            $this->collection[$album->albumKey] = $album;
+        switch ($orderBy) {
+            case 'id':
+                $this->orderBy = 'id';
+                break;
+            case 'date':
+                $this->orderBy = 'pubDate';
+                break;
+            case 'filename':
+                throw New Exception(__('"filename" is not allowed for ordering albums', 'shashin'));
+                break;
+            case 'title':
+                $this->orderBy = 'title';
+                break;
+            case 'location':
+                $this->orderBy = 'location';
+                break;
+            case 'count':
+                $this->orderBy = 'photoCount';
+                break;
+            case 'sync':
+                $this->orderBy = 'lastSync';
+                break;
+            case 'random':
+                $this->orderBy = "rand()";
+                break;
+            case 'source':
+                throw New Exception(__('"source" is not allowed for ordering albums', 'shashin'));
+                break;
+            case 'user':
+                $this->orderBy = 'user';
+                break;
+            default:
+                if ($this->idString) {
+                    $this->orderBy = 'user';
+                }
+
+                else {
+                    $this->orderBy = 'pubDate';
+                }
         }
 
-        return $this->collection;
-    }
-
-    public function getData() {
-        $this->setOrderByClause();
-        $rows = $this->dbFacade->sqlSelectMultipleRows($this->albumTableName, null, $this->whereClause, $this->orderByClause);
-
-        if (empty($rows)) {
-            throw New Exception(__("Failed to find database record for albums", "shashin"));
-        }
-
-        return $rows;
-    }
-
-    public function getHtmlForShortcode() {
-
-        if ($this->keysString) {
-            $this->whereClause = "where albumKey in (" . $this->keysString . ")";
-        }
-
-        $this->getCollection();
+        return $this->orderBy;
     }
 }

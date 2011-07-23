@@ -19,10 +19,10 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
     public function setUp() {
         $this->samplePhotoData = array(
             array(
-                'photoKey' => 1,
-                'photoId' => 5590273098322362706,
-                'albumKey' => 2,
-                'title' => 'IMG_0360.JPG',
+                'id' => 1,
+                'sourceId' => 5590273098322362706,
+                'albumId' => 2,
+                'filename' => 'IMG_0360.JPG',
                 'description' => 'Kai is not so sure about his new friend',
                 'linkUrl' => 'https://picasaweb.google.com/michaeltoppa/2011Honolulu',
                 'contentUrl' => 'https://lh5.googleusercontent.com/_e1IlgcNcTSg/TZSjw67tQVI/AAAAAAAAIik/LI3EeUEGJYs/IMG_0360.JPG',
@@ -34,7 +34,7 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
                 'tags' => null,
                 'lastSync' => 1304249789,
                 'includeInRandom' => 'Y',
-                'userOrder' => 1,
+                'sourceOrder' => 1,
                 'fstop' => 3.2,
                 'make' => 'Canon',
                 'model' => 'Canon PowerShot SD78',
@@ -42,10 +42,10 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
                 'focalLength' => 5.9,
                 'iso' => 100
             ), array(
-                'photoKey' => 2,
-                'photoId' => 5590273098322362707,
-                'albumKey' => 2,
-                'title' => 'IMG_0361.JPG',
+                'id' => 2,
+                'sourceId' => 5590273098322362707,
+                'albumId' => 2,
+                'filename' => 'IMG_0361.JPG',
                 'description' => '2nd photo',
                 'linkUrl' => 'https://picasaweb.google.com/michaeltoppa/2011Honolulu',
                 'contentUrl' => 'https://lh5.googleusercontent.com/_e1IlgcNcTSg/TZSjw67tQVI/AAAAAAAAIik/LI3EeUEGJYs/IMG_0361.JPG',
@@ -57,7 +57,7 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
                 'tags' => null,
                 'lastSync' => 1304249789,
                 'includeInRandom' => 'Y',
-                'userOrder' => 1,
+                'sourceOrder' => 2,
                 'fstop' => 3.2,
                 'make' => 'Canon',
                 'model' => 'Canon PowerShot SD78',
@@ -71,14 +71,14 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
         $this->clonablePhoto->setReturnValue('set', true);
 
         $this->sampleAlbumData = array(
-            "albumKey" => 2,
-            "albumId" => 5590273039059471873,
+            "id" => 2,
+            "sourceId" => 5590273039059471873,
             "albumType" => "picasa",
             "dataUrl" => "https://picasaweb.google.com/data/feed/api/user/michaeltoppa/albumid/5590273039059471873?alt=json",
             "user" => "michaeltoppa",
             "name" => "Michael Toppa",
             "linkUrl" => "https://picasaweb.google.com/michaeltoppa/2011Honolulu",
-            "title" => "2011 - Honolulu",
+            "filename" => "2011 - Honolulu",
             "description" => "",
             "location" => "",
             "coverPhotoUrl" => "https://lh6.googleusercontent.com/_e1IlgcNcTSg/TZSjteKVTgE/AAAAAAAAIos/CpFDUjMK_K4/s160-c/2011Honolulu.jpg",
@@ -145,7 +145,7 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
         $album = new Lib_ShashinAlbum($this->dbFacade, $this->clonablePhoto);
         $albumData = $album->get(2);
         $this->assertEqual($album->title, $this->sampleAlbumData['title']);
-        $this->assertEqual($album->albumId, $this->sampleAlbumData['albumId']);
+        $this->assertEqual($album->sourceId, $this->sampleAlbumData['sourceId']);
         $this->assertEqual($this->sampleAlbumData, $albumData);
     }
 
@@ -197,6 +197,4 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
             $this->pass("received expected invalid test case");
         }
     }
-
-    // not sure how to test getAlbumPhotos()
 }

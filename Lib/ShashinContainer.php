@@ -4,14 +4,16 @@ class Lib_ShashinContainer {
     protected $autoLoader;
     protected $dbFacade;
     protected $functionsFacade;
+    protected $shortcodeValidator;
     protected $clonablePhoto;
+    protected $clonablePhotoCollection;
     protected $clonableAlbum;
     protected $clonableAlbumCollection;
     protected $photoCollection;
     protected $settings;
     protected $photoDisplayer;
 
-    public function __construct(&$autoLoader) {
+    public function __construct($autoLoader) {
         $this->autoLoader = $autoLoader;
     }
 
@@ -43,11 +45,10 @@ class Lib_ShashinContainer {
         if (!$this->photoCollection) {
             $this->getDatabaseFacade();
             $this->getClonablePhoto();
-            $this->getClonableAlbum();
-            $this->photoCollection = new Lib_ShashinPhotoCollection($this->dbFacade, $this->clonablePhoto, $this->clonableAlbum);
+            $this->clonablePhotoCollection = new Lib_ShashinPhotoCollection($this->dbFacade, $this->clonablePhoto);
         }
 
-        return $this->photoCollection;
+        return $this->clonablePhotoCollection;
     }
 
     public function getClonableAlbum() {
@@ -79,15 +80,15 @@ class Lib_ShashinContainer {
         return $this->settings;
     }
 
-    public function getPhotoDisplayer(&$album) {
-        switch ($album->albumType) {
+    public function getPhotoDisplayer($photo) {
+        $this->getSettings();
+
+        switch ($photo->albumType) {
             case 'picasa':
-                $this->photoDisplayer = new Lib_ShashinPhotoDisplayerPicasa($album);
+                $photoDisplayer = new Lib_ShashinPhotoDisplayerPicasa($photo, $this->settings);
                 break;
-            default:
-                throw New Exception(__("Unrecognized album type", "shashin"));
         }
 
-        return $this->photoDisplayer;
+        return $photoDisplayer;
     }
 }

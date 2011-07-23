@@ -2,26 +2,16 @@
 
 class Public_ShashinShortcodeTransformer {
     private $shortcode;
-    private $dataObjectSet;
-    private $defaults = array(
-        'type' => 'photos',
-        'keys' => '',
-        'size' => 'small',
-        'format' => 'table',
-        'caption' => 'n',
-        'count' => '',
-        'order' => 'natural',
-        'position' => '',
-        'clear' => '',
-        'thumbnails' => ''
-    );
+    private $container;
+    private $dataObjectCollection;
 
-    public function __construct(array $shortcode) {
+    public function __construct(array $shortcode, Lib_ShashinContainer $container) {
         $this->shortcode = $shortcode;
+        $this->container = $container;
     }
 
-    public function setDataObjectSet(Lib_ShashinDataObjectCollection $dataObjectSet) {
-        $this->dataObjectSet = $dataObjectSet;
+    public function setDataObjectCollection(Lib_ShashinDataObjectCollection $dataObjectCollection) {
+        $this->dataObjectCollection = $dataObjectCollection;
     }
 
     public function getShortcode() {
@@ -35,21 +25,25 @@ class Public_ShashinShortcodeTransformer {
     }
 
     public function run() {
-        $this->assignDefaultValuesIfEmpty();
-        $this->dataObjectSet->setTagType($this->shortcode['type']);
-        $this->dataObjectSet->setKeysString($this->shortcode['keys']);
-        $this->dataObjectSet->setThumbnailSize($this->shortcode['size']);
-        $this->dataObjectSet->setHowManyPhotos($this->shortcode['count']);
-        $this->dataObjectSet->setOrderBy($this->shortcode['order']);
-        $this->dataObjectSet->setThumbnailsKeysString($this->shortcode['thumbnails']);
-        //return $htmlForPhotos;
-    }
+        try {
+            $tags = '';
+            $collection = $this->dataObjectCollection->getCollectionForShortcode($this->shortcode);
 
-    public function assignDefaultValuesIfEmpty() {
-        foreach ($this->defaults as $k=>$v) {
-            if (!$this->shortcode[$k]) {
-                $this->shortcode[$k] = $v;
+            if ($this->shortcode['thumbnail']) {
+                $this->dataObjectCollection->setUseThumbnailId(true);
+                $thumbnailCollection = $this->dataObjectCollection->getCollection($this->shortcode);
             }
+
+            foreach ($collection as $photo) {
+                $photoDisplayer = $this->container->getPhotoDisplayer($photo);
+                $tags .= $photoDisplayer->run('small');
+            }
+
+            return $tags;
+        }
+
+        catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 }

@@ -10,7 +10,7 @@ if ($message) {
 
 echo '<h3>' . __("Your Albums", 'shashin') . '</h3>' . PHP_EOL;
 
-if ($albums) {
+if ($dataObjects) {
     echo '<p>';
     _e("Click an album title to view its photos. Click a column header to order the album list by that column (and click again to reverse the order).", 'shashin');
     echo "</p>" . PHP_EOL;
@@ -23,31 +23,31 @@ if ($albums) {
         . $this->generateOrderByLink('title', __('Title', 'shashin'))
         . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashin_center">'
-        . $this->generateOrderByLink('albumKey', __('Album Key', 'shashin'))
+        . $this->generateOrderByLink('id', __('Album ID', 'shashin'))
         . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashin_center">' . __("Sync", 'shashin') . "</th>" . PHP_EOL;
     echo '<th class="manage-column shashin_center">' . __("Delete", 'shashin') . "</th>" . PHP_EOL;
     echo '<th class="manage-column shashin_center">'
-         . $this->generateOrderByLink('photoCount', __('Photo Count', 'shashin'))
+         . $this->generateOrderByLink('count', __('Photo Count', 'shashin'))
          . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashin_center">'
-         . $this->generateOrderByLink('pubDate', __('Pub Date', 'shashin'))
+         . $this->generateOrderByLink('date', __('Pub Date', 'shashin'))
          . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashin_center">'
-         . $this->generateOrderByLink('lastSync', __('Last Sync', 'shashin'))
+         . $this->generateOrderByLink('sync', __('Last Sync', 'shashin'))
          . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashin_center">' . __("Include in Random?", 'shashin') . "</th>" . PHP_EOL;
     echo "</tr>" . PHP_EOL;
 
     $i = 1;
-    foreach ($albums as $album) {
+    foreach ($dataObjects as $album) {
         echo(($i % 2 == 0) ? "<tr>" : "<tr class='alternate'>");
         echo PHP_EOL;
         echo '<td>'
             . $this->generatePhotosMenuSwitchLink($album)
             . '</td>' . PHP_EOL;
         echo '<td class="shashin_center">'
-            . $album->albumKey . "</td>" . PHP_EOL;
+            . $album->id . "</td>" . PHP_EOL;
         echo '<td class="shashin_center">'
             . $this->generateSyncLink($album)
             . '</td>' . PHP_EOL;
@@ -61,7 +61,7 @@ if ($albums) {
         echo '<td class="shashin_center">';
 
         echo ToppaHtmlFormField::quickBuild(
-            "includeInRandom[{$album->albumKey}]",
+            "includeInRandom[{$album->id}]",
             $refData['includeInRandom'],
             $album->includeInRandom);
         echo "</td>" . PHP_EOL;

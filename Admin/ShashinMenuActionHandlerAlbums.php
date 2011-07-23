@@ -25,7 +25,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
                     $message = $this->runSynchronizerBasedOnRssUrl();
                     break;
                 case 'syncAlbum':
-                    $this->functionsFacade->checkAdminNonceFields("shashinNonceSync_" . $this->request['albumKey']);
+                    $this->functionsFacade->checkAdminNonceFields("shashinNonceSync_" . $this->request['id']);
                     $message = $this->runSynchronizerForExistingAlbum();
                     break;
                 case 'syncAllAlbums':
@@ -33,7 +33,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
                     $message = $this->runSynchronizerForAllExistingAlbums();
                     break;
                 case 'deleteAlbum':
-                    $this->functionsFacade->checkAdminNonceFields("shashinNonceDelete_" . $this->request['albumKey']);
+                    $this->functionsFacade->checkAdminNonceFields("shashinNonceDelete_" . $this->request['id']);
                     $message = $this->runDeleteAlbum();
                     break;
                 case 'updateIncludeInRandom':
@@ -75,7 +75,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
     public function runSynchronizerForExistingAlbum(Lib_ShashinAlbum $albumToSync = null) {
         if (!$albumToSync) {
             $albumToSync = $this->adminContainer->getClonableAlbum();
-            $albumToSync->get($this->request['albumKey']);
+            $albumToSync->get($this->request['id']);
         }
 
         switch ($albumToSync->albumType) {
@@ -104,7 +104,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
 
     public function runDeleteAlbum() {
         $album = $this->adminContainer->getClonableAlbum();
-        $album->get($this->request['albumKey']);
+        $album->get($this->request['id']);
         $albumData = $album->delete();
         return __("Deleted album", "shashin") . ' "' . $albumData['title'] . '"';
     }
