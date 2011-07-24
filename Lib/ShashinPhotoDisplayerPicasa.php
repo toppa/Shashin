@@ -15,7 +15,7 @@ class Lib_ShashinPhotoDisplayerPicasa extends Lib_ShashinPhotoDisplayer {
     }
 
     public function setImgSrc() {
-        $this->imgSrc = $this->photo->contentUrl;
+        $this->imgSrc = $this->thumbnail->contentUrl;
         $this->imgSrc .= '?imgmax=' . $this->actualSize;
 
         if ($this->displayCropped) {

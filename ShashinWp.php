@@ -82,6 +82,8 @@ class ShashinWp {
             $transformer->setDataObjectCollection($photoCollection);
         }
 
+        $layoutManager = new Public_ShashinLayoutManager();
+        $transformer->setLayoutManager($layoutManager);
         return $transformer->run();
     }
 }

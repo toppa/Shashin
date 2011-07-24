@@ -3,6 +3,7 @@
 
 abstract class Lib_ShashinPhotoDisplayer {
     protected $photo;
+    protected $thumbnail;
     protected $actualSize;
     protected $displayCropped = false;
     protected $imgHeight;
@@ -37,8 +38,9 @@ abstract class Lib_ShashinPhotoDisplayer {
 
  */
 
-    public function __construct(Lib_ShashinPhoto $photo) {
+    public function __construct(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $alternativeThumbnail = null) {
         $this->photo = $photo;
+        $this->thumbnail = $alternativeThumbnail ? $alternativeThumbnail : $this->photo;
 
         if (!$_SESSION['shashin_id_counter']) {
             $_SESSION['shashin_id_counter'] = 1;
@@ -112,17 +114,17 @@ abstract class Lib_ShashinPhotoDisplayer {
         }
 
         // see if actualSize should be applied to the height or the width
-        elseif ($this->photo->width > $this->photo->height) {
+        elseif ($this->thumbnail->width > $this->thumbnail->height) {
             $this->imgWidth = $this->actualSize;
-            $percentage = $this->actualSize / $this->photo->width;
-            $this->imgHeight = $percentage * $this->photo->height;
+            $percentage = $this->actualSize / $this->thumbnail->width;
+            $this->imgHeight = $percentage * $this->thumbnail->height;
             settype($this->imgHeight, "int"); // drop any decimals
         }
 
         else {
             $this->imgHeight = $this->actualSize;
-            $percentage = $this->actualSize / $this->photo->height;
-            $this->imgWidth = $percentage * $this->photo->width;
+            $percentage = $this->actualSize / $this->thumbnail->height;
+            $this->imgWidth = $percentage * $this->thumbnail->width;
             settype($this->imgWidth, "int"); // drop any decimals
         }
 
@@ -177,7 +179,7 @@ abstract class Lib_ShashinPhotoDisplayer {
     }
 
     public function setCombinedTags() {
-        $this->combinedTags = $this->aTag . $this->imgTag . '</a>' . PHP_EOL;
+        $this->combinedTags = $this->aTag . $this->imgTag . '</a>';
         return $this->combinedTags;
     }
 }

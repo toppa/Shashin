@@ -4,6 +4,7 @@ class Public_ShashinShortcodeTransformer {
     private $shortcode;
     private $container;
     private $dataObjectCollection;
+    private $layoutManager;
 
     public function __construct(array $shortcode, Lib_ShashinContainer $container) {
         $this->shortcode = $shortcode;
@@ -12,6 +13,10 @@ class Public_ShashinShortcodeTransformer {
 
     public function setDataObjectCollection(Lib_ShashinDataObjectCollection $dataObjectCollection) {
         $this->dataObjectCollection = $dataObjectCollection;
+    }
+
+    public function setLayoutManager(Public_ShashinLayoutManager $layoutManager) {
+        $this->layoutManager = $layoutManager;
     }
 
     public function getShortcode() {
@@ -26,20 +31,16 @@ class Public_ShashinShortcodeTransformer {
 
     public function run() {
         try {
-            $tags = '';
             $collection = $this->dataObjectCollection->getCollectionForShortcode($this->shortcode);
+            $thumbnailCollection = null;
 
             if ($this->shortcode['thumbnail']) {
                 $this->dataObjectCollection->setUseThumbnailId(true);
                 $thumbnailCollection = $this->dataObjectCollection->getCollection($this->shortcode);
             }
 
-            foreach ($collection as $photo) {
-                $photoDisplayer = $this->container->getPhotoDisplayer($photo);
-                $tags .= $photoDisplayer->run('small');
-            }
+            return $this->layoutManager->run($this->container, $this->shortcode, $collection, $thumbnailCollection);
 
-            return $tags;
         }
 
         catch (Exception $e) {

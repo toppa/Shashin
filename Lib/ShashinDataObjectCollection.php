@@ -6,6 +6,7 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $dbFacade;
     protected $clonableDataObject;
     protected $tableName;
+    protected $refData;
     protected $idString;
     protected $thumbnailSize;
     protected $limitClause;
@@ -15,21 +16,21 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $whereClause;
     protected $useThumbnailId = false;
     protected $collection = array();
-    // fields not part of the db query don't belong in this class
     protected $validInputValues = array(
-        'size' => array(null, 'x-small', 'small', 'medium', 'large', 'max'),
-        'format' => array(null, 'table', 'list'),
         'caption' => array(null, 'y', 'n', 'c'),
         'order' => array(null, 'id', 'date', 'filename', 'title', 'location', 'count', 'sync', 'random', 'source', 'user'),
-        'reverse' => array(null, 'y', 'n'),
-        'position' => array(null, 'left', 'right', 'none', 'inherit', 'center'),
-        'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit')
+        'reverse' => array(null, 'y', 'n')
     );
 
     public function __construct(ToppaDatabaseFacade $dbFacade, Lib_ShashinDataObject $clonableDataObject) {
         $this->dbFacade = $dbFacade;
         $this->clonableDataObject = $clonableDataObject;
         $this->tableName = $this->clonableDataObject->getTableName();
+        $this->refData = $this->clonableDataObject->getRefData();
+    }
+
+    public function getRefData() {
+        return $this->refData;
     }
 
     public function setProperties(array $shortcode) {
@@ -41,7 +42,6 @@ abstract class Lib_ShashinDataObjectCollection {
             $this->setIdString($shortcode['id']);
         }
 
-        $this->setThumbnailSize($shortcode['size']);
         $this->setLimitClause($shortcode['limit']);
         $this->setOrderBy($shortcode['order']);
         $this->setSort($shortcode['reverse']);
@@ -63,21 +63,6 @@ abstract class Lib_ShashinDataObjectCollection {
         $this->idString = $idString;
         return $this->idString;
     }
-
-    // this does not belong in this class
-    public function setThumbnailSize($thumbnailSize = 'small') {
-        if (ToppaFunctions::isPositiveNumber($thumbnailSize)) {
-            $this->thumbnailSize = $thumbnailSize;
-        }
-
-        else {
-            $this->isInListOfValidValues('size', $thumbnailSize);
-            $this->thumbnailSize = $thumbnailSize;
-        }
-
-        return $this->thumbnailSize;
-    }
-
 
     public function setLimitClause($limit = null) {
         if ($limit && !ToppaFunctions::isPositiveNumber($limit)) {
@@ -147,7 +132,7 @@ abstract class Lib_ShashinDataObjectCollection {
         foreach ($rows as $row) {
             $dataObject = clone $this->clonableDataObject;
             $dataObject->set($row);
-            $this->collection[$dataObject->id] = $dataObject;
+            $this->collection[] = $dataObject;
         }
 
         return $this->collection;
@@ -168,7 +153,7 @@ abstract class Lib_ShashinDataObjectCollection {
                 if ($id == $row['id']) {
                     $dataObject = clone $this->clonableDataObject;
                     $dataObject->set($row);
-                    $this->collection[$dataObject->id] = $dataObject;
+                    $this->collection[] = $dataObject;
                 }
             }
         }

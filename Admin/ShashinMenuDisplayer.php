@@ -27,8 +27,7 @@ abstract class Admin_ShashinMenuDisplayer {
         $this->collection->setLimitNeeded(false);
         $this->collection->setProperties($this->shortcodeMimic);
         $dataObjects = $this->collection->getCollection();
-        $currentObject = current($dataObjects);
-        $refData = $currentObject->getRefData();
+        $refData = $this->collection->getRefData();
         ob_start();
         require_once($this->relativePathToTemplate);
         $toolsMenu = ob_get_contents();

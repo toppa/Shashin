@@ -80,7 +80,7 @@ class Lib_ShashinContainer {
         return $this->settings;
     }
 
-    public function getPhotoDisplayer($photo) {
+    public function getPhotoDisplayer(Lib_ShashinPhoto $photo) {
         $this->getSettings();
 
         switch ($photo->albumType) {
