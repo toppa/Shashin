@@ -68,6 +68,7 @@ class ShashinWp {
     }
 
     public function handleShortcode($shortcode) {
+        $shortcode = $shortcode ? $shortcode : array();
         $libContainer = new Lib_ShashinContainer($this->autoLoader);
         $transformer = new Public_ShashinShortcodeTransformer($shortcode, $libContainer);
         $cleanShortcode = $transformer->cleanShortcode();

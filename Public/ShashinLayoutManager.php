@@ -103,7 +103,17 @@ class Public_ShashinLayoutManager {
             }
 
             $photoDisplayer = $this->container->getPhotoDisplayer($this->dataObjectCollection[$i], $this->thumbnailCollection[$i]);
-            $this->tableBody .= '<td>' . $photoDisplayer->run($this->shortcode['size']) . '</td>' . PHP_EOL;
+            $this->tableBody .= '<td>';
+            $this->tableBody .= $photoDisplayer->run($this->shortcode['size'], $this->shortcode['crop']);
+
+            if ($this->shortcode['caption'] == 'y') {
+                $this->tableBody .=
+                        '<span class="shashin_caption">'
+                        . $this->dataObjectCollection[$i]->description
+                        . '</span>';
+            }
+
+            $this->tableBody.= '</td>' . PHP_EOL;
             $cellCount++;
 
             if ($cellCount > $this->shortcode['columns'] || $i == (count($this->dataObjectCollection) - 1)) {

@@ -5,7 +5,7 @@ abstract class Lib_ShashinPhotoDisplayer {
     protected $photo;
     protected $thumbnail;
     protected $actualSize;
-    protected $displayCropped = false;
+    protected $displayCropped;
     protected $imgHeight;
     protected $imgWidth;
     protected $imgSrc;
@@ -47,8 +47,9 @@ abstract class Lib_ShashinPhotoDisplayer {
         }
     }
 
-    public function run($requestedSize = 'small', $requestedCropped = 'false') {
+    public function run($requestedSize = 'xsmall', $requestedCropped = 'n') {
         try {
+            $requestedSize = $requestedSize ? $requestedSize : 'xsmall';
             $numericSize = $this->setNumericSizeFromRequestedSize($requestedSize);
             $this->setActualSizeFromValidSizes($numericSize);
             $this->setDisplayCroppedIfRequested($requestedCropped);
@@ -70,7 +71,7 @@ abstract class Lib_ShashinPhotoDisplayer {
         return $this->combinedTags;
     }
 
-    public function setNumericSizeFromRequestedSize($requestedSize = 'small') {
+    public function setNumericSizeFromRequestedSize($requestedSize = 'xsmall') {
         if (array_key_exists($requestedSize, $this->sizesMap)) {
             $numericSize = $this->sizesMap[$requestedSize];
         }
@@ -97,8 +98,8 @@ abstract class Lib_ShashinPhotoDisplayer {
         return $this->actualSize;
     }
 
-    public function setDisplayCroppedIfRequested($requestedCropped = 'false') {
-        if ($requestedCropped) {
+    public function setDisplayCroppedIfRequested($requestedCropped = 'n') {
+        if ($requestedCropped == 'y') {
             if (in_array($this->actualSize, $this->validCropSizes)) {
                 $this->displayCropped = true;
             }
