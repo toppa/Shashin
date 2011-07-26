@@ -80,12 +80,10 @@ class Lib_ShashinContainer {
         return $this->settings;
     }
 
-    public function getPhotoDisplayer(Lib_ShashinPhoto $photo) {
-        $this->getSettings();
-
+    public function getPhotoDisplayer(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $alternativeThumbnail = null) {
         switch ($photo->albumType) {
             case 'picasa':
-                $photoDisplayer = new Lib_ShashinPhotoDisplayerPicasa($photo, $this->settings);
+                $photoDisplayer = new Lib_ShashinPhotoDisplayerPicasa($photo, $alternativeThumbnail);
                 break;
         }
 

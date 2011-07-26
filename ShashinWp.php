@@ -2,6 +2,7 @@
 
 class ShashinWp {
     private $version = '3.0';
+    private $cssFile = 'shashin.css';
     private $autoLoader;
 
     public function __construct(ToppaAutoLoader &$autoLoader) {
@@ -10,6 +11,7 @@ class ShashinWp {
 
     public function run() {
         add_action('admin_menu', array($this, 'initToolsMenu'));
+        add_action('template_redirect', array($this, 'buildHeadTags'));
         add_shortcode('shashin', array($this, 'handleShortcode'));
     }
 
@@ -67,23 +69,36 @@ class ShashinWp {
         wp_localize_script('shashin_admin_js', 'shashin_display', array('url' => $menuDisplayUrl));
     }
 
+    public function buildHeadTags() {
+        if (file_exists(get_stylesheet_directory() . '/' . $this->cssFile)) {
+            $cssUrl = get_bloginfo('stylesheet_directory') . '/' . $this->cssFile;
+        }
+
+        else {
+            $relativePath = 'Public/Display/' . $this->cssFile;
+            $cssUrl = plugins_url($relativePath, __FILE__);
+        }
+
+        wp_enqueue_style('shashinStyle', $cssUrl, false, $this->version);
+    }
+
     public function handleShortcode($shortcode) {
         $shortcode = $shortcode ? $shortcode : array();
-        $libContainer = new Lib_ShashinContainer($this->autoLoader);
-        $transformer = new Public_ShashinShortcodeTransformer($shortcode, $libContainer);
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $transformer = new Public_ShashinShortcodeTransformer($shortcode, $publicContainer);
         $cleanShortcode = $transformer->cleanShortcode();
 
         if ($cleanShortcode['type'] == 'album') {
-            $albumCollection = $libContainer->getClonableAlbumCollection();
+            $albumCollection = $publicContainer->getClonableAlbumCollection();
             $transformer->setDataObjectCollection($albumCollection);
         }
 
         else {
-            $photoCollection = $libContainer->getClonablePhotoCollection();
+            $photoCollection = $publicContainer->getClonablePhotoCollection();
             $transformer->setDataObjectCollection($photoCollection);
         }
 
-        $layoutManager = new Public_ShashinLayoutManager();
+        $layoutManager = $publicContainer->getLayoutManager();
         $transformer->setLayoutManager($layoutManager);
         return $transformer->run();
     }

@@ -1,0 +1,29 @@
+.shashin3alpha_thumbs_table {
+    margin: 5px;
+}
+
+.shashin3alpha_thumbs_table caption {
+    text-align: center;
+    margin: 5px;
+}
+
+.shashin3alpha_thumbs_table td {
+    text-align: center;
+    vertical-align: top;
+}
+
+.shashin3alpha_thumb_div {
+    border: thin solid Black;
+    background-color: White;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.shashin3alpha_thumb_div:hover {
+    border-color: Silver;
+}
+
+.shashin3alpha_thumb_image {
+    padding: 3px; /* this should be half of the "thumbnail image padding" setting */
+}
+

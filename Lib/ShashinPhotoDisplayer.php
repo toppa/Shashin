@@ -1,6 +1,5 @@
 <?php
 
-
 abstract class Lib_ShashinPhotoDisplayer {
     protected $photo;
     protected $thumbnail;
@@ -10,7 +9,6 @@ abstract class Lib_ShashinPhotoDisplayer {
     protected $imgWidth;
     protected $imgSrc;
     protected $imgAltAndTitle;
-    protected $imgClass;
     protected $imgTag;
     protected $aHref;
     protected $aTag;
@@ -38,17 +36,15 @@ abstract class Lib_ShashinPhotoDisplayer {
 
  */
 
-    public function __construct(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $alternativeThumbnail = null) {
+    public function __construct(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $thumbnail = null) {
         $this->photo = $photo;
-        $this->thumbnail = $alternativeThumbnail ? $alternativeThumbnail : $this->photo;
-
-        if (!$_SESSION['shashin_id_counter']) {
-            $_SESSION['shashin_id_counter'] = 1;
-        }
+        $this->thumbnail = $thumbnail ? $thumbnail : $this->photo;
     }
+
 
     public function run($requestedSize = 'xsmall', $requestedCropped = 'n') {
         try {
+            $this->initializeSessionIdCounter();
             $requestedSize = $requestedSize ? $requestedSize : 'xsmall';
             $numericSize = $this->setNumericSizeFromRequestedSize($requestedSize);
             $this->setActualSizeFromValidSizes($numericSize);
@@ -69,6 +65,12 @@ abstract class Lib_ShashinPhotoDisplayer {
         }
 
         return $this->combinedTags;
+    }
+
+    public function initializeSessionIdCounter() {
+        if (!$_SESSION['shashin_id_counter']) {
+            $_SESSION['shashin_id_counter'] = 1;
+        }
     }
 
     public function setNumericSizeFromRequestedSize($requestedSize = 'xsmall') {
@@ -140,10 +142,6 @@ abstract class Lib_ShashinPhotoDisplayer {
         $this->imgAltAndTitle = str_replace('"', '&quot;', $this->photo->description);
     }
 
-    public function setImgClass($class) {
-        $this->imgClass = $class;
-    }
-
     public function setImgTag() {
         $this->imgTag =
             '<img src="' . $this->imgSrc
@@ -151,13 +149,8 @@ abstract class Lib_ShashinPhotoDisplayer {
             . '" title="' . $this->imgAltAndTitle
             . '" width="' . $this->imgWidth
             . '" height="' . $this->imgHeight
-            . '" id="shashin_thumb_image_' . $_SESSION['shashin_id_counter'] . '"';
-
-        if ($this->imgClass) {
-            $this->imgTag .= ' class="' . $this->imgClass . '"';
-        }
-
-        $this->imgTag .= ' />';
+            . '" class="shashin3alpha_thumb_image"'
+            . '" id="shashin_thumb_image_' . $_SESSION['shashin_id_counter'] . '" />';
     }
 
     abstract public function setAHref();
@@ -182,5 +175,9 @@ abstract class Lib_ShashinPhotoDisplayer {
     public function setCombinedTags() {
         $this->combinedTags = $this->aTag . $this->imgTag . '</a>';
         return $this->combinedTags;
+    }
+
+    public function getImgWidth() {
+        return $this->imgWidth;
     }
 }

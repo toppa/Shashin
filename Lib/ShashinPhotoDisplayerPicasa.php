@@ -1,7 +1,7 @@
 <?php
 
 class Lib_ShashinPhotoDisplayerPicasa extends Lib_ShashinPhotoDisplayer {
-    public function __construct(Lib_ShashinPhoto $photo) {
+    public function __construct(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $alternativeThumbnail = null) {
         $this->validSizes = array(32, 48, 64, 72, 104, 144, 150, 160, 94, 110, 128, 200, 220, 288, 320, 400, 512, 576, 640, 720, 800, 912, 1024, 1152, 1280, 1440, 1600);
         $this->validCropSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
         $this->sizesMap = array(
@@ -11,7 +11,7 @@ class Lib_ShashinPhotoDisplayerPicasa extends Lib_ShashinPhotoDisplayer {
             'large' => 640,
             'xlarge' => 800,
         );
-        parent::__construct($photo);
+        parent::__construct($photo, $alternativeThumbnail);
     }
 
     public function setImgSrc() {

@@ -1,16 +1,16 @@
 <?php
 
 class Public_ShashinLayoutManager {
+    private $settings;
+    private $settingsValues;
     private $container;
-    private $dataObjectCollection;
+    private $collection;
     private $thumbnailCollection;
     private $shortcode;
     private $openingTableTag;
     private $tableCaptionTag;
     private $tableBody;
     private $combinedTags;
-
-
     protected $validInputValues = array(
         'caption' => array(null, 'y', 'n', 'c'),
         'description' => array(null, 'y', 'n'),
@@ -19,17 +19,19 @@ class Public_ShashinLayoutManager {
         'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit')
     );
 
-    public function __construct() {
+    public function __construct(Lib_ShashinSettings $settings) {
+        $this->settings = $settings;
+        $this->settingsValues = $settings->get();
     }
 
     public function run(
       Lib_ShashinContainer $container,
       array $shortcode,
-      array $dataObjectCollection,
+      array $collection,
       array $thumbnailCollection = null) {
         $this->container = $container;
         $this->shortcode = $shortcode;
-        $this->dataObjectCollection = $dataObjectCollection;
+        $this->collection = $collection;
         $this->thumbnailCollection = $thumbnailCollection;
         $this->validateShortcodeLayout();
         $this->setOpeningTableTag();
@@ -56,7 +58,7 @@ class Public_ShashinLayoutManager {
     }
 
     public function setOpeningTableTag() {
-        $this->openingTableTag = '<table class="shashin_thumbs_table"';
+        $this->openingTableTag = '<table class="shashin3alpha_thumbs_table"';
 
         if ($this->shortcode['position'] || $this->shortcode['clear']) {
             $this->openingTableTag .= $this->addStyleForOpeningTableTag();
@@ -97,26 +99,29 @@ class Public_ShashinLayoutManager {
         $cellCount = 1;
         $this->tableBody = '';
 
-        for ($i = 0; $i < count($this->dataObjectCollection); $i++) {
+        for ($i = 0; $i < count($this->collection); $i++) {
             if ($cellCount == 1) {
                 $this->tableBody .=  '<tr>' . PHP_EOL;
             }
 
-            $photoDisplayer = $this->container->getPhotoDisplayer($this->dataObjectCollection[$i], $this->thumbnailCollection[$i]);
-            $this->tableBody .= '<td>';
-            $this->tableBody .= $photoDisplayer->run($this->shortcode['size'], $this->shortcode['crop']);
+            $photoDisplayer = $this->container->getPhotoDisplayer($this->collection[$i], $this->thumbnailCollection[$i]);
+            $linkAndImageTags = $photoDisplayer->run($this->shortcode['size'], $this->shortcode['crop']);
+            $imgWidth = $photoDisplayer->getImgWidth();
+            $cellWidth = $imgWidth + $this->settingsValues['thumbPadding'];
+            $this->tableBody .= '<td><div class="shashin3alpha_thumb_div" style="width: ' . $cellWidth . 'px;">';
+            $this->tableBody .= $linkAndImageTags;
 
             if ($this->shortcode['caption'] == 'y') {
                 $this->tableBody .=
                         '<span class="shashin_caption">'
-                        . $this->dataObjectCollection[$i]->description
+                        . $this->collection[$i]->description
                         . '</span>';
             }
 
-            $this->tableBody.= '</td>' . PHP_EOL;
+            $this->tableBody.= '</div></td>' . PHP_EOL;
             $cellCount++;
 
-            if ($cellCount > $this->shortcode['columns'] || $i == (count($this->dataObjectCollection) - 1)) {
+            if ($cellCount > $this->shortcode['columns'] || $i == (count($this->collection) - 1)) {
                 $this->tableBody .= '</tr>' . PHP_EOL;
                 $cellCount = 1;
             }

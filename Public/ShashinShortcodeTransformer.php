@@ -31,16 +31,16 @@ class Public_ShashinShortcodeTransformer {
 
     public function run() {
         try {
-            $collection = $this->dataObjectCollection->getCollectionForShortcode($this->shortcode);
             $thumbnailCollection = null;
 
             if ($this->shortcode['thumbnail']) {
-                $this->dataObjectCollection->setUseThumbnailId(true);
-                $thumbnailCollection = $this->dataObjectCollection->getCollection($this->shortcode);
+                $thumbnailDataObjectCollection = clone $this->dataObjectCollection;
+                $thumbnailDataObjectCollection->setUseThumbnailId(true);
+                $thumbnailCollection = $thumbnailDataObjectCollection->getCollectionForShortcode($this->shortcode);
             }
 
+            $collection = $this->dataObjectCollection->getCollectionForShortcode($this->shortcode);
             return $this->layoutManager->run($this->container, $this->shortcode, $collection, $thumbnailCollection);
-
         }
 
         catch (Exception $e) {

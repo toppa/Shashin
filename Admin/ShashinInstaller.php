@@ -6,7 +6,6 @@ class Admin_ShashinInstaller {
     private $photo;
     private $settings;
     private $settingsDefaults = array(
-        'divPadding' => 10,
         'thumbPadding' => 6,
         'prefixCaptions' => 'n',
         'scheduledUpdate' => 'n',
