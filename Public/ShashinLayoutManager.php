@@ -1,27 +1,29 @@
 <?php
 
-class Public_ShashinLayoutManager {
-    private $settings;
-    private $settingsValues;
-    private $container;
-    private $collection;
-    private $thumbnailCollection;
-    private $shortcode;
-    private $openingTableTag;
-    private $tableCaptionTag;
-    private $tableBody;
-    private $combinedTags;
+abstract class Public_ShashinLayoutManager {
+    protected $settings;
+    protected $settingsValues;
+    protected $functionsFacade;
+    protected $container;
+    protected $collection;
+    protected $thumbnailCollection;
+    protected $shortcode;
+    protected $openingTableTag;
+    protected $tableCaptionTag;
+    protected $tableBody;
+    protected $combinedTags;
     protected $validInputValues = array(
         'caption' => array(null, 'y', 'n', 'c'),
-        'description' => array(null, 'y', 'n'),
-        'location' => array(null, 'y', 'n'),
         'position' => array(null, 'left', 'right', 'none', 'inherit', 'center'),
         'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit')
     );
 
-    public function __construct(Lib_ShashinSettings $settings) {
+    public function __construct(
+      Lib_ShashinSettings $settings,
+      ToppaFunctionsFacade $functionsFacade) {
         $this->settings = $settings;
         $this->settingsValues = $settings->get();
+        $this->functionsFacade = $functionsFacade;
     }
 
     public function run(
@@ -29,27 +31,32 @@ class Public_ShashinLayoutManager {
       array $shortcode,
       array $collection,
       array $thumbnailCollection = null) {
-        $this->container = $container;
-        $this->shortcode = $shortcode;
-        $this->collection = $collection;
-        $this->thumbnailCollection = $thumbnailCollection;
-        $this->validateShortcodeLayout();
-        $this->setOpeningTableTag();
-        $this->setTableCaptionTag();
-        $this->setTableBody();
-        $this->setCombinedTags();
+        try {
+            $this->container = $container;
+            $this->shortcode = $shortcode;
+            $this->collection = $collection;
+            $this->thumbnailCollection = $thumbnailCollection;
+            $this->validateShortcodeLayout();
+            $this->setOpeningTableTag();
+            $this->setPhotoTableCaptionTag();
+            $this->setTableBody();
+            $this->setCombinedTags();
+        }
+
+        catch (Exception $e) {
+            return $e->getMessage();
+        }
+
         return $this->combinedTags;
     }
 
     public function validateShortcodeLayout() {
         $this->isInListOfValidValues('caption', $this->shortcode['caption']);
-        $this->isInListOfValidValues('description', $this->shortcode['description']);
-        $this->isInListOfValidValues('location', $this->shortcode['location']);
         $this->isInListOfValidValues('position', $this->shortcode['position']);
         $this->isInListOfValidValues('clear', $this->shortcode['clear']);
     }
 
-    private function isInListOfValidValues($shortcodeKey, $value) {
+    protected function isInListOfValidValues($shortcodeKey, $value) {
         if (!in_array($value, $this->validInputValues[$shortcodeKey])) {
             throw new Exception($value . __(" is not a valid ") . $shortcodeKey . __(" value"));
         }
@@ -87,13 +94,7 @@ class Public_ShashinLayoutManager {
         return $style;
     }
 
-    public function setTableCaptionTag() {
-        if ($this->shortcode['description'] == 'y') {
-            $this->tableCaptionTag =  '<caption>work in progress</caption>' . PHP_EOL;
-        }
-
-        return $this->tableCaptionTag;
-    }
+    abstract public function setPhotoTableCaptionTag();
 
     public function setTableBody() {
         $cellCount = 1;
@@ -104,20 +105,14 @@ class Public_ShashinLayoutManager {
                 $this->tableBody .=  '<tr>' . PHP_EOL;
             }
 
-            $photoDisplayer = $this->container->getPhotoDisplayer($this->collection[$i], $this->thumbnailCollection[$i]);
-            $linkAndImageTags = $photoDisplayer->run($this->shortcode['size'], $this->shortcode['crop']);
-            $imgWidth = $photoDisplayer->getImgWidth();
+            $dataObjectDisplayer = $this->container->getDataObjectDisplayer($this->collection[$i], $this->thumbnailCollection[$i]);
+            $linkAndImageTags = $dataObjectDisplayer->run($this->shortcode['size'], $this->shortcode['crop']);
+            $imgWidth = $dataObjectDisplayer->getImgWidth();
             $cellWidth = $imgWidth + $this->settingsValues['thumbPadding'];
             $this->tableBody .= '<td><div class="shashin3alpha_thumb_div" style="width: ' . $cellWidth . 'px;">';
             $this->tableBody .= $linkAndImageTags;
-
-            if ($this->shortcode['caption'] == 'y') {
-                $this->tableBody .=
-                        '<span class="shashin_caption">'
-                        . $this->collection[$i]->description
-                        . '</span>';
-            }
-
+            $linkTag = $dataObjectDisplayer->getATag();
+            $this->tableBody .= $this->generateCaption($this->collection[$i], $linkTag);
             $this->tableBody.= '</div></td>' . PHP_EOL;
             $cellCount++;
 
@@ -129,6 +124,8 @@ class Public_ShashinLayoutManager {
 
         return $this->tableBody;
     }
+
+    abstract public function generateCaption(Lib_ShashinDataObject $dataObject, $linkTag = null);
 
     public function setCombinedTags() {
         $this->combinedTags =

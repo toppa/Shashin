@@ -91,14 +91,15 @@ class ShashinWp {
         if ($cleanShortcode['type'] == 'album') {
             $albumCollection = $publicContainer->getClonableAlbumCollection();
             $transformer->setDataObjectCollection($albumCollection);
+            $layoutManager = $publicContainer->getAlbumLayoutManager();
         }
 
         else {
             $photoCollection = $publicContainer->getClonablePhotoCollection();
             $transformer->setDataObjectCollection($photoCollection);
+            $layoutManager = $publicContainer->getPhotoLayoutManager();
         }
 
-        $layoutManager = $publicContainer->getLayoutManager();
         $transformer->setLayoutManager($layoutManager);
         return $transformer->run();
     }

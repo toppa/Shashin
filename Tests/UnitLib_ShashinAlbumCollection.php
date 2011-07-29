@@ -104,23 +104,6 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
         }
     }
 
-    public function testSetThumbnailSize() {
-        $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
-
-        try {
-            $albumCollection->setThumbnailSize($this->invalidTestCases['invalid']['size']);
-            $this->fail("Exception was expected - invalid test case");
-        }
-
-        catch (Exception $e) {
-            $this->pass("received expected invalid test case");
-        }
-
-        foreach ($this->validTestCases as $case) {
-            $this->assertEqual($albumCollection->setThumbnailSize($case['size']), $case['size']);
-        }
-    }
-
     public function testSetLimitClause() {
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
 

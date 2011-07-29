@@ -56,8 +56,8 @@ if ($dataObjects) {
             . '</td>' . PHP_EOL;
         echo '<td class="shashin_center">'
             . $album->photoCount . "</td>" . PHP_EOL;
-        echo '<td class="shashin_center">' . date("d-M-Y", $album->pubDate) . "</td>" . PHP_EOL;
-        echo '<td class="shashin_center">' . date("d-M-Y H:i", $album->lastSync) . "</td>" . PHP_EOL;
+        echo '<td class="shashin_center">' . $this->functionsFacade->dateI18n("d-M-Y", $album->pubDate) . "</td>" . PHP_EOL;
+        echo '<td class="shashin_center">' . $this->functionsFacade->dateI18n("d-M-Y H:i", $album->lastSync) . "</td>" . PHP_EOL;
         echo '<td class="shashin_center">';
 
         echo ToppaHtmlFormField::quickBuild(

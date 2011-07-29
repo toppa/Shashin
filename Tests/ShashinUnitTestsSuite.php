@@ -12,6 +12,7 @@ class ShashinUnitTestsSuite extends TestSuite {
        $this->addFile('UnitLib_ShashinAlbum.php');
        $this->addFile('UnitLib_ShashinAlbumCollection.php');
        $this->addFile('UnitLib_ShashinPhotoDisplayerPicasa.php');
+       $this->addFile('UnitLib_ShashinAlbumDisplayerPicasa.php');
        $this->addFile('UnitAdmin_ShashinMenuDisplayerAlbums.php');
        $this->addFile('UnitAdmin_ShashinSynchronizerPicasa.php');
        $this->addFile('UnitPublic_ShashinShortcodeTransformer.php');

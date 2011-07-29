@@ -52,7 +52,7 @@ class IntegrationLib_ShashinContainer extends UnitTestCase {
         $libContainer = new Lib_ShashinContainer($this->autoLoader);
         $album = $libContainer->getClonableAlbum();
         $album->albumType = 'picasa'; // normally we would get this from the album data in the database
-        $displayer = $libContainer->getPhotoDisplayer($album);
+        $displayer = $libContainer->getDataObjectDisplayer($album);
         $this->assertTrue($displayer instanceof Lib_ShashinPhotoDisplayerPicasa);
     }
 
@@ -60,7 +60,7 @@ class IntegrationLib_ShashinContainer extends UnitTestCase {
         try {
             $libContainer = new Lib_ShashinContainer($this->autoLoader);
             $album = $libContainer->getClonableAlbum();
-            $displayer = $libContainer->getPhotoDisplayer($album);
+            $displayer = $libContainer->getDataObjectDisplayer($album);
             $this->fail("Exception expected - no album type defined");
         }
 

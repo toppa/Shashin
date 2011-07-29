@@ -80,13 +80,26 @@ class Lib_ShashinContainer {
         return $this->settings;
     }
 
-    public function getPhotoDisplayer(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $alternativeThumbnail = null) {
-        switch ($photo->albumType) {
-            case 'picasa':
-                $photoDisplayer = new Lib_ShashinPhotoDisplayerPicasa($photo, $alternativeThumbnail);
-                break;
+    public function getDataObjectDisplayer(
+      Lib_ShashinDataObject $dataObject,
+      Lib_ShashinDataObject $alternativeThumbnail = null) {
+
+        if (is_a($dataObject, 'Lib_ShashinPhoto')) {
+            switch ($dataObject->albumType) {
+                case 'picasa':
+                    $dataObjectDisplayer = new Lib_ShashinPhotoDisplayerPicasa($dataObject, $alternativeThumbnail);
+                    break;
+            }
         }
 
-        return $photoDisplayer;
+        elseif (is_a($dataObject, 'Lib_ShashinAlbum')) {
+            switch ($dataObject->albumType) {
+                case 'picasa':
+                    $dataObjectDisplayer = new Lib_ShashinAlbumDisplayerPicasa($dataObject, $alternativeThumbnail);
+                    break;
+            }
+        }
+
+        return $dataObjectDisplayer;
     }
 }

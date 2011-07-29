@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__) . '/../Lib/ShashinDataObject.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinPhoto.php');
-require_once(dirname(__FILE__) . '/../Lib/ShashinPhotoDisplayer.php');
+require_once(dirname(__FILE__) . '/../Lib/ShashinDataObjectDisplayer.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinPhotoDisplayerPicasa.php');
 Mock::generate('Lib_ShashinPhoto');
 
@@ -69,16 +69,16 @@ class UnitLib_ShashinPhotoDisplayerPicasa extends UnitTestCase {
         $actualSize = $displayer->setActualSizeFromValidSizes(200);
         $this->assertEqual(200, $actualSize);
         $actualSize = $displayer->setActualSizeFromValidSizes(201);
-        $this->assertEqual(288, $actualSize);
+        $this->assertEqual(220, $actualSize);
     }
 
     public function testSetDisplayCroppedIfRequested() {
         $displayer = new Lib_ShashinPhotoDisplayerPicasa($this->photo);
         $displayer->setActualSizeFromValidSizes(200);
-        $shouldBeFalse = $displayer->setDisplayCroppedIfRequested(true);
+        $shouldBeFalse = $displayer->setDisplayCropped(true);
         $this->assertFalse($shouldBeFalse);
         $displayer->setActualSizeFromValidSizes(160);
-        $shouldBeTrue = $displayer->setDisplayCroppedIfRequested(true);
+        $shouldBeTrue = $displayer->setDisplayCropped(true);
         $this->assertTrue($shouldBeTrue);
     }
 
@@ -88,14 +88,12 @@ class UnitLib_ShashinPhotoDisplayerPicasa extends UnitTestCase {
         $this->assertEqual($this->samplePhotoData['linkUrl'], $aHref);
     }
 
-    public function testSetAId() {
+    public function testSessionCounterAndSetAId() {
         $displayer = new Lib_ShashinPhotoDisplayerPicasa($this->photo);
+        $displayer->initializeSessionIdCounter();
+        $this->assertEqual(1, $_SESSION['shashin_id_counter']);
         $aId = $displayer->setAId();
         $this->assertEqual('shashin_thumb_link_1', $aId);
-    }
-
-    public function testIncrementSessionIdCounter() {
-        $displayer = new Lib_ShashinPhotoDisplayerPicasa($this->photo);
         $displayer->incrementSessionIdCounter();
         $this->assertEqual(2, $_SESSION['shashin_id_counter']);
     }

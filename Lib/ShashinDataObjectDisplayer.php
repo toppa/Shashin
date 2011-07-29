@@ -1,9 +1,10 @@
 <?php
 
-abstract class Lib_ShashinPhotoDisplayer {
-    protected $photo;
+abstract class Lib_ShashinDataObjectDisplayer {
+    protected $dataObject;
     protected $thumbnail;
     protected $actualSize;
+    protected $displayCroppedRequired = false;
     protected $displayCropped;
     protected $imgHeight;
     protected $imgWidth;
@@ -36,9 +37,9 @@ abstract class Lib_ShashinPhotoDisplayer {
 
  */
 
-    public function __construct(Lib_ShashinPhoto $photo, Lib_ShashinPhoto $thumbnail = null) {
-        $this->photo = $photo;
-        $this->thumbnail = $thumbnail ? $thumbnail : $this->photo;
+    public function __construct(Lib_ShashinDataObject $dataObject, Lib_ShashinDataObject $thumbnail = null) {
+        $this->dataObject = $dataObject;
+        $this->thumbnail = $thumbnail ? $thumbnail : $this->dataObject;
     }
 
 
@@ -48,7 +49,7 @@ abstract class Lib_ShashinPhotoDisplayer {
             $requestedSize = $requestedSize ? $requestedSize : 'xsmall';
             $numericSize = $this->setNumericSizeFromRequestedSize($requestedSize);
             $this->setActualSizeFromValidSizes($numericSize);
-            $this->setDisplayCroppedIfRequested($requestedCropped);
+            $this->setDisplayCropped($requestedCropped);
             $this->setImgWidthAndHeight();
             $this->setImgSrc();
             $this->setImgAltAndTitle();
@@ -100,8 +101,8 @@ abstract class Lib_ShashinPhotoDisplayer {
         return $this->actualSize;
     }
 
-    public function setDisplayCroppedIfRequested($requestedCropped = 'n') {
-        if ($requestedCropped == 'y') {
+    public function setDisplayCropped($requestedCropped = 'n') {
+        if ($requestedCropped == 'y' || $this->displayCroppedRequired) {
             if (in_array($this->actualSize, $this->validCropSizes)) {
                 $this->displayCropped = true;
             }
@@ -139,7 +140,7 @@ abstract class Lib_ShashinPhotoDisplayer {
     public function setImgAltAndTitle() {
         // there may already be entities in the description, so we want to be
         // conservative with what we replace
-        $this->imgAltAndTitle = str_replace('"', '&quot;', $this->photo->description);
+        $this->imgAltAndTitle = str_replace('"', '&quot;', $this->dataObject->description);
     }
 
     public function setImgTag() {
@@ -150,7 +151,7 @@ abstract class Lib_ShashinPhotoDisplayer {
             . '" width="' . $this->imgWidth
             . '" height="' . $this->imgHeight
             . '" class="shashin3alpha_thumb_image"'
-            . '" id="shashin_thumb_image_' . $_SESSION['shashin_id_counter'] . '" />';
+            . ' id="shashin_thumb_image_' . $_SESSION['shashin_id_counter'] . '" />';
     }
 
     abstract public function setAHref();
@@ -169,6 +170,10 @@ abstract class Lib_ShashinPhotoDisplayer {
             '<a href="' . $this->aHref
             . '" id="' . $this->aId
             . '">';
+        return $this->aTag;
+    }
+
+    public function getATag() {
         return $this->aTag;
     }
 

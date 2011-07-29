@@ -36,7 +36,7 @@ echo '</tr>' . PHP_EOL;
 $i = 1;
 
 foreach ($dataObjects as $photo) {
-    $photoDisplayer = $this->container->getPhotoDisplayer($photo);
+    $photoDisplayer = $this->container->getDataObjectDisplayer($photo);
 
     echo(($i % 2 == 0) ? '<tr class="shashin_center">' : '<tr class="alternate shashin_center">');
     echo PHP_EOL;

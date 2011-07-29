@@ -8,7 +8,6 @@
 }
 
 .shashin3alpha_thumbs_table td {
-    text-align: center;
     vertical-align: top;
 }
 
@@ -27,3 +26,33 @@
     padding: 3px; /* this should be half of the "thumbnail image padding" setting */
 }
 
+.shashin3alpha_thumb_caption {
+    display: block;
+    padding: 0px 5px 5px 5px;
+    font-size: x-small;
+    font-weight: bold;
+}
+
+.shashin3alpha_album_caption_title {
+    display: block;
+    padding: 0px 5px 1px 5px;
+    font-size: x-small;
+    font-weight: bold;
+}
+
+.shashin3alpha_album_caption_date {
+    display: block;
+    padding: 0px 5px 1px 5px;
+    font-size: x-small;
+}
+
+.shashin3alpha_album_caption_location {
+    display: block;
+    padding: 0px 5px 5px 5px;
+    font-size: x-small;
+}
+
+.shashin3alpha_album_caption_location img {
+    vertical-align: middle;
+    padding-right: 3px;
+}
