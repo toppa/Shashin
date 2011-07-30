@@ -101,18 +101,6 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
                 'input' => array(
                     'type' => 'radio',
                     'subgroup' => array('Y' => 'Yes', 'N' => 'No'))),
-            'login' => array(
-                'db' => array(
-                    'type' => 'varchar',
-                    'length' => '100'),
-                'input' => array(
-                    'type' => 'text')),
-            'password' => array(
-                'db' => array(
-                    'type' => 'varchar',
-                    'length' => '100'),
-                'input' => array(
-                    'type' => 'password'))
         );
 
         parent::__construct($dbFacade);

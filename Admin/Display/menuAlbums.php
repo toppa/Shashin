@@ -112,6 +112,7 @@ else {
 <?php echo ToppaHtmlFormField::quickBuild('rssUrl', $refData['dataUrl']); ?><br />
 <?php _e("Include album's photos in random photo displays?", 'shashin'); ?>
 <?php echo ToppaHtmlFormField::quickBuild('includeInRandom', $refData['includeInRandom'], "Y"); ?></p>
+
 <p><input class="button-primary" type="submit" name="submit" value="<?php _e("Add Albums", 'shashin'); ?>" /></p>
 </form>
 </div>

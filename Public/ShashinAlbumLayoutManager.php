@@ -45,7 +45,7 @@ class Public_ShashinAlbumLayoutManager extends Public_ShashinLayoutManager {
                     $caption .= '<a href="http://maps.google.com/maps?q='
                         . urlencode($album->geoPos)
                         . '"><img src="'
-                        . $this->functionsFacade->getPluginsUrl('/Display/images/mapped_sm.gif', __FILE__)
+                        . $this->functionsFacade->getPluginsUrl('/Display/mapped_sm.gif', __FILE__)
                         . '" alt="Google Maps Location" width="15" height="12" /></a>';
                 }
 
