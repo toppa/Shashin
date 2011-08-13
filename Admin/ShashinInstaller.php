@@ -12,7 +12,7 @@ class Admin_ShashinInstaller {
         'themeMaxSize' => 600,
         'themeMaxSingle' => 576,
         'photosPerPage' => 18,
-        'captionExif' => 'n',
+        'captionExif' => 'all',
         'imageDisplay' => 'highslide',
         'highslideMax' => 640,
         'highslideVideoWidth' => 640,
@@ -34,7 +34,7 @@ class Admin_ShashinInstaller {
         'otherImageTitle' => null,
     );
 
-    public function __construct(&$dbFacade, &$album, &$photo, &$settings) {
+    public function __construct($dbFacade, $album, $photo, $settings) {
         $this->dbFacade = $dbFacade;
         $this->album = $album;
         $this->photo = $photo;

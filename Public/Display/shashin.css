@@ -24,6 +24,7 @@
 
 .shashin3alpha_thumb_image {
     padding: 3px; /* this should be half of the "thumbnail image padding" setting */
+    border: none;
 }
 
 .shashin3alpha_thumb_caption {
@@ -55,4 +56,10 @@
 .shashin3alpha_album_caption_location img {
     vertical-align: middle;
     padding-right: 3px;
+}
+
+/* Applied to EXIF data in Highslide captions */
+.shashin_caption_exif {
+    display: block;
+    color: darkgray;
 }

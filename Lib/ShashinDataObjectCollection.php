@@ -1,12 +1,10 @@
 <?php
 
 abstract class Lib_ShashinDataObjectCollection {
-    protected $defaultLimit = 9;
-    protected $limitNeeded = true;
     protected $dbFacade;
     protected $clonableDataObject;
-    protected $tableName;
-    protected $refData;
+    protected $settings;
+    protected $shortcode;
     protected $idString;
     protected $thumbnailSize;
     protected $limitClause;
@@ -16,38 +14,28 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $whereClause;
     protected $useThumbnailId = false;
     protected $collection = array();
-    protected $validInputValues = array(
-        'caption' => array(null, 'y', 'n', 'c'),
-        'order' => array(null, 'id', 'date', 'filename', 'title', 'location', 'count', 'sync', 'random', 'source', 'user'),
-        'reverse' => array(null, 'y', 'n')
-    );
 
-    public function __construct(ToppaDatabaseFacade $dbFacade, Lib_ShashinDataObject $clonableDataObject) {
+    public function __construct() {
+    }
+
+    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
+    }
+
+    public function setClonableDataObject(Lib_ShashinDataObject $clonableDataObject) {
         $this->clonableDataObject = $clonableDataObject;
-        $this->tableName = $this->clonableDataObject->getTableName();
-        $this->refData = $this->clonableDataObject->getRefData();
+    }
+
+    public function setSettings(Lib_ShashinSettings $settings) {
+        $this->settings = $settings;
+    }
+
+    public function getTableName() {
+        return  $this->clonableDataObject->getTableName();
     }
 
     public function getRefData() {
-        return $this->refData;
-    }
-
-    public function setProperties(array $shortcode) {
-        if ($this->useThumbnailId == true) {
-            $this->setIdString($shortcode['thumbnail']);
-        }
-
-        else {
-            $this->setIdString($shortcode['id']);
-        }
-
-        $this->setLimitClause($shortcode['limit']);
-        $this->setOrderBy($shortcode['order']);
-        $this->setSort($shortcode['reverse']);
-        $this->setOrderByClause();
-        $this->setWhereClause($shortcode['type']);
-        $this->setDefaultLimitIfNeeded();
+        return $this->clonableDataObject->getRefData();
     }
 
     public function setUseThumbnailId($useThumbnailId) {
@@ -58,62 +46,9 @@ abstract class Lib_ShashinDataObjectCollection {
         return $this->useThumbnailId;
     }
 
-    public function setIdString($idString = null) {
-        $this->isAStringOfNumbersOrNull($idString);
-        $this->idString = $idString;
-        return $this->idString;
-    }
-
-    public function setLimitClause($limit = null) {
-        if ($limit && !ToppaFunctions::isPositiveNumber($limit)) {
-            throw new Exception(__('That is not a valid limit'));
-        }
-
-        elseif ($limit) {
-            $this->limitClause = "limit $limit";
-        }
-
-        return $this->limitClause;
-    }
-
-    abstract public function setOrderBy($orderBy = null);
-
-    public function setSort($reverse) {
-        $this->isInListOfValidValues('reverse', $reverse);
-
-        if ($reverse == 'y') {
-            $this->sort ='desc';
-        }
-
-        else {
-            $this->sort = 'asc';
-        }
-
-        return $this->sort;
-    }
-
-    protected function isInListOfValidValues($shortcodeKey, $value) {
-        if (!in_array($value, $this->validInputValues[$shortcodeKey])) {
-            throw new Exception($value . __(" is not a valid ") . $shortcodeKey . __(" value"));
-        }
-
-        return true;
-    }
-
-    protected function isAStringOfNumbersOrNull($stringOfNumbers = null) {
-        // we want comma separated numbers or a null value
-        if (preg_match("/^[\s\d,]+$/", $stringOfNumbers) || !$stringOfNumbers) {
-        }
-
-        else {
-            throw new Exception($stringOfNumbers . " " . __("is not a valid string of numbers"));
-        }
-
-        return true;
-    }
-
-    public function getCollectionForShortcode(array $shortcode) {
-        $this->setProperties($shortcode);
+    public function getCollectionForShortcode(Public_ShashinShortcode $shortcode) {
+        $this->shortcode = $shortcode;
+        $this->setProperties();
 
         if ($this->orderBy == 'user') {
             return $this->getCollectionInUserOrder();
@@ -124,7 +59,6 @@ abstract class Lib_ShashinDataObjectCollection {
 
     public function getCollection() {
         $rows = $this->getData();
-
         if (!is_array($rows)) {
             return null;
         }
@@ -167,12 +101,67 @@ abstract class Lib_ShashinDataObjectCollection {
                 . " " . $this->orderByClause
                 . " " . $this->limitClause;
         $rows = $this->dbFacade->sqlSelectMultipleRows(
-            $this->tableName,
+            $this->getTableName(),
             null,
             null,
             $sqlConditions
         );
         return $rows;
+    }
+
+    public function setProperties() {
+        if ($this->useThumbnailId == true) {
+            $this->setIdString();
+        }
+
+        else {
+            $this->setIdString();
+        }
+
+        $this->setLimitClause();
+        $this->setOrderBy();
+        $this->setSort();
+        $this->setOrderByClause();
+        $this->setWhereClause();
+    }
+
+    public function setIdString() {
+        if ($this->useThumbnailId == true) {
+            $this->idString = $this->shortcode->thumbnail;
+        }
+
+        else {
+            $this->idString = $this->shortcode->id;
+        }
+
+        return $this->idString;
+    }
+
+    public function setLimitClause() {
+        if ($this->shortcode->limit) {
+            $this->limitClause = 'limit ' . $this->shortcode->limit;
+        }
+
+        elseif (!$this->idString || $this->shortcode->type == 'albumphotos') {
+            $settingsData = $this->settings->get();
+            $this->limitClause = 'limit ' . $settingsData['photosPerPage'];
+        }
+
+        return $this->limitClause;
+    }
+
+    abstract public function setOrderBy();
+
+    public function setSort() {
+        if ($this->shortcode->reverse == 'y') {
+            $this->sort ='desc';
+        }
+
+        else {
+            $this->sort = 'asc';
+        }
+
+        return $this->sort;
     }
 
     public function setOrderByClause() {
@@ -183,8 +172,8 @@ abstract class Lib_ShashinDataObjectCollection {
         return $this->orderByClause;
     }
 
-    public function setWhereClause($type = null) {
-        if ($type == 'albumphotos') {
+    public function setWhereClause() {
+        if ($this->shortcode->type == 'albumphotos') {
             $this->whereClause = "where albumId in (" . $this->idString . ")";
         }
 
@@ -195,19 +184,4 @@ abstract class Lib_ShashinDataObjectCollection {
         return $this->whereClause;
     }
 
-    public function setLimitNeeded($limitNeeded) {
-        if (is_bool($limitNeeded)) {
-            $this->limitNeeded = $limitNeeded;
-        }
-
-        return $this->limitNeeded;
-    }
-
-    public function setDefaultLimitIfNeeded() {
-        if (!$this->idString && !$this->limitClause && $this->limitNeeded == true) {
-            $this->setLimitClause($this->defaultLimit);
-        }
-
-        return $this->limitClause;
-    }
 }

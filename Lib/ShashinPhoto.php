@@ -1,8 +1,6 @@
 <?php
 
 class Lib_ShashinPhoto extends Lib_ShashinDataObject {
-    private $album;
-
     public function __construct(ToppaDatabaseFacade &$dbFacade) {
         $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_photo_3alpha';
         $this->refData = array(
@@ -167,7 +165,13 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
         return true;
     }
 
-    public function setAlbum(Lib_ShashinAlbum $album) {
-        $this->album = $album;
+    public function isVideo() {
+        $fileExtension = ToppaFunctions::getFileExtension($this->data['filename']);
+
+        if (in_array($fileExtension, $this->videoFileTypes)) {
+            return true;
+        }
+
+        return false;
     }
 }

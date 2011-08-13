@@ -5,6 +5,7 @@ abstract class Lib_ShashinDataObject {
     protected $tableName;
     protected $data = array();
     protected $refData = array();
+    protected $videoFileTypes = array('mpg', 'avi', 'asf', 'wmv', 'mov', 'mp4');
 
     public function __construct(ToppaDatabaseFacade &$dbFacade) {
         $this->dbFacade = $dbFacade;
@@ -23,7 +24,7 @@ abstract class Lib_ShashinDataObject {
             return $this->data[$name];
         }
 
-        throw New Exception(__("Invalid data property __get", "shashin"));
+        throw New Exception(__("Invalid data property __get for ", "shashin") . htmlentities($name));
     }
 
     public function __set($name, $value) {
@@ -32,7 +33,7 @@ abstract class Lib_ShashinDataObject {
             return true;
         }
 
-        throw New Exception(__("Invalid data property __set", "shashin"));
+        throw New Exception(__("Invalid data property __set for ", "shashin") . htmlentities($name));
     }
 
     public function getData() {
@@ -44,6 +45,7 @@ abstract class Lib_ShashinDataObject {
         return true;
     }
 
+    abstract public function isVideo();
     abstract public function get($key = null);
     abstract public function refresh($key);
     abstract public function flush();

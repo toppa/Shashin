@@ -7,6 +7,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $menuActionHandlerPhotos;
     private $menuDisplayerAlbums;
     private $menuActionHandlerAlbums;
+    private $settingsDisplayer;
     private $synchronizerPicasa;
     private $headTagsBuilder;
 
@@ -41,13 +42,13 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         $this->getClonablePhotoCollection();
         $album = $this->getClonableAlbum();
         $album->get($albumKey);
-        $this->menuDisplayerPhotos = new Admin_ShashinMenuDisplayerPhotos(
-            $this->functionsFacade,
-            $_REQUEST,
-            $this->clonablePhotoCollection,
-            $album,
-            $this
-        );
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $this->menuDisplayerPhotos = new Admin_ShashinMenuDisplayerPhotos();
+        $this->menuDisplayerPhotos->setFunctionsFacade($this->functionsFacade);
+        $this->menuDisplayerPhotos->setRequest($_REQUEST);
+        $this->menuDisplayerPhotos->setCollection($this->clonablePhotoCollection);
+        $this->menuDisplayerPhotos->setAlbum($album);
+        $this->menuDisplayerPhotos->setContainer($publicContainer);
         return $this->menuDisplayerPhotos;
     }
 
@@ -85,6 +86,15 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
                 $_REQUEST);
         }
         return $this->menuActionHandlerAlbums;
+    }
+
+    public function getSettingsDisplayer() {
+        if (!$this->settingsDisplayer) {
+            $this->getFunctionsFacade();
+            $this->settingsDisplayer = new Admin_ShashinSettingsDisplayer($this->functionsFacade);
+        }
+
+        return $this->settingsDisplayer;
     }
 
     public function getSynchronizerPicasa(array $request = null) {

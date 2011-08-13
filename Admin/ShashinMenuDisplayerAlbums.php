@@ -1,17 +1,22 @@
 <?php
 
 class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
-
-    public function __construct(
-      ToppaFunctionsFacade $functionsFacade,
-      array $requests,
-      Lib_ShashinAlbumCollection $collection) {
-        parent::__construct($functionsFacade, $requests, $collection);
+    public function __construct() {
+        parent::__construct();
         $this->defaultOrderBy = 'title';
         $this->relativePathToTemplate = 'Display/menuAlbums.php';
-        $this->setShortcodeMimic($this->requests['shashinOrderBy'], $this->requests['shashinReverse']);
+        $this->setShortcodeMimic($this->request['shashinOrderBy'], $this->request['shashinReverse']);
     }
 
+    // degenerate
+    public function setAlbum(Lib_ShashinAlbum $album = null) {
+        return false;
+    }
+
+    // degenerate
+    public function setContainer(Public_ShashinContainer $container = null) {
+        return false;
+    }
 
     public function generateOrderByLink($column, $columnLabel) {
         $orderByUrl = $this->setSortArrowAndOrderByUrl($column);

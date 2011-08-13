@@ -1,73 +1,88 @@
 <?php
 
-abstract class Public_ShashinLayoutManager {
-    protected $settings;
-    protected $settingsValues;
-    protected $functionsFacade;
-    protected $container;
-    protected $collection;
-    protected $thumbnailCollection;
-    protected $shortcode;
-    protected $openingTableTag;
-    protected $tableCaptionTag;
-    protected $tableBody;
-    protected $combinedTags;
-    protected $validInputValues = array(
-        'caption' => array(null, 'y', 'n', 'c'),
-        'position' => array(null, 'left', 'right', 'none', 'inherit', 'center'),
-        'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit')
-    );
+class Public_ShashinLayoutManager {
+    private $settings;
+    private $settingsValues;
+    private $functionsFacade;
+    private $container;
+    private $dataObjectCollection;
+    private $collection;
+    private $thumbnailDataObjectCollection;
+    private $thumbnailCollection;
+    private $shortcode;
+    private $openingTableTag;
+    private $tableCaptionTag;
+    private $tableBody;
+    private $groupCounter;
+    private $combinedTags;
 
-    public function __construct(
-      Lib_ShashinSettings $settings,
-      ToppaFunctionsFacade $functionsFacade) {
-        $this->settings = $settings;
-        $this->settingsValues = $settings->get();
-        $this->functionsFacade = $functionsFacade;
+    public function __construct() {
     }
 
-    public function run(
-      Lib_ShashinContainer $container,
-      array $shortcode,
-      array $collection,
-      array $thumbnailCollection = null) {
-        try {
-            $this->container = $container;
-            $this->shortcode = $shortcode;
-            $this->collection = $collection;
-            $this->thumbnailCollection = $thumbnailCollection;
-            $this->validateShortcodeLayout();
-            $this->setOpeningTableTag();
-            $this->setPhotoTableCaptionTag();
-            $this->setTableBody();
-            $this->setCombinedTags();
-        }
+    public function setSettings(Lib_ShashinSettings $settings) {
+        $this->settings = $settings;
+        return $this->settings;
+    }
 
-        catch (Exception $e) {
-            return $e->getMessage();
-        }
+    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+        $this->functionsFacade = $functionsFacade;
+        return $this->functionsFacade;
+    }
 
+    public function setContainer(Public_ShashinContainer $container) {
+        $this->container = $container;
+        return $this->container;
+    }
+
+    public function setShortcode(Public_ShashinShortcode $shortcode) {
+        $this->shortcode = $shortcode;
+        return $this->shortcode;
+    }
+
+    public function setDataObjectCollection(Lib_ShashinDataObjectCollection $dataObjectCollection) {
+        $this->dataObjectCollection = $dataObjectCollection;
+        return $this->dataObjectCollection;
+    }
+
+    public function run() {
+        $this->settingsValues = $this->settings->get();
+        $this->setThumbnailCollectionIfNeeded();
+        $this->setCollection();
+        $this->initializeSessionGroupCounter();
+        $this->setOpeningTableTag();
+        $this->setTableCaptionTag();
+        $this->setTableBody();
+        $this->setGroupCounterHtml();
+        $this->setCombinedTags();
+        $this->incrementSessionGroupCounter();
         return $this->combinedTags;
     }
 
-    public function validateShortcodeLayout() {
-        $this->isInListOfValidValues('caption', $this->shortcode['caption']);
-        $this->isInListOfValidValues('position', $this->shortcode['position']);
-        $this->isInListOfValidValues('clear', $this->shortcode['clear']);
-    }
-
-    protected function isInListOfValidValues($shortcodeKey, $value) {
-        if (!in_array($value, $this->validInputValues[$shortcodeKey])) {
-            throw new Exception($value . __(" is not a valid ") . $shortcodeKey . __(" value"));
+    public function setThumbnailCollectionIfNeeded() {
+        if ($this->shortcode->thumbnail) {
+            $this->thumbnailDataObjectCollection = clone $this->dataObjectCollection;
+            $this->thumbnailDataObjectCollection->setUseThumbnailId(true);
+            $this->thumbnailCollection = $this->thumbnailDataObjectCollection->getCollectionForShortcode($this->shortcode);
         }
 
-        return true;
+        return $this->thumbnailCollection;
+    }
+
+    public function setCollection() {
+        $this->collection = $this->dataObjectCollection->getCollectionForShortcode($this->shortcode);
+        return $this->collection;
+    }
+
+    public function initializeSessionGroupCounter() {
+        if (!$_SESSION['shashin_group_counter']) {
+            $_SESSION['shashin_group_counter'] = 1;
+        }
     }
 
     public function setOpeningTableTag() {
         $this->openingTableTag = '<table class="shashin3alpha_thumbs_table"';
 
-        if ($this->shortcode['position'] || $this->shortcode['clear']) {
+        if ($this->shortcode->position || $this->shortcode->clear) {
             $this->openingTableTag .= $this->addStyleForOpeningTableTag();
         }
 
@@ -78,23 +93,25 @@ abstract class Public_ShashinLayoutManager {
     public function addStyleForOpeningTableTag() {
         $style = ' style="';
 
-        if ($this->shortcode['position'] == 'center') {
+        if ($this->shortcode->position == 'center') {
             $style .= 'margin-left: auto; margin-right: auto;';
         }
 
-        else if ($this->shortcode['position']) {
-            $style .= 'float: '. $this->shortcode['position'] . ';"';
+        else if ($this->shortcode->position) {
+            $style .= 'float: '. $this->shortcode->position . ';"';
         }
 
-        if ($this->shortcode['clear']) {
-            $style .=  'clear: ' . $this->shortcode['clear'] . ';"';
+        if ($this->shortcode->clear) {
+            $style .=  'clear: ' . $this->shortcode->clear . ';"';
         }
 
         $style .= '"';
         return $style;
     }
 
-    abstract public function setPhotoTableCaptionTag();
+    public function setTableCaptionTag() {
+        return null;
+    }
 
     public function setTableBody() {
         $cellCount = 1;
@@ -105,18 +122,26 @@ abstract class Public_ShashinLayoutManager {
                 $this->tableBody .=  '<tr>' . PHP_EOL;
             }
 
-            $dataObjectDisplayer = $this->container->getDataObjectDisplayer($this->collection[$i], $this->thumbnailCollection[$i]);
-            $linkAndImageTags = $dataObjectDisplayer->run($this->shortcode['size'], $this->shortcode['crop']);
+            $currentThumbnailCollection = null;
+
+            if (is_array($this->thumbnailCollection)) {
+                $currentThumbnailCollection = $this->thumbnailCollection[$i];
+            }
+
+            $dataObjectDisplayer = $this->container->getDataObjectDisplayer(
+                $this->shortcode,
+                $this->collection[$i],
+                $currentThumbnailCollection
+            );
+            $linkAndImageTags = $dataObjectDisplayer->run();
             $imgWidth = $dataObjectDisplayer->getImgWidth();
             $cellWidth = $imgWidth + $this->settingsValues['thumbPadding'];
             $this->tableBody .= '<td><div class="shashin3alpha_thumb_div" style="width: ' . $cellWidth . 'px;">';
             $this->tableBody .= $linkAndImageTags;
-            $linkTag = $dataObjectDisplayer->getATag();
-            $this->tableBody .= $this->generateCaption($this->collection[$i], $linkTag);
             $this->tableBody.= '</div></td>' . PHP_EOL;
             $cellCount++;
 
-            if ($cellCount > $this->shortcode['columns'] || $i == (count($this->collection) - 1)) {
+            if ($cellCount > $this->shortcode->columns || $i == (count($this->collection) - 1)) {
                 $this->tableBody .= '</tr>' . PHP_EOL;
                 $cellCount = 1;
             }
@@ -125,7 +150,21 @@ abstract class Public_ShashinLayoutManager {
         return $this->tableBody;
     }
 
-    abstract public function generateCaption(Lib_ShashinDataObject $dataObject, $linkTag = null);
+    public function setGroupCounterHtml() {
+        if (($this->shortcode->type == 'photo' || $this->shortcode->type == 'albumphotos')
+          && $this->settingsValues['imageDisplay'] == 'highslide') {
+
+            $this->groupCounter = '<script type="text/javascript">'
+                . "addHSSlideshow('group" . $_SESSION['shashin_group_counter'] . "');</script>"
+                . PHP_EOL;
+        }
+
+        else {
+            $this->groupCounter = null;
+        }
+
+        return $this->groupCounter;
+    }
 
     public function setCombinedTags() {
         $this->combinedTags =
@@ -133,7 +172,12 @@ abstract class Public_ShashinLayoutManager {
                 . $this->tableCaptionTag
                 . $this->tableBody
                 . '</table>'
-                . PHP_EOL;
+                . PHP_EOL
+                . $this->groupCounter;
         return $this->combinedTags;
+    }
+
+    public function incrementSessionGroupCounter() {
+        $_SESSION['shashin_group_counter']++;
     }
 }

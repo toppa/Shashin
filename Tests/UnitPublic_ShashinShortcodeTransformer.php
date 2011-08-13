@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../Public/ShashinShortcodeTransformer.php');
+require_once(dirname(__FILE__) . '/../Public/ShashinShortcode.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinContainer.php');
 Mock::generate('Lib_ShashinContainer');
 
@@ -17,7 +17,7 @@ class UnitPublic_ShortcodeTransformer extends UnitTestCase {
 
     public function testCleanShortcode() {
         $testCase = array('type' => 'photo ', 'id' => '1,2,3', 'order' => 'Date', 'reverse' => 'Y', 'format' => ' table', 'limit' => '3 ');
-        $transformer = new Public_ShashinShortcodeTransformer($testCase, $this->container);
+        $transformer = new Public_ShashinShortcode($testCase, $this->container);
         $cleanShortcode = $transformer->cleanShortcode();
         $this->assertEqual($cleanShortcode['type'], 'photo');
         $this->assertEqual($cleanShortcode['order'], 'date');

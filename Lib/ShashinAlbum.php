@@ -148,4 +148,8 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
 
         return true;
     }
+
+    public function isVideo() {
+        return false;
+    }
 }

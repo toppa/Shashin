@@ -1,14 +1,11 @@
 <?php
 
 class Lib_ShashinAlbumCollection extends Lib_ShashinDataObjectCollection {
-    public function __construct($dbFacade, $clonableAlbum) {
-        parent::__construct($dbFacade, $clonableAlbum);
+    public function __construct() {
     }
 
     public function setOrderBy($orderBy = null) {
-        $this->isInListOfValidValues('order', $orderBy);
-
-        switch ($orderBy) {
+        switch ($this->shortcode->order) {
             case 'id':
                 $this->orderBy = 'id';
                 break;

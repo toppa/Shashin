@@ -197,4 +197,10 @@ class UnitLib_ShashinAlbum extends UnitTestCase {
             $this->pass("received expected invalid test case");
         }
     }
+
+    public function testIsVideo() {
+        $album = new Lib_ShashinAlbum($this->dbFacade, $this->clonablePhoto);
+        $album->get(1);
+        $this->assertFalse($album->isVideo());
+    }
 }

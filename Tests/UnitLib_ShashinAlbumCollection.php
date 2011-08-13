@@ -167,15 +167,15 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
 
         $albumCollection->setProperties($this->validTestCases['photoIdXsmallThumbs']);
-        $shouldHaveNoLimit = $albumCollection->setDefaultLimitIfNeeded();
+        $shouldHaveNoLimit = $albumCollection->setDefaultLimit();
         $this->assertEqual($shouldHaveNoLimit, null);
 
         $albumCollection->setProperties($this->validTestCases['photo160RandomListCaption']);
-        $shouldHaveDefaultLimit = $albumCollection->setDefaultLimitIfNeeded();
+        $shouldHaveDefaultLimit = $albumCollection->setDefaultLimit();
         $this->assertEqual($shouldHaveDefaultLimit, 'limit 9');
 
         $albumCollection->setProperties($this->validTestCases['photoIdDateReverseTableLimit']);
-        $shouldHaveUserLimit = $albumCollection->setDefaultLimitIfNeeded();
+        $shouldHaveUserLimit = $albumCollection->setDefaultLimit();
         $this->assertEqual($shouldHaveUserLimit, 'limit 3');
     }
 

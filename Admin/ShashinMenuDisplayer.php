@@ -2,25 +2,36 @@
 
 abstract class Admin_ShashinMenuDisplayer {
     protected $functionsFacade;
-    protected $requests;
+    protected $request;
     protected $defaultOrderBy;
     protected $defaultReverse = 'n';
     protected $shortcodeMimic = array();
     protected $sortArrow;
     protected $relativePathToTemplate;
     protected $collection;
+    protected $album;
+    protected $container;
 
-    public function __construct(
-      ToppaFunctionsFacade $functionsFacade,
-      array $requests,
-      Lib_ShashinDataObjectCollection $collection) {
+    public function __construct() {
+    }
+
+    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
-        $this->requests = $requests;
+    }
+
+    public function setRequest(array $request) {
+        $this->request = $request;
+    }
+
+    public function setCollection(Lib_ShashinDataObjectCollection $collection) {
         $this->collection = $collection;
     }
 
+    abstract public function setAlbum(Lib_ShashinAlbum $album = null);
+    abstract public function setContainer(Public_ShashinContainer $container = null);
+
     public function run($message = null) {
-        if ($this->requests['shashinOrderBy']) {
+        if ($this->request['shashinOrderBy']) {
             $this->checkOrderByNonce();
         }
 
@@ -60,19 +71,19 @@ abstract class Admin_ShashinMenuDisplayer {
     abstract public function generateOrderByLink($column, $columnLabel);
 
     public function checkOrderByNonce() {
-        $nonceName = "shashinNonce_" . $this->requests['shashinOrderBy'];
+        $nonceName = "shashinNonce_" . $this->request['shashinOrderBy'];
         return $this->functionsFacade->checkAdminNonceFields($nonceName);
     }
 
     public function setSortArrowAndOrderByUrl($column) {
-        switch ($this->requests['shashinReverse']) {
+        switch ($this->request['shashinReverse']) {
         case 'y':
             $reverse = 'n';
-            $this->sortArrow = ($this->requests['shashinOrderBy'] == $column) ? '&uarr;' : '';
+            $this->sortArrow = ($this->request['shashinOrderBy'] == $column) ? '&uarr;' : '';
             break;
         case 'n':
             $reverse = 'y';
-            $this->sortArrow = ($this->requests['shashinOrderBy'] == $column) ? '&darr;' : '';
+            $this->sortArrow = ($this->request['shashinOrderBy'] == $column) ? '&darr;' : '';
             break;
         default:
             $reverse = 'y';

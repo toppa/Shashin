@@ -12,12 +12,12 @@
 jQuery(document).ready(function($) {
     jQuery.shashin_toggle = function(base_name) {
         if ($('#' + base_name + '_section').is(':visible')) {
-            $('#' + base_name + '_button').attr('src', shashin_display.url + '/images/plus.gif');
+            $('#' + base_name + '_button').attr('src', shashinDisplay.url + '/images/plus.gif');
             $('#' + base_name + '_section').hide('slow');
         }
 
         else {
-            $('#' + base_name + '_button').attr('src', shashin_display.url + '/images/minus.gif');
+            $('#' + base_name + '_button').attr('src', shashinDisplay.url + '/images/minus.gif');
             $('#' + base_name + '_section').show('slow');
         }
 

@@ -42,11 +42,11 @@ class Admin_ShashinMenuActionHandlerAlbums {
                     break;
            }
 
-            echo $this->menuDisplayer->run($message);
+            return $this->menuDisplayer->run($message);
         }
 
         catch (Exception $e) {
-            echo "<p>" . __("Shashin Error: ", "shashin") . $e->getMessage() . "</p>";
+            return "<p>" . __("Shashin Error: ", "shashin") . $e->getMessage() . "</p>";
         }
 
         return true;

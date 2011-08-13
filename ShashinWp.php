@@ -2,7 +2,6 @@
 
 class ShashinWp {
     private $version = '3.0';
-    private $cssFile = 'shashin.css';
     private $autoLoader;
 
     public function __construct(ToppaAutoLoader &$autoLoader) {
@@ -11,7 +10,8 @@ class ShashinWp {
 
     public function run() {
         add_action('admin_menu', array($this, 'initToolsMenu'));
-        add_action('template_redirect', array($this, 'buildHeadTags'));
+        add_action('admin_menu', array($this, 'initSettingsMenu'));
+        add_action('template_redirect', array($this, 'writePublicHeadTags'));
         add_shortcode('shashin', array($this, 'handleShortcode'));
     }
 
@@ -36,15 +36,14 @@ class ShashinWp {
             'Shashin3Alpha',
             'edit_posts',
             'Shashin3AlphaToolsMenu',
-            array($this, 'buildToolsMenu')
+            array($this, 'writeToolsMenu')
         );
 
         // from http://planetozh.com/blog/2008/04/how-to-load-javascript-with-your-wordpress-plugin/
-        add_action("admin_print_styles-$toolsPage", array($this, 'buildAdminHeadTags'));
+        add_action("admin_print_styles-$toolsPage", array($this, 'writeAdminHeadTags'));
     }
 
-
-    public function buildToolsMenu() {
+    public function writeToolsMenu() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
 
         if ($_REQUEST['shashinMenu'] == 'photos') {
@@ -55,53 +54,97 @@ class ShashinWp {
             $menuActionHandler = $adminContainer->getMenuActionHandlerAlbums();
         }
 
-        $menuActionHandler->run();
+        echo $menuActionHandler->run();
     }
 
-    public function buildAdminHeadTags() {
+    public function initSettingsMenu() {
+        add_options_page(
+            'Shashin3Alpha',
+            'Shashin3Alpha',
+            'manage_options',
+            'shashin3alpha',
+            array($this, 'writeSettingsMenu')
+        );
+    }
+
+    public function writeSettingsMenu() {
+        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        $settingsDisplayer = $adminContainer->getSettingsDisplayer();
+        echo $settingsDisplayer->run();
+    }
+
+    public function writeAdminHeadTags() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
         $docHeadUrlsFetcher = $adminContainer->getDocHeadUrlsFetcher();
         $cssUrl = $docHeadUrlsFetcher->getCssUrl();
-        wp_enqueue_style('shashin_admin_css', $cssUrl, false, $this->version);
+        wp_enqueue_style('shashinAdminStyle', $cssUrl, false, $this->version);
         $jsUrl = $docHeadUrlsFetcher->getJsUrl();
-        wp_enqueue_script('shashin_admin_js', $jsUrl, array('jquery'), $this->version);
+        wp_enqueue_script('shashinAdminScript', $jsUrl, array('jquery'), $this->version);
         $menuDisplayUrl = $docHeadUrlsFetcher->getMenuDisplayUrl();
-        wp_localize_script('shashin_admin_js', 'shashin_display', array('url' => $menuDisplayUrl));
+        wp_localize_script('shashinAdminScript', 'shashinDisplay', array('url' => $menuDisplayUrl));
     }
 
-    public function buildHeadTags() {
-        if (file_exists(get_stylesheet_directory() . '/' . $this->cssFile)) {
-            $cssUrl = get_bloginfo('stylesheet_directory') . '/' . $this->cssFile;
-        }
-
-        else {
-            $relativePath = 'Public/Display/' . $this->cssFile;
-            $cssUrl = plugins_url($relativePath, __FILE__);
-        }
-
-        wp_enqueue_style('shashinStyle', $cssUrl, false, $this->version);
-    }
-
-    public function handleShortcode($shortcode) {
-        $shortcode = $shortcode ? $shortcode : array();
+    public function writePublicHeadTags() {
         $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $transformer = new Public_ShashinShortcodeTransformer($shortcode, $publicContainer);
-        $cleanShortcode = $transformer->cleanShortcode();
+        $docHeadUrlsFetcher = $publicContainer->getDocHeadUrlsFetcher();
+        $shashinCssUrl = $docHeadUrlsFetcher->getShashinCssUrl();
+        wp_enqueue_style('shashinStyle', $shashinCssUrl, false, $this->version);
 
-        if ($cleanShortcode['type'] == 'album') {
-            $albumCollection = $publicContainer->getClonableAlbumCollection();
-            $transformer->setDataObjectCollection($albumCollection);
-            $layoutManager = $publicContainer->getAlbumLayoutManager();
+        $settings = $publicContainer->getSettings();
+        $settingsData = $settings->get();
+
+        if ($settingsData['imageDisplay'] == 'highslide') {
+            $highslideCssUrl = $docHeadUrlsFetcher->getHighslideCssUrl();
+            wp_enqueue_style('highslideStyle', $highslideCssUrl, false, '4.1.12');
+            $baseUrl = plugins_url('Public/Display/', __FILE__);
+            wp_enqueue_script('highslide', $baseUrl . 'highslide/highslide.js', false, '4.1.12');
+            wp_enqueue_script('swfobject', $baseUrl . 'highslide/swfobject.js', false, '2.2');
+            wp_enqueue_script('highslideSettings', $baseUrl . 'highslideSettings.js', false, $this->version);
+            wp_localize_script('highslideSettings', 'highslideSettings', array(
+                'graphicsDir' => $baseUrl . 'highslide/graphics/',
+                'outlineType' => $settingsData['highslideOutlineType'],
+                'dimmingOpacity' => $settingsData['highslideDimmingOpacity'],
+                'interval' => $settingsData['highslideInterval'],
+                'repeat' => $settingsData['highslideRepeat'],
+                'position' => $settingsData['highslideVPosition'] . ' ' . $settingsData['highslideHPosition'],
+                'hideController' => $settingsData['highslideHideController']
+            ));
+        }
+    }
+
+    public function handleShortcode($shortcodeData) {
+        try {
+            if (!is_array($shortcodeData)) {
+                $shortcodeData = array();
+            }
+
+            $shortcode = new Public_ShashinShortcode($shortcodeData);
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+
+            switch ($shortcode->type) {
+                case 'photo':
+                case null:
+                case '':
+                    $dataObjectCollection = $publicContainer->getClonablePhotoCollection();
+                    break;
+                case 'albumphotos':
+                    $dataObjectCollection = $publicContainer->getClonableAlbumPhotosCollection();
+                    break;
+                case 'album':
+                    $dataObjectCollection = $publicContainer->getClonableAlbumCollection();
+                    break;
+                default:
+                    return __('Invalid shashin shortcode type: ', 'shashin') . htmlentities($shortcode->type());
+            }
+
+            $layoutManager = $publicContainer->getLayoutManager($shortcode, $dataObjectCollection);
         }
 
-        else {
-            $photoCollection = $publicContainer->getClonablePhotoCollection();
-            $transformer->setDataObjectCollection($photoCollection);
-            $layoutManager = $publicContainer->getPhotoLayoutManager();
+        catch (Exception $e) {
+            return $e->getMessage();
         }
 
-        $transformer->setLayoutManager($layoutManager);
-        return $transformer->run();
+        return $layoutManager->run();
     }
 }
 
