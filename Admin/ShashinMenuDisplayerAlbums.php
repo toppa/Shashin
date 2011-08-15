@@ -2,19 +2,13 @@
 
 class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     public function __construct() {
-        parent::__construct();
         $this->defaultOrderBy = 'title';
         $this->relativePathToTemplate = 'Display/menuAlbums.php';
-        $this->setShortcodeMimic($this->request['shashinOrderBy'], $this->request['shashinReverse']);
+        parent::__construct();
     }
 
     // degenerate
     public function setAlbum(Lib_ShashinAlbum $album = null) {
-        return false;
-    }
-
-    // degenerate
-    public function setContainer(Public_ShashinContainer $container = null) {
         return false;
     }
 

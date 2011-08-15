@@ -5,7 +5,7 @@ abstract class Admin_ShashinMenuDisplayer {
     protected $request;
     protected $defaultOrderBy;
     protected $defaultReverse = 'n';
-    protected $shortcodeMimic = array();
+    protected $shortcode;
     protected $sortArrow;
     protected $relativePathToTemplate;
     protected $collection;
@@ -28,16 +28,18 @@ abstract class Admin_ShashinMenuDisplayer {
     }
 
     abstract public function setAlbum(Lib_ShashinAlbum $album = null);
-    abstract public function setContainer(Public_ShashinContainer $container = null);
+
+    public function setContainer(Public_ShashinContainer $container = null) {
+        $this->container = $container;
+    }
 
     public function run($message = null) {
         if ($this->request['shashinOrderBy']) {
             $this->checkOrderByNonce();
         }
 
-        $this->collection->setLimitNeeded(false);
-        $this->collection->setProperties($this->shortcodeMimic);
-        $dataObjects = $this->collection->getCollection();
+        $shortcodeMimic = $this->mimicShortcode();
+        $dataObjects = $this->getDataObjects($shortcodeMimic);
         $refData = $this->collection->getRefData();
         ob_start();
         require_once($this->relativePathToTemplate);
@@ -46,26 +48,40 @@ abstract class Admin_ShashinMenuDisplayer {
         return $toolsMenu;
     }
 
-    public function setShortcodeMimic($orderBy = null, $reverse = null, $albumId = null) {
-        if (!is_string($orderBy)) {
+    public function mimicShortcode() {
+        if (is_string($this->request['shashinOrderBy'])) {
+            $orderBy = $this->request['shashinOrderBy'];
+        }
+
+        else {
             $orderBy = $this->defaultOrderBy;
         }
 
-        if (!is_string($reverse)) {
+        if (is_string($this->request['shashinReverse'])) {
+            $reverse = $this->request['shashinReverse'];
+        }
+
+        else {
             $reverse = $this->defaultReverse;
         }
 
-        $this->shortcodeMimic = array(
+        $shortcodeMimic = array(
             'order' => $orderBy,
             'reverse' => $reverse
         );
 
-        if ($albumId) {
-            $this->shortcodeMimic['id'] = $albumId;
-            $this->shortcodeMimic['type'] = 'albumphotos';
+        if ($this->album) {
+            $shortcodeMimic['id'] = $this->album->id;
+            $shortcodeMimic['type'] = 'albumphotos';
         }
 
-        return $this->shortcodeMimic;
+        return $shortcodeMimic;
+    }
+
+    public function getDataObjects($shortcodeMimic) {
+        $this->shortcode = $this->container->getShortcode($shortcodeMimic);
+        $this->collection->setNoLimit(true);
+        return $this->collection->getCollectionForShortcode($this->shortcode);
     }
 
     abstract public function generateOrderByLink($column, $columnLabel);

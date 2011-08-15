@@ -7,10 +7,11 @@ class Admin_ShashinMenuActionHandlerAlbums {
     private $request;
 
     public function __construct(
-        ToppaFunctionsFacade &$functionsFacade,
-        Admin_ShashinMenuDisplayer &$menuDisplayer,
-        Admin_ShashinContainer &$adminContainer,
-        array &$request) {
+      ToppaFunctionsFacade $functionsFacade,
+      Admin_ShashinMenuDisplayer $menuDisplayer,
+      Admin_ShashinContainer $adminContainer,
+      array $request) {
+
         $this->functionsFacade = $functionsFacade;
         $this->menuDisplayer = $menuDisplayer;
         $this->adminContainer = &$adminContainer;
@@ -110,13 +111,13 @@ class Admin_ShashinMenuActionHandlerAlbums {
     }
 
     public function runUpdateIncludeInRandom() {
-        $albumCollection = $this->adminContainer->getClonableAlbumCollection();
-        $albums = $albumCollection->getCollection();
+        $shortcodeMimic = array('type' => 'album', 'order' => 'title');
+        $albums = $this->menuDisplayer->getDataObjects($shortcodeMimic);
 
-        foreach ($this->request['includeInRandom'] as $k=>$v) {
-            $albumData = array('includeInRandom' => $v);
-            $albums[$k]->set($albumData);
-            $albums[$k]->flush();
+        foreach ($albums as $album) {
+            $albumData = array('includeInRandom'=> $this->request['includeInRandom'][$album->id]);
+            $album->set($albumData);
+            $album->flush();
         }
 
         return __('Updated "Include In Random" settings', "shashin");

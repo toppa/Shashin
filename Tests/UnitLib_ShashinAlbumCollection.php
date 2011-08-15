@@ -3,13 +3,17 @@
 require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaDatabaseFacadeWp.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinAlbum.php');
 require_once(dirname(__FILE__) . '/../Lib/ShashinAlbumCollection.php');
+require_once(dirname(__FILE__) . '/../Public/ShashinShortcode.php');
+require_once(dirname(__FILE__) . '/../Lib/ShashinSettings.php');
 Mock::generate('ToppaDatabaseFacadeWp');
 Mock::generate('Lib_ShashinAlbum');
-
+Mock::generate('Lib_ShashinSettings');
+Mock::generate('Public_ShashinShortcode');
 
 class UnitLib_ShashinAlbumCollection extends UnitTestCase {
-    private $dbFacade;
-    private $clonableAlbum;
+    private $albumCollection;
+    private $testShortcodes;
+
     private $albumData = array(
       array(
         "id" => "1",
@@ -53,57 +57,36 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
       )
     );
 
-    private $validTestCases = array(
-        'photoIdXsmallThumbs' => array('type' => 'photo', 'id' => '1,2,3', 'size' => 'x-small', 'thumbnail' => '4,5,6'),
-        'photoIdMediumCenter' => array('type' => 'photo', 'id' => '1,2,3', 'size' => 'medium', 'position' => 'center'),
-        'albumIdUserClear' => array('type' => 'album', 'id' => '1,3,2', 'order' => 'user', 'clear' => 'both'),
-        'photo160RandomListCaption' => array('type' => 'photo', 'size' => '160', 'order' => 'random', 'format' => 'list', 'caption' => 'y'),
-        'photoIdDateReverseTableLimit' => array('type' => 'photo', 'id' => '1,2,3', 'order' => 'date', 'reverse' => 'y', 'format' => 'table', 'limit' => 3),
+    private $testShortcode = array('type' => 'photo', 'id' => '1,2,3', 'size' => 'x-small', 'thumbnail' => '4,5,6');
+/*        array('type' => 'photo', 'id' => '1,2,3', 'size' => 'medium', 'position' => 'center'),
+        array('type' => 'album', 'id' => '1,3,2', 'order' => 'user', 'clear' => 'both'),
+        array('type' => 'photo', 'size' => '160', 'order' => 'random', 'caption' => 'y'),
+        array('type' => 'photo', 'id' => '1,2,3', 'order' => 'date', 'reverse' => 'y', 'limit' => 3),
     );
-
-    private $invalidTestCases = array(
-        'invalid' => array(
-            'type' => 'ahoy',
-            'id' => '1,2,b,3',
-            'size' => 'n',
-            'format' => 'nonsense',
-            'caption' => 'x',
-            'limit' => 'z',
-            'order' => 'y',
-            'reverse' => '42',
-            'position' => 'a',
-            'clear' => 'b',
-            'thumbnail' => '1,2,b,3'
-        ),
-    );
+*/
 
     public function __construct() {
         $this->UnitTestCase();
     }
 
     public function setUp() {
-        $this->dbFacade = new MockToppaDatabaseFacadeWp();
-        $this->clonableAlbum = new MockLib_ShashinAlbum();
-        $this->clonableAlbum->setReturnValue('getTableName', 'wp_shashin_album_3alpha');
+        $dbFacade = new MockToppaDatabaseFacadeWp();
+        $clonableAlbum = new MockLib_ShashinAlbum();
+        $clonableAlbum->setReturnValue('getTableName', 'wp_shashin_album_3alpha');
+        $settings = new MockLib_ShashinSettings();
+        $shortcode = new MockPublic_ShashinShortcode();
+        $shortcode->setReturnValue('__get', $this->testShortcode['id'], array('id'));
+        $this->albumCollection = new Lib_ShashinAlbumCollection();
+        $this->albumCollection->setDbFacade($dbFacade);
+        $this->albumCollection->setClonableDataObject($clonableAlbum);
+        $this->albumCollection->setSettings($settings);
+        $this->albumCollection->setShortcode($shortcode);
     }
 
     public function testSetIdString() {
-        $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
-
-        try {
-            $albumCollection->setIdString($this->invalidTestCases['invalid']['id']);
-            $this->fail("Exception was expected - invalid test case");
-        }
-
-        catch (Exception $e) {
-            $this->pass("received expected invalid test case");
-        }
-
-        foreach ($this->validTestCases as $case) {
-            $this->assertEqual($albumCollection->setIdString($case['id']), $case['id']);
-        }
+        $this->assertEqual($this->albumCollection->setIdString(), $this->testShortcode['id']);
     }
-
+/*
     public function testSetLimitClause() {
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
 
@@ -116,9 +99,9 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
             $this->pass("received expected invalid test case");
         }
 
-        $shouldHaveNoLimit = $albumCollection->setLimitClause($this->validTestCases['photoIdXsmallThumbs']['limit']);
+        $shouldHaveNoLimit = $albumCollection->setLimitClause($this->testCases['photoIdXsmallThumbs']['limit']);
         $this->assertEqual($shouldHaveNoLimit, null);
-        $shouldHaveLimit3 = $albumCollection->setLimitClause($this->validTestCases['photoIdDateReverseTableLimit']['limit']);
+        $shouldHaveLimit3 = $albumCollection->setLimitClause($this->testCases['photoIdDateReverseTableLimit']['limit']);
         $this->assertEqual($shouldHaveLimit3, 'limit 3');
     }
 
@@ -134,13 +117,13 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
             $this->pass("received expected invalid test case");
         }
 
-        $shouldDefaultToPubDate = $albumCollection->setOrderBy($this->validTestCases['photoIdXsmallThumbs']['order']);
+        $shouldDefaultToPubDate = $albumCollection->setOrderBy($this->testCases['photoIdXsmallThumbs']['order']);
         $this->assertEqual($shouldDefaultToPubDate, 'pubDate');
-        $shouldBeUser = $albumCollection->setOrderBy($this->validTestCases['albumIdUserClear']['order']);
+        $shouldBeUser = $albumCollection->setOrderBy($this->testCases['albumIdUserClear']['order']);
         $this->assertEqual($shouldBeUser, 'user');
-        $shouldBeRandom = $albumCollection->setOrderBy($this->validTestCases['photo160RandomListCaption']['order']);
+        $shouldBeRandom = $albumCollection->setOrderBy($this->testCases['photo160RandomListCaption']['order']);
         $this->assertEqual($shouldBeRandom, 'rand()');
-        $shouldBePubDate = $albumCollection->setOrderBy($this->validTestCases['photoIdDateReverseTableLimit']['order']);
+        $shouldBePubDate = $albumCollection->setOrderBy($this->testCases['photoIdDateReverseTableLimit']['order']);
         $this->assertEqual($shouldBePubDate, 'pubDate');
     }
 
@@ -157,24 +140,24 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
             $this->pass("received expected invalid test case");
         }
 
-        $shouldDefaultToAsc = $albumCollection->setSort($this->validTestCases['photoIdXsmallThumbs']['reverse']);
+        $shouldDefaultToAsc = $albumCollection->setSort($this->testCases['photoIdXsmallThumbs']['reverse']);
         $this->assertEqual($shouldDefaultToAsc, 'asc');
-        $shouldBeDesc = $albumCollection->setSort($this->validTestCases['photoIdDateReverseTableLimit']['reverse']);
+        $shouldBeDesc = $albumCollection->setSort($this->testCases['photoIdDateReverseTableLimit']['reverse']);
         $this->assertEqual($shouldBeDesc, 'desc');
     }
 
     public function testSetDefaultLimitIfNeeded() {
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
 
-        $albumCollection->setProperties($this->validTestCases['photoIdXsmallThumbs']);
+        $albumCollection->setProperties($this->testCases['photoIdXsmallThumbs']);
         $shouldHaveNoLimit = $albumCollection->setDefaultLimit();
         $this->assertEqual($shouldHaveNoLimit, null);
 
-        $albumCollection->setProperties($this->validTestCases['photo160RandomListCaption']);
+        $albumCollection->setProperties($this->testCases['photo160RandomListCaption']);
         $shouldHaveDefaultLimit = $albumCollection->setDefaultLimit();
         $this->assertEqual($shouldHaveDefaultLimit, 'limit 9');
 
-        $albumCollection->setProperties($this->validTestCases['photoIdDateReverseTableLimit']);
+        $albumCollection->setProperties($this->testCases['photoIdDateReverseTableLimit']);
         $shouldHaveUserLimit = $albumCollection->setDefaultLimit();
         $this->assertEqual($shouldHaveUserLimit, 'limit 3');
     }
@@ -182,11 +165,11 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
     public function testSetWhereClause() {
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
 
-        $albumCollection->setProperties($this->validTestCases['photo160RandomListCaption']);
+        $albumCollection->setProperties($this->testCases['photo160RandomListCaption']);
         $shouldNotHaveWhereClause = $albumCollection->setWhereClause();
         $this->assertEqual($shouldNotHaveWhereClause, null);
 
-        $albumCollection->setProperties($this->validTestCases['photoIdXsmallThumbs']);
+        $albumCollection->setProperties($this->testCases['photoIdXsmallThumbs']);
         $shouldHaveWhereClause = $albumCollection->setWhereClause();
         $this->assertEqual($shouldHaveWhereClause, 'where id in (1,2,3)');
     }
@@ -194,33 +177,33 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
     public function testSetOrderByClause() {
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
 
-        $albumCollection->setProperties($this->validTestCases['photoIdXsmallThumbs']);
+        $albumCollection->setProperties($this->testCases['photoIdXsmallThumbs']);
         $shouldNotHaveOrderByClause = $albumCollection->setOrderByClause();
         $this->assertEqual($shouldNotHaveOrderByClause, null);
 
-        $albumCollection->setProperties($this->validTestCases['albumIdUserClear']);
+        $albumCollection->setProperties($this->testCases['albumIdUserClear']);
         $shouldNotHaveOrderByClause = $albumCollection->setOrderByClause();
         $this->assertEqual($shouldNotHaveOrderByClause, null);
 
-        $albumCollection->setProperties($this->validTestCases['photoIdDateReverseTableLimit']);
+        $albumCollection->setProperties($this->testCases['photoIdDateReverseTableLimit']);
         $shouldHaveOrderByClause = $albumCollection->setOrderByClause();
         $this->assertEqual($shouldHaveOrderByClause, 'order by pubDate desc');
     }
 
     public function testGetData() {
-      /*  for getting actual data
+        // for getting actual data
         require_once(dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php');
         $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
         $dbFacade = new ToppaDatabaseFacadeWp($toppaAutoLoader);
         $albumCollection = new Lib_ShashinAlbumCollection($dbFacade, $this->clonableAlbum);
-      */
+
 
         $this->dbFacade->setReturnValue('sqlSelectMultipleRows', $this->albumData);
         $albumCollection = new Lib_ShashinAlbumCollection($this->dbFacade, $this->clonableAlbum);
         $rows = $albumCollection->getData();
         $this->assertEqual($this->albumData, $rows);
     }
-    /*
+
     public function testValidateFormat() {
         foreach ($this->validTestCases as $case) {
             $this->assertTrue($this->albumCollection->setFormat($case['format']));

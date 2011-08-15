@@ -7,6 +7,12 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         parent::__construct($autoLoader);
     }
 
+    public function getShortcode(array $rawShortcode) {
+        $shortcode = new Public_ShashinShortcode($rawShortcode);
+        $shortcode->cleanAndValidate();
+        return $shortcode;
+    }
+
     public function getLayoutManager(
       Public_ShashinShortcode $shortcode,
       Lib_ShashinDataObjectCollection $dataObjectCollection) {
@@ -38,14 +44,13 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
 
         $this->getFunctionsFacade();
         $this->getSettings();
-        $settingsValues = $this->settings->get();
         $dataObjectClassName = get_class($dataObject);
         $dataObjectClassName = str_replace('Lib_', 'Public_', $dataObjectClassName);
         $albumType = ucfirst($dataObject->albumType);
-        $viewerName = ucfirst($settingsValues['imageDisplay']);
+        $viewerName = ucfirst($this->settings->imageDisplay);
         $classToCall = $dataObjectClassName . 'Displayer' . $albumType . $viewerName;
         $dataObjectDisplayer = new $classToCall();
-        $dataObjectDisplayer->setSettingsValues($settingsValues);
+        $dataObjectDisplayer->setSettings($this->settings);
         $dataObjectDisplayer->setShortcode($shortcode);
         $dataObjectDisplayer->setFunctionsFacade($this->functionsFacade);
         $dataObjectDisplayer->setDataObject($dataObject);

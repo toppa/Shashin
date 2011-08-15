@@ -89,11 +89,9 @@ class ShashinWp {
         $docHeadUrlsFetcher = $publicContainer->getDocHeadUrlsFetcher();
         $shashinCssUrl = $docHeadUrlsFetcher->getShashinCssUrl();
         wp_enqueue_style('shashinStyle', $shashinCssUrl, false, $this->version);
-
         $settings = $publicContainer->getSettings();
-        $settingsData = $settings->get();
 
-        if ($settingsData['imageDisplay'] == 'highslide') {
+        if ($settings->imageDisplay == 'highslide') {
             $highslideCssUrl = $docHeadUrlsFetcher->getHighslideCssUrl();
             wp_enqueue_style('highslideStyle', $highslideCssUrl, false, '4.1.12');
             $baseUrl = plugins_url('Public/Display/', __FILE__);
@@ -102,24 +100,26 @@ class ShashinWp {
             wp_enqueue_script('highslideSettings', $baseUrl . 'highslideSettings.js', false, $this->version);
             wp_localize_script('highslideSettings', 'highslideSettings', array(
                 'graphicsDir' => $baseUrl . 'highslide/graphics/',
-                'outlineType' => $settingsData['highslideOutlineType'],
-                'dimmingOpacity' => $settingsData['highslideDimmingOpacity'],
-                'interval' => $settingsData['highslideInterval'],
-                'repeat' => $settingsData['highslideRepeat'],
-                'position' => $settingsData['highslideVPosition'] . ' ' . $settingsData['highslideHPosition'],
-                'hideController' => $settingsData['highslideHideController']
+                'outlineType' => $settings->highslideOutlineType,
+                'dimmingOpacity' => $settings->highslideDimmingOpacity,
+                'interval' => $settings->highslideInterval,
+                'repeat' => $settings->highslideRepeat,
+                'position' => $settings->highslideVPosition . ' ' . $settings->highslideHPosition,
+                'hideController' => $settings->highslideHideController
             ));
         }
     }
 
-    public function handleShortcode($shortcodeData) {
+    public function handleShortcode($rawShortcode) {
         try {
-            if (!is_array($shortcodeData)) {
-                $shortcodeData = array();
+            // if the shortcode has no attributes specified, WP passes
+            // an empty string instead of an array
+            if (!is_array($rawShortcode)) {
+                $rawShortcode = array();
             }
 
-            $shortcode = new Public_ShashinShortcode($shortcodeData);
             $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $shortcode = $publicContainer->getShortcode($rawShortcode);
 
             switch ($shortcode->type) {
                 case 'photo':

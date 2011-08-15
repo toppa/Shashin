@@ -1,7 +1,7 @@
 <?php
 
 abstract class Public_ShashinDataObjectDisplayer {
-    protected $settingsValues;
+    protected $settings;
     protected $shortcode;
     protected $functionsFacade;
     protected $dataObject;
@@ -46,8 +46,9 @@ abstract class Public_ShashinDataObjectDisplayer {
     public function __construct() {
     }
 
-    public function setSettingsValues(array $settingsValues) {
-        $this->settingsValues = $settingsValues;
+    public function setSettings(Lib_ShashinSettings $settings) {
+        $this->settings = $settings;
+        return $this->settings;
     }
 
     public function setShortcode(Public_ShashinShortcode $shortcode) {
@@ -238,7 +239,7 @@ abstract class Public_ShashinDataObjectDisplayer {
         $exifParts = array();
         $photoData = $this->dataObject->getData();
 
-        switch ($this->settings['captionExif']) {
+        switch ($this->settings->captionExif) {
             case'date':
                 if ($this->dataObject['takenTimestamp'])
                     $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);

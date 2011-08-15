@@ -9,12 +9,21 @@ class Lib_ShashinSettings {
         $this->functionsFacade = $functionsFacade;
     }
 
-    public function get() {
-        if (empty($this->data)) {
-            return $this->refresh();
+    public function __get($name) {
+        if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
         }
 
-        return $this->data;
+        else {
+            $this->refresh();
+        }
+
+        // and try again...
+        if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
+        }
+
+        throw New Exception(__("Invalid data property __get for ", "shashin") . htmlentities($name));
     }
 
     public function refresh() {
@@ -22,11 +31,7 @@ class Lib_ShashinSettings {
         return $this->data;
     }
 
-    public function set($newSettings) {
-        if (!is_array($newSettings)) {
-            throw new Exception(__('Invalid settings', 'shashin'));
-        }
-
+    public function set(array $newSettings) {
         $oldSettings = $this->refresh();
 
         if (is_array($oldSettings)) {

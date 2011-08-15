@@ -47,8 +47,8 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         $this->menuDisplayerPhotos->setFunctionsFacade($this->functionsFacade);
         $this->menuDisplayerPhotos->setRequest($_REQUEST);
         $this->menuDisplayerPhotos->setCollection($this->clonablePhotoCollection);
-        $this->menuDisplayerPhotos->setAlbum($album);
         $this->menuDisplayerPhotos->setContainer($publicContainer);
+        $this->menuDisplayerPhotos->setAlbum($album);
         return $this->menuDisplayerPhotos;
     }
 
@@ -56,11 +56,14 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         if (!$this->menuDisplayerAlbums) {
             $this->getFunctionsFacade();
             $this->getClonableAlbumCollection();
-            $this->menuDisplayerAlbums = new Admin_ShashinMenuDisplayerAlbums(
-                $this->functionsFacade,
-                $_REQUEST,
-                $this->clonableAlbumCollection);
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $this->menuDisplayerAlbums = new Admin_ShashinMenuDisplayerAlbums();
+            $this->menuDisplayerAlbums->setFunctionsFacade($this->functionsFacade);
+            $this->menuDisplayerAlbums->setRequest($_REQUEST);
+            $this->menuDisplayerAlbums->setCollection($this->clonableAlbumCollection);
+            $this->menuDisplayerAlbums->setContainer($publicContainer);
         }
+
         return $this->menuDisplayerAlbums;
     }
 

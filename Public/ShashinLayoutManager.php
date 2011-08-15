@@ -2,7 +2,6 @@
 
 class Public_ShashinLayoutManager {
     private $settings;
-    private $settingsValues;
     private $functionsFacade;
     private $container;
     private $dataObjectCollection;
@@ -45,7 +44,6 @@ class Public_ShashinLayoutManager {
     }
 
     public function run() {
-        $this->settingsValues = $this->settings->get();
         $this->setThumbnailCollectionIfNeeded();
         $this->setCollection();
         $this->initializeSessionGroupCounter();
@@ -135,7 +133,7 @@ class Public_ShashinLayoutManager {
             );
             $linkAndImageTags = $dataObjectDisplayer->run();
             $imgWidth = $dataObjectDisplayer->getImgWidth();
-            $cellWidth = $imgWidth + $this->settingsValues['thumbPadding'];
+            $cellWidth = $imgWidth + $this->settings->thumbPadding;
             $this->tableBody .= '<td><div class="shashin3alpha_thumb_div" style="width: ' . $cellWidth . 'px;">';
             $this->tableBody .= $linkAndImageTags;
             $this->tableBody.= '</div></td>' . PHP_EOL;
@@ -152,7 +150,7 @@ class Public_ShashinLayoutManager {
 
     public function setGroupCounterHtml() {
         if (($this->shortcode->type == 'photo' || $this->shortcode->type == 'albumphotos')
-          && $this->settingsValues['imageDisplay'] == 'highslide') {
+          && $this->settings->imageDisplay == 'highslide') {
 
             $this->groupCounter = '<script type="text/javascript">'
                 . "addHSSlideshow('group" . $_SESSION['shashin_group_counter'] . "');</script>"

@@ -47,17 +47,20 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         // the order photos appear in the feed reflects the user's preferred order
         $sourceOrder = 0;
 
-        foreach ($decodedAlbumData['feed']['entry'] as $entry) {
-            $photoData = $this->extractFieldsFromDecodedData($entry, $photoRefData, 'picasa');
-            $photoData['albumId'] = $this->album->id;
-            $photoData['albumType'] = $this->album->albumType;
-            $photoData['takenTimestamp'] = ToppaFunctions::makeTimestampPhpSafe($photoData['takenTimestamp']);
-            $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
-            $photoData['sourceOrder'] = ++$sourceOrder;
-            $photoData['lastSync'] = time();
-            $photo = clone $this->clonablePhoto;
-            $photo->set($photoData);
-            $photo->flush();
+        // don't try to process empty albums
+        if (is_array($decodedAlbumData['feed']['entry'])) {
+            foreach ($decodedAlbumData['feed']['entry'] as $entry) {
+                $photoData = $this->extractFieldsFromDecodedData($entry, $photoRefData, 'picasa');
+                $photoData['albumId'] = $this->album->id;
+                $photoData['albumType'] = $this->album->albumType;
+                $photoData['takenTimestamp'] = ToppaFunctions::makeTimestampPhpSafe($photoData['takenTimestamp']);
+                $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
+                $photoData['sourceOrder'] = ++$sourceOrder;
+                $photoData['lastSync'] = time();
+                $photo = clone $this->clonablePhoto;
+                $photo->set($photoData);
+                $photo->flush();
+            }
         }
 
         return $sourceOrder;

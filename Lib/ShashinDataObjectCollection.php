@@ -5,6 +5,8 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $clonableDataObject;
     protected $settings;
     protected $shortcode;
+    protected $useThumbnailId = false;
+    protected $noLimit = false;
     protected $idString;
     protected $thumbnailSize;
     protected $limitClause;
@@ -12,7 +14,6 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $sort;
     protected $orderByClause;
     protected $whereClause;
-    protected $useThumbnailId = false;
     protected $collection = array();
 
     public function __construct() {
@@ -30,14 +31,6 @@ abstract class Lib_ShashinDataObjectCollection {
         $this->settings = $settings;
     }
 
-    public function getTableName() {
-        return  $this->clonableDataObject->getTableName();
-    }
-
-    public function getRefData() {
-        return $this->clonableDataObject->getRefData();
-    }
-
     public function setUseThumbnailId($useThumbnailId) {
         if (is_bool($useThumbnailId)) {
             $this->useThumbnailId = $useThumbnailId;
@@ -46,8 +39,25 @@ abstract class Lib_ShashinDataObjectCollection {
         return $this->useThumbnailId;
     }
 
+    public function setNoLimit($noLimit) {
+        if (is_bool($noLimit)) {
+            $this->noLimit = $noLimit;
+        }
+
+        return $this->noLimit;
+    }
+
+    public function getTableName() {
+        return  $this->clonableDataObject->getTableName();
+    }
+
+    public function getRefData() {
+        return $this->clonableDataObject->getRefData();
+    }
+
     public function getCollectionForShortcode(Public_ShashinShortcode $shortcode) {
-        $this->shortcode = $shortcode;
+        $this->collection = array(); // make sure we're empty
+        $this->setShortcode($shortcode);
         $this->setProperties();
 
         if ($this->orderBy == 'user') {
@@ -57,8 +67,92 @@ abstract class Lib_ShashinDataObjectCollection {
         return $this->getCollection();
     }
 
+    public function setShortcode(Public_ShashinShortcode $shortcode) {
+        $this->shortcode = $shortcode;
+        return $this->shortcode;
+    }
+
+    public function setProperties() {
+        if ($this->useThumbnailId == true) {
+            $this->setIdString();
+        }
+
+        else {
+            $this->setIdString();
+        }
+
+        $this->setLimitClause();
+        $this->setOrderBy();
+        $this->setSort();
+        $this->setOrderByClause();
+        $this->setWhereClause();
+    }
+
+    public function setIdString() {
+        if ($this->useThumbnailId == true) {
+            $this->idString = $this->shortcode->thumbnail;
+        }
+
+        else {
+            $this->idString = $this->shortcode->id;
+        }
+
+        return $this->idString;
+    }
+
+    public function setLimitClause() {
+        if ($this->noLimit) {
+            $this->limitClause = null;
+        }
+
+        elseif ($this->shortcode->limit) {
+            $this->limitClause = 'limit ' . $this->shortcode->limit;
+        }
+
+        elseif (!$this->idString || $this->shortcode->type == 'albumphotos') {
+            $this->limitClause = 'limit ' . $this->settings->photosPerPage;
+        }
+
+        return $this->limitClause;
+    }
+
+    abstract public function setOrderBy();
+
+    public function setSort() {
+        if ($this->shortcode->reverse == 'y') {
+            $this->sort ='desc';
+        }
+
+        else {
+            $this->sort = 'asc';
+        }
+
+        return $this->sort;
+    }
+
+    public function setOrderByClause() {
+        if ($this->orderBy != 'user') {
+            $this->orderByClause = "order by " . $this->orderBy . " " . $this->sort;
+        }
+
+        return $this->orderByClause;
+    }
+
+    public function setWhereClause() {
+        if ($this->shortcode->type == 'albumphotos') {
+            $this->whereClause = "where albumId in (" . $this->idString . ")";
+        }
+
+        elseif ($this->idString) {
+            $this->whereClause = "where id in (" . $this->idString . ")";
+        }
+
+        return $this->whereClause;
+    }
+
     public function getCollection() {
         $rows = $this->getData();
+
         if (!is_array($rows)) {
             return null;
         }
@@ -106,82 +200,7 @@ abstract class Lib_ShashinDataObjectCollection {
             null,
             $sqlConditions
         );
+
         return $rows;
     }
-
-    public function setProperties() {
-        if ($this->useThumbnailId == true) {
-            $this->setIdString();
-        }
-
-        else {
-            $this->setIdString();
-        }
-
-        $this->setLimitClause();
-        $this->setOrderBy();
-        $this->setSort();
-        $this->setOrderByClause();
-        $this->setWhereClause();
-    }
-
-    public function setIdString() {
-        if ($this->useThumbnailId == true) {
-            $this->idString = $this->shortcode->thumbnail;
-        }
-
-        else {
-            $this->idString = $this->shortcode->id;
-        }
-
-        return $this->idString;
-    }
-
-    public function setLimitClause() {
-        if ($this->shortcode->limit) {
-            $this->limitClause = 'limit ' . $this->shortcode->limit;
-        }
-
-        elseif (!$this->idString || $this->shortcode->type == 'albumphotos') {
-            $settingsData = $this->settings->get();
-            $this->limitClause = 'limit ' . $settingsData['photosPerPage'];
-        }
-
-        return $this->limitClause;
-    }
-
-    abstract public function setOrderBy();
-
-    public function setSort() {
-        if ($this->shortcode->reverse == 'y') {
-            $this->sort ='desc';
-        }
-
-        else {
-            $this->sort = 'asc';
-        }
-
-        return $this->sort;
-    }
-
-    public function setOrderByClause() {
-        if ($this->orderBy != 'user') {
-            $this->orderByClause = "order by " . $this->orderBy . " " . $this->sort;
-        }
-
-        return $this->orderByClause;
-    }
-
-    public function setWhereClause() {
-        if ($this->shortcode->type == 'albumphotos') {
-            $this->whereClause = "where albumId in (" . $this->idString . ")";
-        }
-
-        elseif ($this->idString) {
-            $this->whereClause = "where id in (" . $this->idString . ")";
-        }
-
-        return $this->whereClause;
-    }
-
 }

@@ -28,7 +28,7 @@ class Admin_ShashinMenuActionHandlerPhotos {
                 $message = $this->runUpdateIncludeInRandom();
             }
 
-            echo $this->menuDisplayer->run($message);
+            return $this->menuDisplayer->run($message);
         }
 
         catch (Exception $e) {
@@ -39,18 +39,16 @@ class Admin_ShashinMenuActionHandlerPhotos {
     }
 
     public function runUpdateIncludeInRandom() {
-        $photoCollection = $this->adminContainer->getClonablePhotoCollection();
-        $photoCollection->setLimitNeeded(false);
-        $shortcodeMimic = array('id' => $this->request['id'], 'type' => 'albumphotos');
-        $photoCollection->setProperties($shortcodeMimic);
-        $photos = $photoCollection->getCollection();
+        //the order is important, as the default is 'user', which won't work in this context
+        $shortcodeMimic = array('id' => $this->request['id'], 'type' => 'albumphotos', 'order' => 'source');
+        $photos = $this->menuDisplayer->getDataObjects($shortcodeMimic);
 
-        foreach ($this->request['includeInRandom'] as $k=>$v) {
-            $photoData = array('includeInRandom'=> $v);
-            $photos[$k]->set($photoData);
-            $photos[$k]->flush();
+        foreach ($photos as $photo) {
+            $photoData = array('includeInRandom'=> $this->request['includeInRandom'][$photo->id]);
+            $photo->set($photoData);
+            $photo->flush();
         }
 
-        return __('Updated "Include In Random" settings', "shashin");
+        return __('Updated "Include In Random" settings', 'shashin');
     }
 }

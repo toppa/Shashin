@@ -6,7 +6,7 @@ class Admin_ShashinUninstaller {
     private $album;
     private $photo;
 
-    public function __construct(&$dbFacade, &$album, &$photo, &$settings) {
+    public function __construct($dbFacade, $album, $photo, $settings) {
         $this->dbFacade = $dbFacade;
         $this->album = $album;
         $this->photo = $photo;

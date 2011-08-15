@@ -63,7 +63,7 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
             )
         );
     }
-
+/*
     public function testSetShortcodeMimic() {
         $menuDisplayer = new Admin_ShashinMenuDisplayerAlbums($this->functionsFacade, array(), $this->albumCollection);
         $shortcodeMimic = $menuDisplayer->setShortcodeMimic('title', 'y');
@@ -89,4 +89,5 @@ class UnitAdmin_ShashinMenuDisplayerAlbums extends UnitTestCase {
         $this->assertEqual($expectedUrl, $url);
         $this->assertEqual('&uarr;', $menuDisplayer->getSortArrow());
     }
+*/
 }

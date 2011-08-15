@@ -1,6 +1,7 @@
 <?php
 
 class Public_ShashinShortcode {
+    private $rawShortcode;
     private $data = array(
         'type' => null,
         'limit' => null,
@@ -25,26 +26,8 @@ class Public_ShashinShortcode {
         'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit'),
     );
 
-    public function __construct(array $shortcodeData) {
-        $shortcodeData = $this->cleanShortcode($shortcodeData);
-
-        foreach($shortcodeData as $k=>$v) {
-            if (array_key_exists($k, $this->data)) {
-                $this->data[$k] = $v;
-            }
-
-            else {
-                throw New Exception(__("Invalid shortcode attribute: ", "shashin") . htmlentities($k));
-            }
-        }
-
-        $this->validate();
-    }
-
-    public function cleanShortcode($shortcodeData) {
-        array_walk($shortcodeData, array('ToppaFunctions', 'trimCallback'));
-        array_walk($shortcodeData, array('ToppaFunctions', 'strtolowerCallback'));
-        return $shortcodeData;
+    public function __construct(array $rawShortcode) {
+        $this->rawShortcode = $rawShortcode;
     }
 
     public function __get($name) {
@@ -55,7 +38,32 @@ class Public_ShashinShortcode {
         throw New Exception(__('Invalid data property __get for: ', 'shashin') . htmlentities($name));
     }
 
-    public function validate() {
+    public function cleanAndValidate() {
+        $this->cleanShortcode();
+        $this->checkValidKeysAndAssign();
+        $this->checkValidValues();
+        return true;
+    }
+
+    public function cleanShortcode() {
+        array_walk($this->rawShortcode, array('ToppaFunctions', 'trimCallback'));
+        array_walk($this->rawShortcode, array('ToppaFunctions', 'strtolowerCallback'));
+        return $this->rawShortcode;
+    }
+
+    public function checkValidKeysAndAssign() {
+        foreach($this->rawShortcode as $k=>$v) {
+            if (array_key_exists($k, $this->data)) {
+                $this->data[$k] = $v;
+            }
+
+            else {
+                throw New Exception(__("Invalid shortcode attribute: ", "shashin") . htmlentities($k));
+            }
+        }
+    }
+
+    public function checkValidValues() {
         $this->isNumericOrNull($this->data['limit']);
         $this->isAStringOfNumbersOrNull($this->data['id']);
         $this->isInListOfValidValues('caption', $this->data['caption']);
@@ -94,4 +102,3 @@ class Public_ShashinShortcode {
         throw new Exception(htmlentities($numericString) . " " . __("is not a valid numeric value"));
     }
 }
-

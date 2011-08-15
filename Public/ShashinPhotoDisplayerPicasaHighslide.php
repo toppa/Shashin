@@ -7,7 +7,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     public function setLinkHref() {
         $this->linkHref = $this->dataObject->contentUrl
-            . '?imgmax=' . $this->settingsValues['highslideMax'];
+            . '?imgmax=' . $this->settings->highslideMax;
         return $this->linkHref;
     }
 
@@ -27,8 +27,8 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
     public function setLinkOnClickVideo() {
         // need minWidth because width was not autosizing for content
         // need "preserveContent: false" so the video and audio will stop when the window is closed
-        $width = $this->settingsValues['highslideVideoWidth'];
-        $height = $this->settingsValues['highslideVideoHeight'];
+        $width = $this->settings->highslideVideoWidth;
+        $height = $this->settings->highslideVideoHeight;
         $this->linkOnClick = 'return hs.htmlExpand(this, { objectType:\'swf\', minWidth: '
                 . ($width+20) . ', minHeight: ' . ($height+20)
                 . ", objectWidth: $width, objectHeight: $height, allowSizeReduction: false, preserveContent: false";
@@ -38,7 +38,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     private function appendLinkOnClick() {
         return "autoplay: "
-            . $this->settingsValues['highslideAutoplay']
+            . $this->settings->highslideAutoplay
             . ", slideshowGroup: 'group"
             . $_SESSION['shashin_group_counter']
             . "' })";

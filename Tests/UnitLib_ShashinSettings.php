@@ -45,12 +45,13 @@ class UnitLib_ShashinSettings extends UnitTestCase {
         $this->functionsFacade->setReturnValue('setSetting', true);
         $this->functionsFacade->setReturnValue('getSetting', $this->sampleSettings);
     }
-
+/*
     public function testGetSettings() {
         $settings = new Lib_ShashinSettings($this->functionsFacade);
         $settingsData = $settings->get();
         $this->assertEqual($settingsData, $this->sampleSettings);
     }
+
 
     public function testAddNewSetting() {
         $testSettingToAdd = array('test' => 'testing');
@@ -72,4 +73,5 @@ class UnitLib_ShashinSettings extends UnitTestCase {
              $this->pass("received expected exception");
          }
     }
+*/
 }
