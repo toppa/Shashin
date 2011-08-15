@@ -66,4 +66,4 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
         $this->caption .= '</div>';
         return $this->caption;
     }
- }
+}

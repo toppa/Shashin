@@ -40,14 +40,23 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
     public function getDataObjectDisplayer(
       Public_ShashinShortcode $shortcode,
       Lib_ShashinDataObject $dataObject,
-      Lib_ShashinDataObject $alternativeThumbnail = null) {
+      Lib_ShashinDataObject $alternativeThumbnail = null,
+      $forceViewer = null) {
 
         $this->getFunctionsFacade();
         $this->getSettings();
         $dataObjectClassName = get_class($dataObject);
         $dataObjectClassName = str_replace('Lib_', 'Public_', $dataObjectClassName);
         $albumType = ucfirst($dataObject->albumType);
-        $viewerName = ucfirst($this->settings->imageDisplay);
+
+        if (is_string($forceViewer)) {
+            $viewerName = ucfirst($forceViewer);
+        }
+
+        else {
+            $viewerName = ucfirst($this->settings->imageDisplay);
+        }
+
         $classToCall = $dataObjectClassName . 'Displayer' . $albumType . $viewerName;
         $dataObjectDisplayer = new $classToCall();
         $dataObjectDisplayer->setSettings($this->settings);
