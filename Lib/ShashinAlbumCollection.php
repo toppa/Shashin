@@ -4,7 +4,7 @@ class Lib_ShashinAlbumCollection extends Lib_ShashinDataObjectCollection {
     public function __construct() {
     }
 
-    public function setOrderBy($orderBy = null) {
+    public function setOrderBy() {
         switch ($this->shortcode->order) {
             case 'id':
                 $this->orderBy = 'id';

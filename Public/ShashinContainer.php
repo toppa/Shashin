@@ -25,6 +25,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $layoutManager->setContainer($this);
         $layoutManager->setShortcode($shortcode);
         $layoutManager->setDataObjectCollection($dataObjectCollection);
+        $layoutManager->setRequest($_REQUEST);
         return $layoutManager;
     }
 

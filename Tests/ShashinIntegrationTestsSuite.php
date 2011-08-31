@@ -8,11 +8,11 @@ class ShashinIntegrationTestsSuite extends TestSuite {
        parent::__construct();
        // these integration tests run selects only against the database
        // they assume the existence of an album with album_key = 1
-       $this->addFile('IntegrationLib_ShashinContainer.php');
-       $this->addFile('IntegrationAdmin_ShashinContainer.php');
+       //$this->addFile('IntegrationLib_ShashinContainer.php');
+       //$this->addFile('IntegrationAdmin_ShashinContainer.php');
 
        // this should not be harmful to run on a existing installation
-       //$this->addFile('IntegrationShashinInstaller.php');
+       $this->addFile('IntegrationAdmin_ShashinInstaller.php');
 
        // WARNING: running the uninstall integration test will actually uninstall
        // and delete all your Shashin data!

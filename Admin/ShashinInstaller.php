@@ -4,6 +4,11 @@ class Admin_ShashinInstaller {
     private $dbFacade;
     private $album;
     private $photo;
+    private $albumTable;
+    private $albumRefData;
+    private $photoTable;
+    private $photoRefData;
+
     private $settings;
     private $settingsDefaults = array(
         'thumbPadding' => 6,
@@ -34,16 +39,39 @@ class Admin_ShashinInstaller {
         'otherImageTitle' => null,
     );
 
-    public function __construct($dbFacade, $album, $photo, $settings) {
+    public function __construct() {
+    }
+
+    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
+        return $this->dbFacade;
+    }
+
+    public function setAlbumAndAlbumVars(Lib_ShashinAlbum $album) {
         $this->album = $album;
+        $this->albumTable = $this->album->getTableName();
+        $this->albumRefData = $this->album->getRefData();
+        return $this->album;
+    }
+
+    public function setPhotoAndPhotoVars(Lib_ShashinPhoto $photo) {
         $this->photo = $photo;
+        $this->photoTable = $this->photo->getTableName();
+        $this->photoRefData = $this->photo->getRefData();
+        return $this->photo;
+    }
+
+    public function setSettings(Lib_ShashinSettings $settings) {
         $this->settings = $settings;
+        return $this->settings;
     }
 
     public function run() {
         try {
-            $this->createAndVerifyTables();
+            $this->createAlbumTable();
+            $this->verifyAlbumTable();
+            $this->createPhotoTable();
+            $this->verifyPhotoTable();
             $this->setDefaultSettings();
         }
 
@@ -54,24 +82,32 @@ class Admin_ShashinInstaller {
         return true;
     }
 
-    public function createAndVerifyTables() {
-        $albumTable = $this->album->getTableName();
-        $albumRefData = $this->album->getRefData();
-        $this->dbFacade->createTable($albumTable, $albumRefData);
+    public function createAlbumTable() {
+        return $this->dbFacade->createTable($this->albumTable, $this->albumRefData);
+    }
 
-        if (!$this->dbFacade->verifyTableExists($albumTable, $albumRefData)) {
-            throw new Exception(__('Failed to create table ', 'shashin') . $albumTable);
+    public function verifyAlbumTable() {
+        $result = $this->dbFacade->verifyTableExists($this->albumTable, $this->albumRefData);
+
+        if (!$result) {
+            throw new Exception(__('Failed to create table ', 'shashin') . $this->albumTable);
         }
 
-        $photoTable = $this->photo->getTableName();
-        $photoRefData = $this->photo->getRefData();
-        $this->dbFacade->createTable($photoTable, $photoRefData);
+        return $result;
+    }
 
-        if (!$this->dbFacade->verifyTableExists($photoTable, $photoRefData)) {
-            throw new Exception(__('Failed to create table ', 'shashin') . $photoTable);
+    public function createPhotoTable() {
+        return $this->dbFacade->createTable($this->photoTable, $this->photoRefData);
+    }
+
+    public function verifyPhotoTable() {
+        $result = $this->dbFacade->verifyTableExists($this->photoTable, $this->photoRefData);
+
+        if (!$result) {
+            throw new Exception(__('Failed to create table ', 'shashin') . $this->photoTable);
         }
 
-        return true;
+        return $result;
     }
 
     public function setDefaultSettings() {

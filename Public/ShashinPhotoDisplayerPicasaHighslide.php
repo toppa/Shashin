@@ -40,7 +40,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
         return "autoplay: "
             . $this->settings->highslideAutoplay
             . ", slideshowGroup: 'group"
-            . $_SESSION['shashin_group_counter']
+            . $_SESSION['shashinGroupCounter']
             . "' })";
     }
 

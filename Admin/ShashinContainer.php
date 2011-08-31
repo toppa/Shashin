@@ -21,8 +21,13 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
             $this->getClonableAlbum();
             $this->getClonablePhoto();
             $this->getSettings();
-            $this->installer = new Admin_ShashinInstaller($this->dbFacade, $this->clonableAlbum, $this->clonablePhoto, $this->settings);
+            $this->installer = new Admin_ShashinInstaller();
+            $this->installer->setDbFacade($this->dbFacade);
+            $this->installer->setAlbumAndAlbumVars($this->clonableAlbum);
+            $this->installer->setPhotoAndPhotoVars($this->clonablePhoto);
+            $this->installer->setSettings($this->settings);
         }
+
         return $this->installer;
     }
 

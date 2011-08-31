@@ -4,9 +4,11 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $dbFacade;
     protected $clonableDataObject;
     protected $settings;
+    protected $request;
     protected $shortcode;
     protected $useThumbnailId = false;
     protected $noLimit = false;
+    protected $mayNeedPagination = false;
     protected $idString;
     protected $thumbnailSize;
     protected $limitClause;
@@ -14,21 +16,31 @@ abstract class Lib_ShashinDataObjectCollection {
     protected $sort;
     protected $orderByClause;
     protected $whereClause;
+    protected $sqlConditions;
     protected $collection = array();
+    protected $count;
 
     public function __construct() {
     }
 
     public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
+        return $this->dbFacade;
     }
 
     public function setClonableDataObject(Lib_ShashinDataObject $clonableDataObject) {
         $this->clonableDataObject = $clonableDataObject;
+        return $this->clonableDataObject;
     }
 
     public function setSettings(Lib_ShashinSettings $settings) {
         $this->settings = $settings;
+        return $this->settings;
+    }
+
+    public function setRequest(array $request) {
+        $this->request = $request;
+        return $this->request;
     }
 
     public function setUseThumbnailId($useThumbnailId) {
@@ -48,7 +60,7 @@ abstract class Lib_ShashinDataObjectCollection {
     }
 
     public function getTableName() {
-        return  $this->clonableDataObject->getTableName();
+        return $this->clonableDataObject->getTableName();
     }
 
     public function getRefData() {
@@ -59,6 +71,10 @@ abstract class Lib_ShashinDataObjectCollection {
         $this->collection = array(); // make sure we're empty
         $this->setShortcode($shortcode);
         $this->setProperties();
+
+        if ($this->mayNeedPagination) {
+            $this->setCount();
+        }
 
         if ($this->orderBy == 'user') {
             return $this->getCollectionInUserOrder();
@@ -73,19 +89,15 @@ abstract class Lib_ShashinDataObjectCollection {
     }
 
     public function setProperties() {
-        if ($this->useThumbnailId == true) {
-            $this->setIdString();
-        }
-
-        else {
-            $this->setIdString();
-        }
-
+        $this->setIdString();
+        $this->setMayNeedPagination();
         $this->setLimitClause();
         $this->setOrderBy();
         $this->setSort();
         $this->setOrderByClause();
         $this->setWhereClause();
+        $this->setSqlConditions();
+        return true;
     }
 
     public function setIdString() {
@@ -100,17 +112,40 @@ abstract class Lib_ShashinDataObjectCollection {
         return $this->idString;
     }
 
+    public function setMayNeedPagination() {
+        if (!$this->idString || $this->shortcode->type == 'albumphotos') {
+            $this->mayNeedPagination = true;
+        }
+
+        else {
+            $this->mayNeedPagination = false;
+        }
+
+        return $this->mayNeedPagination;
+    }
+
+    public function getMayNeedPagination() {
+        return $this->mayNeedPagination;
+    }
+
     public function setLimitClause() {
         if ($this->noLimit) {
             $this->limitClause = null;
         }
 
         elseif ($this->shortcode->limit) {
-            $this->limitClause = 'limit ' . $this->shortcode->limit;
+            $this->limitClause = " limit " . $this->shortcode->limit;
         }
 
-        elseif (!$this->idString || $this->shortcode->type == 'albumphotos') {
-            $this->limitClause = 'limit ' . $this->settings->photosPerPage;
+        elseif ($this->mayNeedPagination) {
+            $limit = $this->settings->photosPerPage;
+            $page = is_numeric($this->request['shashinPage']) ? $this->request['shashinPage'] : 1;
+            $currentSet = ($page - 1) * $limit;
+            $this->limitClause .= " limit $limit offset $currentSet";
+        }
+
+        else {
+            $this->limitClause = null;
         }
 
         return $this->limitClause;
@@ -148,6 +183,31 @@ abstract class Lib_ShashinDataObjectCollection {
         }
 
         return $this->whereClause;
+    }
+
+    public function setSqlConditions() {
+        $this->sqlConditions =
+            $this->whereClause
+            . " " . $this->orderByClause
+            . " " . $this->limitClause;
+
+        return $this->sqlConditions;
+    }
+
+    public function setCount() {
+        $result = $this->dbFacade->sqlSelectRow(
+            $this->getTableName(),
+            array('count(id) as count'),
+            null,
+            $this->sqlConditions
+        );
+
+        $this->count = $result['count'];
+        return $this->count;
+    }
+
+    public function getCount() {
+        return $this->count;
     }
 
     public function getCollection() {
@@ -190,15 +250,11 @@ abstract class Lib_ShashinDataObjectCollection {
     }
 
     public function getData() {
-        $sqlConditions =
-                $this->whereClause
-                . " " . $this->orderByClause
-                . " " . $this->limitClause;
         $rows = $this->dbFacade->sqlSelectMultipleRows(
             $this->getTableName(),
             null,
             null,
-            $sqlConditions
+            $this->sqlConditions
         );
 
         return $rows;

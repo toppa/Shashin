@@ -17,20 +17,24 @@ abstract class Admin_ShashinMenuDisplayer {
 
     public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
+        return $this->functionsFacade;
     }
 
     public function setRequest(array $request) {
         $this->request = $request;
+        return $this->request;
     }
 
     public function setCollection(Lib_ShashinDataObjectCollection $collection) {
         $this->collection = $collection;
+        return $this->collection;
     }
 
     abstract public function setAlbum(Lib_ShashinAlbum $album = null);
 
     public function setContainer(Public_ShashinContainer $container = null) {
         $this->container = $container;
+        return $this->container;
     }
 
     public function run($message = null) {

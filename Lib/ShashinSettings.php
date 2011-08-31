@@ -48,7 +48,7 @@ class Lib_ShashinSettings {
             }
         }
 
-        return true;
+        return $this->data;
     }
 
     public function delete() {

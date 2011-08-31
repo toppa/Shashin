@@ -2,7 +2,6 @@
 
 require_once(dirname(__FILE__) . '/../Admin/ShashinSynchronizer.php');
 require_once(dirname(__FILE__) . '/../Admin/ShashinSynchronizerPicasa.php');
-
 Mock::generate('FakeWpHttp');
 
 class UnitAdmin_ShashinSynchronizerPicasa extends UnitTestCase {
@@ -14,7 +13,7 @@ class UnitAdmin_ShashinSynchronizerPicasa extends UnitTestCase {
     }
 
     public function setUp() {
-        $httpResponseBody = file_get_contents(dirname(__FILE__) . '/source_files/Picasa2007NewportRI.json');
+        $httpResponseBody = file_get_contents(dirname(__FILE__) . '/dataFiles/Picasa2007NewportRI.json');
         $httpResponse = array(
             'response' => array('code' => 200, 'message' => 'OK'),
             'body' => $httpResponseBody);
@@ -36,15 +35,15 @@ class UnitAdmin_ShashinSynchronizerPicasa extends UnitTestCase {
         $dummyUrl = 'http://www.nowhere.com';
         $response = $this->httpRequester->request($dummyUrl);
         $decodedAlbumData = $this->synchronizer->checkResponseAndDecodeAlbumData($response);
-        $expectedDecodedAlbumData = file_get_contents(dirname(__FILE__) . '/source_files/Picasa2007NewportRI_decoded.txt');
+        $expectedDecodedAlbumData = file_get_contents(dirname(__FILE__) . '/dataFiles/Picasa2007NewportRI_decoded.txt');
         $expectedDecodedAlbumData = unserialize($expectedDecodedAlbumData);
         $this->assertEqual($decodedAlbumData, $expectedDecodedAlbumData);
     }
 
     public function testExtractFieldsFromDecodedData() {
-        $refData = file_get_contents(dirname(__FILE__) . '/source_files/album_ref_data.txt');
+        $refData = file_get_contents(dirname(__FILE__) . '/dataFiles/album_ref_data.txt');
         $refData = unserialize($refData);
-        $decodedAlbumData = file_get_contents(dirname(__FILE__) . '/source_files/Picasa2007NewportRI_decoded.txt');
+        $decodedAlbumData = file_get_contents(dirname(__FILE__) . '/dataFiles/Picasa2007NewportRI_decoded.txt');
         $decodedAlbumData = unserialize($decodedAlbumData);
         $expectedRawAlbumData = array(
             "album_id" => 5082765283068156849,

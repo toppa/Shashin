@@ -50,6 +50,7 @@ class Lib_ShashinContainer {
             $this->clonablePhotoCollection->setDbFacade($this->dbFacade);
             $this->clonablePhotoCollection->setClonableDataObject($this->clonablePhoto);
             $this->clonablePhotoCollection->setSettings($this->settings);
+            $this->clonablePhotoCollection->setRequest($_REQUEST);
         }
 
         return $this->clonablePhotoCollection;
@@ -64,6 +65,7 @@ class Lib_ShashinContainer {
             $this->clonableAlbumPhotosCollection->setDbFacade($this->dbFacade);
             $this->clonableAlbumPhotosCollection->setClonableDataObject($this->clonablePhoto);
             $this->clonableAlbumPhotosCollection->setSettings($this->settings);
+            $this->clonableAlbumPhotosCollection->setRequest($_REQUEST);
         }
 
         return $this->clonableAlbumPhotosCollection;
@@ -88,6 +90,7 @@ class Lib_ShashinContainer {
             $this->clonableAlbumCollection->setDbFacade($this->dbFacade);
             $this->clonableAlbumCollection->setClonableDataObject($this->clonableAlbum);
             $this->clonableAlbumCollection->setSettings($this->settings);
+            $this->clonableAlbumCollection->setRequest($_REQUEST);
         }
 
         return $this->clonableAlbumCollection;

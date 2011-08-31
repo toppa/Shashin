@@ -9,6 +9,7 @@ class Public_ShashinLayoutManager {
     private $thumbnailDataObjectCollection;
     private $thumbnailCollection;
     private $shortcode;
+    private $request;
     private $openingTableTag;
     private $tableCaptionTag;
     private $tableBody;
@@ -43,6 +44,11 @@ class Public_ShashinLayoutManager {
         return $this->dataObjectCollection;
     }
 
+    public function setRequest(array $request) {
+        $this->request = $request;
+        return $this->request;
+    }
+
     public function run() {
         $this->setThumbnailCollectionIfNeeded();
         $this->setCollection();
@@ -72,13 +78,14 @@ class Public_ShashinLayoutManager {
     }
 
     public function initializeSessionGroupCounter() {
-        if (!$_SESSION['shashin_group_counter']) {
-            $_SESSION['shashin_group_counter'] = 1;
+        if (!$_SESSION['shashinGroupCounter']) {
+            $_SESSION['shashinGroupCounter'] = 1;
         }
     }
 
     public function setOpeningTableTag() {
-        $this->openingTableTag = '<table class="shashin3alpha_thumbs_table"';
+        $this->openingTableTag = '<table class="shashin3alpha_thumbs_table" id="shashinGroup'
+            . $_SESSION['shashinGroupCounter'] . '"';
 
         if ($this->shortcode->position || $this->shortcode->clear) {
             $this->openingTableTag .= $this->addStyleForOpeningTableTag();
@@ -108,7 +115,70 @@ class Public_ShashinLayoutManager {
     }
 
     public function setTableCaptionTag() {
-        return null;
+        if (is_numeric($this->request['shashinFinalPage'])) {
+            $finalPage = $this->request['shashinFinalPage'];
+        }
+
+        elseif (!$this->dataObjectCollection->getMayNeedPagination()) {
+            return null;
+        }
+
+        elseif ($this->dataObjectCollection->getCount() < $this->settings->photosPerPage) {
+            return null;
+        }
+
+        else {
+            $finalPage = ceil(
+                $this->dataObjectCollection->getCount()
+                / $this->settings->photosPerPage
+            );
+        }
+
+        $this->tableCaptionTag = '<caption>';
+
+        if (is_numeric($this->request['shashinPage'])) {
+            $currentPage = $this->request['shashinPage'];
+        }
+
+        else {
+            $currentPage = 1;
+        }
+
+        $permalink = $this->functionsFacade->getPermalink();
+        $queryStringGlue = strpos($permalink, '?') ? '&amp;' : '?';
+        $firstHalfOfLink =  $permalink . $queryStringGlue;
+
+        if ($currentPage > 1) {
+            $previousLink =
+                '<a href="' . $firstHalfOfLink
+                . 'shashinPage=' . ($currentPage - 1)
+                . '&amp;shashinFinalPage=' . $finalPage
+                . '">&laquo; ' . __('Previous', 'shashin') . '</a>';
+        }
+
+        if ($currentPage < $finalPage) {
+            $nextLink =
+                '<a href="' . $firstHalfOfLink
+                . 'shashinPage=' . ($currentPage + 1)
+                . '&amp;shashinFinalPage=' . $finalPage
+                . '">' . __('Next', 'shashin') . ' &raquo;</a>';
+
+        }
+
+        if ($previousLink) {
+            $this->tableCaptionTag .= $previousLink;
+        }
+
+        if ($previousLink && $nextLink) {
+            $this->tableCaptionTag .= ' | ';
+        }
+
+        if ($nextLink) {
+            $this->tableCaptionTag .= $nextLink;
+        }
+
+        $this->tableCaptionTag .= '</caption>' . PHP_EOL;
+        return $this->tableCaptionTag;
     }
 
     public function setTableBody() {
@@ -153,7 +223,7 @@ class Public_ShashinLayoutManager {
           && $this->settings->imageDisplay == 'highslide') {
 
             $this->groupCounter = '<script type="text/javascript">'
-                . "addHSSlideshow('group" . $_SESSION['shashin_group_counter'] . "');</script>"
+                . "addHSSlideshow('group" . $_SESSION['shashinGroupCounter'] . "');</script>"
                 . PHP_EOL;
         }
 
@@ -176,6 +246,6 @@ class Public_ShashinLayoutManager {
     }
 
     public function incrementSessionGroupCounter() {
-        $_SESSION['shashin_group_counter']++;
+        $_SESSION['shashinGroupCounter']++;
     }
 }
