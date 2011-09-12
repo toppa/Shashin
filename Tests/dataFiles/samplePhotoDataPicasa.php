@@ -27,9 +27,9 @@ $photoData = array(
         "albumType" => "picasa"
     ),
     array(
-        "id" => "1",
+        "id" => "2",
         "sourceId" => "5106043336352724898",
-        "albumId" => "1",
+        "albumId" => "5",
         "filename" => "clinton.jpg",
         "description" => "Maria's friend Edward requested one of these from the White House for us (they'll give them to anyone)",
         "linkUrl" => "https://picasaweb.google.com/100291303544453276374/1999MikeAndMariaSWedding#5106043336352724898",

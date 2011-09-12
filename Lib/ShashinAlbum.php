@@ -135,7 +135,7 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
         $this->dbFacade->sqlDelete($photosTableName, array('albumId' => $this->data['id']));
         $this->dbFacade->sqlDelete($this->tableName, array('id' => $this->data['id']));
         $albumData = $this->data;
-        unset($this->data);
+        $this->data = array(); // do not use unset
         return $albumData;
     }
 

@@ -13,7 +13,7 @@ class UnitLib_ShashinSettings extends UnitTestCase {
         'scheduledUpdate' => 'n',
         'themeMaxSize' => 600,
         'themeMaxSingle' => 576,
-        'photosPerPage' => 18,
+        'photosPerTable' => 18,
         'captionExif' => 'n',
         'imageDisplay' => 'highslide',
         'highslideMax' => 640,

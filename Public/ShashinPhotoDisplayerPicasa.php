@@ -34,11 +34,21 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObje
 
     public function setCaption() {
         if ($this->shortcode->caption == 'y' && $this->dataObject->description) {
-            $this->caption = '<span class="shashin3alpha_thumb_caption">'
+            $this->caption = '<span class="shashinThumbnailCaption">'
                 . $this->dataObject->description
                 . '</span>';
         }
 
         return $this->caption;
+    }
+
+    public function setLinkIdForImg() {
+        $this->linkIdForImg = 'shashinThumbnailLink_' . $this->sessionManager->getThumbnailCounter();
+        return $this->linkIdForImg;
+    }
+
+    // degenerate
+    public function setLinkIdForCaption() {
+        return null;
     }
 }

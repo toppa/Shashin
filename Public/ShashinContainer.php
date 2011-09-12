@@ -2,6 +2,7 @@
 
 class Public_ShashinContainer extends Lib_ShashinContainer {
     private $headTagsBuilder;
+    private $sessionManager;
 
     public function __construct($autoLoader) {
         parent::__construct($autoLoader);
@@ -13,19 +14,30 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         return $shortcode;
     }
 
+    public function getSessionManager() {
+        if (!$this->sessionManager) {
+            $this->sessionManager = new Public_ShashinSessionManager();
+        }
+
+        return $this->sessionManager;
+    }
+
     public function getLayoutManager(
       Public_ShashinShortcode $shortcode,
-      Lib_ShashinDataObjectCollection $dataObjectCollection) {
+      Lib_ShashinDataObjectCollection $dataObjectCollection,
+      array $request) {
 
         $this->getSettings();
         $this->getFunctionsFacade();
+        $this->getSessionManager();
         $layoutManager = new Public_ShashinLayoutManager();
         $layoutManager->setSettings($this->settings);
         $layoutManager->setFunctionsFacade($this->functionsFacade);
         $layoutManager->setContainer($this);
         $layoutManager->setShortcode($shortcode);
         $layoutManager->setDataObjectCollection($dataObjectCollection);
-        $layoutManager->setRequest($_REQUEST);
+        $layoutManager->setRequest($request);
+        $layoutManager->setSessionManager($this->sessionManager);
         return $layoutManager;
     }
 
@@ -46,6 +58,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
 
         $this->getFunctionsFacade();
         $this->getSettings();
+        $this->getSessionManager();
         $dataObjectClassName = get_class($dataObject);
         $dataObjectClassName = str_replace('Lib_', 'Public_', $dataObjectClassName);
         $albumType = ucfirst($dataObject->albumType);
@@ -65,6 +78,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $dataObjectDisplayer->setFunctionsFacade($this->functionsFacade);
         $dataObjectDisplayer->setDataObject($dataObject);
         $dataObjectDisplayer->setThumbnail($alternativeThumbnail);
+        $dataObjectDisplayer->setSessionManager($this->sessionManager);
         return $dataObjectDisplayer;
     }
 }

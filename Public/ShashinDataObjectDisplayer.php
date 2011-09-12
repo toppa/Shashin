@@ -6,6 +6,7 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $functionsFacade;
     protected $dataObject;
     protected $thumbnail;
+    protected $sessionManager;
     protected $actualSize;
     protected $displayCroppedRequired = false;
     protected $displayCropped;
@@ -16,9 +17,11 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $imgTag;
     protected $linkHref;
     protected $linkOnClick;
-    protected $linkId;
+    protected $linkIdForImg;
+    protected $linkIdForCaption;
     protected $linkClass;
-    protected $linkTag;
+    protected $linkTagForImg;
+    protected $linkTagForCaption;
     protected $caption;
     protected $combinedTags;
     protected $validSizes = array();
@@ -67,6 +70,11 @@ abstract class Public_ShashinDataObjectDisplayer {
         $this->thumbnail = $thumbnail ? $thumbnail : $this->dataObject;
     }
 
+    public function setSessionManager(Public_ShashinSessionManager $sessionManager) {
+        $this->sessionManager = $sessionManager;
+        return $this->sessionManager;
+    }
+
     public function run() {
         try {
             $this->initializeSessionIdCounter();
@@ -89,9 +97,11 @@ abstract class Public_ShashinDataObjectDisplayer {
                 $this->setLinkOnClick();
             }
 
-            $this->setLinkId();
+            $this->setLinkIdForImg();
+            $this->setLinkIdForCaption();
             $this->setLinkClass();
-            $this->setLinkTag();
+            $this->setLinkTagForImg();
+            $this->setLinkTagForCaption();
             $this->setCaption();
             $this->setCombinedTags();
             $this->incrementSessionIdCounter();
@@ -105,8 +115,8 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     public function initializeSessionIdCounter() {
-        if (!$_SESSION['shashin_id_counter']) {
-            $_SESSION['shashin_id_counter'] = 1;
+        if (!$this->sessionManager->getThumbnailCounter()) {
+            $this->sessionManager->setThumbnailCounter(1);
         }
     }
 
@@ -185,8 +195,8 @@ abstract class Public_ShashinDataObjectDisplayer {
             . '" title="' . $this->imgAltAndTitle
             . '" width="' . $this->imgWidth
             . '" height="' . $this->imgHeight
-            . '" class="shashin3alpha_thumb_image"'
-            . ' id="shashin_thumb_image_' . $_SESSION['shashin_id_counter'] . '" />';
+            . '" class="shashinThumbnailImage"'
+            . ' id="shashinThumbnailImage_' . $this->sessionManager->getThumbnailCounter() . '" />';
     }
 
     abstract public function setLinkHref();
@@ -194,28 +204,35 @@ abstract class Public_ShashinDataObjectDisplayer {
     abstract public function setLinkOnClick();
     abstract public function setLinkOnClickVideo();
     abstract public function setLinkClass();
+    abstract public function setLinkIdForImg();
+    abstract public function setLinkIdForCaption();
 
-    public function setLinkId() {
-        $this->linkId = 'shashin_thumb_link_' . $_SESSION['shashin_id_counter'];
-        return $this->linkId;
+    public function setLinkTagForImg() {
+        $this->linkTagForImg = $this->setLinkTag($this->linkIdForImg);
+        return $this->linkTagForImg;
     }
 
-    public function setLinkTag() {
-        $this->linkTag =
+    public function setLinkTagForCaption() {
+        $this->linkTagForCaption = $this->setLinkTag($this->linkIdForCaption);
+        return $this->linkIdForCaption;
+    }
+
+    private function setLinkTag($linkId) {
+        $linkTag =
             '<a href="' . $this->linkHref
-            . '" id="' . $this->linkId . '"'
+            . '" id="' . $linkId . '"'
             . ($this->linkOnClick ? (' onclick="' . $this->linkOnClick . '"') : '')
             . ($this->linkClass ? (' class="' . $this->linkClass . '"') : '')
             . '>';
-        return $this->linkTag;
+        return $linkTag;
     }
 
     abstract public function setCaption();
 
     public function setCombinedTags() {
-        $this->combinedTags = $this->linkTag . $this->imgTag;
+        $this->combinedTags = $this->linkTagForImg . $this->imgTag;
 
-        if ($this->linkTag) {
+        if ($this->linkTagForImg) {
             $this->combinedTags .= '</a>';
         }
 
@@ -227,7 +244,8 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     public function incrementSessionIdCounter() {
-        $_SESSION['shashin_id_counter']++;
+        $thumbnailCounter = $this->sessionManager->getThumbnailCounter();
+        $this->sessionManager->setThumbnailCounter(++$thumbnailCounter);
     }
 
     public function getImgWidth() {
@@ -244,11 +262,10 @@ abstract class Public_ShashinDataObjectDisplayer {
                 if ($this->dataObject['takenTimestamp'])
                     $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
                 break;
-            case 'all':
             case 'none':
-            case 'n':
+                break;
+            case 'all':
             default:
-
                 if ($photoData['takenTimestamp'])
                     $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
                 if ($photoData['make'])
@@ -261,14 +278,10 @@ abstract class Public_ShashinDataObjectDisplayer {
                     $exifParts[] = $photoData['exposure'] . " sec";
                 if ($photoData['iso'])
                     $exifParts[] = "ISO " . $photoData['iso'];
-                break;
-//            case 'none':
-//            default:
-                // do nothing
         }
 
         if (!empty($exifParts)) {
-            $exifCaption = '<span class="shashin_caption_exif">';
+            $exifCaption = '<span class="shashinCaptionExif">';
             $exifCaption .= implode(', ', $exifParts);
             $exifCaption .= '</span>';
         }

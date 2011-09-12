@@ -22,7 +22,6 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         // there may already be entities in the description, so we want to be
         // conservative with what we replace
         $this->imgAltAndTitle = str_replace('"', '&quot;', $this->dataObject->title);
-        $this->imgAltAndTitle = __('Photo Album', 'shashin') . ': '  . $this->imgAltAndTitle;
         return $this->imgAltAndTitle;
     }
 
@@ -47,8 +46,19 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         return null;
     }
 
+    public function setLinkIdForImg() {
+        $this->linkIdForImg = 'shashinAlbumThumbLink_img_' . $this->dataObject->id;
+        return $this->linkIdForImg;
+    }
+
+    public function setLinkIdForCaption() {
+        $this->linkIdForCaption = 'shashinAlbumThumbLink_caption_' . $this->dataObject->id;
+        return $this->linkIdForCaption;
+    }
+
     public function setLinkClass() {
-        return null;
+        $this->linkClass = 'shashinAlbumThumbLink';
+        return $this->linkClass;
     }
 
     public function setCaption() {
@@ -63,22 +73,22 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
     }
 
     private function generateCaptionTitle() {
-        $caption = '<span class="shashin3alpha_album_caption_title">';
-        $caption .= $this->linkTag ? $this->linkTag : '';
+        $caption = '<span class="shashinAlbumCaptionTitle">';
+        $caption .= $this->linkTagForCaption ? $this->linkTagForCaption : '';
         $caption .= $this->dataObject->title;
-        $caption .= $this->linkTag ? '</a>' : '';
+        $caption .= $this->linkTagForCaption ? '</a>' : '';
         $caption .= '</span>' . PHP_EOL;
         return $caption;
     }
 
     private function generateCaptionDate() {
-        return '<span class="shashin3alpha_album_caption_date">'
+        return '<span class="shashinAlbumCaptionDate">'
             . $this->functionsFacade->dateI18n("M j, Y", $this->dataObject->pubDate) . '</span>' . PHP_EOL;
     }
 
     private function generateCaptionLocationAndPhotoCount() {
         if ($this->dataObject->location) {
-            $caption = '<span class="shashin3alpha_album_caption_location">';
+            $caption = '<span class="shashinAlbumCaptionLocation">';
                 if ($this->dataObject->geoPos) {
                     $caption .= '<a href="http://maps.google.com/maps?q='
                         . urlencode($this->dataObject->geoPos)

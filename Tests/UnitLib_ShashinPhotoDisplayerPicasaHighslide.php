@@ -61,7 +61,7 @@ class UnitLib_ShashinPhotoDisplayerPicasaHighslide extends UnitTestCase {
             'scheduledUpdate' => "n",
             'themeMaxSize' => 600,
             'themeMaxSingle' => 576,
-            'photosPerPage' => 18,
+            'photosPerTable' => 18,
             'captionExif' => "n",
             'imageDisplay' => "highslide",
             'highslideMax' => 640,
@@ -169,11 +169,11 @@ class UnitLib_ShashinPhotoDisplayerPicasaHighslide extends UnitTestCase {
 
     public function testSessionCounterAndSetLinkId() {
         $this->displayer->initializeSessionIdCounter();
-        $this->assertEqual(1, $_SESSION['shashin_id_counter']);
+        $this->assertEqual(1, $_SESSION['shashinThumbnailCounter']);
         $linkId = $this->displayer->setLinkId();
-        $this->assertEqual('shashin_thumb_link_1', $linkId);
+        $this->assertEqual('shashinThumbnailLink_1', $linkId);
         $this->displayer->incrementSessionIdCounter();
-        $this->assertEqual(2, $_SESSION['shashin_id_counter']);
+        $this->assertEqual(2, $_SESSION['shashinThumbnailCounter']);
     }
 
     public function testSetImgSrcWithValidCrop() {

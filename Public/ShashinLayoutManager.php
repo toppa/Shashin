@@ -10,10 +10,19 @@ class Public_ShashinLayoutManager {
     private $thumbnailCollection;
     private $shortcode;
     private $request;
+    private $sessionManager;
+    private $totalTables = 1;
+    private $currentTableNumber;
+    private $startingTableGroupCounter;
+    private $endingTableGroupCounter;
+    private $currentTableId;
+    private $startTableWithThisPhoto = 0;
+    private $endTableWithThisPhoto;
+    private $tableCellCount = 1;
     private $openingTableTag;
     private $tableCaptionTag;
     private $tableBody;
-    private $groupCounter;
+    private $highslideGroupCounter;
     private $combinedTags;
 
     public function __construct() {
@@ -49,17 +58,29 @@ class Public_ShashinLayoutManager {
         return $this->request;
     }
 
+    public function setSessionManager(Public_ShashinSessionManager $sessionManager) {
+        $this->sessionManager = $sessionManager;
+        return $this->sessionManager;
+    }
+
     public function run() {
         $this->setThumbnailCollectionIfNeeded();
         $this->setCollection();
         $this->initializeSessionGroupCounter();
-        $this->setOpeningTableTag();
-        $this->setTableCaptionTag();
-        $this->setTableBody();
-        $this->setGroupCounterHtml();
-        $this->setCombinedTags();
-        $this->incrementSessionGroupCounter();
-        return $this->combinedTags;
+        $this->setTotalTables();
+
+        for ($this->currentTableNumber = 1; $this->currentTableNumber <= $this->totalTables; $this->currentTableNumber++) {
+            $this->setStartingAndEndingTableGroupCounter();
+            $this->setCurrentTableId();
+            $this->setOpeningTableTag();
+            $this->setTableCaptionTag();
+            $this->setTableBody();
+            $this->setHighslideGroupCounter();
+            $this->setCombinedTags();
+            $this->incrementSessionGroupCounter();
+        }
+
+        return '<div class="shashinPhotoGroups">' . $this->combinedTags . '</div>' . PHP_EOL;
     }
 
     public function setThumbnailCollectionIfNeeded() {
@@ -78,174 +99,286 @@ class Public_ShashinLayoutManager {
     }
 
     public function initializeSessionGroupCounter() {
-        if (!$_SESSION['shashinGroupCounter']) {
-            $_SESSION['shashinGroupCounter'] = 1;
+        if (!$this->sessionManager->getGroupCounter() && $this->request['shashinParentTableId']) {
+            $this->sessionManager->setGroupCounter($this->request['shashinParentTableId']);
+        }
+
+        elseif (!$this->sessionManager->getGroupCounter()) {
+            $this->sessionManager->setGroupCounter(1);
+        }
+
+        return $this->sessionManager->getGroupCounter();
+    }
+
+    public function setTotalTables() {
+        if (count($this->collection) > $this->settings->photosPerTable) {
+            $this->totalTables = ceil(
+                count($this->collection)
+                / $this->settings->photosPerTable
+            );
+        }
+
+        return $this->totalTables;
+    }
+
+    public function setStartingAndEndingTableGroupCounter() {
+        if ($this->currentTableNumber == 1) {
+            $this->startingTableGroupCounter = $this->sessionManager->getGroupCounter();
+            $this->endingTableGroupCounter = $this->sessionManager->getGroupCounter() + $this->totalTables - 1;
         }
     }
 
-    public function setOpeningTableTag() {
-        $this->openingTableTag = '<table class="shashin3alpha_thumbs_table" id="shashinGroup'
-            . $_SESSION['shashinGroupCounter'] . '"';
 
-        if ($this->shortcode->position || $this->shortcode->clear) {
-            $this->openingTableTag .= $this->addStyleForOpeningTableTag();
+    public function setCurrentTableId() {
+        $this->currentTableId = 'shashinGroup_' . $this->sessionManager->getGroupCounter();
+
+        if ($this->shortcode->type == 'albumphotos' || $this->shortcode->type == 'photo') {
+             $this->currentTableId .= '_' . $this->startingTableGroupCounter;
         }
 
-        $this->openingTableTag .= '>' . PHP_EOL;
+        return $this->currentTableId;
+    }
+
+    public function setOpeningTableTag() {
+        $this->openingTableTag = '<table class="shashinThumbnailsTable" id="' . $this->currentTableId . '"'
+            . $this->addStyleForOpeningTableTag()
+            . '>'
+            . PHP_EOL;
         return $this->openingTableTag;
     }
 
     public function addStyleForOpeningTableTag() {
         $style = ' style="';
-
-        if ($this->shortcode->position == 'center') {
-            $style .= 'margin-left: auto; margin-right: auto;';
-        }
-
-        else if ($this->shortcode->position) {
-            $style .= 'float: '. $this->shortcode->position . ';"';
-        }
-
-        if ($this->shortcode->clear) {
-            $style .=  'clear: ' . $this->shortcode->clear . ';"';
-        }
-
+        $style .= $this->addStylePositionIfNeeded();
+        $style .= $this->addStyleClearIfNeeded();
+        $style .= $this->addStyleDisplayIfNeeded();
         $style .= '"';
         return $style;
     }
 
+    public function addStylePositionIfNeeded() {
+        if ($this->shortcode->position == 'center') {
+            return 'margin-left: auto; margin-right: auto;';
+        }
+
+        else if ($this->shortcode->position) {
+            return 'float: '. $this->shortcode->position . ';';
+        }
+
+        return null;
+    }
+
+    public function addStyleClearIfNeeded() {
+        if ($this->shortcode->clear) {
+            return 'clear: ' . $this->shortcode->clear . ';';
+        }
+
+        return null;
+    }
+
+    public function addStyleDisplayIfNeeded() {
+        if ($this->currentTableNumber > 1) {
+            return 'display: none;';
+        }
+
+        return null;
+    }
+
     public function setTableCaptionTag() {
-        if (is_numeric($this->request['shashinFinalPage'])) {
-            $finalPage = $this->request['shashinFinalPage'];
-        }
-
-        elseif (!$this->dataObjectCollection->getMayNeedPagination()) {
-            return null;
-        }
-
-        elseif ($this->dataObjectCollection->getCount() < $this->settings->photosPerPage) {
-            return null;
-        }
-
-        else {
-            $finalPage = ceil(
-                $this->dataObjectCollection->getCount()
-                / $this->settings->photosPerPage
-            );
-        }
+        $navLinks = array();
+        $mayNeedPreviousAndNext = $this->isPreviousOrNextLinkNeeded();
+        $navLinks = $this->addPreviousLinkIfNeeded($mayNeedPreviousAndNext, $navLinks);
+        $navLinks = $this->addReturnLinkIfNeeded($navLinks);
+        $navLinks = $this->addNextLinkIfNeeded($mayNeedPreviousAndNext, $navLinks);
 
         $this->tableCaptionTag = '<caption>';
-
-        if (is_numeric($this->request['shashinPage'])) {
-            $currentPage = $this->request['shashinPage'];
-        }
-
-        else {
-            $currentPage = 1;
-        }
-
-        $permalink = $this->functionsFacade->getPermalink();
-        $queryStringGlue = strpos($permalink, '?') ? '&amp;' : '?';
-        $firstHalfOfLink =  $permalink . $queryStringGlue;
-
-        if ($currentPage > 1) {
-            $previousLink =
-                '<a href="' . $firstHalfOfLink
-                . 'shashinPage=' . ($currentPage - 1)
-                . '&amp;shashinFinalPage=' . $finalPage
-                . '">&laquo; ' . __('Previous', 'shashin') . '</a>';
-        }
-
-        if ($currentPage < $finalPage) {
-            $nextLink =
-                '<a href="' . $firstHalfOfLink
-                . 'shashinPage=' . ($currentPage + 1)
-                . '&amp;shashinFinalPage=' . $finalPage
-                . '">' . __('Next', 'shashin') . ' &raquo;</a>';
-
-        }
-
-        if ($previousLink) {
-            $this->tableCaptionTag .= $previousLink;
-        }
-
-        if ($previousLink && $nextLink) {
-            $this->tableCaptionTag .= ' | ';
-        }
-
-        if ($nextLink) {
-            $this->tableCaptionTag .= $nextLink;
-        }
-
+        $this->tableCaptionTag .= $this->addAlbumTitleIfNeeded();
+        $this->tableCaptionTag .= $this->addNavLinksIfNeeded($navLinks);
         $this->tableCaptionTag .= '</caption>' . PHP_EOL;
         return $this->tableCaptionTag;
     }
 
+    public function isPreviousOrNextLinkNeeded() {
+        if ($this->totalTables > 1
+          && $this->sessionManager->getGroupCounter() >= $this->startingTableGroupCounter
+          && $this->sessionManager->getGroupCounter() <= $this->endingTableGroupCounter) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function addPreviousLinkIfNeeded($mayNeedPreviousAndNext, $navLinks) {
+        if ($mayNeedPreviousAndNext && ($this->sessionManager->getGroupCounter() > $this->startingTableGroupCounter)) {
+            $navLinks[] = '<a href="#" class="shashinPrevious">&laquo; ' . __('Previous', 'shashin') . '</a>';
+        }
+
+        return $navLinks;
+    }
+
+    public function addReturnLinkIfNeeded($navLinks) {
+        if ($this->request['shashinParentTableId']) {
+            $navLinks[] = '<a href="#" class="shashinReturn" id="shashinReturn_'
+                . $this->request['shashinParentTableId']
+                . '">'
+                .  __('Return', 'shashin')
+                . '</a>';
+        }
+
+        return $navLinks;
+    }
+
+    public function addNextLinkIfNeeded($mayNeedPreviousAndNext, $navLinks) {
+        if ($mayNeedPreviousAndNext && ($this->sessionManager->getGroupCounter() < $this->endingTableGroupCounter)) {
+            $navLinks[] = '<a href="#" class="shashinNext">' .  __('Next', 'shashin') . ' &raquo;</a>';
+        }
+
+        return $navLinks;
+    }
+
+    public function addAlbumTitleIfNeeded() {
+        $albumTitle = '';
+
+        if ($this->request['shashinParentAlbumTitle']) {
+            $albumTitle =
+                '<strong>'
+                . htmlentities(stripslashes($this->request['shashinParentAlbumTitle']))
+                . '</strong><br />';
+        }
+
+        return $albumTitle;
+    }
+
+    public function addNavLinksIfNeeded($navLinks) {
+        if (!empty($navLinks)) {
+            return implode(' | ', $navLinks);
+        }
+
+        return null;
+    }
+
     public function setTableBody() {
-        $cellCount = 1;
+        $this->setEndTableWithThisPhoto();
         $this->tableBody = '';
 
-        for ($i = 0; $i < count($this->collection); $i++) {
-            if ($cellCount == 1) {
-                $this->tableBody .=  '<tr>' . PHP_EOL;
-            }
-
-            $currentThumbnailCollection = null;
-
-            if (is_array($this->thumbnailCollection)) {
-                $currentThumbnailCollection = $this->thumbnailCollection[$i];
-            }
-
-            $dataObjectDisplayer = $this->container->getDataObjectDisplayer(
-                $this->shortcode,
-                $this->collection[$i],
-                $currentThumbnailCollection
-            );
-            $linkAndImageTags = $dataObjectDisplayer->run();
-            $imgWidth = $dataObjectDisplayer->getImgWidth();
-            $cellWidth = $imgWidth + $this->settings->thumbPadding;
-            $this->tableBody .= '<td><div class="shashin3alpha_thumb_div" style="width: ' . $cellWidth . 'px;">';
-            $this->tableBody .= $linkAndImageTags;
-            $this->tableBody.= '</div></td>' . PHP_EOL;
-            $cellCount++;
-
-            if ($cellCount > $this->shortcode->columns || $i == (count($this->collection) - 1)) {
-                $this->tableBody .= '</tr>' . PHP_EOL;
-                $cellCount = 1;
-            }
+        for ($i = $this->startTableWithThisPhoto; $i <= $this->endTableWithThisPhoto; $i++) {
+            $this->tableBody .= $this->startTableRowIfNeeded();
+            $dataObjectDisplayer = $this->getDataObjectDisplayerForThisCell($i);
+            $this->tableBody .= $this->addTableCell($dataObjectDisplayer);
+            $this->tableBody .= $this->closeTableRowIfNeeded($i);
+            $this->setTableCellCount($i);
+            $this->setStartTableWithThisPhotoIfNeeded($i);
         }
 
         return $this->tableBody;
     }
 
-    public function setGroupCounterHtml() {
-        if (($this->shortcode->type == 'photo' || $this->shortcode->type == 'albumphotos')
-          && $this->settings->imageDisplay == 'highslide') {
+    public function setEndTableWithThisPhoto() {
+        $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->photosPerTable - 1;
 
-            $this->groupCounter = '<script type="text/javascript">'
-                . "addHSSlideshow('group" . $_SESSION['shashinGroupCounter'] . "');</script>"
-                . PHP_EOL;
+        if (count($this->collection) < $possibleEndingPhoto) {
+             $this->endTableWithThisPhoto = count($this->collection) - 1;
         }
 
         else {
-            $this->groupCounter = null;
+            $this->endTableWithThisPhoto = $possibleEndingPhoto;
         }
 
-        return $this->groupCounter;
+        return $this->endTableWithThisPhoto;
+    }
+
+    public function startTableRowIfNeeded() {
+        if ($this->tableCellCount == 1) {
+            return '<tr>' . PHP_EOL;
+        }
+
+        return null;
+    }
+
+    public function getDataObjectDisplayerForThisCell($i) {
+        $alternateThumbnail = $this->getAlternateThumbnailIfNeeded($i);
+        return $this->container->getDataObjectDisplayer(
+            $this->shortcode,
+            $this->collection[$i],
+            $alternateThumbnail
+        );
+    }
+
+    public function getAlternateThumbnailIfNeeded($i) {
+        if (is_array($this->thumbnailCollection)) {
+            return $this->thumbnailCollection[$i];
+        }
+
+        return null;
+    }
+
+    public function addTableCell($dataObjectDisplayer) {
+        $linkAndImageTags = $dataObjectDisplayer->run();
+        $cellWidth = $dataObjectDisplayer->getImgWidth() + $this->settings->thumbPadding;
+        $cell = '<td><div class="shashinThumbnailDiv" id="shashinThumbnailDiv_'
+            . ($this->sessionManager->getThumbnailCounter() - 1)
+            . '" style="width: ' . $cellWidth . 'px;">';
+        $cell .= $linkAndImageTags;
+        $cell .= '</div></td>' . PHP_EOL;
+        return $cell;
+    }
+
+    public function closeTableRowIfNeeded($i) {
+        if ($this->tableCellCount >= $this->shortcode->columns || $i == (count($this->collection) - 1)) {
+            return '</tr>' . PHP_EOL;
+        }
+
+        return null;
+    }
+
+    public function setTableCellCount($i) {
+        if ($this->tableCellCount >= $this->shortcode->columns || $i == (count($this->collection) - 1)) {
+            $this->tableCellCount = 1;
+        }
+
+        else {
+            $this->tableCellCount++;
+        }
+
+        return $this->tableCellCount;
+    }
+
+    public function setStartTableWithThisPhotoIfNeeded($i) {
+        if ($i == $this->endTableWithThisPhoto) {
+            $this->startTableWithThisPhoto = $this->endTableWithThisPhoto + 1;
+        }
+
+        return $this->startTableWithThisPhoto;
+    }
+
+    public function setHighslideGroupCounter() {
+        $useWithShortcodeTypes = array(null, 'photo', 'albumphotos');
+        $this->highslideGroupCounter = null;
+
+        if (in_array($this->shortcode->type, $useWithShortcodeTypes)
+          && $this->settings->imageDisplay == 'highslide') {
+
+            $this->highslideGroupCounter = '<script type="text/javascript">'
+                . "addHSSlideshow('group" . $this->sessionManager->getGroupCounter() . "');</script>"
+                . PHP_EOL;
+        }
+
+        return $this->highslideGroupCounter;
     }
 
     public function setCombinedTags() {
-        $this->combinedTags =
+        $this->combinedTags .=
                 $this->openingTableTag
                 . $this->tableCaptionTag
                 . $this->tableBody
                 . '</table>'
                 . PHP_EOL
-                . $this->groupCounter;
+                . $this->highslideGroupCounter;
         return $this->combinedTags;
     }
 
     public function incrementSessionGroupCounter() {
-        $_SESSION['shashinGroupCounter']++;
+        $groupCounter = $this->sessionManager->getGroupCounter();
+        $this->sessionManager->setGroupCounter(++$groupCounter);
     }
 }

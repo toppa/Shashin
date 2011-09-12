@@ -61,6 +61,27 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
                     'type' => 'smallint unsigned',
                     'not_null' => true),
                 'picasa' => array('media$group', 'media$content', 0, 'height')),
+            'videoUrl' => array(
+                'db' => array(
+                    'type' => 'text',
+                    'not_null' => true),
+                'picasa' => array('media$group', 'media$content', 4, 'url')),
+            'videoType' => array(
+                'db' => array(
+                    'type' => 'varchar',
+                    'length' => '255',
+                    'not_null' => true),
+                'picasa' => array('media$group', 'media$content', 4, 'type')),
+            'videoWidth' => array(
+                'db' => array(
+                    'type' => 'smallint unsigned',
+                    'not_null' => true),
+                'picasa' => array('media$group', 'media$content', 4, 'width')),
+            'videoHeight' => array(
+                'db' => array(
+                    'type' => 'smallint unsigned',
+                    'not_null' => true),
+                'picasa' => array('media$group', 'media$content', 4, 'height')),
             'takenTimestamp' => array(
                 'db' => array(
                     'type' => 'int unsigned',
@@ -151,7 +172,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     public function delete() {
         $this->dbFacade->sqlDelete($this->tableName, array('id' => $this->data['id']));
         $photoData = $this->data;
-        unset($this->data);
+        $this->data = array(); // do not use unset
         return $photoData;
     }
 

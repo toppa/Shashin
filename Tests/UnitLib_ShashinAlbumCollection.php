@@ -36,11 +36,6 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
         $this->assertEqual($settings, $this->albumCollection->setSettings($settings));
     }
 
-    public function testSetRequest() {
-        $request = array('shashinPage' => 3);
-        $this->assertEqual($request, $this->albumCollection->setRequest($request));
-    }
-
     public function testSetUseThumbnailIdWithBoolean() {
         $this->assertTrue($this->albumCollection->setUseThumbnailId(true));
     }
@@ -103,33 +98,6 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
         $this->assertEqual($thumbnail, $this->albumCollection->setIdString());
     }
 
-    public function testSetMayNeedPaginationWithId() {
-        $shortcode = new MockPublic_ShashinShortcode();
-        $shortcode->setReturnValue('__get', '1,2', array('id'));
-        $this->albumCollection->setShortcode($shortcode);
-        $this->albumCollection->setIdString();
-        $this->assertFalse($this->albumCollection->setMayNeedPagination());
-    }
-
-    public function testSetMayNeedPaginationWithNoId() {
-        $shortcode = new MockPublic_ShashinShortcode();
-        $shortcode->setReturnValue('__get', null, array('id'));
-        $this->albumCollection->setShortcode($shortcode);
-        $this->albumCollection->setIdString();
-        $this->assertTrue($this->albumCollection->setMayNeedPagination());
-    }
-
-    public function testSetMayNeedPaginationWithTypeAlbumphotos() {
-        $shortcode = new MockPublic_ShashinShortcode();
-        $shortcode->setReturnValue('__get', 'albumphotos', array('type'));
-        $this->albumCollection->setShortcode($shortcode);
-        $this->assertTrue($this->albumCollection->setMayNeedPagination());
-    }
-
-    public function testGetMayNeedPagination() {
-        $this->assertFalse($this->albumCollection->getMayNeedPagination());
-    }
-
     public function testSetLimitClauseWithNoLimit() {
         $this->albumCollection->setNoLimit(true);
         $this->assertNull($this->albumCollection->setLimitClause());
@@ -144,27 +112,11 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
         $this->assertEqual($expectedResult, $this->albumCollection->setLimitClause());
     }
 
-    public function testSetLimitClauseWithPhotosPerPageSetting() {
+    public function testSetLimitClauseWithNoIdString() {
         $settings = new MockLib_ShashinSettings();
-        $photosPerPage = '5';
-        $settings->setReturnValue('__get', $photosPerPage, array('photosPerPage'));
+        $settings->setReturnValue('__get', '18', array('photosPerTable'));
         $this->albumCollection->setSettings($settings);
-        $request = array('shashinPage' => '3');
-        $this->albumCollection->setRequest($request);
-        $shortcode = new MockPublic_ShashinShortcode();
-        $shortcode->setReturnValue('__get', 'albumphotos', array('type'));
-        $this->albumCollection->setShortcode($shortcode);
-        $this->albumCollection->setMayNeedPagination();
-        $expectedResult = " limit $photosPerPage offset 10";
-        $this->assertEqual($expectedResult, $this->albumCollection->setLimitClause());
-    }
-
-    public function testSetLimitClauseWithIdString() {
-        $shortcode = new MockPublic_ShashinShortcode();
-        $shortcode->setReturnValue('__get', '1,2', array('id'));
-        $this->albumCollection->setShortcode($shortcode);
-        $this->albumCollection->setIdString();
-        $this->assertNull($this->albumCollection->setLimitClause());
+        $this->assertEqual(' limit 18', $this->albumCollection->setLimitClause());
     }
 
     public function testSetSortWithDefaultSort() {
@@ -338,20 +290,6 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
         $albumData = $this->getDataSetup();
         $rows = $this->albumCollection->getData();
         $this->assertEqual($albumData, $rows);
-    }
-
-    public function testSetCount() {
-        $dbFacade = new MockToppaDatabaseFacadeWp();
-        $dbFacade->setReturnValue('sqlSelectRow', array('count' => 41));
-        $this->albumCollection->setDbFacade($dbFacade);
-        $clonableAlbum = new MockLib_ShashinAlbum();
-        $clonableAlbum->setReturnValue('getTableName', 'wp_shashin_album');
-        $this->albumCollection->setClonableDataObject($clonableAlbum);
-        $this->assertEqual(41, $this->albumCollection->setCount());
-    }
-
-    public function testGetCount() {
-        $this->assertNull($this->albumCollection->getCount());
     }
 
     public function testGetCollection() {

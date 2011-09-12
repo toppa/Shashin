@@ -37,7 +37,7 @@ class Lib_ShashinAlbumPhotosCollection extends Lib_ShashinDataObjectCollection {
                 throw New Exception(__('"user" is not allowed for ordering with type=albumphotos', 'shashin'));
                 break;
             default:
-                    $this->orderBy = 'albumId, sourceOrder';
+                $this->orderBy = 'albumId, sourceOrder';
         }
 
         return $this->orderBy;

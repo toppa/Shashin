@@ -10,8 +10,9 @@ class ShashinWp {
 
     public function run() {
         add_action('admin_menu', array($this, 'initToolsMenu'));
-        add_action('admin_menu', array($this, 'initSettingsMenu'));
-        add_action('template_redirect', array($this, 'writePublicJsAndCss'));
+        add_action('admin_init', array($this, 'initSettingsMenu'));
+        add_action('admin_menu', array($this, 'initSettingsMenuDisplay'));
+        add_action('template_redirect', array($this, 'displayPublicJsAndCss'));
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
@@ -38,14 +39,14 @@ class ShashinWp {
             'Shashin3Alpha',
             'edit_posts',
             'Shashin3AlphaToolsMenu',
-            array($this, 'writeToolsMenu')
+            array($this, 'displayToolsMenu')
         );
 
         // from http://planetozh.com/blog/2008/04/how-to-load-javascript-with-your-wordpress-plugin/
-        add_action("admin_print_styles-$toolsPage", array($this, 'writeToolsMenuJsAndCss'));
+        add_action("admin_print_styles-$toolsPage", array($this, 'displayToolsMenuJsAndCss'));
     }
 
-    public function writeToolsMenu() {
+    public function displayToolsMenu() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
 
         if ($_REQUEST['shashinMenu'] == 'photos') {
@@ -60,22 +61,28 @@ class ShashinWp {
     }
 
     public function initSettingsMenu() {
+        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        $settingsMenuManager = $adminContainer->getSettingsMenuManager();
+        return $settingsMenuManager->initSettings();
+    }
+
+    public function initSettingsMenuDisplay() {
         add_options_page(
             'Shashin3Alpha',
             'Shashin3Alpha',
             'manage_options',
             'shashin3alpha',
-            array($this, 'writeSettingsMenu')
+            array($this, 'displaySettingsMenu')
         );
     }
 
-    public function writeSettingsMenu() {
+    public function displaySettingsMenu() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $settingsDisplayer = $adminContainer->getSettingsDisplayer();
-        echo $settingsDisplayer->run();
+        $settingsMenuManager = $adminContainer->getSettingsMenuManager();
+        echo $settingsMenuManager->displayMenu();
     }
 
-    public function writeToolsMenuJsAndCss() {
+    public function displayToolsMenuJsAndCss() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
         $docHeadUrlsFetcher = $adminContainer->getDocHeadUrlsFetcher();
         $cssUrl = $docHeadUrlsFetcher->getCssUrl();
@@ -86,21 +93,21 @@ class ShashinWp {
         wp_localize_script('shashinAdminScript', 'shashinDisplay', array('url' => $menuDisplayUrl));
     }
 
-    public function writePublicJsAndCss() {
+    public function displayPublicJsAndCss() {
         $publicContainer = new Public_ShashinContainer($this->autoLoader);
         $docHeadUrlsFetcher = $publicContainer->getDocHeadUrlsFetcher();
         $shashinCssUrl = $docHeadUrlsFetcher->getShashinCssUrl();
         wp_enqueue_style('shashinStyle', $shashinCssUrl, false, $this->version);
         $baseUrl = plugins_url('Public/Display/', __FILE__);
         wp_enqueue_script(
-            'shashinAlbumPhotosDisplayer',
-            $baseUrl . 'albumPhotosDisplayer.js',
+            'shashinPhotoGroupsDisplayer',
+            $baseUrl . 'photoGroupsDisplayer.js',
             array('jquery'),
             $this->version
         );
         $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        $albumPhotosDisplayerParams = array('ajaxurl' => admin_url('admin-ajax.php', $protocol));
-        wp_localize_script('shashinAlbumPhotosDisplayer', 'shashinAlbumPhotosDisplayer', $albumPhotosDisplayerParams);
+        $photoGroupsDisplayerParams = array('ajaxurl' => admin_url('admin-ajax.php', $protocol));
+        wp_localize_script('shashinPhotoGroupsDisplayer', 'shashinPhotoGroupsDisplayer', $photoGroupsDisplayerParams);
         $settings = $publicContainer->getSettings();
 
         if ($settings->imageDisplay == 'highslide') {
@@ -119,7 +126,6 @@ class ShashinWp {
                 'hideController' => $settings->highslideHideController
             ));
         }
-
     }
 
     public function handleShortcode($rawShortcode) {
@@ -149,7 +155,7 @@ class ShashinWp {
                     return __('Invalid shashin shortcode type: ', 'shashin') . htmlentities($shortcode->type());
             }
 
-            $layoutManager = $publicContainer->getLayoutManager($shortcode, $dataObjectCollection);
+            $layoutManager = $publicContainer->getLayoutManager($shortcode, $dataObjectCollection, $_REQUEST);
         }
 
         catch (Exception $e) {
@@ -160,7 +166,16 @@ class ShashinWp {
     }
 
     public function ajaxDisplayAlbumPhotos() {
-        echo '<table id="shashinGroup1"><tr><td>HELLO WORLD!</td></tr></table>';
+        $shortcode = array(
+            'type' => 'albumphotos',
+            'id' => $_REQUEST['shashinAlbumId'],
+            'columns' => '3',
+            'size' => 'small',
+            'order' => 'source',
+            'caption' => 'n'
+        );
+
+        echo '<div id="shashinPhotosForSelectedAlbum">' .$this->handleShortcode($shortcode) . '</div>';
         die();
     }
 

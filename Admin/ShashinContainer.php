@@ -7,7 +7,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $menuActionHandlerPhotos;
     private $menuDisplayerAlbums;
     private $menuActionHandlerAlbums;
-    private $settingsDisplayer;
+    private $settingsMenuManager;
     private $synchronizerPicasa;
     private $headTagsBuilder;
 
@@ -96,13 +96,16 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         return $this->menuActionHandlerAlbums;
     }
 
-    public function getSettingsDisplayer() {
-        if (!$this->settingsDisplayer) {
+    public function getSettingsMenuManager() {
+        if (!$this->settingsMenuManager) {
             $this->getFunctionsFacade();
-            $this->settingsDisplayer = new Admin_ShashinSettingsDisplayer($this->functionsFacade);
+            $this->getSettings();
+            $this->settingsMenuManager = new Admin_ShashinSettingsMenuManager();
+            $this->settingsMenuManager->setFunctionsFacade($this->functionsFacade);
+            $this->settingsMenuManager->setSettings($this->settings);
         }
 
-        return $this->settingsDisplayer;
+        return $this->settingsMenuManager;
     }
 
     public function getSynchronizerPicasa(array $request = null) {

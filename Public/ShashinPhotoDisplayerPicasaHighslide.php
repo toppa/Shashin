@@ -13,7 +13,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     public function setLinkHrefVideo() {
         $this->linkHref = 'http://video.google.com/googleplayer.swf?videoUrl='
-            . urlencode(html_entity_decode($this->dataObject->contentUrl))
+            . urlencode(html_entity_decode($this->dataObject->videoUrl))
             . '&amp;autoPlay=true';
         return $this->linkHref;
     }
@@ -27,11 +27,14 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
     public function setLinkOnClickVideo() {
         // need minWidth because width was not autosizing for content
         // need "preserveContent: false" so the video and audio will stop when the window is closed
-        $width = $this->settings->highslideVideoWidth;
-        $height = $this->settings->highslideVideoHeight;
-        $this->linkOnClick = 'return hs.htmlExpand(this, { objectType:\'swf\', minWidth: '
-                . ($width+20) . ', minHeight: ' . ($height+20)
-                . ", objectWidth: $width, objectHeight: $height, allowSizeReduction: false, preserveContent: false";
+        $width = $this->dataObject->videoWidth;
+        $height = $this->dataObject->videoHeight;
+        $this->linkOnClick = "return hs.htmlExpand(this, { objectType:'swf', "
+                . 'minWidth: ' . ($width+20)
+                . ', minHeight: ' . ($height+20)
+                . ", objectWidth: $width"
+                . ", objectHeight: $height"
+                . ", allowSizeReduction: false, preserveContent: false, ";
         $this->linkOnClick .= $this->appendLinkOnClick();
         return $this->linkOnClick;
     }
@@ -40,7 +43,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
         return "autoplay: "
             . $this->settings->highslideAutoplay
             . ", slideshowGroup: 'group"
-            . $_SESSION['shashinGroupCounter']
+            . $this->sessionManager->getGroupCounter()
             . "' })";
     }
 

@@ -1,65 +1,65 @@
-.shashin3alpha_thumbs_table {
+.shashinThumbnailsTable {
     margin: 5px;
 }
 
-.shashin3alpha_thumbs_table caption {
+.shashinThumbnailsTable caption {
     text-align: center;
     margin: 5px;
 }
 
-.shashin3alpha_thumbs_table td {
+.shashinThumbnailsTable td {
     vertical-align: top;
 }
 
-.shashin3alpha_thumb_div {
+.shashinThumbnailDiv {
     border: thin solid Black;
     background-color: White;
     margin-left: auto;
     margin-right: auto;
 }
 
-.shashin3alpha_thumb_div:hover {
+.shashinThumbnailDiv:hover {
     border-color: Silver;
 }
 
-.shashin3alpha_thumb_image {
+.shashinThumbnailImage {
     padding: 3px; /* this should be half of the "thumbnail image padding" setting */
     border: none;
 }
 
-.shashin3alpha_thumb_caption {
+.shashinThumbnailCaption {
     display: block;
     padding: 0px 5px 5px 5px;
     font-size: x-small;
     font-weight: bold;
 }
 
-.shashin3alpha_album_caption_title {
+.shashinAlbumCaptionTitle {
     display: block;
     padding: 0px 5px 1px 5px;
     font-size: x-small;
     font-weight: bold;
 }
 
-.shashin3alpha_album_caption_date {
+.shashinAlbumCaptionDate {
     display: block;
     padding: 0px 5px 1px 5px;
     font-size: x-small;
 }
 
-.shashin3alpha_album_caption_location {
+.shashinAlbumCaptionLocation {
     display: block;
     padding: 0px 5px 5px 5px;
     font-size: x-small;
 }
 
-.shashin3alpha_album_caption_location img {
+.shashinAlbumCaptionLocation img {
     vertical-align: middle;
     padding-right: 3px;
 }
 
 /* Applied to EXIF data in Highslide captions */
-.shashin_caption_exif {
+.shashinCaptionExif {
     display: block;
     color: darkgray;
 }
