@@ -1,4 +1,4 @@
-This is a development version of Shashin 3 and is subject to
+This is the development version of Shashin 3 and is subject to
 ongoing major changes.
 
 Information about the current stable release, Shashin 2, is here:
@@ -11,13 +11,9 @@ ALSO IMPORTANT: install the toppa-libs plugin before installing this one,
 as it contains required libraries: https://github.com/toppa/toppa-libs/
 
 GitHub contains the latest revisions of code for this project, which may
-not always be thoroughly tested.
+not always be thoroughly tested. Progress updates and working examples
+are here: http://www.toppa.com/shashin-3-development-progress/
 
-This version currently has only a working admin menu, for adding Shashin
-albums. The options menu is not built yet, and the tags are not
-implemented yet.
-
-Shashin 3 is a total rewrite from previous versions. Album syncing
-is done in a new and more efficient way. Testing of the syncing is
+Shashin 3 is a total rewrite from previous versions. Testing is
 appreciated. If you encounter a problem, please submit an issue
 ticket at https://github.com/toppa/Shashin/issues
