@@ -128,7 +128,6 @@ class Public_ShashinLayoutManager {
         }
     }
 
-
     public function setCurrentTableId() {
         $this->currentTableId = 'shashinGroup_' . $this->sessionManager->getGroupCounter();
 

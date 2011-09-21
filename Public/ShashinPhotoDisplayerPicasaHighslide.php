@@ -7,7 +7,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     public function setLinkHref() {
         $this->linkHref = $this->dataObject->contentUrl
-            . '?imgmax=' . $this->settings->highslideMax;
+            . '?imgmax=' . $this->actualExpandedSize;
         return $this->linkHref;
     }
 
@@ -54,11 +54,6 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     public function setCaption() {
         parent::setCaption();
-
-        if (!$this->shortcode->caption == 'y') {
-            return $this->caption;
-        }
-
         $this->caption .= PHP_EOL . '<div class="highslide-caption">';
 
         if ($this->dataObject->description) {

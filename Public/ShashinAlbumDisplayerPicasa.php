@@ -5,9 +5,9 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         // there's no way to know the actual sizes of Picasa album thumbnails
         // so we are limited to the available square crop sizes
         $this->displayCroppedRequired = true;
-        $this->validSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
+        $this->validThumbnailSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
         $this->validCropSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
-        $this->sizesMap = array(
+        $this->thumbnailSizesMap = array(
             'xsmall' => 72,
             'small' => 104,
             'medium' => 144,
@@ -28,8 +28,13 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
     public function setImgSrc() {
         // example: http://lh4.ggpht.com/_e1IlgcNcTSg/RomcGGX3G7E/AAAAAAAAEmQ/ccUn4vvp0Yw/s160-c/2007NewportRI.jpg
         $urlParts = explode('/s160-c/', $this->thumbnail->coverPhotoUrl);
-        $this->imgSrc = $urlParts[0] . '/s' . $this->actualSize . '-c/' . $urlParts[1];
+        $this->imgSrc = $urlParts[0] . '/s' . $this->actualThumbnailSize . '-c/' . $urlParts[1];
         return $this->imgSrc;
+    }
+
+    // degenerate
+    public function setActualExpandedSizeFromRequestedSize() {
+        return null;
     }
 
     // degenerate

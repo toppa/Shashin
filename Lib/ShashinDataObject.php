@@ -4,15 +4,16 @@ abstract class Lib_ShashinDataObject {
     protected $dbFacade;
     protected $tableName;
     protected $data = array();
-    protected $refData = array();
+    protected $refData;
     protected $videoFileTypes = array('mpg', 'avi', 'asf', 'wmv', 'mov', 'mp4');
 
-    public function __construct(ToppaDatabaseFacade &$dbFacade) {
+    public function __construct(ToppaDatabaseFacade $dbFacade, Lib_ShashinDataObjectRefData $refData) {
         $this->dbFacade = $dbFacade;
+        $this->refData = $refData;
     }
 
     public function getRefData() {
-        return $this->refData;
+        return $this->refData->getRefData();
     }
 
     public function getTableName() {
@@ -20,7 +21,7 @@ abstract class Lib_ShashinDataObject {
     }
 
     public function __get($name) {
-        if (array_key_exists($name, $this->refData)) {
+        if (array_key_exists($name, $this->getRefData())) {
             return $this->data[$name];
         }
 

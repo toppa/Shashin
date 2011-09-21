@@ -10,8 +10,7 @@ class ShashinWp {
 
     public function run() {
         add_action('admin_menu', array($this, 'initToolsMenu'));
-        add_action('admin_init', array($this, 'initSettingsMenu'));
-        add_action('admin_menu', array($this, 'initSettingsMenuDisplay'));
+        add_action('admin_menu', array($this, 'initSettingsMenu'));
         add_action('template_redirect', array($this, 'displayPublicJsAndCss'));
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
@@ -61,12 +60,6 @@ class ShashinWp {
     }
 
     public function initSettingsMenu() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $settingsMenuManager = $adminContainer->getSettingsMenuManager();
-        return $settingsMenuManager->initSettings();
-    }
-
-    public function initSettingsMenuDisplay() {
         add_options_page(
             'Shashin3Alpha',
             'Shashin3Alpha',
@@ -79,7 +72,7 @@ class ShashinWp {
     public function displaySettingsMenu() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
         $settingsMenuManager = $adminContainer->getSettingsMenuManager();
-        echo $settingsMenuManager->displayMenu();
+        echo $settingsMenuManager->run();
     }
 
     public function displayToolsMenuJsAndCss() {

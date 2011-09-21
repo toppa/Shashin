@@ -23,7 +23,7 @@
 }
 
 .shashinThumbnailImage {
-    padding: 3px; /* this should be half of the "thumbnail image padding" setting */
+    padding: 3px; /* this should be half of the "thumbnail div padding" setting */
     border: none;
 }
 
@@ -58,7 +58,6 @@
     padding-right: 3px;
 }
 
-/* Applied to EXIF data in Highslide captions */
 .shashinCaptionExif {
     display: block;
     color: darkgray;

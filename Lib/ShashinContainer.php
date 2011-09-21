@@ -4,9 +4,11 @@ class Lib_ShashinContainer {
     protected $autoLoader;
     protected $dbFacade;
     protected $functionsFacade;
+    protected $photoRefData;
     protected $clonablePhoto;
     protected $clonablePhotoCollection;
     protected $clonableAlbumPhotosCollection;
+    protected $albumRefData;
     protected $clonableAlbum;
     protected $clonableAlbumCollection;
     protected $photoCollection;
@@ -32,10 +34,19 @@ class Lib_ShashinContainer {
         return $this->functionsFacade;
     }
 
+    public function getPhotoRefData() {
+        if (!$this->photoRefData) {
+            $this->photoRefData = new Lib_ShashinPhotoRefData();
+        }
+
+        return $this->photoRefData;
+    }
+
     public function getClonablePhoto() {
         if (!$this->clonablePhoto) {
             $this->getDatabaseFacade();
-            $this->clonablePhoto = new Lib_ShashinPhoto($this->dbFacade);
+            $this->getPhotoRefData();
+            $this->clonablePhoto = new Lib_ShashinPhoto($this->dbFacade, $this->photoRefData);
         }
 
         return $this->clonablePhoto;
@@ -69,11 +80,20 @@ class Lib_ShashinContainer {
         return $this->clonableAlbumPhotosCollection;
     }
 
+    public function getAlbumRefData() {
+        if (!$this->albumRefData) {
+            $this->albumRefData = new Lib_ShashinAlbumRefData();
+        }
+
+        return $this->albumRefData;
+    }
+
     public function getClonableAlbum() {
         if (!$this->clonableAlbum) {
             $this->getDatabaseFacade();
+            $this->getAlbumRefData();
             $this->getClonablePhoto();;
-            $this->clonableAlbum = new Lib_ShashinAlbum($this->dbFacade, $this->clonablePhoto);
+            $this->clonableAlbum = new Lib_ShashinAlbum($this->dbFacade, $this->albumRefData, $this->clonablePhoto);
         }
 
         return $this->clonableAlbum;

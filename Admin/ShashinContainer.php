@@ -100,9 +100,10 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         if (!$this->settingsMenuManager) {
             $this->getFunctionsFacade();
             $this->getSettings();
-            $this->settingsMenuManager = new Admin_ShashinSettingsMenuManager();
+            $this->settingsMenuManager = new Admin_ShashinSettingsMenu();
             $this->settingsMenuManager->setFunctionsFacade($this->functionsFacade);
             $this->settingsMenuManager->setSettings($this->settings);
+            $this->settingsMenuManager->setRequest($_REQUEST);
         }
 
         return $this->settingsMenuManager;

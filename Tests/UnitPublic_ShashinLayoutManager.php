@@ -66,30 +66,29 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
     }
 
     public function testSetThumbnailCollectionIfNeededWithThumbnail() {
-        require('dataFiles/samplePhotoDataPicasa.php');
+        $expectedThumbnailCollection = array('photoData' => 'photoData');
         $shortcode = new MockPublic_ShashinShortcode();
         $shortcode->setReturnValue('__get', '1,2', array('thumbnail'));
         $this->layoutManager->setShortcode($shortcode);
         $dataObjectCollection = new MockLib_ShashinAlbumPhotosCollection();
-        $dataObjectCollection->setReturnValue('getCollectionForShortcode', $photoData);
+        $dataObjectCollection->setReturnValue('getCollectionForShortcode', $expectedThumbnailCollection);
         $this->layoutManager->setDataObjectCollection($dataObjectCollection);
-        $this->assertEqual($photoData, $this->layoutManager->setThumbnailCollectionIfNeeded());
+        $this->assertEqual($expectedThumbnailCollection, $this->layoutManager->setThumbnailCollectionIfNeeded());
     }
 
 
-    private function setupCollection() {
-        require('dataFiles/samplePhotoDataPicasa.php');
+    private function setupCollection(array $expectedCollection) {
         $shortcode = new MockPublic_ShashinShortcode();
         $this->layoutManager->setShortcode($shortcode);
         $dataObjectCollection = new MockLib_ShashinAlbumPhotosCollection();
-        $dataObjectCollection->setReturnValue('getCollectionForShortcode', $photoData);
+        $dataObjectCollection->setReturnValue('getCollectionForShortcode', $expectedCollection);
         $this->layoutManager->setDataObjectCollection($dataObjectCollection);
-        return $photoData;
+        return $expectedCollection;
     }
 
     public function testSetCollection() {
-        $photoData = $this->setupCollection();
-        $this->assertEqual($photoData, $this->layoutManager->setCollection());
+        $expectedCollection = $this->setupCollection(array('photoData1' => 'photoData1', 'photoData2' => 'photoData2'));
+        $this->assertEqual($expectedCollection, $this->layoutManager->setCollection());
     }
 
     public function testInitializeSessionGroupCounterWithParentTableId() {
@@ -122,15 +121,24 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
         $this->assertEqual(6, $this->layoutManager->initializeSessionGroupCounter());
     }
 
-
-    public function testSetTotalTables() {
-        $this->setupCollection();
+    public function testSetTotalTablesWithFewerPhotosThanGroupLimit() {
+        $this->setupCollection(array('photoData1' => 'photoData1', 'photoData2' => 'photoData2'));
         $settings = new MockLib_ShashinSettings();
         $settings->setReturnValue('__get', '18', array('photosPerTable'));
         $this->layoutManager->setSettings($settings);
         $this->assertEqual(1, $this->layoutManager->setTotalTables());
     }
-/*
+
+    public function testSetTotalTablesWithMorePhotosThanGroupLimit() {
+        $this->setupCollection(array('photoData1' => 'photoData1', 'photoData2' => 'photoData2', 'photoData3' => 'photoData3'));
+        $this->layoutManager->setCollection();
+        $settings = new MockLib_ShashinSettings();
+        $settings->setReturnValue('__get', '2', array('photosPerTable'));
+        $this->layoutManager->setSettings($settings);
+        $this->assertEqual(2, $this->layoutManager->setTotalTables());
+    }
+
+    /*
 
     public function testSetStartingAndEndingTableGroupCounter() {
 
@@ -139,7 +147,6 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
     public function testSetOpeningTableTag() {
     }
 
-    /*
 
     public function testAddStyleForOpeningTableTag() {
     }

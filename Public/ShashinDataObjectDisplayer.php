@@ -7,7 +7,8 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $dataObject;
     protected $thumbnail;
     protected $sessionManager;
-    protected $actualSize;
+    protected $actualThumbnailSize;
+    protected $actualExpandedSize;
     protected $displayCroppedRequired = false;
     protected $displayCropped;
     protected $imgHeight;
@@ -24,9 +25,11 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $linkTagForCaption;
     protected $caption;
     protected $combinedTags;
-    protected $validSizes = array();
+    protected $validThumbnailSizes = array();
     protected $validCropSizes = array();
-    protected $sizesMap = array();
+    protected $validExpandedSizes = array();
+    protected $thumbnailSizesMap = array();
+    protected $expandedSizesMap = array();
 
     /*
         'flickr' => array(
@@ -79,8 +82,9 @@ abstract class Public_ShashinDataObjectDisplayer {
         try {
             $this->initializeSessionIdCounter();
             $requestedSize = $this->shortcode->size ? $this->shortcode->size : 'xsmall';
-            $numericSize = $this->setNumericSizeFromRequestedSize($requestedSize);
-            $this->setActualSizeFromValidSizes($numericSize);
+            $numericSize = $this->setNumericThumbnailSizeFromRequestedSize($requestedSize);
+            $this->setActualThumbnailSizeFromValidSizes($numericSize);
+            $this->setActualExpandedSizeFromRequestedSize();
             $this->setDisplayCropped();
             $this->setImgWidthAndHeight();
             $this->setImgSrc();
@@ -120,9 +124,9 @@ abstract class Public_ShashinDataObjectDisplayer {
         }
     }
 
-    public function setNumericSizeFromRequestedSize($requestedSize = 'xsmall') {
-        if (array_key_exists($requestedSize, $this->sizesMap)) {
-            $numericSize = $this->sizesMap[$requestedSize];
+    public function setNumericThumbnailSizeFromRequestedSize($requestedSize = 'xsmall') {
+        if (array_key_exists($requestedSize, $this->thumbnailSizesMap)) {
+            $numericSize = $this->thumbnailSizesMap[$requestedSize];
         }
 
         else {
@@ -136,24 +140,26 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $numericSize;
     }
 
-    public function setActualSizeFromValidSizes($numericSize) {
-        foreach ($this->validSizes as $size) {
+    public function setActualThumbnailSizeFromValidSizes($numericSize) {
+        foreach ($this->validThumbnailSizes as $size) {
             if ($numericSize <= $size) {
-                $this->actualSize = $size;
+                $this->actualThumbnailSize = $size;
                 break;
             }
         }
 
-        return $this->actualSize;
+        return $this->actualThumbnailSize;
     }
 
-    public function getActualSize() {
-        return $this->actualSize;
+    abstract public function setActualExpandedSizeFromRequestedSize();
+
+    public function getActualThumbnailSize() {
+        return $this->actualThumbnailSize;
     }
 
     public function setDisplayCropped() {
         if ($this->shortcode->crop == 'y' || $this->displayCroppedRequired) {
-            if (in_array($this->actualSize, $this->validCropSizes)) {
+            if (in_array($this->actualThumbnailSize, $this->validCropSizes)) {
                 $this->displayCropped = true;
             }
         }
@@ -163,21 +169,21 @@ abstract class Public_ShashinDataObjectDisplayer {
 
     public function setImgWidthAndHeight() {
         if ($this->displayCropped) {
-            $this->imgWidth = $this->actualSize;
-            $this->imgHeight = $this->actualSize;
+            $this->imgWidth = $this->actualThumbnailSize;
+            $this->imgHeight = $this->actualThumbnailSize;
         }
 
-        // see if actualSize should be applied to the height or the width
+        // see if actualThumbnailSize should be applied to the height or the width
         elseif ($this->thumbnail->width > $this->thumbnail->height) {
-            $this->imgWidth = $this->actualSize;
-            $percentage = $this->actualSize / $this->thumbnail->width;
+            $this->imgWidth = $this->actualThumbnailSize;
+            $percentage = $this->actualThumbnailSize / $this->thumbnail->width;
             $this->imgHeight = $percentage * $this->thumbnail->height;
             settype($this->imgHeight, "int"); // drop any decimals
         }
 
         else {
-            $this->imgHeight = $this->actualSize;
-            $percentage = $this->actualSize / $this->thumbnail->height;
+            $this->imgHeight = $this->actualThumbnailSize;
+            $percentage = $this->actualThumbnailSize / $this->thumbnail->height;
             $this->imgWidth = $percentage * $this->thumbnail->width;
             settype($this->imgWidth, "int"); // drop any decimals
         }
@@ -259,7 +265,7 @@ abstract class Public_ShashinDataObjectDisplayer {
 
         switch ($this->settings->captionExif) {
             case'date':
-                if ($this->dataObject['takenTimestamp'])
+                if ($photoData['takenTimestamp'])
                     $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
                 break;
             case 'none':

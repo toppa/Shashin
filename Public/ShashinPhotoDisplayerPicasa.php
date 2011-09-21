@@ -2,14 +2,21 @@
 
 abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObjectDisplayer {
     public function __construct() {
-        $this->validSizes = array(32, 48, 64, 72, 104, 144, 150, 160, 94, 110, 128, 200, 220, 288, 320, 400, 512, 576, 640, 720, 800, 912, 1024, 1152, 1280, 1440, 1600);
+        $this->validThumbnailSizes = array(32, 48, 64, 72, 104, 144, 150, 160, 94, 110, 128, 200, 220, 288, 320, 400, 512, 576, 640, 720, 800, 912, 1024, 1152, 1280, 1440, 1600);
         $this->validCropSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
-        $this->sizesMap = array(
+        $this->thumbnailSizesMap = array(
             'xsmall' => 72,
             'small' => 160,
             'medium' => 320,
             'large' => 640,
             'xlarge' => 800,
+        );
+        $this->expandedSizesMap = array(
+            'xsmall' => 400,
+            'small' => 640,
+            'medium' => 800,
+            'large' => 1024,
+            'xlarge' => 1280,
         );
         parent::__construct();
     }
@@ -23,7 +30,7 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObje
 
     public function setImgSrc() {
         $this->imgSrc = $this->thumbnail->contentUrl;
-        $this->imgSrc .= '?imgmax=' . $this->actualSize;
+        $this->imgSrc .= '?imgmax=' . $this->actualThumbnailSize;
 
         if ($this->displayCropped) {
             $this->imgSrc .= '&amp;crop=1';
@@ -40,6 +47,24 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObje
         }
 
         return $this->caption;
+    }
+
+    public function setActualExpandedSizeFromRequestedSize() {
+        if (array_key_exists($this->settings->highslideMax, $this->expandedSizesMap)) {
+            $numericSize = $this->expandedSizesMap[$this->settings->highslideMax];
+        }
+
+        else {
+            throw New Exception("invalid size requested");
+        }
+
+        foreach ($this->expandedSizesMap as $size) {
+            if ($numericSize <= $size) {
+                $this->actualExpandedSize = $size;
+                break;
+            }
+        }
+        return $this->actualExpandedSize;
     }
 
     public function setLinkIdForImg() {

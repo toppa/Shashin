@@ -43,7 +43,7 @@ class UnitLib_ShashinAlbumDisplayerPicasa extends UnitTestCase {
 
     public function testSetImgSrc() {
         $displayer = new Lib_ShashinAlbumDisplayerPicasa($this->album);
-        $displayer->setActualSizeFromValidSizes(150);
+        $displayer->setActualThumbnailSizeFromValidSizes(150);
         $imgSrc = $displayer->setImgSrc();
         $expectedUrl = 'http://lh4.ggpht.com/-b7rVxWSjQak/RtxPV4cN95E/AAAAAAAAIg8/IivNZh6uXV8/s150-c/1999MikeAndMariaSWedding.jpg';
         $this->assertEqual($expectedUrl, $imgSrc);
