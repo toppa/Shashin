@@ -2,6 +2,7 @@
 
 class Public_ShashinShortcode {
     private $rawShortcode;
+    private $settings;
     private $data = array(
         'type' => null,
         'limit' => null,
@@ -30,6 +31,11 @@ class Public_ShashinShortcode {
         $this->rawShortcode = $rawShortcode;
     }
 
+    public function setSettings(Lib_ShashinSettings $settings) {
+        $this->settings = $settings;
+        return $this->settings;
+    }
+
     public function __get($name) {
         if (array_key_exists($name, $this->data)) {
             return $this->data[$name];
@@ -42,6 +48,8 @@ class Public_ShashinShortcode {
         $this->cleanShortcode();
         $this->checkValidKeysAndAssign();
         $this->checkValidValues();
+        $this->checkColumnsAndSizeAreNotBothMax();
+        $this->setNumericColumnsIfMax();
         return true;
     }
 
@@ -58,7 +66,7 @@ class Public_ShashinShortcode {
             }
 
             else {
-                throw New Exception(__("Invalid shortcode attribute: ", "shashin") . htmlentities($k));
+                throw New Exception(__('Invalid shortcode attribute: ', 'shashin') . htmlentities($k));
             }
         }
     }
@@ -67,7 +75,7 @@ class Public_ShashinShortcode {
         $this->isNumericOrNull($this->data['limit']);
         $this->isAStringOfNumbersOrNull($this->data['id']);
         $this->isInListOfValidValues('caption', $this->data['caption']);
-        $this->isNumericOrNull($this->data['columns']);
+        $this->isNumericOrNullOrMax($this->data['columns']);
         $this->isInListOfValidValues('order', $this->data['order']);
         $this->isInListOfValidValues('reverse', $this->data['reverse']);
         $this->isInListOfValidValues('crop', $this->data['crop']);
@@ -91,14 +99,40 @@ class Public_ShashinShortcode {
             return true;
         }
 
-        throw new Exception(htmlentities($stringOfNumbers) . " " . __("is not a valid string of numbers"));
+        throw new Exception(htmlentities($stringOfNumbers) . " " . __('is not a valid string of numbers', 'shashin'));
     }
 
-    public function isNumericOrNull($numericString = null) {
-        if (is_numeric($numericString) || !$numericString) {
+    public function isNumericOrNullOrMax($string = null) {
+        if ($string == 'max') {
             return true;
         }
 
-        throw new Exception(htmlentities($numericString) . " " . __("is not a valid numeric value"));
+        return $this->isNumericOrNull($string);
+    }
+
+    public function isNumericOrNull($string = null) {
+        if (is_numeric($string) || !$string) {
+            return true;
+        }
+
+        throw new Exception(htmlentities($string) . " " . __('is not a valid numeric value', 'shashin'));
+    }
+
+    public function checkColumnsAndSizeAreNotBothMax() {
+        if ($this->data['columns'] == 'max' && $this->data['size'] == 'max') {
+            throw New Exception (__('"size" and "columns" can not both me "max"', 'shashin'));
+        }
+
+        return true;
+    }
+
+    public function setNumericColumnsIfMax() {
+        if ($this->data['columns'] == 'max') {
+            // guess 10px for padding/margins
+            $columns = $this->settings->themeMaxSize / ($this->data['size'] + 10);
+            $this->data['columns'] = floor($columns);
+        }
+
+        return $this->data['columns'];
     }
 }

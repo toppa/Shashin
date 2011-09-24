@@ -120,13 +120,13 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         $this->getFunctionsFacade();
         $httpRequester = $this->functionsFacade->getHttpRequestObject();
         $this->synchronizerPicasa->setHttpRequester($httpRequester);
-
         $album = $this->getClonableAlbum();
         $album->albumType = 'picasa';
         $this->synchronizerPicasa->setClonableAlbum($album);
-
-        $photo = $this->getClonablePhoto();
-        $this->synchronizerPicasa->setClonablePhoto($photo);
+        $this->getClonablePhoto();
+        $this->synchronizerPicasa->setClonablePhoto($this->clonablePhoto);
+        $this->getDatabaseFacade();
+        $this->synchronizerPicasa->setDatabaseFacade($this->dbFacade);
 
         return $this->synchronizerPicasa;
     }

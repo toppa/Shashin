@@ -9,7 +9,9 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
     }
 
     public function getShortcode(array $rawShortcode) {
+        $this->getSettings();
         $shortcode = new Public_ShashinShortcode($rawShortcode);
+        $shortcode->setSettings($this->settings);
         $shortcode->cleanAndValidate();
         return $shortcode;
     }

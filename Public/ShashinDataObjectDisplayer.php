@@ -129,23 +129,33 @@ abstract class Public_ShashinDataObjectDisplayer {
             $numericSize = $this->thumbnailSizesMap[$requestedSize];
         }
 
+        elseif ($requestedSize == 'max') {
+            $numericSize = floor($this->settings->themeMaxSize / $this->shortcode->columns);
+            $numericSize -= 10; // guess for padding/margins per image
+        }
+
         else {
             $numericSize = $requestedSize;
         }
 
         if (!is_numeric($numericSize)) {
-            throw New Exception("invalid size requested");
+            throw New Exception(__('invalid size requested', 'shashin'));
         }
 
         return $numericSize;
     }
 
     public function setActualThumbnailSizeFromValidSizes($numericSize) {
-        foreach ($this->validThumbnailSizes as $size) {
-            if ($numericSize <= $size) {
-                $this->actualThumbnailSize = $size;
+        for ($i = 0; $i < count($this->validThumbnailSizes); $i++) {
+            if ($numericSize <= $this->validThumbnailSizes[$i]) {
+                $this->actualThumbnailSize = $this->validThumbnailSizes[$i - 1];
                 break;
             }
+        }
+
+        if (!$this->actualThumbnailSize) {
+            $lastPosition = count($this->validThumbnailSizes) - 1;
+            $this->actualThumbnailSize = $this->validThumbnailSizes[$lastPosition];
         }
 
         return $this->actualThumbnailSize;

@@ -11,7 +11,7 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
             'xsmall' => 72,
             'small' => 104,
             'medium' => 144,
-            'large' => 160,
+            'large' => 150,
             'xlarge' => 160,
         );
 

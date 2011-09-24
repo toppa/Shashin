@@ -149,23 +149,26 @@ class ShashinWp {
             }
 
             $layoutManager = $publicContainer->getLayoutManager($shortcode, $dataObjectCollection, $_REQUEST);
+            return $layoutManager->run();
         }
 
         catch (Exception $e) {
-            return $e->getMessage();
+            return '<strong>' . __('Shashin Error: ', 'shashin') . $e->getMessage() . '<strong>';
         }
-
-        return $layoutManager->run();
     }
 
     public function ajaxDisplayAlbumPhotos() {
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $settings = $publicContainer->getSettings();
         $shortcode = array(
             'type' => 'albumphotos',
             'id' => $_REQUEST['shashinAlbumId'],
-            'columns' => '3',
-            'size' => 'small',
-            'order' => 'source',
-            'caption' => 'n'
+            'size' => $settings->albumPhotosSize,
+            'crop' => $settings->albumPhotosCrop,
+            'columns' => $settings->albumPhotosColumns,
+            'order' => $settings->albumPhotosOrder,
+            'reverse' => $settings->albumPhotosOrderReverse,
+            'caption' => $settings->albumPhotosCaption
         );
 
         echo '<div id="shashinPhotosForSelectedAlbum">' .$this->handleShortcode($shortcode) . '</div>';

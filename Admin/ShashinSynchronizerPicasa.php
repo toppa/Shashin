@@ -16,7 +16,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         $albumRefData = $this->clonableAlbum->getRefData();
         $albumData = $this->extractFieldsFromDecodedData($decodedAlbumData['feed'], $albumRefData, 'picasa');
         $albumData['pubDate'] = ToppaFunctions::makeTimestampPhpSafe($albumData['pubDate']);
-        $albumData['lastSync'] = time();
+        $albumData['lastSync'] = $this->syncTime;
         $albumData['albumType'] = 'picasa';
 
         if ($this->includeInRandom) {
@@ -26,6 +26,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         $this->album->set($albumData);
         $this->album->flush();
         $this->syncAlbumPhotos($decodedAlbumData);
+        $this->deleteOldPhotos();
         return $this->album;
     }
 
@@ -56,7 +57,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
                 $photoData['takenTimestamp'] = ToppaFunctions::makeTimestampPhpSafe($photoData['takenTimestamp']);
                 $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
                 $photoData['sourceOrder'] = ++$sourceOrder;
-                $photoData['lastSync'] = time();
+                $photoData['lastSync'] = $this->syncTime;
                 $photo = clone $this->clonablePhoto;
                 $photo->set($photoData);
                 $photo->flush();
@@ -65,5 +66,4 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
 
         return $sourceOrder;
     }
-
 }

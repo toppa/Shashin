@@ -73,8 +73,8 @@ class Admin_ShashinSettingsMenu {
             'themeMaxSize' => array(
                 'input' => array('type' => 'text', 'size' => 4),
                 'validateFunction' => 'is_numeric',
-                'label' => __('Maximum image width for your theme', 'shashin'),
-                'help' => __('The width of your theme\'s content area in pixels, minus any padding. If you use the word "max" for the size in your Shashin tags, Shashin will use the closest, smaller available size for the images.', 'shashin'),
+                'label' => __('Content width for your theme', 'shashin'),
+                'help' => __('The maximum width available in your theme for a Shashin photo (or set of photos). This number is used to determine photo sizes when you use "max" as the number of columns or the size in a Shashin tag. Shashin will use the closest, smaller size available.', 'shashin'),
                 'group' => 'general'
             ),
             'albumPhotosSize' => array(
@@ -140,6 +140,13 @@ class Admin_ShashinSettingsMenu {
                 'validValues' => array('y', 'n'),
                 'label' => __('Show captions under each thumbnail?', 'shashin'),
                 'help' => '',
+                'group' => 'albumPhotos'
+            ),
+            'photosPerTable' => array(
+                'input' => array('type' => 'text', 'size' => 2),
+                'validateFunction' => 'is_numeric',
+                'label' => __('Number of photos per table', 'shashin'),
+                'help' => __('The number of photos to show before adding "Next" and "Previous" navigation links', 'shashin'),
                 'group' => 'albumPhotos'
             ),
             'highslideMax' => array(

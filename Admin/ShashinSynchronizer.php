@@ -2,25 +2,42 @@
 
 abstract class Admin_ShashinSynchronizer {
     protected $httpRequester;
-    protected $clonablePhoto;
     protected $clonableAlbum;
+    protected $clonablePhoto;
+    protected $dbFacade;
     protected $album;
     protected $rssUrl;
     protected $jsonUrl;
     protected $includeInRandom;
+    protected $syncTime;
 
     public function __construct() {
     }
 
-    public function setHttpRequester(&$httpRequester) {
+    public function setHttpRequester($httpRequester) {
         $this->httpRequester = $httpRequester;
     }
+
+    public function setClonableAlbum(Lib_ShashinAlbum $clonableAlbum) {
+        $this->clonableAlbum = $clonableAlbum;
+    }
+
+    public function setClonablePhoto(Lib_ShashinPhoto $clonablePhoto) {
+        $this->clonablePhoto = $clonablePhoto;
+    }
+
+    public function setDatabaseFacade(ToppaDatabaseFacade $dbFacade) {
+        $this->dbFacade = $dbFacade;
+    }
+
+    abstract public function deriveJsonUrl();
 
     public function setRssUrl($rssUrl) {
         // use strip_tags instead of htmlentities, since the URL will
         // probably contain special chars that we shouldn't convert
         $this->rssUrl = trim(strip_tags($rssUrl));
     }
+
 
     public function getJsonUrl() {
         return $this->jsonUrl;
@@ -38,13 +55,6 @@ abstract class Admin_ShashinSynchronizer {
         $this->includeInRandom = htmlentities($includeInRandom);
     }
 
-    public function setClonableAlbum(Lib_ShashinAlbum &$clonableAlbum) {
-        $this->clonableAlbum = $clonableAlbum;
-    }
-
-    public function setClonablePhoto(Lib_ShashinPhoto &$clonablePhoto) {
-        $this->clonablePhoto = $clonablePhoto;
-    }
 
     public function addSingleAlbumFromRssUrl() {
         $this->deriveJsonUrl();
@@ -67,6 +77,7 @@ abstract class Admin_ShashinSynchronizer {
     }
 
     public function syncAlbum() {
+        $this->syncTime = time();
         $response = $this->httpRequester->request($this->jsonUrl);
         $decodedAlbumData = $this->checkResponseAndDecodeAlbumData($response);
         return $this->syncAlbumForThisAlbumType($decodedAlbumData);
@@ -93,6 +104,9 @@ abstract class Admin_ShashinSynchronizer {
 
         return $decodedAlbumData;
     }
+
+    abstract public function syncAlbumForThisAlbumType(array $extractedFields);
+    abstract public function syncMultipleAlbumsForThisAlbumType(array $decodedMultipleAlbumsData);
 
     public function extractFieldsFromDecodedData(array $decodedData, array $refData, $albumType) {
         $extractedFields = array();
@@ -127,8 +141,13 @@ abstract class Admin_ShashinSynchronizer {
         return $extractedFields;
     }
 
-    abstract public function deriveJsonUrl();
-    abstract public function syncAlbumForThisAlbumType(array $extractedFields);
     abstract public function syncAlbumPhotos(array $decodedAlbumData);
-    abstract public function syncMultipleAlbumsForThisAlbumType(array $decodedMultipleAlbumsData);
+
+    public function deleteOldPhotos() {
+        $sql = 'delete from ' . $this->clonablePhoto->getTableName()
+            . ' where albumId = ' . $this->album->id
+            . ' and lastSync < ' . $this->syncTime;
+        return $this->dbFacade->executeQuery($sql);
+    }
+
 }

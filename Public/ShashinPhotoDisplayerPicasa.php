@@ -2,7 +2,7 @@
 
 abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObjectDisplayer {
     public function __construct() {
-        $this->validThumbnailSizes = array(32, 48, 64, 72, 104, 144, 150, 160, 94, 110, 128, 200, 220, 288, 320, 400, 512, 576, 640, 720, 800, 912, 1024, 1152, 1280, 1440, 1600);
+        $this->validThumbnailSizes = array(32, 48, 64, 72, 94, 104, 110, 128, 144, 150, 160, 200, 220, 288, 320, 400, 512, 576, 640, 720, 800, 912, 1024, 1152, 1280, 1440, 1600);
         $this->validCropSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
         $this->thumbnailSizesMap = array(
             'xsmall' => 72,
