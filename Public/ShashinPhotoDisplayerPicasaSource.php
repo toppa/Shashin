@@ -20,9 +20,24 @@ class Public_ShashinPhotoDisplayerPicasaSource extends Public_ShashinPhotoDispla
         return $this->linkOnClick;
     }
 
+    public function setLinkRel() {
+        $this->linkRel = null;
+        return $this->linkRel;
+    }
+
+    public function setLinkRelVideo() {
+        $this->linkRel = null;
+        return $this->linkRel;
+    }
+
     public function setLinkOnClickVideo() {
         $this->linkOnClick = null;
         return $this->linkOnClick;
+    }
+
+    public function setLinkTitle() {
+        $this->linkTitle = null;
+        return $this->linkTitle;
     }
 
     public function setLinkClass() {

@@ -21,13 +21,6 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObje
         parent::__construct();
     }
 
-    public function setImgAltAndTitle() {
-        // there may already be entities in the description, so we want to be very
-        // conservative with what we replace
-        $this->imgAltAndTitle = str_replace('"', '&quot;', $this->dataObject->description);
-        return $this->imgAltAndTitle;
-    }
-
     public function setImgSrc() {
         $this->imgSrc = $this->thumbnail->contentUrl;
         $this->imgSrc .= '?imgmax=' . $this->actualThumbnailSize;

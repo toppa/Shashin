@@ -18,11 +18,9 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         parent::__construct();
     }
 
-    public function setImgAltAndTitle() {
-        // there may already be entities in the description, so we want to be
-        // conservative with what we replace
-        $this->imgAltAndTitle = str_replace('"', '&quot;', $this->dataObject->title);
-        return $this->imgAltAndTitle;
+    public function setImgTitle() {
+        $this->imgTitle = $this->makeDescriptionQuotable();
+        return $this->imgTitle;
     }
 
     public function setImgSrc() {
@@ -30,6 +28,11 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         $urlParts = explode('/s160-c/', $this->thumbnail->coverPhotoUrl);
         $this->imgSrc = $urlParts[0] . '/s' . $this->actualThumbnailSize . '-c/' . $urlParts[1];
         return $this->imgSrc;
+    }
+
+    // degenerate
+    public function setImgClassAdditional() {
+        return null;
     }
 
     // degenerate
@@ -47,8 +50,29 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         return null;
     }
 
+    // degenerate
     public function setLinkOnClick() {
         return null;
+    }
+
+    // degenerate
+    public function setLinkRel() {
+        return null;
+    }
+
+    // degenerate
+    public function setLinkRelVideo() {
+        return null;
+    }
+
+    // degenerate
+    public function setLinkTitle() {
+        return null;
+    }
+
+    public function setLinkHref() {
+        $this->linkHref = $this->dataObject->linkUrl;
+        return $this->linkHref;
     }
 
     public function setLinkIdForImg() {

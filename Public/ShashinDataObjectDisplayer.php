@@ -14,10 +14,14 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $imgHeight;
     protected $imgWidth;
     protected $imgSrc;
-    protected $imgAltAndTitle;
+    protected $imgAlt;
+    protected $imgTitle;
+    protected $imgClassAdditional;
     protected $imgTag;
     protected $linkHref;
     protected $linkOnClick;
+    protected $linkRel;
+    protected $linkTitle;
     protected $linkIdForImg;
     protected $linkIdForCaption;
     protected $linkClass;
@@ -88,19 +92,24 @@ abstract class Public_ShashinDataObjectDisplayer {
             $this->setDisplayCropped();
             $this->setImgWidthAndHeight();
             $this->setImgSrc();
-            $this->setImgAltAndTitle();
+            $this->setImgAlt();
+            $this->setImgTitle();
+            $this->setImgClassAdditional();
             $this->setImgTag();
 
             if ($this->dataObject->isVideo()) {
                 $this->setLinkHrefVideo();
                 $this->setLinkOnClickVideo();
+                $this->setLinkRelVideo();
             }
 
             else {
                 $this->setLinkHref();
                 $this->setLinkOnClick();
+                $this->setLinkRel();
             }
 
+            $this->setLinkTitle();
             $this->setLinkIdForImg();
             $this->setLinkIdForCaption();
             $this->setLinkClass();
@@ -202,23 +211,41 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     abstract public function setImgSrc();
-    abstract public function setImgAltAndTitle();
+
+    public function setImgAlt() {
+        $this->imgAlt = $this->makeDescriptionQuotable();
+        return $this->imgAlt;
+    }
+
+    protected function makeDescriptionQuotable() {
+        // there may already be entities in the description, so we want to be very
+        // conservative with what we replace
+        return str_replace('"', '&quot;', $this->dataObject->description);
+    }
+
+    abstract public function setImgClassAdditional();
+    abstract public function setImgTitle();
 
     public function setImgTag() {
         $this->imgTag =
-            '<img src="' . $this->imgSrc
-            . '" alt="' . $this->imgAltAndTitle
-            . '" title="' . $this->imgAltAndTitle
-            . '" width="' . $this->imgWidth
-            . '" height="' . $this->imgHeight
-            . '" class="shashinThumbnailImage"'
+            '<img src="' . $this->imgSrc . '"'
+            . ' alt="' . $this->imgAlt . '"'
+            . ($this->imgTitle ? (' title="' . $this->imgTitle . '"') : '')
+            . ' width="' . $this->imgWidth . '"'
+            . ' height="' . $this->imgHeight . '"'
+            . ' class="shashinThumbnailImage'
+            . ($this->imgClassAdditional ? (' ' . $this->imgClassAdditional) : '') . '"'
             . ' id="shashinThumbnailImage_' . $this->sessionManager->getThumbnailCounter() . '" />';
+        return $this->imgTag;
     }
 
     abstract public function setLinkHref();
     abstract public function setLinkHrefVideo();
     abstract public function setLinkOnClick();
+    abstract public function setLinkRel();
     abstract public function setLinkOnClickVideo();
+    abstract public function setLinkRelVideo();
+    abstract public function setLinkTitle();
     abstract public function setLinkClass();
     abstract public function setLinkIdForImg();
     abstract public function setLinkIdForCaption();
@@ -235,10 +262,12 @@ abstract class Public_ShashinDataObjectDisplayer {
 
     private function setLinkTag($linkId) {
         $linkTag =
-            '<a href="' . $this->linkHref
-            . '" id="' . $linkId . '"'
+            '<a href="' . $this->linkHref . '"'
+            . ' id="' . $linkId . '"'
             . ($this->linkOnClick ? (' onclick="' . $this->linkOnClick . '"') : '')
             . ($this->linkClass ? (' class="' . $this->linkClass . '"') : '')
+            . ($this->linkRel ? (' rel="' . $this->linkRel . '"') : '')
+            . ($this->linkTitle ? (' title="' . $this->linkTitle . '"') : '')
             . '>';
         return $linkTag;
     }

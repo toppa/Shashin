@@ -27,8 +27,7 @@ class ShashinWp {
         $activationStatus = $installer->run();
 
         if ($activationStatus !== true) {
-            // trigger_error is how you indicate an activation problem in WordPress
-            trigger_error(__('Activation failed: ', 'shashin') . $activationStatus, E_USER_ERROR);
+            wp_die(__('Activation of Shashin failed. Error Message: ', 'shashin') . $activationStatus, E_USER_ERROR);
         }
     }
 

@@ -31,21 +31,19 @@ class Lib_ShashinSettings {
         return $this->data;
     }
 
-    public function set(array $newSettings) {
-        $oldSettings = $this->refresh();
+    public function set(array $newSettings, $preferExisting = false) {
+        $this->refresh();
 
-        if (is_array($oldSettings)) {
-            $this->data = array_merge($oldSettings, $newSettings);
+        if ($preferExisting) {
+            $this->data = array_merge($newSettings, $this->data);
         }
 
         else {
-            $this->data = $newSettings;
+            $this->data = array_merge($this->data, $newSettings);
         }
 
-        if ($this->data != $oldSettings) {
-            if (!$this->functionsFacade->setSetting($this->name, $this->data)) {
-                throw new Exception(__('Failed to update settings', 'shashin'));
-            }
+        if (!$this->functionsFacade->setSetting($this->name, $this->data)) {
+            throw new Exception(__('Failed to update settings', 'shashin'));
         }
 
         return $this->data;

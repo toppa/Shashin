@@ -5,6 +5,16 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
         parent::__construct();
     }
 
+    public function setImgTitle() {
+        $this->imgTitle = $this->makeDescriptionQuotable();
+        return $this->imgTitle;
+    }
+
+    public function setImgClassAdditional() {
+        $this->imgClassAdditional = null;
+        return $this->imgClassAdditional;
+    }
+
     public function setLinkHref() {
         $this->linkHref = $this->dataObject->contentUrl
             . '?imgmax=' . $this->actualExpandedSize;
@@ -45,6 +55,21 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
             . ", slideshowGroup: 'group"
             . $this->sessionManager->getGroupCounter()
             . "' })";
+    }
+
+    public function setLinkRel() {
+        $this->linkRel = null;
+        return $this->linkRel;
+    }
+
+    public function setLinkRelVideo() {
+        $this->linkRel = null;
+        return $this->linkRel;
+    }
+
+    public function setLinkTitle() {
+        $this->linkTitle = null;
+        return $this->linkTitle;
     }
 
     public function setLinkClass() {

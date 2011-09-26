@@ -47,6 +47,23 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('Highslide is included with Shashin and works "out of the box." If you select "Use another viewer," you are responsible for implementing your own image viewer. See "Highslide Settings" and "Other Viewer Settings" below.', 'shashin'),
                 'group' => 'general'
             ),
+            'expandedImageSize' => array(
+                'input' => array(
+                    'type' => 'select',
+                    'subgroup' =>  array(
+                        'xsmall' => __('X-Small (~400px)', 'shashin'),
+                        'small' => __('Small (~600px)', 'shashin'),
+                        'medium' => __('Medium (~800px)', 'shashin'),
+                        'large' => __('Large (~1000px)', 'shashin'),
+                        'xlarge' => __('X-Large (~1200px)', 'shashin')
+                    )
+                ),
+                'validateFunction' => 'in_array',
+                'validValues' => array('xsmall', 'small', 'medium', 'large', 'xlarge'),
+                'label' => __('Expanded image size', 'shashin'),
+                'help' => __('The expanded display size for a photo when its thumbnail is clicked. The exact size depends on the sizes available from your photo hosting service.', 'shashin'),
+                'group' => 'general'
+            ),
             'scheduledUpdate' => array(
                 'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
                 'validateFunction' => 'in_array',
@@ -91,7 +108,7 @@ class Admin_ShashinSettingsMenu {
                 'validateFunction' => 'in_array',
                 'validValues' => array('xsmall', 'small', 'medium', 'large', 'xlarge'),
                 'label' => __('Photo thumbnail size', 'shashin'),
-                'help' => __('The exact size displayed depends on the photo hosting service you are using', 'shashin'),
+                'help' => __('The exact size displayed depends on the sizes available from your photo hosting service.', 'shashin'),
                 'group' => 'albumPhotos'
             ),
             'albumPhotosCrop' => array(
@@ -148,23 +165,6 @@ class Admin_ShashinSettingsMenu {
                 'label' => __('Number of photos per table', 'shashin'),
                 'help' => __('The number of photos to show before adding "Next" and "Previous" navigation links', 'shashin'),
                 'group' => 'albumPhotos'
-            ),
-            'highslideMax' => array(
-                'input' => array(
-                    'type' => 'select',
-                    'subgroup' =>  array(
-                        'xsmall' => __('X-Small (~400px)', 'shashin'),
-                        'small' => __('Small (~600px)', 'shashin'),
-                        'medium' => __('Medium (~800px)', 'shashin'),
-                        'large' => __('Large (~1000px)', 'shashin'),
-                        'xlarge' => __('X-Large (~1200px)', 'shashin')
-                    )
-                ),
-                'validateFunction' => 'in_array',
-                'validValues' => array('xsmall', 'small', 'medium', 'large', 'xlarge'),
-                'label' => __('Photo thumbnail size', 'shashin'),
-                'help' => __('The exact size displayed depends on the sizes available from your photo hosting service you are using.', 'shashin'),
-                'group' => 'highslide'
             ),
             'highslideAutoplay' => array(
                 'input' => array('type' => 'radio', 'subgroup' => array('true' => __('Yes', 'shashin'), 'false' => __('No', 'shashin'))),

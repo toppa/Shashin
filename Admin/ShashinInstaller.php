@@ -12,6 +12,7 @@ class Admin_ShashinInstaller {
     private $settings;
     private $settingsDefaults = array(
         'imageDisplay' => 'highslide',
+        'expandedImageSize' => 'medium',
         'scheduledUpdate' => 'n',
         'captionExif' => 'all',
         'thumbPadding' => 6,
@@ -23,7 +24,6 @@ class Admin_ShashinInstaller {
         'albumPhotosOrder' => 'source',
         'albumPhotosOrderReverse' => 'n',
         'albumPhotosCaption' => 'n',
-        'highslideMax' => 'medium',
         'highslideAutoplay' => 'false',
         'highslideInterval' => 5000,
         'highslideRepeat' => '1',
@@ -73,7 +73,7 @@ class Admin_ShashinInstaller {
             $this->verifyAlbumTable();
             $this->createPhotoTable();
             $this->verifyPhotoTable();
-            $this->setDefaultSettings();
+            $this->updateSettings();
         }
 
         catch (Exception $e) {
@@ -111,7 +111,7 @@ class Admin_ShashinInstaller {
         return $result;
     }
 
-    public function setDefaultSettings() {
-        return $this->settings->set($this->settingsDefaults);
+    public function updateSettings() {
+        return $this->settings->set($this->settingsDefaults, true);
     }
 }
