@@ -13,11 +13,11 @@ class Admin_ShashinInstaller {
     private $settingsDefaults = array(
         'imageDisplay' => 'highslide',
         'expandedImageSize' => 'medium',
+        'defaultPhotoLimit' => 18,
         'scheduledUpdate' => 'n',
         'captionExif' => 'all',
         'thumbPadding' => 6,
         'themeMaxSize' => 600,
-        'photosPerTable' => 18,
         'albumPhotosSize' => 'small',
         'albumPhotosCrop' => 'y',
         'albumPhotosColumns' => '3',

@@ -114,7 +114,7 @@ class UnitLib_ShashinAlbumCollection extends UnitTestCase {
 
     public function testSetLimitClauseWithNoIdString() {
         $settings = new MockLib_ShashinSettings();
-        $settings->setReturnValue('__get', '18', array('photosPerTable'));
+        $settings->setReturnValue('__get', '18', array('defaultPhotoLimit'));
         $this->albumCollection->setSettings($settings);
         $this->assertEqual(' limit 18', $this->albumCollection->setLimitClause());
     }

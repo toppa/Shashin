@@ -111,10 +111,10 @@ class Public_ShashinLayoutManager {
     }
 
     public function setTotalTables() {
-        if (count($this->collection) > $this->settings->photosPerTable) {
+        if (count($this->collection) > $this->settings->defaultPhotoLimit) {
             $this->totalTables = ceil(
                 count($this->collection)
-                / $this->settings->photosPerTable
+                / $this->settings->defaultPhotoLimit
             );
         }
 
@@ -273,7 +273,7 @@ class Public_ShashinLayoutManager {
     }
 
     public function setEndTableWithThisPhoto() {
-        $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->photosPerTable - 1;
+        $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->defaultPhotoLimit - 1;
 
         if (count($this->collection) < $possibleEndingPhoto) {
              $this->endTableWithThisPhoto = count($this->collection) - 1;

@@ -109,7 +109,7 @@ abstract class Lib_ShashinDataObjectCollection {
         }
 
         elseif (!$this->idString) {
-            $this->limitClause = " limit " . $this->settings->photosPerTable;
+            $this->limitClause = " limit " . $this->settings->defaultPhotoLimit;
         }
 
         return $this->limitClause;

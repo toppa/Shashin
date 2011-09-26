@@ -64,6 +64,13 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('The expanded display size for a photo when its thumbnail is clicked. The exact size depends on the sizes available from your photo hosting service.', 'shashin'),
                 'group' => 'general'
             ),
+            'defaultPhotoLimit' => array(
+                'input' => array('type' => 'text', 'size' => 2),
+                'validateFunction' => 'is_numeric',
+                'label' => __('Default maximum number of photos to show', 'shashin'),
+                'help' => __('The maximum number of photos to show if no photo IDs are provided and no limit is specified. This is also used to control the number of photos per set in a display of album photos.', 'shashin'),
+                'group' => 'general'
+            ),
             'scheduledUpdate' => array(
                 'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
                 'validateFunction' => 'in_array',
@@ -157,13 +164,6 @@ class Admin_ShashinSettingsMenu {
                 'validValues' => array('y', 'n'),
                 'label' => __('Show captions under each thumbnail?', 'shashin'),
                 'help' => '',
-                'group' => 'albumPhotos'
-            ),
-            'photosPerTable' => array(
-                'input' => array('type' => 'text', 'size' => 2),
-                'validateFunction' => 'is_numeric',
-                'label' => __('Number of photos per table', 'shashin'),
-                'help' => __('The number of photos to show before adding "Next" and "Previous" navigation links', 'shashin'),
                 'group' => 'albumPhotos'
             ),
             'highslideAutoplay' => array(

@@ -61,7 +61,7 @@ class UnitLib_ShashinPhotoDisplayerPicasaHighslide extends UnitTestCase {
             'scheduledUpdate' => "n",
             'themeMaxSize' => 600,
             'themeMaxSingle' => 576,
-            'photosPerTable' => 18,
+            'defaultPhotoLimit' => 18,
             'captionExif' => "n",
             'imageDisplay' => "highslide",
             'highslideMax' => 640,

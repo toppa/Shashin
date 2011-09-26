@@ -124,7 +124,7 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
     public function testSetTotalTablesWithFewerPhotosThanGroupLimit() {
         $this->setupCollection(array('photoData1' => 'photoData1', 'photoData2' => 'photoData2'));
         $settings = new MockLib_ShashinSettings();
-        $settings->setReturnValue('__get', '18', array('photosPerTable'));
+        $settings->setReturnValue('__get', '18', array('defaultPhotoLimit'));
         $this->layoutManager->setSettings($settings);
         $this->assertEqual(1, $this->layoutManager->setTotalTables());
     }
@@ -133,7 +133,7 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
         $this->setupCollection(array('photoData1' => 'photoData1', 'photoData2' => 'photoData2', 'photoData3' => 'photoData3'));
         $this->layoutManager->setCollection();
         $settings = new MockLib_ShashinSettings();
-        $settings->setReturnValue('__get', '2', array('photosPerTable'));
+        $settings->setReturnValue('__get', '2', array('defaultPhotoLimit'));
         $this->layoutManager->setSettings($settings);
         $this->assertEqual(2, $this->layoutManager->setTotalTables());
     }
@@ -164,7 +164,7 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
         $collection->setReturnValue('getCount', 5);
         $this->layoutManager->setDataObjectCollection($collection);
         $settings = new MockLib_ShashinSettings();
-        $settings->setReturnValue('__get',10, 'photosPerTable');
+        $settings->setReturnValue('__get',10, 'defaultPhotoLimit');
         $this->layoutManager->setSettings($settings);
         $this->assertNull($this->layoutManager->setTableCaptionTag());
     }
@@ -175,7 +175,7 @@ class UnitPublic_ShashinLayoutManager extends UnitTestCase {
         $collection->setReturnValue('getCount', 11);
         $this->layoutManager->setDataObjectCollection($collection);
         $settings = new MockLib_ShashinSettings();
-        $settings->setReturnValue('__get',10, 'photosPerTable');
+        $settings->setReturnValue('__get',10, 'defaultPhotoLimit');
         $this->layoutManager->setSettings($settings);
         $this->assertEqual('<caption> Next1</caption>' . PHP_EOL, $this->layoutManager->setTableCaptionTag());
     }
