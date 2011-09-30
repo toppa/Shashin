@@ -43,8 +43,8 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObje
     }
 
     public function setActualExpandedSizeFromRequestedSize() {
-        if (array_key_exists($this->settings->highslideMax, $this->expandedSizesMap)) {
-            $numericSize = $this->expandedSizesMap[$this->settings->highslideMax];
+        if (array_key_exists($this->settings->expandedImageSize, $this->expandedSizesMap)) {
+            $numericSize = $this->expandedSizesMap[$this->settings->expandedImageSize];
         }
 
         else {

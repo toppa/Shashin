@@ -27,7 +27,12 @@ class Lib_ShashinSettings {
     }
 
     public function refresh() {
-        $this->data = $this->functionsFacade->getSetting($this->name);
+        $oldSettings = $this->functionsFacade->getSetting($this->name);
+
+        if (is_array($oldSettings)) {
+            $this->data = $oldSettings;
+        }
+
         return $this->data;
     }
 

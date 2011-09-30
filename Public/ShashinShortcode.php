@@ -6,6 +6,7 @@ class Public_ShashinShortcode {
     private $data = array(
         'type' => null,
         'limit' => null,
+        'offset' => null,
         'size' => null,
         'id' => null,
         'caption' => null,
@@ -73,6 +74,7 @@ class Public_ShashinShortcode {
 
     public function checkValidValues() {
         $this->isNumericOrNull($this->data['limit']);
+        $this->isNumericOrNull($this->data['offset']);
         $this->isAStringOfNumbersOrNull($this->data['id']);
         $this->isInListOfValidValues('caption', $this->data['caption']);
         $this->isNumericOrNullOrMax($this->data['columns']);

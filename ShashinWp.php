@@ -4,17 +4,8 @@ class ShashinWp {
     private $version = '3.0';
     private $autoLoader;
 
-    public function __construct(ToppaAutoLoader &$autoLoader) {
+    public function __construct(ToppaAutoLoader $autoLoader) {
         $this->autoLoader = $autoLoader;
-    }
-
-    public function run() {
-        add_action('admin_menu', array($this, 'initToolsMenu'));
-        add_action('admin_menu', array($this, 'initSettingsMenu'));
-        add_action('template_redirect', array($this, 'displayPublicJsAndCss'));
-        add_shortcode('shashin', array($this, 'handleShortcode'));
-        add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
-        add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
     }
 
     public function getVersion() {
@@ -27,8 +18,22 @@ class ShashinWp {
         $activationStatus = $installer->run();
 
         if ($activationStatus !== true) {
-            wp_die(__('Activation of Shashin failed. Error Message: ', 'shashin') . $activationStatus, E_USER_ERROR);
+            wp_die(__('Activation of Shashin failed. Error Message: ', 'shashin') . $activationStatus);
         }
+    }
+
+    public function run() {
+        add_action('admin_menu', array($this, 'initToolsMenu'));
+        add_action('admin_menu', array($this, 'initSettingsMenu'));
+        add_action('template_redirect', array($this, 'displayPublicJsAndCss'));
+        add_shortcode('shashin', array($this, 'handleShortcode'));
+        add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
+        add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
+        add_action('media_buttons', array($this, 'addShashinMediaButton'), 20);
+        add_action('media_upload_shashin_photos', array($this, 'initPhotoMediaMenu'));
+        add_action('media_upload_shashin_albums', array($this, 'initAlbumMediaMenu'));
+        add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
+
     }
 
     public function initToolsMenu() {
@@ -174,5 +179,113 @@ class ShashinWp {
         die();
     }
 
+    public function addShashinMediaButton() {
+        global $post_ID, $temp_ID;
+        $iframeId = (int) (0 == $post_ID ? $temp_ID : $post_ID);
+
+        $photoBrowserUrl = 'media-upload.php?post_id='
+            . $iframeId
+            . '&amp;type=shashin&amp;tab=shashin_photos&amp;TB_iframe=true';
+        $title = __('Add Shashin photos', 'shashin');
+        $imageUrl = plugins_url('Admin/Display/images/', __FILE__) .'picasa.gif';
+        $markup = '<a href="%s" class="thickbox" title="%s"><img src="%s" alt="%s"></a>';
+        printf($markup, $photoBrowserUrl, $title, $imageUrl, $title);
+        return true;
+    }
+
+    public function initPhotoMediaMenu() {
+        add_action('admin_print_styles', array($this, 'displayMediaMenuCss'));
+        wp_iframe(array($this, 'displayPhotoMediaMenu'));
+    }
+
+    public function initAlbumMediaMenu() {
+        add_action('admin_print_styles', array($this, 'displayMediaMenuCss'));
+        wp_iframe(array($this, 'displayAlbumMediaMenu'));
+    }
+
+    public function displayMediaMenuCss() {
+        $filename = array_shift(explode('?', basename($_SERVER['REQUEST_URI'])));
+        if ($filename == 'media-upload.php' && strstr($_SERVER['REQUEST_URI'], 'type=shashin')) {
+            wp_admin_css('css/media');
+        }
+
+        $cssUrl = plugins_url('Admin/Display/', __FILE__) .'menuMedia.css';
+        wp_enqueue_style('shashinMediaMenuStyle', $cssUrl, false, $this->version);
+    }
+
+    public function displayPhotoMediaMenu() {
+        $this->displayMediaMenu('Admin/Display/menuMediaPhotos.php');
+    }
+
+    public function displayAlbumMediaMenu() {
+        $this->displayMediaMenu('Admin/Display/menuMediaAlbums.php');
+    }
+
+    private function displayMediaMenu($templatePath) {
+        add_filter('media_upload_tabs', array($this, 'addMediaMenuTabs'));
+        media_upload_header();
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $rawShortcode = array('type' => 'album', 'order' => 'date', 'reverse' => 'y');
+        $shortcode = $publicContainer->getShortcode($rawShortcode);
+        $albumCollection = $publicContainer->getClonableAlbumCollection();
+        $albumCollection->setNoLimit(true);
+        $albums = $albumCollection->getCollectionForShortcode($shortcode);
+        $loaderUrl = plugins_url('Admin/Display/', __FILE__) .'loader.gif';
+        require_once $templatePath;
+    }
+
+    public function addMediaMenuTabs() {
+        return array(
+            'shashin_photos' => __('Photos', 'shashin'),
+            'shashin_albums' => __('Albums', 'shashin')
+        );
+    }
+
+    public function ajaxGetPhotosForMediaMenu() {
+        $rawShortcode = array('limit' => 32);
+
+        if ($_REQUEST['shashinAlbumId'] && is_numeric($_REQUEST['shashinAlbumId'])) {
+            $rawShortcode['id'] = $_REQUEST['shashinAlbumId'];
+            $rawShortcode['type'] = 'albumphotos';
+        }
+
+        else {
+            $rawShortcode['type'] = 'photo';
+        }
+
+        if ($_REQUEST['shashinOrder'] && is_string($_REQUEST['shashinOrder'])) {
+            $rawShortcode['order'] = $_REQUEST['shashinOrder'];
+        }
+
+        if ($_REQUEST['shashinReverse'] && is_string($_REQUEST['shashinReverse'])) {
+            $rawShortcode['reverse'] = $_REQUEST['shashinReverse'];
+        }
+
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $shortcode = $publicContainer->getShortcode($rawShortcode);
+        $photoCollection = $publicContainer->getClonablePhotoCollection();
+        $photoCount = $photoCollection->getCountForShortcode($shortcode);
+        $totalPages = ceil($photoCount / 32);
+        $page = (isset($_REQUEST['shashinPage']) && is_numeric($_REQUEST['shashinPage'])) ? $_REQUEST['shashinPage'] : 1;
+        $rawShortcode['limit'] = 32;
+        $rawShortcode['offset'] = ($page - 1) * 32;
+        $shortcode = $publicContainer->getShortcode($rawShortcode);
+        $photoCollection = $publicContainer->getClonablePhotoCollection();
+        $collection = $photoCollection->getCollectionForShortcode($shortcode);
+        $photos = array();
+        foreach ($collection as $photo) {
+            $photos[] = array(
+                'id' => $photo->id,
+                'description' => $photo->description,
+                'contentUrl' => $photo->contentUrl,
+            );
+        }
+        echo json_encode(array(
+            'photos' => $photos,
+            'totalPages' => $totalPages,
+            'page' => $page
+        ));
+        exit;
+    }
 }
 

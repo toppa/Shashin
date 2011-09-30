@@ -104,9 +104,11 @@ abstract class Lib_ShashinDataObjectCollection {
             $this->limitClause = null;
         }
 
-        elseif ($this->shortcode->limit) {
-            $this->limitClause = " limit " . $this->shortcode->limit;
-        }
+        elseif ($this->shortcode->limit || $this->shortcode->offset) {
+            $this->limitClause = " limit ";
+            $this->limitClause .= ($this->shortcode->offset) ? ($this->shortcode->offset . ',') : '';
+            $this->limitClause .= ($this->shortcode->limit) ? $this->shortcode->limit : '';
+                    }
 
         elseif (!$this->idString) {
             $this->limitClause = " limit " . $this->settings->defaultPhotoLimit;
@@ -206,5 +208,19 @@ abstract class Lib_ShashinDataObjectCollection {
         );
 
         return $rows;
+    }
+
+    public function getCountForShortcode(Public_ShashinShortcode $shortcode) {
+        $this->collection = array(); // make sure we're empty
+        $this->setShortcode($shortcode);
+        $this->setProperties();
+        $row = $this->dbFacade->sqlSelectRow(
+            $this->getTableName(),
+            array('count(id) as count'),
+            null,
+            $this->sqlConditions
+        );
+
+        return $row['count'];
     }
 }

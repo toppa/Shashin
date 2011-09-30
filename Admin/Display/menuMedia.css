@@ -1,0 +1,138 @@
+html {
+    background: #fff;
+}
+
+form#shashinMediaMenu {
+    width: 608px;
+    margin: 1em auto;
+}
+
+#shashinMediaMenuPhotoGrid img, #shashinMediaMenuSelectedPhotos img {
+    float: left;
+    padding: 2px;
+}
+
+#shashinMediaMenuShortcodeCriteria select {
+    width: 80px;
+}
+
+#shashinMediaMenu img:hover {
+    cursor: pointer;
+}
+
+#shashinMediaMenuFilter {
+    height: 60px;
+}
+
+#shashinMediaMenuFilter div {
+    display: block;
+    float: left;
+    margin-right: 10px;
+}
+
+div#shashinMediaMenuNav {
+    float: right;
+    margin: 0;
+}
+
+#shashinMediaMenuPhotoGrid {
+    height: 300px;
+    width: 608px;
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: .7em;
+    line-height: 1em;
+}
+
+#shashinMediaMenuLoading {
+    position: absolute;
+    width: 606px;
+    height: 168px;
+    background: #f9f9f9;
+    border: 1px solid #dfdfdf;
+    text-align: center;
+    padding-top: 130px;
+}
+
+#shashinMediaMenuLoading img {
+    margin: 0 auto;
+    background: #f9f9f9;
+    display: block;
+}
+
+#shashinMediaMenuPhotoPreview {
+    height: 300px;
+    width: 300px;
+    position: absolute;
+    display: none;
+    background: white;
+    text-align: center;
+}
+
+#shashinMediaMenuPhotoPreview img {
+    margin: 0 auto;
+    float: none;
+}
+
+#shashinMediaMenuSelectedPhotos {
+    float: left;
+    width: 260px;
+}
+
+#shashinMediaMenuShortcodeCriteria {
+    float: right;
+}
+
+#shashinMediaMenuShortcodeCriteriaTable {
+    padding: 0;
+}
+
+#shashinMediaMenuAlbumsList {
+    margin-right: 5px;
+}
+
+#shashinMediaMenuAlbumsSelected {
+    margin-left: 5px;
+}
+
+.shashinMediaMenuAlbums {
+    width: 299px;
+    float: left;
+}
+
+.shashinMediaMenuAlbums ul {
+    overflow: auto;
+    max-height: 322px;
+}
+
+.shashinMediaMenuAlbums ul a {
+    text-decoration: none;
+    display: block;
+    padding: 2px 5px;
+    font-weight: bold;
+}
+
+.shashinMediaMenuAlbums ul li {
+    margin: 0;
+}
+
+.shashinMediaMenuAlbums ul a:hover {
+    background: #eee;
+}
+
+.shashinMediaMenuAlbums ul span {
+    color: #666;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+#shashinMediaMenuAlbumShortcodeCriteria {
+    border-top: 1px solid #dfdfdf;
+    margin-top: 10px;
+}
+
+
+
+
+
+
