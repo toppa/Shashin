@@ -5,6 +5,16 @@ class Public_ShashinPhotoDisplayerPicasaSource extends Public_ShashinPhotoDispla
         parent::__construct();
     }
 
+    public function setImgTitle() {
+        $this->imgTitle = $this->makeDescriptionQuotable();
+        return $this->imgTitle;
+    }
+
+    public function setImgClassAdditional() {
+        $this->imgClassAdditional = null;
+        return $this->imgClassAdditional;
+    }
+
     public function setLinkHref() {
         $this->linkHref = $this->dataObject->linkUrl;
         return $this->linkHref;

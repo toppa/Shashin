@@ -9,9 +9,10 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $menuActionHandlerAlbums;
     private $settingsMenuManager;
     private $synchronizerPicasa;
-    private $headTagsBuilder;
+    private $headTags;
+    private $mediaMenu;
 
-    public function __construct(&$autoLoader) {
+    public function __construct($autoLoader) {
         parent::__construct($autoLoader);
     }
 
@@ -131,11 +132,24 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         return $this->synchronizerPicasa;
     }
 
-    public function getDocHeadUrlsFetcher() {
-        if (!$this->headTagsBuilder) {
+    public function getHeadTags() {
+        if (!$this->headTags) {
             $this->getFunctionsFacade();
-            $this->headTagsBuilder = new Admin_ShashinDocHeadUrlsFetcher($this->functionsFacade);
+            $this->headTags = new Admin_ShashinHeadTags($this->functionsFacade);
         }
-        return $this->headTagsBuilder;
+        return $this->headTags;
     }
+
+    public function getMediaMenu($version, array $request) {
+        if (!$this->mediaMenu) {
+            $this->getFunctionsFacade();
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $this->mediaMenu = new Admin_ShashinMediaMenu($version);
+            $this->mediaMenu->setFunctionsFacade($this->functionsFacade);
+            $this->mediaMenu->setRequest($request);
+            $this->mediaMenu->setContainer($publicContainer);
+        }
+        return $this->mediaMenu;
+    }
+
 }

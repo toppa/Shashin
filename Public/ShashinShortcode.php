@@ -1,7 +1,7 @@
 <?php
 
 class Public_ShashinShortcode {
-    private $rawShortcode;
+    private $arrayShortcode;
     private $settings;
     private $data = array(
         'type' => null,
@@ -28,8 +28,8 @@ class Public_ShashinShortcode {
         'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit'),
     );
 
-    public function __construct(array $rawShortcode) {
-        $this->rawShortcode = $rawShortcode;
+    public function __construct(array $arrayShortcode) {
+        $this->arrayShortcode = $arrayShortcode;
     }
 
     public function setSettings(Lib_ShashinSettings $settings) {
@@ -55,13 +55,13 @@ class Public_ShashinShortcode {
     }
 
     public function cleanShortcode() {
-        array_walk($this->rawShortcode, array('ToppaFunctions', 'trimCallback'));
-        array_walk($this->rawShortcode, array('ToppaFunctions', 'strtolowerCallback'));
-        return $this->rawShortcode;
+        array_walk($this->arrayShortcode, array('ToppaFunctions', 'trimCallback'));
+        array_walk($this->arrayShortcode, array('ToppaFunctions', 'strtolowerCallback'));
+        return $this->arrayShortcode;
     }
 
     public function checkValidKeysAndAssign() {
-        foreach($this->rawShortcode as $k=>$v) {
+        foreach($this->arrayShortcode as $k=>$v) {
             if (array_key_exists($k, $this->data)) {
                 $this->data[$k] = $v;
             }

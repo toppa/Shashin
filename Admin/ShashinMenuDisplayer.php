@@ -71,12 +71,14 @@ abstract class Admin_ShashinMenuDisplayer {
 
         $shortcodeMimic = array(
             'order' => $orderBy,
-            'reverse' => $reverse
+            'reverse' => $reverse,
         );
 
         if ($this->album) {
             $shortcodeMimic['id'] = $this->album->id;
             $shortcodeMimic['type'] = 'albumphotos';
+            $shortcodeMimic['size'] = 'xsmall';
+            $shortcodeMimic['crop'] = 'y';
         }
 
         return $shortcodeMimic;

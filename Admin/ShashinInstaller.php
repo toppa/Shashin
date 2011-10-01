@@ -11,6 +11,7 @@ class Admin_ShashinInstaller {
 
     private $settings;
     private $settingsDefaults = array(
+        'supportOldShortcodes' => 'n',
         'imageDisplay' => 'highslide',
         'expandedImageSize' => 'medium',
         'defaultPhotoLimit' => 18,

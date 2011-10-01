@@ -1,16 +1,16 @@
 <?php
 
 class Public_ShashinContainer extends Lib_ShashinContainer {
-    private $headTagsBuilder;
+    private $headTags;
     private $sessionManager;
 
     public function __construct($autoLoader) {
         parent::__construct($autoLoader);
     }
 
-    public function getShortcode(array $rawShortcode) {
+    public function getShortcode(array $arrayShortcode) {
         $this->getSettings();
-        $shortcode = new Public_ShashinShortcode($rawShortcode);
+        $shortcode = new Public_ShashinShortcode($arrayShortcode);
         $shortcode->setSettings($this->settings);
         $shortcode->cleanAndValidate();
         return $shortcode;
@@ -43,13 +43,15 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         return $layoutManager;
     }
 
-    public function getDocHeadUrlsFetcher() {
-        if (!$this->headTagsBuilder) {
+    public function getHeadTags($version) {
+        if (!$this->headTags) {
             $this->getFunctionsFacade();
-            $this->headTagsBuilder = new Public_ShashinDocHeadUrlsFetcher($this->functionsFacade);
+            $this->getSettings();
+            $this->headTags = new Public_ShashinHeadTags($version);
+            $this->headTags->setFunctionsFacade($this->functionsFacade);
+            $this->headTags->setSettings($this->settings);
         }
-
-        return $this->headTagsBuilder;
+        return $this->headTags;
     }
 
     public function getDataObjectDisplayer(
@@ -83,4 +85,10 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $dataObjectDisplayer->setSessionManager($this->sessionManager);
         return $dataObjectDisplayer;
     }
+
+    public function getOldShortcode($content) {
+        $oldShortcode = new Public_ShashinOldShortcode($content);
+        return $oldShortcode;
+    }
+
 }

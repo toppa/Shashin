@@ -37,10 +37,9 @@ $i = 1;
 
 foreach ($dataObjects as $photo) {
     $photoDisplayer = $this->container->getDataObjectDisplayer($this->shortcode, $photo, null, 'source');
-
     echo(($i % 2 == 0) ? '<tr class="shashin_center">' : '<tr class="alternate shashin_center">');
     echo PHP_EOL;
-    echo '<td>' . $photoDisplayer->run('xsmall') . '</td>' . PHP_EOL;
+    echo '<td>' . $photoDisplayer->run() . '</td>' . PHP_EOL;
     echo '<td>' . $photo->id . '</td>' . PHP_EOL;
     echo '<td>' . $photo->filename . '</td>' . PHP_EOL;
     echo '<td>' . (($photo->takenTimestamp == 0)

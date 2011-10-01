@@ -25,15 +25,16 @@ class ShashinWp {
     public function run() {
         add_action('admin_menu', array($this, 'initToolsMenu'));
         add_action('admin_menu', array($this, 'initSettingsMenu'));
-        add_action('template_redirect', array($this, 'displayPublicJsAndCss'));
+        add_action('template_redirect', array($this, 'displayPublicHeadTags'));
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
-        add_action('media_buttons', array($this, 'addShashinMediaButton'), 20);
+        add_action('media_buttons', array($this, 'addMediaButton'), 20);
         add_action('media_upload_shashin_photos', array($this, 'initPhotoMediaMenu'));
         add_action('media_upload_shashin_albums', array($this, 'initAlbumMediaMenu'));
         add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
-
+        $this->scheduleSyncIfNeeded();
+        add_action('shashinSync', array($this, 'runScheduledSync'));
     }
 
     public function initToolsMenu() {
@@ -46,7 +47,7 @@ class ShashinWp {
         );
 
         // from http://planetozh.com/blog/2008/04/how-to-load-javascript-with-your-wordpress-plugin/
-        add_action("admin_print_styles-$toolsPage", array($this, 'displayToolsMenuJsAndCss'));
+        //add_action("admin_print_styles-$toolsPage", array($this, 'displayToolsMenuJsAndCss'));
     }
 
     public function displayToolsMenu() {
@@ -79,62 +80,35 @@ class ShashinWp {
         echo $settingsMenuManager->run();
     }
 
+    /*
     public function displayToolsMenuJsAndCss() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $docHeadUrlsFetcher = $adminContainer->getDocHeadUrlsFetcher();
-        $cssUrl = $docHeadUrlsFetcher->getCssUrl();
+        $headTags = $adminContainer->getHeadTags();
+        $cssUrl = $headTags->getCssUrl();
         wp_enqueue_style('shashinAdminStyle', $cssUrl, false, $this->version);
-        $jsUrl = $docHeadUrlsFetcher->getJsUrl();
+        $jsUrl = $headTags->getJsUrl();
         wp_enqueue_script('shashinAdminScript', $jsUrl, array('jquery'), $this->version);
-        $menuDisplayUrl = $docHeadUrlsFetcher->getMenuDisplayUrl();
+        $menuDisplayUrl = $headTags->getMenuDisplayUrl();
         wp_localize_script('shashinAdminScript', 'shashinDisplay', array('url' => $menuDisplayUrl));
     }
 
-    public function displayPublicJsAndCss() {
+    */
+    public function displayPublicHeadTags() {
         $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $docHeadUrlsFetcher = $publicContainer->getDocHeadUrlsFetcher();
-        $shashinCssUrl = $docHeadUrlsFetcher->getShashinCssUrl();
-        wp_enqueue_style('shashinStyle', $shashinCssUrl, false, $this->version);
-        $baseUrl = plugins_url('Public/Display/', __FILE__);
-        wp_enqueue_script(
-            'shashinPhotoGroupsDisplayer',
-            $baseUrl . 'photoGroupsDisplayer.js',
-            array('jquery'),
-            $this->version
-        );
-        $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        $photoGroupsDisplayerParams = array('ajaxurl' => admin_url('admin-ajax.php', $protocol));
-        wp_localize_script('shashinPhotoGroupsDisplayer', 'shashinPhotoGroupsDisplayer', $photoGroupsDisplayerParams);
-        $settings = $publicContainer->getSettings();
-
-        if ($settings->imageDisplay == 'highslide') {
-            $highslideCssUrl = $docHeadUrlsFetcher->getHighslideCssUrl();
-            wp_enqueue_style('highslideStyle', $highslideCssUrl, false, '4.1.12');
-            wp_enqueue_script('highslide', $baseUrl . 'highslide/highslide.js', false, '4.1.12');
-            wp_enqueue_script('swfobject', $baseUrl . 'highslide/swfobject.js', false, '2.2');
-            wp_enqueue_script('highslideSettings', $baseUrl . 'highslideSettings.js', false, $this->version);
-            wp_localize_script('highslideSettings', 'highslideSettings', array(
-                'graphicsDir' => $baseUrl . 'highslide/graphics/',
-                'outlineType' => $settings->highslideOutlineType,
-                'dimmingOpacity' => $settings->highslideDimmingOpacity,
-                'interval' => $settings->highslideInterval,
-                'repeat' => $settings->highslideRepeat,
-                'position' => $settings->highslideVPosition . ' ' . $settings->highslideHPosition,
-                'hideController' => $settings->highslideHideController
-            ));
-        }
+        $headTags = $publicContainer->getHeadTags($this->version);
+        $headTags->run();
     }
 
-    public function handleShortcode($rawShortcode) {
+    public function handleShortcode($arrayShortcode) {
         try {
             // if the shortcode has no attributes specified, WP passes
             // an empty string instead of an array
-            if (!is_array($rawShortcode)) {
-                $rawShortcode = array();
+            if (!is_array($arrayShortcode)) {
+                $arrayShortcode = array();
             }
 
             $publicContainer = new Public_ShashinContainer($this->autoLoader);
-            $shortcode = $publicContainer->getShortcode($rawShortcode);
+            $shortcode = $publicContainer->getShortcode($arrayShortcode);
 
             switch ($shortcode->type) {
                 case 'photo':
@@ -179,7 +153,7 @@ class ShashinWp {
         die();
     }
 
-    public function addShashinMediaButton() {
+    public function addMediaButton() {
         global $post_ID, $temp_ID;
         $iframeId = (int) (0 == $post_ID ? $temp_ID : $post_ID);
 
@@ -194,98 +168,69 @@ class ShashinWp {
     }
 
     public function initPhotoMediaMenu() {
-        add_action('admin_print_styles', array($this, 'displayMediaMenuCss'));
-        wp_iframe(array($this, 'displayPhotoMediaMenu'));
+        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
+        $mediaMenu->displayPhotoMenu();
     }
 
     public function initAlbumMediaMenu() {
-        add_action('admin_print_styles', array($this, 'displayMediaMenuCss'));
-        wp_iframe(array($this, 'displayAlbumMediaMenu'));
-    }
-
-    public function displayMediaMenuCss() {
-        $filename = array_shift(explode('?', basename($_SERVER['REQUEST_URI'])));
-        if ($filename == 'media-upload.php' && strstr($_SERVER['REQUEST_URI'], 'type=shashin')) {
-            wp_admin_css('css/media');
-        }
-
-        $cssUrl = plugins_url('Admin/Display/', __FILE__) .'menuMedia.css';
-        wp_enqueue_style('shashinMediaMenuStyle', $cssUrl, false, $this->version);
-    }
-
-    public function displayPhotoMediaMenu() {
-        $this->displayMediaMenu('Admin/Display/menuMediaPhotos.php');
-    }
-
-    public function displayAlbumMediaMenu() {
-        $this->displayMediaMenu('Admin/Display/menuMediaAlbums.php');
-    }
-
-    private function displayMediaMenu($templatePath) {
-        add_filter('media_upload_tabs', array($this, 'addMediaMenuTabs'));
-        media_upload_header();
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $rawShortcode = array('type' => 'album', 'order' => 'date', 'reverse' => 'y');
-        $shortcode = $publicContainer->getShortcode($rawShortcode);
-        $albumCollection = $publicContainer->getClonableAlbumCollection();
-        $albumCollection->setNoLimit(true);
-        $albums = $albumCollection->getCollectionForShortcode($shortcode);
-        $loaderUrl = plugins_url('Admin/Display/', __FILE__) .'loader.gif';
-        require_once $templatePath;
-    }
-
-    public function addMediaMenuTabs() {
-        return array(
-            'shashin_photos' => __('Photos', 'shashin'),
-            'shashin_albums' => __('Albums', 'shashin')
-        );
+        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
+        $mediaMenu->displayAlbumMenu();
     }
 
     public function ajaxGetPhotosForMediaMenu() {
-        $rawShortcode = array('limit' => 32);
-
-        if ($_REQUEST['shashinAlbumId'] && is_numeric($_REQUEST['shashinAlbumId'])) {
-            $rawShortcode['id'] = $_REQUEST['shashinAlbumId'];
-            $rawShortcode['type'] = 'albumphotos';
-        }
-
-        else {
-            $rawShortcode['type'] = 'photo';
-        }
-
-        if ($_REQUEST['shashinOrder'] && is_string($_REQUEST['shashinOrder'])) {
-            $rawShortcode['order'] = $_REQUEST['shashinOrder'];
-        }
-
-        if ($_REQUEST['shashinReverse'] && is_string($_REQUEST['shashinReverse'])) {
-            $rawShortcode['reverse'] = $_REQUEST['shashinReverse'];
-        }
-
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $shortcode = $publicContainer->getShortcode($rawShortcode);
-        $photoCollection = $publicContainer->getClonablePhotoCollection();
-        $photoCount = $photoCollection->getCountForShortcode($shortcode);
-        $totalPages = ceil($photoCount / 32);
-        $page = (isset($_REQUEST['shashinPage']) && is_numeric($_REQUEST['shashinPage'])) ? $_REQUEST['shashinPage'] : 1;
-        $rawShortcode['limit'] = 32;
-        $rawShortcode['offset'] = ($page - 1) * 32;
-        $shortcode = $publicContainer->getShortcode($rawShortcode);
-        $photoCollection = $publicContainer->getClonablePhotoCollection();
-        $collection = $photoCollection->getCollectionForShortcode($shortcode);
-        $photos = array();
-        foreach ($collection as $photo) {
-            $photos[] = array(
-                'id' => $photo->id,
-                'description' => $photo->description,
-                'contentUrl' => $photo->contentUrl,
-            );
-        }
-        echo json_encode(array(
-            'photos' => $photos,
-            'totalPages' => $totalPages,
-            'page' => $page
-        ));
+        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
+        echo $mediaMenu->getPhotosForMenu();
         exit;
     }
-}
 
+    public function scheduleSyncIfNeeded() {
+        if (!wp_next_scheduled('shashinSync') ) {
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $settings = $publicContainer->getSettings();
+
+            if ($settings->scheduledUpdate == 'y') {
+                wp_schedule_event(time(), 'hourly', 'shashinSync');
+            }
+        }
+    }
+
+    public function runScheduledSync() {
+        $arrayShortcode = array('type' => 'album', 'order' => 'sync');
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $shortcode = $publicContainer->getShortcode($arrayShortcode);
+        $albumsToCount = $publicContainer->getClonableAlbumCollection();
+        $albumsToCount->setNoLimit(true);
+        $albumCount = $albumsToCount->getCountForShortcode($shortcode);
+        $oldestTenPercent = ceil($albumCount / 10);
+        $arrayShortcode['limit'] = $oldestTenPercent;
+        $shortcode = $publicContainer->getShortcode($arrayShortcode);
+        $albumsToSync = $publicContainer->getClonableAlbumCollection();
+        $albumsToSync->getCollectionForShortcode($shortcode);
+        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        $albumHandler = $adminContainer->getMenuActionHandlerAlbums();
+
+        foreach ($albumsToSync as $album) {
+            $albumHandler->runSynchronizerForExistingAlbum($album);
+        }
+    }
+
+    public function supportOldShortcodesIfNeeded() {
+        $publicContainer = new Lib_ShashinContainer($this->autoLoader);
+        $settings = $publicContainer->getSettings();
+
+        if ($settings->supportOldShortcodes == 'y') {
+            // the 0 priority flag gets the shashin div in before the autoformatter
+            // can wrap it in a paragraph
+            add_filter('the_content', array($this, 'handleOldShortcodes'), 0);
+        }
+    }
+
+    public function handleOldShortcodes($content) {
+        $publicContainer = new Lib_ShashinContainer($this->autoLoader);
+        $oldShortcode = $publicContainer->getOldShortcode($content);
+        return $oldShortcode->run();
+    }
+}
