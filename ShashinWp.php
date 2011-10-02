@@ -33,8 +33,8 @@ class ShashinWp {
         add_action('media_upload_shashin_photos', array($this, 'initPhotoMediaMenu'));
         add_action('media_upload_shashin_albums', array($this, 'initAlbumMediaMenu'));
         add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
-        $this->scheduleSyncIfNeeded();
-        add_action('shashinSync', array($this, 'runScheduledSync'));
+        //$this->scheduleSyncIfNeeded();
+        //add_action('shashinSync', array($this, 'runScheduledSync'));
     }
 
     public function initToolsMenu() {
@@ -80,7 +80,7 @@ class ShashinWp {
         echo $settingsMenuManager->run();
     }
 
-    /*
+
     public function displayToolsMenuJsAndCss() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
         $headTags = $adminContainer->getHeadTags();
@@ -92,7 +92,6 @@ class ShashinWp {
         wp_localize_script('shashinAdminScript', 'shashinDisplay', array('url' => $menuDisplayUrl));
     }
 
-    */
     public function displayPublicHeadTags() {
         $publicContainer = new Public_ShashinContainer($this->autoLoader);
         $headTags = $publicContainer->getHeadTags($this->version);

@@ -47,10 +47,7 @@ class Lib_ShashinSettings {
             $this->data = array_merge($this->data, $newSettings);
         }
 
-        if (!$this->functionsFacade->setSetting($this->name, $this->data)) {
-            throw new Exception(__('Failed to update settings', 'shashin'));
-        }
-
+        $this->functionsFacade->setSetting($this->name, $this->data);
         return $this->data;
     }
 
