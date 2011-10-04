@@ -32,6 +32,14 @@ class Admin_ShashinSettingsMenu {
             ),
         );
         $this->refData =  array(
+            'supportOldShortcodes' => array(
+                'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
+                'validateFunction' => 'in_array',
+                'validValues' => array('y', 'n'),
+                'label' => __('Support old-style Shashin shortcodes?', 'shashin'),
+                'help' => __('Select "yes" only if you have blog posts containing the shortcode format used with previous versions of Shashin (any versions from prior to 2011).', 'shashin'),
+                'group' => 'general'
+            ),
             'imageDisplay' => array(
                 'input' => array(
                     'type' => 'select',
