@@ -51,6 +51,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         // don't try to process empty albums
         if (is_array($decodedAlbumData['feed']['entry'])) {
             foreach ($decodedAlbumData['feed']['entry'] as $entry) {
+                $photoRefData = $this->getHighestResolutionVideoIfNeeded($entry, $photoRefData);
                 $photoData = $this->extractFieldsFromDecodedData($entry, $photoRefData, 'picasa');
                 $photoData['albumId'] = $this->album->id;
                 $photoData['albumType'] = $this->album->albumType;
@@ -66,4 +67,26 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
 
         return $sourceOrder;
     }
+
+    public function getHighestResolutionVideoIfNeeded(array $entry, array $photoRefData) {
+        if (!is_array($entry['media$group']['media$content'])) {
+            return $photoRefData;
+        }
+
+        $highestWidth = 0;
+
+        for ($i = 0; $i < count($entry['media$group']['media$content']); $i++) {
+            if ($entry['media$group']['media$content'][$i]['medium'] == 'video'
+              && $entry['media$group']['media$content'][$i]['width'] > $highestWidth) {
+                $highestWidth = $entry['media$group']['media$content'][$i]['width'];
+                $photoRefData['videoUrl']['picasa'][2] = $i;
+                $photoRefData['videoType']['picasa'][2] = $i;
+                $photoRefData['videoWidth']['picasa'][2] = $i;
+                $photoRefData['videoHeight']['picasa'][2] = $i;
+            }
+        }
+
+        return $photoRefData;
+    }
 }
+
