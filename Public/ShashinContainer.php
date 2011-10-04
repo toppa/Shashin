@@ -86,8 +86,11 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         return $dataObjectDisplayer;
     }
 
-    public function getOldShortcode($content) {
-        $oldShortcode = new Public_ShashinOldShortcode($content);
+    public function getOldShortcode($content, array $request) {
+        $oldShortcode = new Public_ShashinOldShortcode();
+        $oldShortcode->setContent($content);
+        $oldShortcode->setContainer($this);
+        $oldShortcode->setRequest($request);
         return $oldShortcode;
     }
 
