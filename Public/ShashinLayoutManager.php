@@ -12,6 +12,8 @@ class Public_ShashinLayoutManager {
     private $request;
     private $sessionManager;
     private $totalTables = 1;
+    private $currentDataObjectDisplayer;
+    private $numericColumns;
     private $currentTableNumber;
     private $startingTableGroupCounter;
     private $endingTableGroupCounter;
@@ -262,8 +264,9 @@ class Public_ShashinLayoutManager {
 
         for ($i = $this->startTableWithThisPhoto; $i <= $this->endTableWithThisPhoto; $i++) {
             $this->tableBody .= $this->startTableRowIfNeeded();
-            $dataObjectDisplayer = $this->getDataObjectDisplayerForThisCell($i);
-            $this->tableBody .= $this->addTableCell($dataObjectDisplayer);
+            $this->getDataObjectDisplayerForThisCell($i);
+            $this->tableBody .= $this->addTableCell();
+            $this->setNumericColumnsIfNeeded();
             $this->tableBody .= $this->closeTableRowIfNeeded($i);
             $this->setTableCellCount($i);
             $this->setStartTableWithThisPhotoIfNeeded($i);
@@ -296,11 +299,13 @@ class Public_ShashinLayoutManager {
 
     public function getDataObjectDisplayerForThisCell($i) {
         $alternateThumbnail = $this->getAlternateThumbnailIfNeeded($i);
-        return $this->container->getDataObjectDisplayer(
+        $this->currentDataObjectDisplayer = $this->container->getDataObjectDisplayer(
             $this->shortcode,
             $this->collection[$i],
             $alternateThumbnail
         );
+
+        return $this->currentDataObjectDisplayer;
     }
 
     public function getAlternateThumbnailIfNeeded($i) {
@@ -311,9 +316,9 @@ class Public_ShashinLayoutManager {
         return null;
     }
 
-    public function addTableCell($dataObjectDisplayer) {
-        $linkAndImageTags = $dataObjectDisplayer->run();
-        $cellWidth = $dataObjectDisplayer->getImgWidth() + $this->settings->thumbPadding;
+    public function addTableCell() {
+        $linkAndImageTags = $this->currentDataObjectDisplayer->run();
+        $cellWidth = $this->currentDataObjectDisplayer->getImgWidth() + $this->settings->thumbPadding;
         $cell = '<td><div class="shashinThumbnailDiv" id="shashinThumbnailDiv_'
             . ($this->sessionManager->getThumbnailCounter() - 1)
             . '" style="width: ' . $cellWidth . 'px;">';
@@ -322,8 +327,27 @@ class Public_ShashinLayoutManager {
         return $cell;
     }
 
+    public function setNumericColumnsIfNeeded() {
+        if ($this->numericColumns) {
+            return $this->numericColumns;
+        }
+
+        if ($this->shortcode->columns == 'max') {
+            $thumbnailSize = $this->currentDataObjectDisplayer->getActualThumbnailSize();
+            // guess 10px for padding/margins
+            $columns = $this->settings->themeMaxSize / ($thumbnailSize + 10);
+            $this->numericColumns = floor($columns);
+        }
+
+        else {
+            $this->numericColumns = $this->shortcode->columns;
+        }
+
+        return $this->numericColumns;
+    }
+
     public function closeTableRowIfNeeded($i) {
-        if ($this->tableCellCount >= $this->shortcode->columns || $i == (count($this->collection) - 1)) {
+        if ($this->tableCellCount >= $this->numericColumns || $i == (count($this->collection) - 1)) {
             return '</tr>' . PHP_EOL;
         }
 
@@ -331,7 +355,7 @@ class Public_ShashinLayoutManager {
     }
 
     public function setTableCellCount($i) {
-        if ($this->tableCellCount >= $this->shortcode->columns || $i == (count($this->collection) - 1)) {
+        if ($this->tableCellCount >= $this->numericColumns || $i == (count($this->collection) - 1)) {
             $this->tableCellCount = 1;
         }
 

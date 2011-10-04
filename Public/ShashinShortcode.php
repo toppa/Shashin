@@ -50,7 +50,6 @@ class Public_ShashinShortcode {
         $this->checkValidKeysAndAssign();
         $this->checkValidValues();
         $this->checkColumnsAndSizeAreNotBothMax();
-        $this->setNumericColumnsIfMax();
         return true;
     }
 
@@ -126,15 +125,5 @@ class Public_ShashinShortcode {
         }
 
         return true;
-    }
-
-    public function setNumericColumnsIfMax() {
-        if ($this->data['columns'] == 'max') {
-            // guess 10px for padding/margins
-            $columns = $this->settings->themeMaxSize / ($this->data['size'] + 10);
-            $this->data['columns'] = floor($columns);
-        }
-
-        return $this->data['columns'];
     }
 }
