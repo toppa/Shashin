@@ -36,7 +36,7 @@ class Admin_ShashinMediaMenu {
     }
 
     public function displayMediaMenuCss() {
-        $this->functionsFacade->prepMediaMenuCss('type=shashin');
+        $this->functionsFacade->prepMediaMenuCss('type=Shashin3alpha');
         $cssUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__) .'menuMedia.css';
         $this->functionsFacade->enqueueStylesheet('shashinMediaMenuStyle', $cssUrl, false, $this->version);
     }
@@ -63,8 +63,8 @@ class Admin_ShashinMediaMenu {
 
     public function addMediaMenuTabs() {
         return array(
-            'shashin_photos' => __('Photos', 'shashin'),
-            'shashin_albums' => __('Albums', 'shashin')
+            'Shashin3alpha_photos' => __('Photos', 'shashin'),
+            'Shashin3alpha_albums' => __('Albums', 'shashin')
         );
     }
 
@@ -72,7 +72,7 @@ class Admin_ShashinMediaMenu {
         $arrayShortcode = $this->getArrayShortcode();
         $totalPages = $this->getTotalPages($arrayShortcode);
         $currentPage = $this->getCurrentPage();
-        $collection = $this->getCollectionForCurrentPage($currentPage);
+        $collection = $this->getCollectionForCurrentPage($arrayShortcode, $currentPage);
         $photos = $this->getPhotosArrayFromCollection($collection);
         return json_encode(array(
             'photos' => $photos,
@@ -104,7 +104,7 @@ class Admin_ShashinMediaMenu {
         return $arrayShortcode;
     }
 
-    public function getTotalPages($arrayShortcode) {
+    public function getTotalPages(array $arrayShortcode) {
         $shortcode = $this->container->getShortcode($arrayShortcode);
         $photoCollection = $this->container->getClonablePhotoCollection();
         $photoCount = $photoCollection->getCountForShortcode($shortcode);
@@ -119,7 +119,7 @@ class Admin_ShashinMediaMenu {
         return 1;
     }
 
-    public function getCollectionForCurrentPage($currentPage) {
+    public function getCollectionForCurrentPage(array $arrayShortcode, $currentPage) {
         $arrayShortcode['limit'] = 32;
         $arrayShortcode['offset'] = ($currentPage - 1) * 32;
         $shortcode = $this->container->getShortcode($arrayShortcode);
