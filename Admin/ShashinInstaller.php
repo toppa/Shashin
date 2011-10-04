@@ -8,7 +8,6 @@ class Admin_ShashinInstaller {
     private $albumRefData;
     private $photoTable;
     private $photoRefData;
-
     private $settings;
     private $settingsDefaults = array(
         'supportOldShortcodes' => 'n',
