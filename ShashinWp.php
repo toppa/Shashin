@@ -29,12 +29,14 @@ class ShashinWp {
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
-        add_action('media_buttons', array($this, 'addMediaButton'), 20);
-        add_action('media_upload_shashin_photos', array($this, 'initPhotoMediaMenu'));
-        add_action('media_upload_shashin_albums', array($this, 'initAlbumMediaMenu'));
+        add_action('media_buttons', array($this, 'addMediaButton'), 30);
+        // hack: usual a capital letter to avoid a string match conflict with Shashin 2
+        add_action('media_upload_Shashin3alpha_photos', array($this, 'initPhotoMediaMenu'));
+        add_action('media_upload_Shashin3alpha_albums', array($this, 'initAlbumMediaMenu'));
         add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
         //$this->scheduleSyncIfNeeded();
         //add_action('shashinSync', array($this, 'runScheduledSync'));
+        //$this->supportOldShortcodesIfNeeded();
     }
 
     public function initToolsMenu() {
@@ -158,8 +160,8 @@ class ShashinWp {
 
         $photoBrowserUrl = 'media-upload.php?post_id='
             . $iframeId
-            . '&amp;type=shashin&amp;tab=shashin_photos&amp;TB_iframe=true';
-        $title = __('Add Shashin photos', 'shashin');
+            . '&amp;type=Shashin3alpha&amp;tab=Shashin3alpha_photos&amp;TB_iframe=true';
+        $title = __('Add Shashin3alpha photos', 'shashin');
         $imageUrl = plugins_url('Admin/Display/images/', __FILE__) .'picasa.gif';
         $markup = '<a href="%s" class="thickbox" title="%s"><img src="%s" alt="%s"></a>';
         printf($markup, $photoBrowserUrl, $title, $imageUrl, $title);
@@ -217,19 +219,25 @@ class ShashinWp {
     }
 
     public function supportOldShortcodesIfNeeded() {
-        $publicContainer = new Lib_ShashinContainer($this->autoLoader);
-        $settings = $publicContainer->getSettings();
+        try {
+            $libContainer = new Lib_ShashinContainer($this->autoLoader);
+            $settings = $libContainer->getSettings();
 
-        if ($settings->supportOldShortcodes == 'y') {
-            // the 0 priority flag gets the shashin div in before the autoformatter
-            // can wrap it in a paragraph
-            add_filter('the_content', array($this, 'handleOldShortcodes'), 0);
+            if ($settings->supportOldShortcodes == 'y') {
+                // the 0 priority flag gets the shashin div in before the autoformatter
+                // can wrap it in a paragraph
+                add_filter('the_content', array($this, 'handleOldShortcodes'), 0);
+            }
+        }
+
+        catch (Exception $e) {
+            return '<strong>' . __('Shashin Error: ', 'shashin') . $e->getMessage() . '<strong>';
         }
     }
 
     public function handleOldShortcodes($content) {
-        $publicContainer = new Lib_ShashinContainer($this->autoLoader);
-        $oldShortcode = $publicContainer->getOldShortcode($content);
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $oldShortcode = $publicContainer->getOldShortcode($content, $_REQUEST);
         return $oldShortcode->run();
     }
 }
