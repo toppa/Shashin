@@ -18,8 +18,13 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
         parent::__construct();
     }
 
+    public function setImgAlt() {
+        $this->imgAlt = $this->makeTextQuotable($this->dataObject->title);
+        return $this->imgAlt;
+    }
+
     public function setImgTitle() {
-        $this->imgTitle = $this->makeDescriptionQuotable();
+        $this->imgTitle = $this->makeTextQuotable($this->dataObject->title);
         return $this->imgTitle;
     }
 
