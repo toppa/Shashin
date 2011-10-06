@@ -6,7 +6,7 @@ class Public_ShashinPhotoDisplayerPicasaSource extends Public_ShashinPhotoDispla
     }
 
     public function setImgTitle() {
-        $this->imgTitle = $this->makeDescriptionQuotable();
+        $this->imgTitle = $this->makeTextQuotable($this->dataObject->description);
         return $this->imgTitle;
     }
 
