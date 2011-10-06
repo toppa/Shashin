@@ -21,6 +21,11 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinDataObje
         parent::__construct();
     }
 
+    public function setImgAlt() {
+        $this->imgAlt = $this->makeTextQuotable($this->dataObject->description);
+        return $this->imgAlt;
+    }
+
     public function setImgSrc() {
         $this->imgSrc = $this->thumbnail->contentUrl;
         $this->imgSrc .= '?imgmax=' . $this->actualThumbnailSize;
