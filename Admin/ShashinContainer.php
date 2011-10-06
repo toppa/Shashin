@@ -11,6 +11,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $synchronizerPicasa;
     private $headTags;
     private $mediaMenu;
+    private $scheduledSynchronizer;
 
     public function __construct($autoLoader) {
         parent::__construct($autoLoader);
@@ -132,10 +133,11 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         return $this->synchronizerPicasa;
     }
 
-    public function getHeadTags() {
+    public function getHeadTags($version) {
         if (!$this->headTags) {
             $this->getFunctionsFacade();
-            $this->headTags = new Admin_ShashinHeadTags($this->functionsFacade);
+            $this->headTags = new Admin_ShashinHeadTags($version);
+            $this->headTags->setFunctionsFacade($this->functionsFacade);
         }
         return $this->headTags;
     }
@@ -152,4 +154,14 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         return $this->mediaMenu;
     }
 
+    public function getScheduledSynchronizer() {
+        $this->scheduledSynchronizer = new Admin_ShashinScheduledSynchronizer();
+        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $this->getClonableAlbumCollection();
+        $this->getMenuActionHandlerAlbums();
+        $this->scheduledSynchronizer->setPublicContainer($publicContainer);
+        $this->scheduledSynchronizer->setClonableAlbumCollection($this->clonableAlbumCollection);
+        $this->scheduledSynchronizer->setAlbumHandler($this->menuActionHandlerAlbums);
+        return $this->scheduledSynchronizer;
+    }
 }
