@@ -243,7 +243,7 @@ class Public_ShashinLayoutManager {
         if ($this->request['shashinParentAlbumTitle']) {
             $albumTitle =
                 '<strong>'
-                . htmlentities(stripslashes($this->request['shashinParentAlbumTitle']))
+                . htmlentities(stripslashes($this->request['shashinParentAlbumTitle']), ENT_COMPAT, 'UTF-8')
                 . '</strong><br />';
         }
 
