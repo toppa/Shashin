@@ -211,20 +211,16 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     abstract public function setImgSrc();
+    abstract public function setImgAlt();
+    abstract public function setImgTitle();
 
-    public function setImgAlt() {
-        $this->imgAlt = $this->makeDescriptionQuotable();
-        return $this->imgAlt;
-    }
-
-    protected function makeDescriptionQuotable() {
-        // there may already be entities in the description, so we want to be very
+    protected function makeTextQuotable($text) {
+        // there may already be entities in the text, so we want to be very
         // conservative with what we replace
-        return str_replace('"', '&quot;', $this->dataObject->description);
+        return str_replace('"', '&quot;', $text);
     }
 
     abstract public function setImgClassAdditional();
-    abstract public function setImgTitle();
 
     public function setImgTag() {
         $this->imgTag =
