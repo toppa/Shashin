@@ -20,7 +20,7 @@ class Public_ShashinShortcode {
     );
 
     private $validInputValues = array(
-        'caption' => array(null, 'y', 'n', 'c'),
+        'caption' => array(null, 'y', 'n'),
         'order' => array(null, 'id', 'date', 'filename', 'title', 'location', 'count', 'sync', 'random', 'source', 'user'),
         'reverse' => array(null, 'y', 'n'),
         'crop' => array(null, 'y', 'n'),
@@ -50,7 +50,7 @@ class Public_ShashinShortcode {
         $this->checkValidKeysAndAssign();
         $this->checkValidValues();
         $this->checkColumnsAndSizeAreNotBothMax();
-        return true;
+        return $this->arrayShortcode;
     }
 
     public function cleanShortcode() {
