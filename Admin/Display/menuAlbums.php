@@ -22,21 +22,21 @@ if ($dataObjects) {
     echo '<th class="manage-column">'
         . $this->generateOrderByLink('title', __('Title', 'shashin'))
         . '</th>' . PHP_EOL;
-    echo '<th class="manage-column shashin_center">'
+    echo '<th class="manage-column shashinCenter">'
         . $this->generateOrderByLink('id', __('Album ID', 'shashin'))
         . '</th>' . PHP_EOL;
-    echo '<th class="manage-column shashin_center">' . __("Sync", 'shashin') . "</th>" . PHP_EOL;
-    echo '<th class="manage-column shashin_center">' . __("Delete", 'shashin') . "</th>" . PHP_EOL;
-    echo '<th class="manage-column shashin_center">'
+    echo '<th class="manage-column shashinCenter">' . __("Sync", 'shashin') . "</th>" . PHP_EOL;
+    echo '<th class="manage-column shashinCenter">' . __("Delete", 'shashin') . "</th>" . PHP_EOL;
+    echo '<th class="manage-column shashinCenter">'
          . $this->generateOrderByLink('count', __('Photo Count', 'shashin'))
          . '</th>' . PHP_EOL;
-    echo '<th class="manage-column shashin_center">'
+    echo '<th class="manage-column shashinCenter">'
          . $this->generateOrderByLink('date', __('Pub Date', 'shashin'))
          . '</th>' . PHP_EOL;
-    echo '<th class="manage-column shashin_center">'
+    echo '<th class="manage-column shashinCenter">'
          . $this->generateOrderByLink('sync', __('Last Sync', 'shashin'))
          . '</th>' . PHP_EOL;
-    echo '<th class="manage-column shashin_center">' . __("Include in Random?", 'shashin') . "</th>" . PHP_EOL;
+    echo '<th class="manage-column shashinCenter">' . __("Include in Random?", 'shashin') . "</th>" . PHP_EOL;
     echo "</tr>" . PHP_EOL;
 
     $i = 1;
@@ -46,19 +46,19 @@ if ($dataObjects) {
         echo '<td>'
             . $this->generatePhotosMenuSwitchLink($album)
             . '</td>' . PHP_EOL;
-        echo '<td class="shashin_center">'
+        echo '<td class="shashinCenter">'
             . $album->id . "</td>" . PHP_EOL;
-        echo '<td class="shashin_center">'
+        echo '<td class="shashinCenter">'
             . $this->generateSyncLink($album)
             . '</td>' . PHP_EOL;
-        echo '<td class="shashin_center">'
+        echo '<td class="shashinCenter">'
             . $this->generateDeleteLink($album)
             . '</td>' . PHP_EOL;
-        echo '<td class="shashin_center">'
+        echo '<td class="shashinCenter">'
             . $album->photoCount . "</td>" . PHP_EOL;
-        echo '<td class="shashin_center">' . $this->functionsFacade->dateI18n("d-M-Y", $album->pubDate) . "</td>" . PHP_EOL;
-        echo '<td class="shashin_center">' . $this->functionsFacade->dateI18n("d-M-Y H:i", $album->lastSync) . "</td>" . PHP_EOL;
-        echo '<td class="shashin_center">';
+        echo '<td class="shashinCenter">' . $this->functionsFacade->dateI18n("d-M-Y", $album->pubDate) . "</td>" . PHP_EOL;
+        echo '<td class="shashinCenter">' . $this->functionsFacade->dateI18n("d-M-Y H:i", $album->lastSync) . "</td>" . PHP_EOL;
+        echo '<td class="shashinCenter">';
 
         echo ToppaHtmlFormField::quickBuild(
             "includeInRandom[{$album->id}]",
@@ -71,9 +71,9 @@ if ($dataObjects) {
 
     <tr>
     <td colspan="2">&nbsp;</td>
-    <td class="shashin_center"><strong><?php echo $this->generateSyncAllLink(); ?></strong></td>
+    <td class="shashinCenter"><strong><?php echo $this->generateSyncAllLink(); ?></strong></td>
     <td colspan="4">&nbsp;</td>
-    <td class="shashin_center"><input class="button-secondary" type="submit" name="update_random_display" value="<?php _e("Update Random Display", 'shashin'); ?>" /></td>
+    <td class="shashinCenter"><input class="button-secondary" type="submit" name="update_random_display" value="<?php _e("Update Random Display", 'shashin'); ?>" /></td>
     </tr>
     </table>
     </form>
@@ -93,8 +93,8 @@ else {
 
 
 <p><?php _e("Shashin can display photos from <strong>public</strong> <em>Picasa albums</em> by importing their RSS feeds. Please enter an RSS URL below.", 'shashin'); ?></p>
-<h4><a href="#" id="shashin_examples" class="shashin_admin_heading"><img src="<?php echo $this->functionsFacade->getPluginsUrl('images/plus.gif', __FILE__); ?>" id="shashin_examples_button" />Examples</a></h4>
-<dl id="shashin_examples_section" class="shashin_examples_list">
+<h4><a href="#" id="shashinExamples" class="shashinAdminHeading"><img src="<?php echo $this->functionsFacade->getPluginsUrl('images/plus.gif', __FILE__); ?>" id="shashinExamplesButton" />Examples</a></h4>
+<dl id="shashinExamplesSection" class="shashinExamplesList">
 <dt><strong><?php _e("All the Picasa albums for a user", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link on the bottom right of the Picasa user's home page", 'shashin'); ?></dt>
     <dd style="font-size: smaller;">Example: http://picasaweb.google.com/data/feed/base/user/michaeltoppa?alt=rss&amp;kind=album&amp;hl=en_US</dd>
 <dt><strong><?php _e("A single Picasa album", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link in the sidebar of the alm's main page", 'shashin'); ?></dt>
