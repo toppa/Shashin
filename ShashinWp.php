@@ -30,13 +30,14 @@ class ShashinWp {
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('media_buttons', array($this, 'addMediaButton'), 30);
-        // hack: usual a capital letter to avoid a string match conflict with Shashin 2
+        // hack: use a capital letter to avoid a string match conflict with Shashin 2
         add_action('media_upload_Shashin3alpha_photos', array($this, 'initPhotoMediaMenu'));
         add_action('media_upload_Shashin3alpha_albums', array($this, 'initAlbumMediaMenu'));
         add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
-        //$this->scheduleSyncIfNeeded();
-        //add_action('shashinSync', array($this, 'runScheduledSync'));
+        $this->scheduleSyncIfNeeded();
+        add_action('shashinSync', array($this, 'runScheduledSync'));
         //$this->supportOldShortcodesIfNeeded();
+        add_action('widgets_init', array($this, 'registerWidget'));
     }
 
     public function initToolsMenu() {
@@ -49,7 +50,7 @@ class ShashinWp {
         );
 
         // from http://planetozh.com/blog/2008/04/how-to-load-javascript-with-your-wordpress-plugin/
-        //add_action("admin_print_styles-$toolsPage", array($this, 'displayToolsMenuJsAndCss'));
+        add_action("admin_print_styles-$toolsPage", array($this, 'displayAdminHeadTags'));
     }
 
     public function displayToolsMenu() {
@@ -83,15 +84,10 @@ class ShashinWp {
     }
 
 
-    public function displayToolsMenuJsAndCss() {
+    public function displayAdminHeadTags() {
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $headTags = $adminContainer->getHeadTags();
-        $cssUrl = $headTags->getCssUrl();
-        wp_enqueue_style('shashinAdminStyle', $cssUrl, false, $this->version);
-        $jsUrl = $headTags->getJsUrl();
-        wp_enqueue_script('shashinAdminScript', $jsUrl, array('jquery'), $this->version);
-        $menuDisplayUrl = $headTags->getMenuDisplayUrl();
-        wp_localize_script('shashinAdminScript', 'shashinDisplay', array('url' => $menuDisplayUrl));
+        $headTags = $adminContainer->getHeadTags($this->version);
+        $headTags->run();
     }
 
     public function displayPublicHeadTags() {
@@ -199,23 +195,9 @@ class ShashinWp {
     }
 
     public function runScheduledSync() {
-        $arrayShortcode = array('type' => 'album', 'order' => 'sync');
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $shortcode = $publicContainer->getShortcode($arrayShortcode);
-        $albumsToCount = $publicContainer->getClonableAlbumCollection();
-        $albumsToCount->setNoLimit(true);
-        $albumCount = $albumsToCount->getCountForShortcode($shortcode);
-        $oldestTenPercent = ceil($albumCount / 10);
-        $arrayShortcode['limit'] = $oldestTenPercent;
-        $shortcode = $publicContainer->getShortcode($arrayShortcode);
-        $albumsToSync = $publicContainer->getClonableAlbumCollection();
-        $albumsToSync->getCollectionForShortcode($shortcode);
         $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $albumHandler = $adminContainer->getMenuActionHandlerAlbums();
-
-        foreach ($albumsToSync as $album) {
-            $albumHandler->runSynchronizerForExistingAlbum($album);
-        }
+        $scheduledSynchronizer = $adminContainer->getScheduledSynchronizer();
+        $scheduledSynchronizer->run();
     }
 
     public function supportOldShortcodesIfNeeded() {
@@ -239,5 +221,9 @@ class ShashinWp {
         $publicContainer = new Public_ShashinContainer($this->autoLoader);
         $oldShortcode = $publicContainer->getOldShortcode($content, $_REQUEST);
         return $oldShortcode->run();
+    }
+
+    public function registerWidget() {
+        register_widget('Admin_ShashinWidgetWp');
     }
 }
