@@ -18,26 +18,26 @@ $this->functionsFacade->createNonceFields('shashinNonceUpdate', 'shashinNonceUpd
 echo '<input type="hidden" name="id" value="' . $this->album->id . '" />' . PHP_EOL;
 echo '<table class="widefat">' . PHP_EOL;
 echo '<tr>' . PHP_EOL;
-echo '<th class="manage-column shashin_center">'
+echo '<th class="manage-column shashinCenter">'
     . $this->generateOrderByLink('source', __('Source Order', 'shashin'))
     . '</th>' . PHP_EOL;
-echo '<th class="manage-column shashin_center">'
+echo '<th class="manage-column shashinCenter">'
     . $this->generateOrderByLink('id', __('Photo ID', 'shashin'))
     . '</th>' . PHP_EOL;
-echo '<th class="manage-column shashin_center">'
+echo '<th class="manage-column shashinCenter">'
     . $this->generateOrderByLink('filename', __('Filename', 'shashin'))
     . '</th>' . PHP_EOL;
-echo '<th class="manage-column shashin_center">'
+echo '<th class="manage-column shashinCenter">'
     . $this->generateOrderByLink('date', __('Date Taken', 'shashin'))
     . '</th>' . PHP_EOL;
-echo '<th class="manage-column shashin_center">' . __("Include in Random?", 'shashin') . '</th>' . PHP_EOL;
+echo '<th class="manage-column shashinCenter">' . __("Include in Random?", 'shashin') . '</th>' . PHP_EOL;
 echo '</tr>' . PHP_EOL;
 
 $i = 1;
 
 foreach ($dataObjects as $photo) {
     $photoDisplayer = $this->container->getDataObjectDisplayer($this->shortcode, $photo, null, 'source');
-    echo(($i % 2 == 0) ? '<tr class="shashin_center">' : '<tr class="alternate shashin_center">');
+    echo(($i % 2 == 0) ? '<tr class="shashinCenter">' : '<tr class="alternate shashinCenter">');
     echo PHP_EOL;
     echo '<td>' . $photoDisplayer->run() . '</td>' . PHP_EOL;
     echo '<td>' . $photo->id . '</td>' . PHP_EOL;
@@ -58,7 +58,7 @@ foreach ($dataObjects as $photo) {
 
 <tr>
 <td colspan="4">&nbsp;</td>
-<td class="shashin_center"><input type="submit" name="updateRandomDisplay" class="button-primary" value="<?php _e("Update Random Display", 'shashin'); ?>" /></td>
+<td class="shashinCenter"><input type="submit" name="updateRandomDisplay" class="button-primary" value="<?php _e("Update Random Display", 'shashin'); ?>" /></td>
 </tr>
 </table>
 </form>
