@@ -421,7 +421,7 @@ class Admin_ShashinSettingsMenu {
     }
 
     public function validateSettingsForHtmlEntities($k) {
-        $this->validSettings[$k] = htmlentities($this->request[$k]);
+        $this->validSettings[$k] = htmlentities($this->request[$k], ENT_COMPAT, 'UTF-8');
     }
 
     public function setErrorMessageIfNeeded() {
