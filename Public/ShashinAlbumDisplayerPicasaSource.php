@@ -4,9 +4,4 @@ class Public_ShashinAlbumDisplayerPicasaSource extends Public_ShashinAlbumDispla
     public function __construct() {
         parent::__construct();
     }
-
-    public function setLinkHref() {
-        $this->linkHref = $this->dataObject->linkUrl;
-        return $this->linkHref;
-    }
 }
