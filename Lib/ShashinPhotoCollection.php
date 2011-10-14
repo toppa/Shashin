@@ -42,7 +42,7 @@ class Lib_ShashinPhotoCollection extends Lib_ShashinDataObjectCollection {
                 }
 
                 else {
-                    $this->orderBy = 'sourceOrder';
+                    $this->orderBy = 'albumId, sourceOrder';
                 }
         }
 
