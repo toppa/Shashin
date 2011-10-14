@@ -113,7 +113,8 @@ class Public_ShashinLayoutManager {
     }
 
     public function setTotalTables() {
-        if (count($this->collection) > $this->settings->defaultPhotoLimit) {
+        if ($this->shortcode->type != 'album'
+          && (count($this->collection) > $this->settings->defaultPhotoLimit)) {
             $this->totalTables = ceil(
                 count($this->collection)
                 / $this->settings->defaultPhotoLimit
@@ -133,7 +134,7 @@ class Public_ShashinLayoutManager {
     public function setCurrentTableId() {
         $this->currentTableId = 'shashinGroup_' . $this->sessionManager->getGroupCounter();
 
-        if ($this->shortcode->type == 'albumphotos' || $this->shortcode->type == 'photo') {
+        if ($this->shortcode->type != 'album') {
              $this->currentTableId .= '_' . $this->startingTableGroupCounter;
         }
 
@@ -276,7 +277,13 @@ class Public_ShashinLayoutManager {
     }
 
     public function setEndTableWithThisPhoto() {
-        $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->defaultPhotoLimit - 1;
+        if ($this->shortcode->type == 'album') {
+            $possibleEndingPhoto = count($this->collection) - 1;
+        }
+
+        else {
+           $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->defaultPhotoLimit - 1;
+        }
 
         if (count($this->collection) < $possibleEndingPhoto) {
              $this->endTableWithThisPhoto = count($this->collection) - 1;
@@ -339,8 +346,12 @@ class Public_ShashinLayoutManager {
             $this->numericColumns = floor($columns);
         }
 
-        else {
+        elseif (is_numeric($this->shortcode->columns)) {
             $this->numericColumns = $this->shortcode->columns;
+        }
+
+        else {
+            $this->numericColumns = 1;
         }
 
         return $this->numericColumns;
@@ -375,10 +386,9 @@ class Public_ShashinLayoutManager {
     }
 
     public function setHighslideGroupCounter() {
-        $useWithShortcodeTypes = array(null, 'photo', 'albumphotos');
         $this->highslideGroupCounter = null;
 
-        if (in_array($this->shortcode->type, $useWithShortcodeTypes)
+        if ($this->shortcode->type != 'album'
           && $this->settings->imageDisplay == 'highslide') {
 
             $this->highslideGroupCounter = '<script type="text/javascript">'
