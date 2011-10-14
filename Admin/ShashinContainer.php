@@ -2,6 +2,7 @@
 
 class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $installer;
+    private $upgrader;
     private $uninstaller;
     private $menuDisplayerPhotos;
     private $menuActionHandlerPhotos;
@@ -23,7 +24,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
             $this->getClonableAlbum();
             $this->getClonablePhoto();
             $this->getSettings();
-            $this->installer = new Admin_ShashinInstaller();
+            $this->installer = new Admin_ShashinInstall();
             $this->installer->setDbFacade($this->dbFacade);
             $this->installer->setAlbumAndAlbumVars($this->clonableAlbum);
             $this->installer->setPhotoAndPhotoVars($this->clonablePhoto);
@@ -31,6 +32,23 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         }
 
         return $this->installer;
+    }
+
+    public function getUpgrader() {
+        if (!$this->upgrader) {
+            $this->getDatabaseFacade();
+            $this->getClonableAlbum();
+            $this->getClonablePhoto();
+            $this->getFunctionsFacade();
+            $this->upgrader = new Admin_ShashinUpgradeWp();
+            $this->upgrader->setDbFacade($this->dbFacade);
+            $this->upgrader->setAlbum($this->clonableAlbum);
+            $this->upgrader->setPhoto($this->clonablePhoto);
+            $this->upgrader->setFunctionsFacade($this->functionsFacade);
+            $this->upgrader->setAdminContainer($this);
+        }
+
+        return $this->upgrader;
     }
 
     public function getUninstaller() {
@@ -77,11 +95,11 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     public function getMenuActionHandlerPhotos($albumKey) {
         $this->getFunctionsFacade();
         $this->getMenuDisplayerPhotos($albumKey);
-        $this->menuActionHandlerPhotos = new Admin_ShashinMenuActionHandlerPhotos(
-            $this->functionsFacade,
-            $this->menuDisplayerPhotos,
-            $this,
-            $_REQUEST);
+        $this->menuActionHandlerPhotos = new Admin_ShashinMenuActionHandlerPhotos();
+        $this->menuActionHandlerPhotos->setFunctionsFacade($this->functionsFacade);
+        $this->menuActionHandlerPhotos->setMenuDisplayer($this->menuDisplayerPhotos);
+        $this->menuActionHandlerPhotos->setAdminContainer($this);
+        $this->menuActionHandlerPhotos->setRequest($_REQUEST);
         return $this->menuActionHandlerPhotos;
     }
 
@@ -89,11 +107,13 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         if (!$this->menuActionHandlerAlbums) {
             $this->getFunctionsFacade();
             $this->getMenuDisplayerAlbums();
-            $this->menuActionHandlerAlbums = new Admin_ShashinMenuActionHandlerAlbums(
-                $this->functionsFacade,
-                $this->menuDisplayerAlbums,
-                $this,
-                $_REQUEST);
+            $this->getUpgrader();
+            $this->menuActionHandlerAlbums = new Admin_ShashinMenuActionHandlerAlbums();
+            $this->menuActionHandlerAlbums->setFunctionsFacade($this->functionsFacade);
+            $this->menuActionHandlerAlbums->setUpgrader($this->upgrader);
+            $this->menuActionHandlerAlbums->setMenuDisplayer($this->menuDisplayerAlbums);
+            $this->menuActionHandlerAlbums->setAdminContainer($this);
+            $this->menuActionHandlerAlbums->setRequest($_REQUEST);
         }
         return $this->menuActionHandlerAlbums;
     }
