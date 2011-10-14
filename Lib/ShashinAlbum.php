@@ -9,7 +9,7 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
       Lib_ShashinPhoto $clonablePhoto) {
 
         $this->clonablePhoto = $clonablePhoto;
-        $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_album_3alpha';
+        $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_album';
 
         parent::__construct($dbFacade, $refData);
     }
