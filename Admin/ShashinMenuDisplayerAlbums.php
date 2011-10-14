@@ -19,7 +19,7 @@ class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     }
 
     public function generateSyncLink(Lib_ShashinAlbum $album) {
-        $url = '?page=Shashin3AlphaToolsMenu&amp;shashinAction=syncAlbum&amp;id=' . $album->id;
+        $url = '?page=ShashinToolsMenu&amp;shashinAction=syncAlbum&amp;id=' . $album->id;
         $nonceName = "shashinNonceSync_" . $album->id;
         $noncedUrl = $this->functionsFacade->addNonceToUrl($url, $nonceName);
         $linkTag = '<a href="' . $noncedUrl . '"><img src="'
@@ -31,7 +31,7 @@ class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     public function generateDeleteLink(Lib_ShashinAlbum $album) {
         $deleteWarning = __("Are you sure you want to delete this album? Any shashin tags for displaying this album will be permanently broken", "shashin");
         $onClick = "return confirm('$deleteWarning')";
-        $url = '?page=Shashin3AlphaToolsMenu&amp;shashinAction=deleteAlbum&amp;id=' . $album->id;
+        $url = '?page=ShashinToolsMenu&amp;shashinAction=deleteAlbum&amp;id=' . $album->id;
         $nonceName = "shashinNonceDelete_" . $album->id;
         $noncedUrl = $this->functionsFacade->addNonceToUrl($url, $nonceName);
         $linkTag = "<a href=\"$noncedUrl\" onclick=\"$onClick\"><img src=\""
@@ -41,7 +41,7 @@ class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     }
 
     public function generateSyncAllLink() {
-        $url = '?page=Shashin3AlphaToolsMenu&amp;shashinAction=syncAllAlbums';
+        $url = '?page=ShashinToolsMenu&amp;shashinAction=syncAllAlbums';
         $nonceName = "shashinNonceSyncAll";
         $noncedUrl = $this->functionsFacade->addNonceToUrl($url, $nonceName);
         $linkTag = '<a href="' . $noncedUrl . '">' . __("Sync All", "shashin") . '</a>';
@@ -49,7 +49,7 @@ class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     }
 
     public function generatePhotosMenuSwitchLink(Lib_ShashinAlbum $album) {
-        $url = '?page=Shashin3AlphaToolsMenu&amp;shashinMenu=photos&amp;switchingFromAlbumsMenu=1&amp;id='
+        $url = '?page=ShashinToolsMenu&amp;shashinMenu=photos&amp;switchingFromAlbumsMenu=1&amp;id='
             . $album->id;
         $nonceName = "shashinNoncePhotosMenu_" . $album->id;
         $noncedUrl = $this->functionsFacade->addNonceToUrl($url, $nonceName);
