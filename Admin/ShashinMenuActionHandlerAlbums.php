@@ -2,20 +2,37 @@
 
 class Admin_ShashinMenuActionHandlerAlbums {
     private $functionsFacade;
+    private $upgrader;
     private $menuDisplayer;
     private $adminContainer;
     private $request;
 
-    public function __construct(
-      ToppaFunctionsFacade $functionsFacade,
-      Admin_ShashinMenuDisplayer $menuDisplayer,
-      Admin_ShashinContainer $adminContainer,
-      array $request) {
+    public function __construct() {
+    }
 
+    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
+        return $this->functionsFacade;
+    }
+
+    public function setUpgrader(Admin_ShashinUpgradeWp $upgrader) {
+        $this->upgrader = $upgrader;
+        return $this->upgrader;
+    }
+
+    public function setMenuDisplayer(Admin_ShashinMenuDisplayer $menuDisplayer) {
         $this->menuDisplayer = $menuDisplayer;
-        $this->adminContainer = &$adminContainer;
+        return $this->menuDisplayer;
+    }
+
+    public function setAdminContainer(Admin_ShashinContainer $adminContainer) {
+        $this->adminContainer = $adminContainer;
+        return $this->adminContainer;
+    }
+
+    public function setRequest(array $request) {
         $this->request = $request;
+        return $this->request;
     }
 
     public function run() {
@@ -26,22 +43,26 @@ class Admin_ShashinMenuActionHandlerAlbums {
                     $message = $this->runSynchronizerBasedOnRssUrl();
                     break;
                 case 'syncAlbum':
-                    $this->functionsFacade->checkAdminNonceFields("shashinNonceSync_" . $this->request['id']);
+                    $this->functionsFacade->checkAdminNonceFields('shashinNonceSync_' . $this->request['id']);
                     $message = $this->runSynchronizerForExistingAlbum();
                     break;
                 case 'syncAllAlbums':
-                    $this->functionsFacade->checkAdminNonceFields("shashinNonceSyncAll");
+                    $this->functionsFacade->checkAdminNonceFields('shashinNonceSyncAll');
                     $message = $this->runSynchronizerForAllExistingAlbums();
                     break;
                 case 'deleteAlbum':
-                    $this->functionsFacade->checkAdminNonceFields("shashinNonceDelete_" . $this->request['id']);
+                    $this->functionsFacade->checkAdminNonceFields('shashinNonceDelete_' . $this->request['id']);
                     $message = $this->runDeleteAlbum();
                     break;
                 case 'updateIncludeInRandom':
-                    $this->functionsFacade->checkAdminNonceFields("shashinNonceUpdate", "shashinNonceUpdate");
+                    $this->functionsFacade->checkAdminNonceFields('shashinNonceUpdate', 'shashinNonceUpdate');
                     $message = $this->runUpdateIncludeInRandom();
                     break;
-           }
+                case 'cleanupUpgrade':
+                    $this->functionsFacade->checkAdminNonceFields('shashinNonceCleanupUpgrade');
+                    $this->upgrader->cleanup();
+                    $message = __('Upgrade cleanup completed', 'shashin');
+            }
 
             return $this->menuDisplayer->run($message);
         }
