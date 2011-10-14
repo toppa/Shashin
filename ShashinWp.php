@@ -13,13 +13,19 @@ class ShashinWp {
     }
 
     public function install() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $installer = $adminContainer->getInstaller();
-        $activationStatus = $installer->run();
-
-        if ($activationStatus !== true) {
-            wp_die(__('Activation of Shashin failed. Error Message: ', 'shashin') . $activationStatus);
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $upgrader = $adminContainer->getUpgrader();
+            $upgrader->run();
+            $installer = $adminContainer->getInstaller();
+            $status = $installer->run();
         }
+
+        catch (Exception $e) {
+            return __('Activation of Shashin failed. Error Message: ', 'shashin') . $e->getMessage();
+        }
+
+        return $status;
     }
 
     public function run() {
@@ -30,22 +36,22 @@ class ShashinWp {
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('media_buttons', array($this, 'addMediaButton'), 30);
-        // hack: use a capital letter to avoid a string match conflict with Shashin 2
-        add_action('media_upload_Shashin3alpha_photos', array($this, 'initPhotoMediaMenu'));
-        add_action('media_upload_Shashin3alpha_albums', array($this, 'initAlbumMediaMenu'));
+        add_action('media_upload_shashin_photos', array($this, 'initPhotoMediaMenu'));
+        add_action('media_upload_shashin_albums', array($this, 'initAlbumMediaMenu'));
         add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
         $this->scheduleSyncIfNeeded();
         add_action('shashinSync', array($this, 'runScheduledSync'));
-        //$this->supportOldShortcodesIfNeeded();
+        $this->supportOldShortcodesIfNeeded();
         add_action('widgets_init', array($this, 'registerWidget'));
+        add_action('admin_head', array($this, 'displayPluginPageUpgradeNag'));
     }
 
     public function initToolsMenu() {
         $toolsPage = add_management_page(
-            'Shashin3Alpha',
-            'Shashin3Alpha',
+            'Shashin',
+            'Shashin',
             'edit_posts',
-            'Shashin3AlphaToolsMenu',
+            'ShashinToolsMenu',
             array($this, 'displayToolsMenu')
         );
 
@@ -69,10 +75,10 @@ class ShashinWp {
 
     public function initSettingsMenu() {
         add_options_page(
-            'Shashin3Alpha',
-            'Shashin3Alpha',
+            'Shashin',
+            'Shashin',
             'manage_options',
-            'shashin3alpha',
+            'shashin',
             array($this, 'displaySettingsMenu')
         );
     }
@@ -156,8 +162,8 @@ class ShashinWp {
 
         $photoBrowserUrl = 'media-upload.php?post_id='
             . $iframeId
-            . '&amp;type=Shashin3alpha&amp;tab=Shashin3alpha_photos&amp;TB_iframe=true';
-        $title = __('Add Shashin3alpha photos', 'shashin');
+            . '&amp;type=shashin&amp;tab=shashin_photos&amp;TB_iframe=true';
+        $title = __('Add Shashin photos', 'shashin');
         $imageUrl = plugins_url('Admin/Display/images/', __FILE__) .'picasa.gif';
         $markup = '<a href="%s" class="thickbox" title="%s"><img src="%s" alt="%s"></a>';
         printf($markup, $photoBrowserUrl, $title, $imageUrl, $title);
@@ -184,13 +190,22 @@ class ShashinWp {
     }
 
     public function scheduleSyncIfNeeded() {
-        if (!wp_next_scheduled('shashinSync') ) {
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
-            $settings = $publicContainer->getSettings();
+        try {
+            if (!wp_next_scheduled('shashinSync') ) {
+                $publicContainer = new Public_ShashinContainer($this->autoLoader);
+                $settings = $publicContainer->getSettings();
 
-            if ($settings->scheduledUpdate == 'y') {
-                wp_schedule_event(time(), 'hourly', 'shashinSync');
+                if ($settings->scheduledUpdate == 'y') {
+                    wp_schedule_event(time(), 'hourly', 'shashinSync');
+                }
             }
+        }
+
+        // an Exception is thrown on a first installation because the scheduledUpdate
+        // property is not set yet (apparently WP tries to run Shashin before
+        // installing it - weird), so suppress it
+        catch (Exception $e) {
+            return false;
         }
     }
 
@@ -225,5 +240,24 @@ class ShashinWp {
 
     public function registerWidget() {
         register_widget('Admin_ShashinWidgetWp');
+    }
+
+    public function displayPluginPageUpgradeNag() {
+        if (strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
+            $libContainer = new Lib_ShashinContainer($this->autoLoader);
+            $functionsFacade = $libContainer->getFunctionsFacade();
+
+            if ($functionsFacade->getSetting('shashin_options')) {
+                echo '<div class="updated"><p>';
+                echo __('Please go to the Shashin Tools Menu to complete the upgrade.', 'shashin');
+                echo '</p></div>' . PHP_EOL;
+            }
+        }
+    }
+
+    public static function display($arrayShortcode) {
+        $autoLoader = new ToppaAutoLoaderWp('/shashin');
+        $shashinWp = new ShashinWp($autoLoader);
+        return $shashinWp->handleShortcode($arrayShortcode);
     }
 }
