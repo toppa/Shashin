@@ -36,7 +36,7 @@ class Admin_ShashinMediaMenu {
     }
 
     public function displayMediaMenuCss() {
-        $this->functionsFacade->prepMediaMenuCss('type=Shashin3alpha');
+        $this->functionsFacade->prepMediaMenuCss('type=shashin');
         $cssUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__) .'menuMedia.css';
         $this->functionsFacade->enqueueStylesheet('shashinMediaMenuStyle', $cssUrl, false, $this->version);
     }
@@ -63,8 +63,8 @@ class Admin_ShashinMediaMenu {
 
     public function addMediaMenuTabs() {
         return array(
-            'Shashin3alpha_photos' => __('Photos', 'shashin'),
-            'Shashin3alpha_albums' => __('Albums', 'shashin')
+            'shashin_photos' => __('Photos', 'shashin'),
+            'shashin_albums' => __('Albums', 'shashin')
         );
     }
 
