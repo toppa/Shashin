@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Shashin (v3 alpha)
+Plugin Name: Shashin
 Plugin URI: http://www.toppa.com/shashin-wordpress-plugin/
 Description: A plugin for integrating Picasa photos in WordPress.
 Author: Michael Toppa
@@ -10,12 +10,13 @@ Author URI: http://www.toppa.com
 
 $shashinAutoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
 register_activation_hook(__FILE__, 'shashinActivate');
+register_deactivation_hook(__FILE__, 'shashinDeactivate');
 load_plugin_textdomain('shashin', false, basename(dirname(__FILE__)) . '/Languages/');
 
 if (file_exists($shashinAutoLoaderPath)) {
     require_once($shashinAutoLoaderPath);
     $shashinToppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-    $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin3alpha');
+    $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
     $shashin = new ShashinWp($shashinAutoLoader);
     $shashin->run();
 }
@@ -40,13 +41,21 @@ function shashinActivate() {
     else {
         require_once($autoLoaderPath);
         $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-        $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin3alpha');
+        $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
         $shashin = new ShashinWp($shashinAutoLoader);
-        $shashin->install();
+        $status = $shashin->install();
+
+        if (is_string($status)) {
+            shashinCancelActivation($status);
+        }
     }
 }
 
 function shashinCancelActivation($message) {
     deactivate_plugins(basename(__FILE__));
     wp_die($message);
+}
+
+function shashinDeactivate() {
+    wp_clear_scheduled_hook('shashinSync');
 }
