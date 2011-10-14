@@ -2,7 +2,7 @@
 
 class Lib_ShashinSettings {
     private $functionsFacade;
-    private $name = 'shashin3alpha';
+    private $name = 'shashin';
     private $data = array();
 
     public function __construct(ToppaFunctionsFacade $functionsFacade) {
