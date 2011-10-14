@@ -2,7 +2,7 @@
 
 class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     public function __construct(ToppaDatabaseFacade $dbFacade, Lib_ShashinPhotoRefData $refData) {
-        $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_photo_3alpha';
+        $this->tableName = $dbFacade->getTableNamePrefix() . 'shashin_photo';
         parent::__construct($dbFacade, $refData);
     }
 
