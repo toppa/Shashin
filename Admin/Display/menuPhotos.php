@@ -1,13 +1,14 @@
 <?php
 echo '<div class="wrap">' . PHP_EOL;
 require_once('donate.php');
+screen_icon();
 echo '<h2>' . __("Manage Shashin Albums", 'shashin') . '</h2>' . PHP_EOL;;
 
 if ($message) {
     require_once('message.php');
 }
 
-echo '<p><a href="?page=Shashin3AlphaToolsMenu">&laquo; '
+echo '<p><a href="?page=ShashinToolsMenu">&laquo; '
     . __("Return to Albums Menu", 'shashin') . "</a></p>" . PHP_EOL;
 
 echo '<h3>' . __('Photos for Album: ', 'shashin') . $this->album->title . '</h3>' . PHP_EOL;
