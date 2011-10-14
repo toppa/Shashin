@@ -6,15 +6,27 @@ class Admin_ShashinMenuActionHandlerPhotos {
     private $adminContainer;
     private $request;
 
-    public function __construct(
-      ToppaFunctionsFacade $functionsFacade,
-      Admin_ShashinMenuDisplayer $menuDisplayer,
-      Admin_ShashinContainer $adminContainer,
-      array $request) {
+    public function __construct() {
+    }
+
+    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
+        return $this->functionsFacade;
+    }
+
+    public function setMenuDisplayer(Admin_ShashinMenuDisplayer $menuDisplayer) {
         $this->menuDisplayer = $menuDisplayer;
+        return $this->menuDisplayer;
+    }
+
+    public function setAdminContainer(Admin_ShashinContainer $adminContainer) {
         $this->adminContainer = $adminContainer;
+        return $this->adminContainer;
+    }
+
+    public function setRequest(array $request) {
         $this->request = $request;
+        return $this->request;
     }
 
     public function run() {
