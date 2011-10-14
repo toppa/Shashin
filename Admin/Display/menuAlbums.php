@@ -2,6 +2,7 @@
 
 echo '<div class="wrap">' . PHP_EOL;
 require_once('donate.php');
+screen_icon();
 echo '<h2>' . __("Manage Shashin Albums", 'shashin') . '</h2>' . PHP_EOL;;
 
 if ($message) {
@@ -97,7 +98,7 @@ else {
 <dl id="shashinExamplesSection" class="shashinExamplesList">
 <dt><strong><?php _e("All the Picasa albums for a user", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link on the bottom right of the Picasa user's home page", 'shashin'); ?></dt>
     <dd style="font-size: smaller;">Example: http://picasaweb.google.com/data/feed/base/user/michaeltoppa?alt=rss&amp;kind=album&amp;hl=en_US</dd>
-<dt><strong><?php _e("A single Picasa album", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link in the sidebar of the alm's main page", 'shashin'); ?></dt>
+<dt><strong><?php _e("A single Picasa album", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link in the sidebar of the album's main page", 'shashin'); ?></dt>
     <dd style="font-size: smaller;">Example: http://picasaweb.google.com/data/feed/base/user/michaeltoppa/albumid/5269449390714706417?alt=rss&amp;kind=photo&amp;hl=en_US</dd>
 <!--    <dt><strong><?php _e("A Youtube user's videos", 'shashin'); ?>:</strong> <?php _e("There is no link for this in the user's channel page, but this is what the URL looks like (substitute the desired username for 'mttoppa')", 'shashin'); ?></dt>
     <dd style="font-size: smaller;">Example: http://gdata.youtube.com/feeds/api/users/mttoppa/uploads</dd>
