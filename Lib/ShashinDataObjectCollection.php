@@ -156,7 +156,6 @@ abstract class Lib_ShashinDataObjectCollection {
             $this->whereClause
             . " " . $this->orderByClause
             . " " . $this->limitClause;
-
         return $this->sqlConditions;
     }
 
