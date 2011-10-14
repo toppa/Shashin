@@ -97,45 +97,43 @@ abstract class Public_ShashinAlbumDisplayerPicasa extends Public_ShashinDataObje
 
     public function setCaption() {
         if ($this->shortcode->caption != 'n') {
-            $this->caption = $this->generateCaptionTitle();
-            $this->caption .= $this->generateCaptionDate();
-            $this->caption .= $this->generateCaptionLocationAndPhotoCount();
-            return $this->caption;
+            $this->generateCaptionTitle();
+            $this->generateCaptionDate();
+            $this->generateCaptionLocationAndPhotoCount();
         }
 
-        return null;
+        return $this->caption;
     }
 
     private function generateCaptionTitle() {
-        $caption = '<span class="shashinAlbumCaptionTitle">';
-        $caption .= $this->linkTagForCaption ? $this->linkTagForCaption : '';
-        $caption .= $this->dataObject->title;
-        $caption .= $this->linkTagForCaption ? '</a>' : '';
-        $caption .= '</span>' . PHP_EOL;
-        return $caption;
+        $this->caption = '<span class="shashinAlbumCaptionTitle">';
+        $this->caption .= $this->linkTagForCaption ? $this->linkTagForCaption : '';
+        $this->caption .= $this->dataObject->title;
+        $this->caption .= $this->linkTagForCaption ? '</a>' : '';
+        $this->caption .= '</span>';
+        return $this->caption;
     }
 
     private function generateCaptionDate() {
-        return '<span class="shashinAlbumCaptionDate">'
-            . $this->functionsFacade->dateI18n("M j, Y", $this->dataObject->pubDate) . '</span>' . PHP_EOL;
+        $this->caption .= '<span class="shashinAlbumCaptionDate">'
+            . $this->functionsFacade->dateI18n("M j, Y", $this->dataObject->pubDate)
+            . '</span>';
+        return $this->caption;
     }
 
     private function generateCaptionLocationAndPhotoCount() {
-        if ($this->dataObject->location) {
-            $caption = '<span class="shashinAlbumCaptionLocation">';
-                if ($this->dataObject->geoPos) {
-                    $caption .= '<a href="http://maps.google.com/maps?q='
-                        . urlencode($this->dataObject->geoPos)
-                        . '"><img src="'
-                        . $this->functionsFacade->getPluginsUrl('/Display/mapped_sm.gif', __FILE__)
-                        . '" alt="Google Maps Location" width="15" height="12" /></a>';
-                }
+        $this->caption .= '<span class="shashinAlbumCaptionLocation">';
 
-            $caption .= 'Photos: ' . $this->dataObject->photoCount . '</span>' . PHP_EOL;
-            return $caption;
+        if ($this->dataObject->geoPos) {
+            $this->caption .= '<a href="http://maps.google.com/maps?q='
+                . urlencode($this->dataObject->geoPos)
+                . '"><img src="'
+                . $this->functionsFacade->getPluginsUrl('/Display/mapped_sm.gif', __FILE__)
+                . '" alt="Google Maps Location" width="15" height="12" /></a> ';
         }
 
-        return null;
+        $this->caption .= 'Photos: ' . $this->dataObject->photoCount . '</span>';
+        return $this->caption;
     }
 
 }
