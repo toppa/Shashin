@@ -79,7 +79,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     public function setCaption() {
         parent::setCaption();
-        $this->caption .= PHP_EOL . '<div class="highslide-caption">';
+        $this->caption .= '<div class="highslide-caption">';
 
         if ($this->dataObject->description) {
             $this->caption .= $this->dataObject->description;
