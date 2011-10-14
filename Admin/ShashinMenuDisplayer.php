@@ -42,6 +42,7 @@ abstract class Admin_ShashinMenuDisplayer {
             $this->checkOrderByNonce();
         }
 
+        $message .= $this->showUpgradeCleanupNotice($message);
         $shortcodeMimic = $this->mimicShortcode();
         $dataObjects = $this->getDataObjects($shortcodeMimic);
         $refData = $this->collection->getRefData();
@@ -50,6 +51,25 @@ abstract class Admin_ShashinMenuDisplayer {
         $toolsMenu = ob_get_contents();
         ob_end_clean();
         return $toolsMenu;
+    }
+
+    public function showUpgradeCleanupNotice() {
+        if ($this->functionsFacade->getSetting('shashin_options')) {
+            $url = '?page=ShashinToolsMenu&amp;shashinAction=cleanupUpgrade';
+            $noncedUrl = $this->functionsFacade->addNonceToUrl($url, 'shashinNonceCleanupUpgrade');
+
+            $notice = '<p><strong>';
+            $notice .= __('Upgrade notice', 'shashin');
+            $notice .= ':</strong> ';
+            $notice .= __('Please click "Sync All" below to complete the upgrade. Then review your Shashin albums, tags, and photos. If everything looks correct, please', 'shashin');
+            $notice .= ' <a href="' . $noncedUrl . '">';
+            $notice .= __('click here to remove the old settings and database backup', 'shashin');
+            $notice .= '</a> ';
+            $notice .= __('(which will remove this nag). Also, if you have posts containing Shashin tags, go to the Shashin settings menu to turn on support for old-style tags.', 'shashin');
+            $notice .= '</p>';
+        }
+
+        return $notice;
     }
 
     public function mimicShortcode() {
@@ -112,7 +132,7 @@ abstract class Admin_ShashinMenuDisplayer {
             $this->sortArrow = ($this->defaultOrderBy == $column) ? '&darr;' : '';
         }
 
-        return "?page=Shashin3AlphaToolsMenu&amp;shashinOrderBy=$column&amp;shashinReverse=" . $reverse;
+        return "?page=ShashinToolsMenu&amp;shashinOrderBy=$column&amp;shashinReverse=" . $reverse;
     }
 
     public function getSortArrow() {
