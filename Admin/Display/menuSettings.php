@@ -1,5 +1,8 @@
 <div class="wrap">
-    <?php screen_icon(); ?>
+    <?php
+        require_once('donate.php');
+        screen_icon();
+    ?>
     <h2><?php _e('Shashin', 'shashin');?></h2>
     <?php
         if ($this->successMessage) {
@@ -13,7 +16,7 @@
         }
     ?>
     <form method="post">
-        <?php settings_fields('shashin3alpha'); ?>
+        <?php settings_fields('shashin'); ?>
         <input type="hidden" name="shashinAction" value="updateSettings" />
         <table class="form-table">
         <?php
