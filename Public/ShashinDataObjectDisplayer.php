@@ -278,7 +278,7 @@ abstract class Public_ShashinDataObjectDisplayer {
         }
 
         if ($this->caption) {
-            $this->combinedTags .= PHP_EOL . $this->caption . PHP_EOL;
+            $this->combinedTags .= $this->caption . PHP_EOL;
         }
 
         return $this->combinedTags;
