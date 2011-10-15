@@ -41,7 +41,7 @@ Shashin has many features for displaying your Picasa photos and videos in your W
 * Show thumbnails of your newest photos and videos, from one or more albums.
 * Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps.
 * Display any number of random photos and videos, from one or more albums. You can also choose to exclude certain photos or albums from random display.
-* Use widgets for all of the above!
+* Use a widget to display Shashin photos in your sidebar
 * Use a jQuery based WYSIWYG media browser for easily adding Picasa photos and albums to your posts.
 * Customize the Shashin and Highslide stylesheets to suit the theme of your site.
 * Internationalization: Shashin supports translations into other languages (please contribute a translation if you're bilingual!)
