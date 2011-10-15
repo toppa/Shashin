@@ -3,7 +3,6 @@
 class Admin_ShashinWidgetWp extends WP_Widget {
     private $shashinFormFields;
     private $shashinDefaults = array(
-        'type' => 'photo',
         'limit' => null,
         'size' => 'small',
         'id' => null,
@@ -20,15 +19,20 @@ class Admin_ShashinWidgetWp extends WP_Widget {
     public function Admin_ShashinWidgetWP() {
         $widgetSettings = array(
             'classname' => null,
-            'description' => 'Shashin'
+            'description' => __('Display Shashin Photos. Review your photos in the Shashin Tools menu to get their Photo IDs.', 'shashin')
         );
 
-        parent::WP_Widget('ShashinWidgetWp', 'Shashin', $widgetSettings);
+        $widgetTitle = __('Shashin Photos', 'shashin');
+        parent::WP_Widget('ShashinWidgetWp', $widgetTitle, $widgetSettings);
     }
 
     public function form($instance) {
         $instance = wp_parse_args((array)$instance, $this->shashinDefaults);
         $this->setFormFields();
+
+        echo '<p><a href="http://www.toppa.com/shashin-wordpress-plugin/#widget" target="_blank">';
+        echo __('Shashin widget help', 'shashin');
+        echo '</a></p>' . PHP_EOL;
 
         if ($_SESSION['shashinError']) {
             echo '<div class="error"><p><strong>'
@@ -56,20 +60,9 @@ class Admin_ShashinWidgetWp extends WP_Widget {
                 'input' => array('type' => 'text', 'size' => 10),
                 'label' => __('Title', 'shashin')
             ),
-            'type' => array(
-                'input' => array(
-                    'type' => 'select',
-                    'subgroup' =>  array(
-                        'photo' => __('Photos', 'shashin'),
-                        'albumphotos' => __('Album photos', 'shashin'),
-                        'album' => __('Albums', 'shashin')
-                    )
-                ),
-                'label' => __('Type', 'shashin')
-            ),
             'id' => array(
                 'input' => array('type' => 'text', 'size' => 10),
-                'label' => __('IDs', 'shashin')
+                'label' => __('Photo IDs', 'shashin')
             ),
             'size' => array(
                 'input' => array('type' => 'text', 'size' => 10),
@@ -204,6 +197,7 @@ class Admin_ShashinWidgetWp extends WP_Widget {
 
         $arrayShortcode = $instance;
         unset($arrayShortcode['title']);
+        $arrayShortcode['type'] = 'photo';
         $autoLoader = new ToppaAutoLoaderWp('/shashin');
         $shashinWp = new ShashinWp($autoLoader);
         echo $shashinWp->handleShortcode($arrayShortcode);
