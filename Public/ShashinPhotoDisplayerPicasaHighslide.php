@@ -6,8 +6,8 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
     }
 
     public function setImgTitle() {
-        $this->imgAlt = $this->makeTextQuotable($this->dataObject->description);
-        return $this->imgAlt;
+        $this->imgTitle = $this->makeTextQuotable($this->dataObject->description);
+        return $this->imgTitle;
     }
 
     public function setImgClassAdditional() {
