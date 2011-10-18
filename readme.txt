@@ -82,9 +82,12 @@ Shashin has many features for displaying your Picasa photos and videos in your W
 
 Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a Usage Guide and other information.
 
-For troubleshooting help, please [post a comment in my latest Shashin post](http://www.toppa.com/category/wordpress-and-web-programming/shashin/).
+For troubleshooting help, please [post a comment in my latest Shashin post](http://www.toppa.com/category/technical/wordpress-plugins/).
 
 == Changelog ==
+
+= 3.0 =
+* Complete rewrite
 
 = 2.6.3 =
 * Added support for child themes
