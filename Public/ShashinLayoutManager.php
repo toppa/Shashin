@@ -277,16 +277,18 @@ class Public_ShashinLayoutManager {
     }
 
     public function setEndTableWithThisPhoto() {
+        $zeroBasedCountOfCollection = count($this->collection) - 1;
+
         if ($this->shortcode->type == 'album') {
-            $possibleEndingPhoto = count($this->collection) - 1;
+            $possibleEndingPhoto = $zeroBasedCountOfCollection;;
         }
 
         else {
-           $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->defaultPhotoLimit - 1;
+            $possibleEndingPhoto = $this->startTableWithThisPhoto + $this->settings->defaultPhotoLimit - 1;
         }
 
-        if (count($this->collection) < $possibleEndingPhoto) {
-             $this->endTableWithThisPhoto = count($this->collection) - 1;
+        if ($zeroBasedCountOfCollection < $possibleEndingPhoto) {
+             $this->endTableWithThisPhoto = $zeroBasedCountOfCollection;
         }
 
         else {
