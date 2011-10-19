@@ -48,7 +48,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     }
 
     public function isVideo() {
-        $fileExtension = ToppaFunctions::getFileExtension($this->data['filename']);
+        $fileExtension = strtolower(ToppaFunctions::getFileExtension($this->data['filename']));
 
         if (in_array($fileExtension, $this->videoFileTypes)) {
             return true;

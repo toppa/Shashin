@@ -5,7 +5,7 @@ abstract class Lib_ShashinDataObject {
     protected $tableName;
     protected $data = array();
     protected $refData;
-    protected $videoFileTypes = array('mpg', 'avi', 'asf', 'wmv', 'mov', 'mp4');
+    protected $videoFileTypes = array('mpg', 'mod', 'mmv', 'tod', 'wmv', 'asf', 'avi', 'divx', 'mov', 'm4v', '3gp', '3g2', 'mp4', 'm2t', 'm2ts', 'mts', 'mkv');
 
     public function __construct(ToppaDatabaseFacade $dbFacade, Lib_ShashinDataObjectRefData $refData) {
         $this->dbFacade = $dbFacade;
