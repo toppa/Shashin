@@ -156,8 +156,14 @@ abstract class Public_ShashinDataObjectDisplayer {
 
     public function setActualThumbnailSizeFromValidSizes($numericSize) {
         for ($i = 0; $i < count($this->validThumbnailSizes); $i++) {
-            if ($numericSize <= $this->validThumbnailSizes[$i]) {
-                $this->actualThumbnailSize = $this->validThumbnailSizes[$i - 1];
+            if ($numericSize == $this->validThumbnailSizes[$i]) {
+                $this->actualThumbnailSize = $this->validThumbnailSizes[$i];
+                break;
+            }
+
+            elseif ($numericSize < $this->validThumbnailSizes[$i]) {
+                $nextSmaller = ($i == 0) ? 0 : ($i - 1);
+                $this->actualThumbnailSize = $this->validThumbnailSizes[$nextSmaller];
                 break;
             }
         }
