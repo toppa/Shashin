@@ -42,6 +42,16 @@ abstract class Lib_ShashinDataObject {
     }
 
     public function set(array $fields) {
+        $intTypes = $this->dbFacade->getIntTypes();
+
+        foreach ($this->getRefData() as $k=>$v) {
+            // needed for compatibility with mySql on Windows
+            // but don't convert a null id to zero
+            if ($k != 'id' && in_array($v['db']['type'], $intTypes)) {
+                $fields[$k] = intval($fields[$k]);
+            }
+        }
+
         $this->data = array_merge($this->data, $fields);
         return true;
     }
