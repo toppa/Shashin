@@ -79,18 +79,32 @@ class Admin_ShashinMenuActionHandlerAlbums {
         if (strpos($this->request['rssUrl'], 'kind=album') !== false) {
             $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
             $albumCount = $synchronizer->addMultipleAlbumsFromRssUrl();
-            return __("Added", "shashin") . " $albumCount " . __("albums", "shashin");
+            return __('Added', 'shashin') . " $albumCount " . __('Picasa albums', 'shashin');
         }
 
         // a single Picasa album
-        else if (strpos($this->request['rssUrl'], 'kind=photo') !== false) {
+        elseif (strpos($this->request['rssUrl'], 'kind=photo') !== false) {
             $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
             $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
-            return __("Synchronized album", "shashin") . ' "' . $syncedAlbum->title . '"';
+            return __('Added Picasa album', 'shashin') . ' "' . $syncedAlbum->title . '"';
+        }
+
+        // a YouTube feed
+        elseif (strpos($this->request['rssUrl'], 'gdata.youtube.com') !== false) {
+            $synchronizer = $this->adminContainer->getSynchronizerYoutube($this->request);
+            $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
+            return __('Added YouTube videos', 'shashin') . ' "' . $syncedAlbum->title . '"';
+        }
+
+        // a Twitpic feed
+        elseif (strpos($this->request['rssUrl'], 'twitpic.com/photos') !== false) {
+            $synchronizer = $this->adminContainer->getSynchronizerTwitpic($this->request);
+            $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
+            return __('Added Twitpic photos', 'shashin') . ' "' . $syncedAlbum->title . '"';
         }
 
         else {
-            throw new Exception(__("Unrecognized RSS feed", "shashin"));
+            throw new Exception(__('Unrecognized RSS feed', 'shashin'));
         }
     }
 
@@ -100,15 +114,10 @@ class Admin_ShashinMenuActionHandlerAlbums {
             $albumToSync->get($this->request['id']);
         }
 
-        switch ($albumToSync->albumType) {
-            case 'picasa':
-                $synchronizer = $this->adminContainer->getSynchronizerPicasa();
-                $syncedAlbum = $synchronizer->syncExistingAlbum($albumToSync);
-                return __("Synchronized album", "shashin") . ' "' . $syncedAlbum->title . '"';
-                break;
-            default:
-                throw new Exception(__("Unrecognized album type", "shashin"));
-        }
+        $synchronizerGetter = 'getSynchronizer' . ucfirst($albumToSync->albumType);
+        $synchronizer = $this->adminContainer->$synchronizerGetter();
+        $syncedAlbum = $synchronizer->syncExistingAlbum($albumToSync);
+        return __('Synchronized', 'shashin') . ' "' . $syncedAlbum->title . '"';
     }
 
     public function runSynchronizerForAllExistingAlbums() {
@@ -121,14 +130,14 @@ class Admin_ShashinMenuActionHandlerAlbums {
             ++$albumCount;
         }
 
-        return __("Synchronized all", "shashin") . " $albumCount " . __("albums", "shashin");
+        return __('Synchronized all', 'shashin') . " $albumCount " . __('albums', 'shashin');
     }
 
     public function runDeleteAlbum() {
         $album = $this->adminContainer->getClonableAlbum();
         $album->get($this->request['id']);
         $albumData = $album->delete();
-        return __("Deleted album", "shashin") . ' "' . $albumData['title'] . '"';
+        return __('Deleted album', 'shashin') . ' "' . $albumData['title'] . '"';
     }
 
     public function runUpdateIncludeInRandom() {
@@ -141,6 +150,6 @@ class Admin_ShashinMenuActionHandlerAlbums {
             $album->flush();
         }
 
-        return __('Updated "Include In Random" settings', "shashin");
+        return __('Updated "Include In Random" settings', 'shashin');
     }
  }

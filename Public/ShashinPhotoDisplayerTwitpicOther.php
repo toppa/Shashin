@@ -1,6 +1,6 @@
 <?php
 
-class Public_ShashinPhotoDisplayerPicasaOther extends Public_ShashinPhotoDisplayerPicasa {
+class Public_ShashinPhotoDisplayerTwitpicOther extends Public_ShashinPhotoDisplayerTwitpic {
     public function __construct() {
         parent::__construct();
     }
@@ -31,10 +31,9 @@ class Public_ShashinPhotoDisplayerPicasaOther extends Public_ShashinPhotoDisplay
         return $this->linkRel;
     }
 
+    // degenerate
     public function setLinkRelVideo() {
-        $this->linkRel = $this->settings->otherRelVideo;
-        $this->generateLinkRelGroupMarker();
-        return $this->linkRel;
+        return null;
     }
 
     private function generateLinkRelGroupMarker() {

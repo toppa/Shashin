@@ -8,7 +8,7 @@ class Admin_ShashinSettingsMenu {
     private $successMessage;
     private $errorMessage;
     private $request;
-    private $relativePathToTemplate = 'Display/menuSettings.php';
+    private $relativePathToTemplate = 'Display/settings.php';
     private $settingsGroups;
     private $refData;
 
@@ -59,17 +59,17 @@ class Admin_ShashinSettingsMenu {
                 'input' => array(
                     'type' => 'select',
                     'subgroup' =>  array(
-                        'xsmall' => __('X-Small (~400px)', 'shashin'),
-                        'small' => __('Small (~600px)', 'shashin'),
-                        'medium' => __('Medium (~800px)', 'shashin'),
-                        'large' => __('Large (~1000px)', 'shashin'),
-                        'xlarge' => __('X-Large (~1200px)', 'shashin')
+                        'xsmall' => __('X-Small (400px)', 'shashin'),
+                        'small' => __('Small (600px)', 'shashin'),
+                        'medium' => __('Medium (800px)', 'shashin'),
+                        'large' => __('Large (912px)', 'shashin'),
+                        'xlarge' => __('X-Large (1024px)', 'shashin')
                     )
                 ),
                 'validateFunction' => 'in_array',
                 'validValues' => array('xsmall', 'small', 'medium', 'large', 'xlarge'),
                 'label' => __('Expanded image size', 'shashin'),
-                'help' => __('The expanded display size for a photo when its thumbnail is clicked. The exact size depends on the sizes available from your photo hosting service.', 'shashin'),
+                'help' => __('The expanded display size for a photo when its thumbnail is clicked. The actual size of a photo may be smaller if it\'s not available in the selected size.', 'shashin'),
                 'group' => 'general'
             ),
             'defaultPhotoLimit' => array(

@@ -6,7 +6,8 @@ screen_icon();
 echo '<h2>' . __("Manage Shashin Albums", 'shashin') . '</h2>' . PHP_EOL;;
 
 if ($message) {
-    require_once('message.php');
+    echo '<div id="message" class="updated"><p>' . $message .'</p></div>';
+    unset($message);
 }
 
 echo '<h3>' . __("Your Albums", 'shashin') . '</h3>' . PHP_EOL;
@@ -25,6 +26,9 @@ if ($dataObjects) {
         . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashinCenter">'
         . $this->generateOrderByLink('id', __('Album ID', 'shashin'))
+        . '</th>' . PHP_EOL;
+    echo '<th class="manage-column shashinCenter">'
+        . $this->generateOrderByLink('source', __('Source', 'shashin'))
         . '</th>' . PHP_EOL;
     echo '<th class="manage-column shashinCenter">' . __("Sync", 'shashin') . "</th>" . PHP_EOL;
     echo '<th class="manage-column shashinCenter">' . __("Delete", 'shashin') . "</th>" . PHP_EOL;
@@ -49,6 +53,8 @@ if ($dataObjects) {
             . '</td>' . PHP_EOL;
         echo '<td class="shashinCenter">'
             . $album->id . "</td>" . PHP_EOL;
+        echo '<td class="shashinCenter">'
+            . ucfirst($album->albumType) . "</td>" . PHP_EOL;
         echo '<td class="shashinCenter">'
             . $this->generateSyncLink($album)
             . '</td>' . PHP_EOL;
@@ -90,24 +96,27 @@ else {
 <?php $this->functionsFacade->createNonceFields('shashinNonceAdd', 'shashinNonceAdd'); ?>
 <input type="hidden" name="shashinAction" value="addAlbums" />
 
-<!--    <p><?php _e("Shashin can display photos from <strong>public</strong> <em>Picasa albums</em>, <em>Flickr photostreams</em>, <em>Flickr sets</em>, and <em>Twitpic photostreams</em> by importing their RSS feeds. Please enter an RSS URL below.", 'shashin'); ?></p> -->
+<p><?php _e('Shashin can display photos from public <em>Picasa</em> albums, videos from <em>YouTube</em>, and <em>Twitpic</em> photos by importing their RSS feeds. Please enter an RSS URL below (click "examples" for further details).', 'shashin'); ?></p>
 
-
-<p><?php _e("Shashin can display photos from <strong>public</strong> <em>Picasa albums</em> by importing their RSS feeds. Please enter an RSS URL below.", 'shashin'); ?></p>
 <h4><a href="#" id="shashinExamples" class="shashinAdminHeading"><img src="<?php echo $this->functionsFacade->getPluginsUrl('images/plus.gif', __FILE__); ?>" id="shashinExamplesButton" />Examples</a></h4>
 <dl id="shashinExamplesSection" class="shashinExamplesList">
 <dt><strong><?php _e("All the Picasa albums for a user", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link on the bottom right of the Picasa user's home page", 'shashin'); ?></dt>
-    <dd style="font-size: smaller;">Example: http://picasaweb.google.com/data/feed/base/user/michaeltoppa?alt=rss&amp;kind=album&amp;hl=en_US</dd>
+    <dd>Example: http://picasaweb.google.com/data/feed/base/user/<strong>michaeltoppa</strong>?alt=rss&amp;kind=album&amp;hl=en_US</dd>
 <dt><strong><?php _e("A single Picasa album", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link in the sidebar of the album's main page", 'shashin'); ?></dt>
-    <dd style="font-size: smaller;">Example: http://picasaweb.google.com/data/feed/base/user/michaeltoppa/albumid/5269449390714706417?alt=rss&amp;kind=photo&amp;hl=en_US</dd>
-<!--    <dt><strong><?php _e("A Youtube user's videos", 'shashin'); ?>:</strong> <?php _e("There is no link for this in the user's channel page, but this is what the URL looks like (substitute the desired username for 'mttoppa')", 'shashin'); ?></dt>
-    <dd style="font-size: smaller;">Example: http://gdata.youtube.com/feeds/api/users/mttoppa/uploads</dd>
+    <dd>Example: http://picasaweb.google.com/data/feed/base/user/<strong>michaeltoppa</strong>/albumid/5269449390714706417?alt=rss&amp;kind=photo&amp;hl=en_US</dd>
+<dt><strong><?php _e("A YouTube user's videos", 'shashin'); ?>:</strong> <?php _e("Youtube does not display links for its feeds. You need to type in the RSS URL yourself", 'shashin'); ?></dt>
+    <dd>Example: https://gdata.youtube.com/feeds/api/users/<strong>mttoppa</strong>/uploads</dd>
+<dt><strong><?php _e('Most popular YouTube videos', 'shashin'); ?>:</strong> <?php _e('Youtube has many standard feeds available (top rated, etc) - see the', 'shashin'); ?>
+    <a href="http://code.google.com/apis/youtube/2.0/developers_guide_protocol.html#Retrieving_and_searching_for_videos"><?php _e('YouTube API page for more', 'shashin'); ?></a></dt>
+    <dd>Example: https://gdata.youtube.com/feeds/api/standardfeeds/most_popular</dd>
+<dt><strong><?php _e("A Twitpic user's photos", 'shashin'); ?>:</strong> <?php _e('Look for the RSS link near the top right of the user\'s page', 'shashin'); ?></dt>
+    <dd>Example: http://twitpic.com/photos/<strong>mtoppa</strong>/feed.rss</dd>
+<!--
 <dt><strong><?php _e("A Flickr set", 'shashin'); ?>:</strong> <?php _e("Look for the 'Feed' link on the bottom left of the set's main page.", 'shashin'); ?></dt>
-    <dd style="font-size: smaller;">Example: http://api.flickr.com/services/feeds/photoset.gne?set=72157622514276629&amp;nsid=65384822@N00&amp;lang=en-us</dd>
+    <dd>Example: http://api.flickr.com/services/feeds/photoset.gne?set=72157622514276629&amp;nsid=65384822@N00&amp;lang=en-us</dd>
 <dt><strong><?php _e("A Flickr photostream", 'shashin'); ?>:</strong> <?php _e("Look for the 'Latest' link near the RSS icon on the bottom left of the photostream's main page.", 'shashin'); ?></dt>
-    <dd style="font-size: smaller;">Example: http://api.flickr.com/services/feeds/photos_public.gne?id=65384822@N00&amp;lang=en-us&amp;format=rss_200</dd>
-<dt><strong><?php _e("A Twitpic photostream", 'shashin'); ?>:</strong> <?php _e("Look for the RSS icon on the top right of the photostream page", 'shashin'); ?></dt>
-    <dd style="font-size: smaller;">Example: http://twitpic.com/photos/mtoppa/feed.rss</dd> -->
+    <dd>Example: http://api.flickr.com/services/feeds/photos_public.gne?id=65384822@N00&amp;lang=en-us&amp;format=rss_200</dd>
+ -->
 </dl>
 <p><strong><?php _e("RSS URL:", 'shashin'); ?></strong>
 <?php echo ToppaHtmlFormField::quickBuild('rssUrl', $refData['dataUrl']); ?><br />

@@ -5,7 +5,8 @@ screen_icon();
 echo '<h2>' . __("Manage Shashin Albums", 'shashin') . '</h2>' . PHP_EOL;;
 
 if ($message) {
-    require_once('message.php');
+    echo '<div id="message" class="updated"><p>' . $message .'</p></div>';
+    unset($message);
 }
 
 echo '<p><a href="?page=ShashinToolsMenu">&laquo; '

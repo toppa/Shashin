@@ -66,16 +66,20 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $dataObjectClassName = get_class($dataObject);
         $dataObjectClassName = str_replace('Lib_', 'Public_', $dataObjectClassName);
         $albumType = ucfirst($dataObject->albumType);
+        $classToCall = $dataObjectClassName . 'Displayer' . $albumType;
 
-        if (is_string($forceViewer)) {
-            $viewerName = ucfirst($forceViewer);
+        if (strpos($dataObjectClassName, 'ShashinPhoto') !== false) {
+            if (is_string($forceViewer)) {
+                $viewerName = ucfirst($forceViewer);
+            }
+
+            else {
+                $viewerName = ucfirst($this->settings->imageDisplay);
+            }
+
+            $classToCall .= $viewerName;
         }
 
-        else {
-            $viewerName = ucfirst($this->settings->imageDisplay);
-        }
-
-        $classToCall = $dataObjectClassName . 'Displayer' . $albumType . $viewerName;
         $dataObjectDisplayer = new $classToCall();
         $dataObjectDisplayer->setSettings($this->settings);
         $dataObjectDisplayer->setShortcode($shortcode);

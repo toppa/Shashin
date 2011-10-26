@@ -3,7 +3,7 @@
 class Admin_ShashinMenuDisplayerAlbums extends Admin_ShashinMenuDisplayer {
     public function __construct() {
         $this->defaultOrderBy = 'title';
-        $this->relativePathToTemplate = 'Display/menuAlbums.php';
+        $this->relativePathToTemplate = 'Display/toolsAlbums.php';
         parent::__construct();
     }
 

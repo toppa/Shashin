@@ -10,6 +10,8 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $menuActionHandlerAlbums;
     private $settingsMenuManager;
     private $synchronizerPicasa;
+    private $synchronizerYoutube;
+    private $synchronizerTwitpic;
     private $headTags;
     private $mediaMenu;
     private $scheduledSynchronizer;
@@ -133,24 +135,36 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
 
     public function getSynchronizerPicasa(array $request = null) {
         $this->synchronizerPicasa = new Admin_ShashinSynchronizerPicasa();
+        return $this->setupSynchronizer($this->synchronizerPicasa, 'picasa', $request);
+    }
 
+    public function getSynchronizerYoutube(array $request = null) {
+        $this->synchronizerYoutube = new Admin_ShashinSynchronizerYoutube();
+        return $this->setupSynchronizer($this->synchronizerYoutube, 'youtube', $request);
+    }
+
+    public function getSynchronizerTwitpic(array $request = null) {
+        $this->synchronizerTwitpic = new Admin_ShashinSynchronizerTwitpic();
+        return $this->setupSynchronizer($this->synchronizerTwitpic, 'twitpic', $request);
+    }
+
+    private function setupSynchronizer($synchronizer, $type, $request = null) {
         if ($request) {
-            $this->synchronizerPicasa->setRssUrl($request['rssUrl']);
-            $this->synchronizerPicasa->setIncludeInRandom($request['includeInRandom']);
+            $synchronizer->setRssUrl($request['rssUrl']);
+            $synchronizer->setIncludeInRandom($request['includeInRandom']);
         }
 
         $this->getFunctionsFacade();
         $httpRequester = $this->functionsFacade->getHttpRequestObject();
-        $this->synchronizerPicasa->setHttpRequester($httpRequester);
+        $synchronizer->setHttpRequester($httpRequester);
         $album = $this->getClonableAlbum();
-        $album->albumType = 'picasa';
-        $this->synchronizerPicasa->setClonableAlbum($album);
+        $album->albumType = $type;
+        $synchronizer->setClonableAlbum($album);
         $this->getClonablePhoto();
-        $this->synchronizerPicasa->setClonablePhoto($this->clonablePhoto);
+        $synchronizer->setClonablePhoto($this->clonablePhoto);
         $this->getDatabaseFacade();
-        $this->synchronizerPicasa->setDatabaseFacade($this->dbFacade);
-
-        return $this->synchronizerPicasa;
+        $synchronizer->setDatabaseFacade($this->dbFacade);
+        return $synchronizer;
     }
 
     public function getHeadTags($version) {

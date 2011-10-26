@@ -8,15 +8,16 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $thumbnail;
     protected $sessionManager;
     protected $actualThumbnailSize;
+    protected $displayThumbnailSize;
     protected $actualExpandedSize;
-    protected $displayCroppedRequired = false;
-    protected $displayCropped;
+    protected $displayCropped = false;
     protected $imgHeight;
     protected $imgWidth;
     protected $imgSrc;
     protected $imgAlt;
     protected $imgTitle;
-    protected $imgClassAdditional;
+    protected $imgClass;
+    protected $imgStyle;
     protected $imgTag;
     protected $linkHref;
     protected $linkOnClick;
@@ -32,26 +33,14 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $validThumbnailSizes = array();
     protected $validCropSizes = array();
     protected $validExpandedSizes = array();
-    protected $thumbnailSizesMap = array();
     protected $expandedSizesMap = array();
-
-    /*
-        'flickr' => array(
-            'xsmall' => 75,
-            'small' => 100,
-            'medium' => 240,
-            'large' => 500,
-            'xlarge' => 1024,
-        ),
-        'twitpic' => array(
-            'xsmall' => 75,
-            'small' => 150,
-            'medium' => 150,
-            'large' => 600,
-            'xlarge' => 600,
-        )
-
- */
+    protected $thumbnailSizesMap = array(
+        'xsmall' => 72,
+        'small' => 150,
+        'medium' => 300,
+        'large' => 600,
+        'xlarge' => 800,
+    );
 
     public function __construct() {
     }
@@ -86,15 +75,16 @@ abstract class Public_ShashinDataObjectDisplayer {
         try {
             $this->initializeSessionIdCounter();
             $requestedSize = $this->shortcode->size ? $this->shortcode->size : 'xsmall';
-            $numericSize = $this->setNumericThumbnailSizeFromRequestedSize($requestedSize);
-            $this->setActualThumbnailSizeFromValidSizes($numericSize);
-            $this->setActualExpandedSizeFromRequestedSize();
+            $this->setDisplayThumbnailSize($requestedSize);
+            $this->setActualThumbnailSize();
+            $this->setActualExpandedSize();
             $this->setDisplayCropped();
             $this->setImgWidthAndHeight();
             $this->setImgSrc();
             $this->setImgAlt();
             $this->setImgTitle();
-            $this->setImgClassAdditional();
+            $this->setImgClass();
+            $this->setImgStyle();
             $this->setImgTag();
 
             if ($this->dataObject->isVideo()) {
@@ -118,6 +108,7 @@ abstract class Public_ShashinDataObjectDisplayer {
             $this->setCaption();
             $this->setCombinedTags();
             $this->incrementSessionIdCounter();
+
         }
 
         catch (Exception $e) {
@@ -133,60 +124,51 @@ abstract class Public_ShashinDataObjectDisplayer {
         }
     }
 
-    public function setNumericThumbnailSizeFromRequestedSize($requestedSize = 'xsmall') {
+    public function setDisplayThumbnailSize($requestedSize = 'xsmall') {
         if (array_key_exists($requestedSize, $this->thumbnailSizesMap)) {
-            $numericSize = $this->thumbnailSizesMap[$requestedSize];
+            $this->displayThumbnailSize = $this->thumbnailSizesMap[$requestedSize];
         }
 
         elseif ($requestedSize == 'max') {
-            $numericSize = floor($this->settings->themeMaxSize / $this->shortcode->columns);
-            $numericSize -= 10; // guess for padding/margins per image
+            $this->displayThumbnailSize = floor($this->settings->themeMaxSize / $this->shortcode->columns);
+            $this->displayThumbnailSize -= 10; // guess for padding/margins per image
         }
 
         else {
-            $numericSize = $requestedSize;
+            $this->displayThumbnailSize = $requestedSize;
         }
 
-        if (!is_numeric($numericSize)) {
+        if (!is_numeric($this->displayThumbnailSize)) {
             throw New Exception(__('invalid size requested', 'shashin'));
         }
 
-        return $numericSize;
+        return $this->displayThumbnailSize;
     }
 
-    public function setActualThumbnailSizeFromValidSizes($numericSize) {
+    public function setActualThumbnailSize() {
         for ($i = 0; $i < count($this->validThumbnailSizes); $i++) {
-            if ($numericSize == $this->validThumbnailSizes[$i]) {
+            if ($this->validThumbnailSizes[$i] >= $this->displayThumbnailSize) {
                 $this->actualThumbnailSize = $this->validThumbnailSizes[$i];
-                break;
-            }
-
-            elseif ($numericSize < $this->validThumbnailSizes[$i]) {
-                $nextSmaller = ($i == 0) ? 0 : ($i - 1);
-                $this->actualThumbnailSize = $this->validThumbnailSizes[$nextSmaller];
                 break;
             }
         }
 
         if (!$this->actualThumbnailSize) {
-            $lastPosition = count($this->validThumbnailSizes) - 1;
-            $this->actualThumbnailSize = $this->validThumbnailSizes[$lastPosition];
+            $this->actualThumbnailSize = $this->validThumbnailSizes[0];
         }
 
         return $this->actualThumbnailSize;
     }
 
-    abstract public function setActualExpandedSizeFromRequestedSize();
+    abstract public function setActualExpandedSize();
 
-    public function getActualThumbnailSize() {
-        return $this->actualThumbnailSize;
+    public function getDisplayThumbnailSize() {
+        return $this->displayThumbnailSize;
     }
 
     public function setDisplayCropped() {
-        if ($this->shortcode->crop == 'y' || $this->displayCroppedRequired) {
-            if (in_array($this->actualThumbnailSize, $this->validCropSizes)) {
-                $this->displayCropped = true;
-            }
+        if ($this->shortcode->crop == 'y' && in_array($this->actualThumbnailSize, $this->validCropSizes)) {
+            $this->displayCropped = true;
         }
 
         return $this->displayCropped;
@@ -194,23 +176,27 @@ abstract class Public_ShashinDataObjectDisplayer {
 
     public function setImgWidthAndHeight() {
         if ($this->displayCropped) {
-            $this->imgWidth = $this->actualThumbnailSize;
-            $this->imgHeight = $this->actualThumbnailSize;
+            $this->imgWidth = $this->displayThumbnailSize;
+            $this->imgHeight = $this->displayThumbnailSize;
         }
 
-        // see if actualThumbnailSize should be applied to the height or the width
+        elseif (!$this->thumbnail->width || !$this->thumbnail->height) {
+            $this->imgWidth = null;
+            $this->imgHeight = null;
+        }
+
         elseif ($this->thumbnail->width > $this->thumbnail->height) {
-            $this->imgWidth = $this->actualThumbnailSize;
-            $percentage = $this->actualThumbnailSize / $this->thumbnail->width;
+            $this->imgWidth = $this->displayThumbnailSize;
+            $percentage = $this->displayThumbnailSize / $this->thumbnail->width;
             $this->imgHeight = $percentage * $this->thumbnail->height;
-            settype($this->imgHeight, "int"); // drop any decimals
+            settype($this->imgHeight, 'int');
         }
 
         else {
-            $this->imgHeight = $this->actualThumbnailSize;
-            $percentage = $this->actualThumbnailSize / $this->thumbnail->height;
+            $this->imgHeight = $this->displayThumbnailSize;
+            $percentage = $this->displayThumbnailSize / $this->thumbnail->height;
             $this->imgWidth = $percentage * $this->thumbnail->width;
-            settype($this->imgWidth, "int"); // drop any decimals
+            settype($this->imgWidth, 'int');
         }
 
         return array($this->imgWidth, $this->imgHeight);
@@ -226,29 +212,65 @@ abstract class Public_ShashinDataObjectDisplayer {
         return str_replace('"', '&quot;', $text);
     }
 
-    abstract public function setImgClassAdditional();
+    public function setImgClass() {
+        $this->imgClass = 'shashinThumbnailImage';
+        return $this->imgClass;
+    }
+
+    public function setImgStyle() {
+        if (!$this->imgWidth) {
+            $this->imgStyle = 'max-width: ' . $this->displayThumbnailSize . 'px;';
+        }
+
+        return $this->imgStyle;
+    }
 
     public function setImgTag() {
         $this->imgTag =
             '<img src="' . $this->imgSrc . '"'
             . ' alt="' . $this->imgAlt . '"'
             . ($this->imgTitle ? (' title="' . $this->imgTitle . '"') : '')
-            . ' width="' . $this->imgWidth . '"'
-            . ' height="' . $this->imgHeight . '"'
-            . ' class="shashinThumbnailImage'
-            . ($this->imgClassAdditional ? (' ' . $this->imgClassAdditional) : '') . '"'
+            . ($this->imgWidth ? (' width="' . $this->imgWidth . '"') : '')
+            . ($this->imgHeight ? (' height="' . $this->imgHeight . '"') : '')
+            . ($this->imgStyle ? (' style="' . $this->imgStyle . '"') : '')
+            . ' class="' . $this->imgClass . '"'
             . ' id="shashinThumbnailImage_' . $this->sessionManager->getThumbnailCounter() . '" />';
         return $this->imgTag;
     }
 
     abstract public function setLinkHref();
     abstract public function setLinkHrefVideo();
-    abstract public function setLinkOnClick();
-    abstract public function setLinkRel();
-    abstract public function setLinkOnClickVideo();
-    abstract public function setLinkRelVideo();
-    abstract public function setLinkTitle();
-    abstract public function setLinkClass();
+
+    public function setLinkOnClick() {
+        $this->linkOnClick = null;
+        return $this->linkOnClick;
+    }
+
+    public function setLinkOnClickVideo() {
+        $this->linkOnClick = null;
+        return $this->linkOnClick;
+    }
+
+    public function setLinkRel() {
+        $this->linkRel = null;
+        return $this->linkRel;
+    }
+
+    public function setLinkRelVideo() {
+        $this->linkRel = null;
+        return $this->linkRel;
+    }
+
+    public function setLinkTitle() {
+        $this->linkTitle = null;
+        return $this->linkTitle;
+    }
+
+    public function setLinkClass() {
+        $this->linkClass = null;
+        return $this->linkClass;
+    }
+
     abstract public function setLinkIdForImg();
     abstract public function setLinkIdForCaption();
 
@@ -262,6 +284,8 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->linkIdForCaption;
     }
 
+    abstract public function setCaption();
+
     private function setLinkTag($linkId) {
         $linkTag =
             '<a href="' . $this->linkHref . '"'
@@ -273,8 +297,6 @@ abstract class Public_ShashinDataObjectDisplayer {
             . '>';
         return $linkTag;
     }
-
-    abstract public function setCaption();
 
     public function setCombinedTags() {
         $this->combinedTags = $this->linkTagForImg . $this->imgTag;
@@ -299,48 +321,6 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->imgWidth;
     }
 
-    public function formatExifDataForCaption() {
-        $exifCaption = null;
-        $exifParts = array();
-        $photoData = $this->dataObject->getData();
-
-        switch ($this->settings->captionExif) {
-            case'date':
-                if ($photoData['takenTimestamp'])
-                    $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
-                break;
-            case 'none':
-                break;
-            case 'all':
-            default:
-                if ($photoData['takenTimestamp'])
-                    $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
-                if ($photoData['make'])
-                    $exifParts[] = $photoData['make'] . " " . $photoData['model'];
-                if ($photoData['fstop'])
-                    $exifParts[] =  $photoData['fstop'];
-                if ($photoData['focalLength'])
-                    $exifParts[] = $photoData['focalLength'] . "mm";
-                if ($photoData['exposure'])
-                    $exifParts[] = $photoData['exposure'] . " sec";
-                if ($photoData['iso'])
-                    $exifParts[] = "ISO " . $photoData['iso'];
-        }
-
-        if (!empty($exifParts)) {
-            $exifCaption = '<span class="shashinCaptionExif">';
-            $exifCaption .= implode(', ', $exifParts);
-            $exifCaption .= '</span>';
-        }
-
-        return $exifCaption;
-    }
-
-    public function formatDateForCaption($date = null) {
-        if (!$date) {
-            return null;
-        }
-
-        return $this->functionsFacade->dateI18n("d-M-Y H:i", $date);
-    }
+    abstract public function formatExifDataForCaption();
+    abstract public function formatDateForCaption($date = null);
 }

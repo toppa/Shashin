@@ -327,10 +327,23 @@ class Public_ShashinLayoutManager {
 
     public function addTableCell() {
         $linkAndImageTags = $this->currentDataObjectDisplayer->run();
-        $cellWidth = $this->currentDataObjectDisplayer->getImgWidth() + $this->settings->thumbPadding;
+        $cellWidth = $this->currentDataObjectDisplayer->getImgWidth();
         $cell = '<td><div class="shashinThumbnailDiv" id="shashinThumbnailDiv_'
             . ($this->sessionManager->getThumbnailCounter() - 1)
-            . '" style="width: ' . $cellWidth . 'px;">';
+            . '"';
+
+        if ($cellWidth) {
+            $cellWidth += $this->settings->thumbPadding;
+            $cell .= ' style="width: ' . $cellWidth . 'px;"';
+        }
+
+        // imperfect solution if the image dimensions are unknown:
+        // the caption won't wrap under the image in this case
+        else {
+            $cell .= ' style="display: table;"';
+        }
+
+        $cell .= '>';
         $cell .= $linkAndImageTags;
         $cell .= '</div></td>' . PHP_EOL;
         return $cell;
@@ -342,7 +355,7 @@ class Public_ShashinLayoutManager {
         }
 
         if ($this->shortcode->columns == 'max') {
-            $thumbnailSize = $this->currentDataObjectDisplayer->getActualThumbnailSize();
+            $thumbnailSize = $this->currentDataObjectDisplayer->getDisplayThumbnailSize();
             // guess 10px for padding/margins
             $columns = $this->settings->themeMaxSize / ($thumbnailSize + 10);
             $this->numericColumns = floor($columns);

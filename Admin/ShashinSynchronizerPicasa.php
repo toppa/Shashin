@@ -42,11 +42,8 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         return $albumCount;
     }
 
-    public function syncAlbumPhotos(array $decodedAlbumData) {
+    public function syncAlbumPhotos(array $decodedAlbumData, $sourceOrder = 0) {
         $photoRefData = $this->clonablePhoto->getRefData();
-
-        // the order photos appear in the feed reflects the user's preferred order
-        $sourceOrder = 0;
 
         // don't try to process empty albums
         if (is_array($decodedAlbumData['feed']['entry'])) {
@@ -59,6 +56,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
                 $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
                 $photoData['sourceOrder'] = ++$sourceOrder;
                 $photoData['lastSync'] = $this->syncTime;
+                $photoData['exposure'] = round($photoData['exposure'], 3);
                 $photo = clone $this->clonablePhoto;
                 $photo->set($photoData);
                 $photo->flush();

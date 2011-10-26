@@ -37,16 +37,16 @@ class Admin_ShashinMediaMenu {
 
     public function displayMediaMenuCss() {
         $this->functionsFacade->prepMediaMenuCss('type=shashin');
-        $cssUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__) .'menuMedia.css';
+        $cssUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__) .'media.css';
         $this->functionsFacade->enqueueStylesheet('shashinMediaMenuStyle', $cssUrl, false, $this->version);
     }
 
     public function buildPhotoMenu() {
-        $this->buildMediaMenu('Display/menuMediaPhotos.php');
+        $this->buildMediaMenu('Display/mediaPhotos.php');
     }
 
     public function buildAlbumMenu() {
-        $this->buildMediaMenu('Display/menuMediaAlbums.php');
+        $this->buildMediaMenu('Display/mediaAlbums.php');
     }
 
     private function buildMediaMenu($templatePath) {
@@ -57,7 +57,7 @@ class Admin_ShashinMediaMenu {
         $albumCollection = $this->container->getClonableAlbumCollection();
         $albumCollection->setNoLimit(true);
         $albums = $albumCollection->getCollectionForShortcode($shortcode);
-        $loaderUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__) .'loader.gif';
+        $loaderUrl = $this->functionsFacade->getPluginsUrl('/Display/images/', __FILE__) .'loader.gif';
         require_once $templatePath;
     }
 

@@ -71,7 +71,8 @@ div#shashinMediaMenuNav {
 
 #shashinMediaMenuPhotoPreview img {
     margin: 0 auto;
-    float: none;
+    max-width: 288px;
+    max-height: 288px;
 }
 
 #shashinMediaMenuSelectedPhotos {

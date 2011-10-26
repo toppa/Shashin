@@ -38,14 +38,13 @@ abstract class Admin_ShashinSynchronizer {
         $this->rssUrl = trim(strip_tags($rssUrl));
     }
 
-
     public function getJsonUrl() {
         return $this->jsonUrl;
     }
 
     public function setJsonUrl($jsonUrl) {
         if (!is_string($jsonUrl)) {
-            throw new Exception(__("Invalid json url", "shashin"));
+            throw new Exception(__('Invalid json url', 'shashin'));
         }
 
         $this->jsonUrl = $jsonUrl;
@@ -54,7 +53,6 @@ abstract class Admin_ShashinSynchronizer {
     public function setIncludeInRandom($includeInRandom) {
         $this->includeInRandom = htmlentities($includeInRandom);
     }
-
 
     public function addSingleAlbumFromRssUrl() {
         $this->deriveJsonUrl();
@@ -115,6 +113,10 @@ abstract class Admin_ShashinSynchronizer {
             switch(count($v[$albumType])) {
                 case 0:
                     break;
+                case 1:
+                    $extractedFields[$k] = $decodedData
+                        [$v[$albumType][0]];
+                    break;
                 case 2:
                     $extractedFields[$k] = $decodedData
                         [$v[$albumType][0]]
@@ -137,11 +139,10 @@ abstract class Admin_ShashinSynchronizer {
                     throw new Exception(__("Unexpected number of fields in feed", "shashin"));
             }
         }
-
         return $extractedFields;
     }
 
-    abstract public function syncAlbumPhotos(array $decodedAlbumData);
+    abstract public function syncAlbumPhotos(array $decodedAlbumData, $sourceOrder = 0);
 
     public function deleteOldPhotos() {
         $sql = 'delete from ' . $this->clonablePhoto->getTableName()
@@ -150,4 +151,5 @@ abstract class Admin_ShashinSynchronizer {
         return $this->dbFacade->executeQuery($sql);
     }
 
+    abstract public function getHighestResolutionVideoIfNeeded(array $entry, array $photoRefData);
 }

@@ -3,7 +3,7 @@
 class Admin_ShashinMenuDisplayerPhotos extends Admin_ShashinMenuDisplayer {
     public function __construct() {
         $this->defaultOrderBy = 'source';
-        $this->relativePathToTemplate = 'Display/menuPhotos.php';
+        $this->relativePathToTemplate = 'Display/toolsPhotos.php';
         parent::__construct();
     }
 

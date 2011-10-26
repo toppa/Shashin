@@ -65,9 +65,11 @@ jQuery(document).ready(function($) {
         offset.left = offset.left + 2;
         offset.top = offset.top + 2;
         if (e.clientX < (offset.left + 304)) offset.left = offset.left + 304;
+        var imgSrc = $(this).attr('src').replace('?imgmax=72&crop=1', '?imgmax=288'); // for Picasa
+        imgSrc = imgSrc.replace('/mini/', '/thumb/'); // for Twitpic
         var imgTag = shashinWriteImgTag(
             'shashinMediaMenuThumbPreview_' + $(this).attr('id').replace('shashinMediaMenuThumb_', ''),
-            $(this).attr('src').replace('?imgmax=72&crop=1', '?imgmax=288'),
+            imgSrc,
             $(this).attr('alt')
         )
 
