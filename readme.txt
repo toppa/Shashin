@@ -1,12 +1,12 @@
 === Shashin ===
 Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
-Tags: Picasa, Highslide, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
-Requires at least: 2.9.1
+Tags: Picasa, Highslide, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
+Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 2.6.3
+Stable tag: 3.0
 
-Shashin is a powerful WordPress plugin that lets you display Picasa photos, albums, and videos anywhere in your WordPress site.
+Shashin is a powerful WordPress plugin that lets you display photos and albums from Picasa, photos from Twitpic, and videos from Youtube anywhere in your WordPress site.
 
 == Description ==
 
@@ -14,38 +14,38 @@ Shashin is a powerful WordPress plugin that lets you display Picasa photos, albu
 
 **What's new in Shashin 3**
 
+* Support for Youtube and Twitpic. You can now mix and match photos and videos from Picasa, Youtube, and Twitpic
 * New, easier to read shortcode format (the old format is still supported)
-* Fixed issues many were experiencing with album synchronizing since Picasa switched to secure http service earlier this year
+* Fixed issues many were experiencing with album synchronizing
 * Cool jQuery based display of album photos and photo paging
 * Easier to use widget
-* More options for displaying album thumbnails: more than one size, random selections, etc.
+* Display photo and album thumbnails in any size
 * Includes the latest version of Highslide for displaying photos
-* Completely re-written codebase, designed to support future use with Flickr, YouTube, etc.
 
 **What's removed in Shashin 3**
 
-* Support for private albums. There are simply too many variations in web host PHP configurations and security settings for me to continue supporting this feature.
-* The [salbumlist] tag is deprecated - it will now render as a regular album thumbnail display (I intend to include a proper list layout in a future version).
-* The "c" option for captions is deprecated (it is now treated as an "n").
+* Support for private Picasa albums. There are simply too many variations in web host PHP configurations and security settings for me to continue supporting this feature
+* The [salbumlist] tag is deprecated - it will now render as a regular album thumbnail display (I intend to include a proper list layout in a future version)
+* The "c" option for captions is deprecated (it is now treated as an "n")
 * The Shashin 2 PHP functions you could call directly have been removed, and replace with a new one
 * The previous widgets have been replaced with a new one
 
 **Overview**
 
-Shashin has many features for displaying your Picasa photos and videos in your Wordpress posts and pages:
+Shashin has many features for displaying photos and videos from Picasa, Youtube, and Twitpic in your Wordpress posts and pages:
 
-* Show a gallery of your Picasa albums, including unlisted albums, and all the photos and videos in each album.
-* Show your photos and vidoes with your favorite image viewer. Highslide is included with Shashin, but you can use a different viewer of your choice.
-* Pick individual photos or videos to display, in any size supported by Picasa, including captions and EXIF data.
-* Pick photos and videos from any combination of albums to display in groups of thumbnails.
-* Show thumbnails of your newest photos and videos, from one or more albums.
-* Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps.
-* Display any number of random photos and videos, from one or more albums. You can also choose to exclude certain photos or albums from random display.
+* Show a gallery of all your albums, photos, and videos, with multiple options for organizing them
+* Use a jQuery based WYSIWYG media browser for easily adding photos, videos, and albums to your posts
+* Show your photos and vidoes with your favorite image viewer. Highslide is included with Shashin, but you can use a different viewer of your choice
+* Pick individual photos or videos to display, in any size, including captions and EXIF data
+* Pick photos and videos from any combination of Picasa, Youtube, and Twitpic to display in groups of thumbnails
+* Show thumbnails of your newest photos and videos, from one or more albums
+* Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps
+* Display any number of random photos and videos. You can also choose to exclude certain photos or albums from random display
 * Use a widget to display Shashin photos in your sidebar
-* Use a jQuery based WYSIWYG media browser for easily adding Picasa photos and albums to your posts.
 * Customize the Shashin and Highslide stylesheets to suit the theme of your site.
 * Internationalization: Shashin supports translations into other languages (please contribute a translation if you're bilingual!)
-* Schedule daily automatic synchronization of Shashin with your Picasa albums.
+* Schedule daily automatic synchronization of Shashin with your feeds from Picasa, Twitpic, and Youtube.
 
 == Installation ==
 
@@ -59,7 +59,7 @@ Shashin has many features for displaying your Picasa photos and videos in your W
 
 1. Download and activate [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/), which contains required libraries.
 1. Then download and activate Shahsin just like any other plugin
-1. Go to the Shashin Tools Menu to add your Picasa albums
+1. Go to the Shashin Tools Menu to add your Picasa, Youtube, or Twitpic feeds (expand the "Examples" section for more details)
 1. Go to the Shashin Settings Menu to review and update your preferences
   * If you use an image viewer other than Highslide, you need to set it up and configure it yourself. The Shashin Settings Menu provides several options to support the use of other image viewers.
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want
@@ -77,12 +77,11 @@ Shashin has many features for displaying your Picasa photos and videos in your W
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want (the old widgets are gone)
 1. If you were calling Shashin functions directly in PHP, they are no longer supported. There is a new function you can call. See the documentation page linked from the FAQ.
 
-
 == Frequently Asked Questions ==
 
 Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a Usage Guide and other information.
 
-For troubleshooting help, please [post a comment in my latest Shashin post](http://www.toppa.com/category/technical/wordpress-plugins/).
+For troubleshooting help, please [post a comment in my latest Shashin post](http://www.toppa.com/category/wordpress-plugins/).
 
 == Changelog ==
 
