@@ -327,10 +327,10 @@ class Public_ShashinLayoutManager {
 
     public function addTableCell() {
         $linkAndImageTags = $this->currentDataObjectDisplayer->run();
-        $cellWidth = $this->currentDataObjectDisplayer->getImgWidth();
         $cell = '<td><div class="shashinThumbnailDiv" id="shashinThumbnailDiv_'
             . ($this->sessionManager->getThumbnailCounter() - 1)
             . '"';
+        $cellWidth = $this->currentDataObjectDisplayer->getImgWidth();
 
         if ($cellWidth) {
             $cellWidth += $this->settings->thumbPadding;
@@ -338,9 +338,11 @@ class Public_ShashinLayoutManager {
         }
 
         // imperfect solution if the image dimensions are unknown:
-        // the caption won't wrap under the image in this case
+        // the caption won't wrap under the image if it has a portrait
+        // orientation, since we don't know which dimension is the long one
         else {
-            $cell .= ' style="display: table;"';
+            $cellWidth = $this->currentDataObjectDisplayer->getDisplayThumbnailSize() + $this->settings->thumbPadding;
+            $cell .= ' style="display: table; max-width: ' . $cellWidth . 'px;"';
         }
 
         $cell .= '>';
