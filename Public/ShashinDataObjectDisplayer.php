@@ -145,6 +145,10 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->displayThumbnailSize;
     }
 
+    public function getDisplayThumbnailSize() {
+        return $this->displayThumbnailSize;
+    }
+
     public function setActualThumbnailSize() {
         for ($i = 0; $i < count($this->validThumbnailSizes); $i++) {
             if ($this->validThumbnailSizes[$i] >= $this->displayThumbnailSize) {
@@ -161,10 +165,6 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     abstract public function setActualExpandedSize();
-
-    public function getDisplayThumbnailSize() {
-        return $this->displayThumbnailSize;
-    }
 
     public function setDisplayCropped() {
         if ($this->shortcode->crop == 'y' && in_array($this->actualThumbnailSize, $this->validCropSizes)) {
@@ -217,9 +217,15 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->imgClass;
     }
 
+    // I'm not sure why, but when using max-width, we need to knock
+    // a couple pixels off the paddding to get it right (there's an extra 2px
+    // coming from somewhere)
     public function setImgStyle() {
         if (!$this->imgWidth) {
-            $this->imgStyle = 'max-width: ' . $this->displayThumbnailSize . 'px;';
+            $this->imgStyle = 'max-width: '
+                . $this->displayThumbnailSize . 'px; padding: '
+                . floor(($this->settings->thumbPadding / 2) - 2)
+                . 'px;';
         }
 
         return $this->imgStyle;
@@ -321,6 +327,6 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->imgWidth;
     }
 
-    abstract public function formatExifDataForCaption();
-    abstract public function formatDateForCaption($date = null);
+    abstract public function formatExifDataForHighslideCaption();
+    abstract public function formatDateForHighslideCaption($date = null);
 }
