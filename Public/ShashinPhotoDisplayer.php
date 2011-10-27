@@ -54,7 +54,34 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
         return null;
     }
 
-    public function formatExifDataForCaption() {
+    // awkward to put this here, but I don't want to duplicate it in each Highslide
+    // child class, and making it another class seems like overkill (can't wait for
+    // need traits!). In the child class, override setCaption, call it in the
+    // parent, and then call this
+    public function setCaptionForHighslide() {
+        $highslideCaption = '<div class="highslide-caption">';
+        $highslideCaption .= $this->formatOriginalPhotoLinkForHighslideCaption();
+
+        if ($this->dataObject->description) {
+            $highslideCaption .= $this->dataObject->description;
+        }
+
+        $highslideCaption .= $this->formatExifDataForHighslideCaption();
+        $highslideCaption .= '</div>';
+        return $highslideCaption;
+    }
+
+    // twitpic community guidelines require a link back to the original photo,
+    // and it's nice to acknowledge the others too
+    public function formatOriginalPhotoLinkForHighslideCaption() {
+        return ' <div class="shashinHighslideLinkToOriginalPhoto">'
+            . '<a href="' . $this->dataObject->linkUrl . '">'
+            . __('View at', 'shashin')
+            . ' ' . ucfirst($this->dataObject->albumType)
+            . '</a></div>';
+    }
+
+    public function formatExifDataForHighslideCaption() {
         $exifCaption = null;
         $exifParts = array();
         $photoData = $this->dataObject->getData();
@@ -62,14 +89,14 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
         switch ($this->settings->captionExif) {
             case'date':
                 if ($photoData['takenTimestamp'])
-                    $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
+                    $exifParts[] = $this->formatDateForHighslideCaption($photoData['takenTimestamp']);
                 break;
             case 'none':
                 break;
             case 'all':
             default:
                 if ($photoData['takenTimestamp'])
-                    $exifParts[] = $this->formatDateForCaption($photoData['takenTimestamp']);
+                    $exifParts[] = $this->formatDateForHighslideCaption($photoData['takenTimestamp']);
                 if ($photoData['make'])
                     $exifParts[] = $photoData['make'] . " " . $photoData['model'];
                 if ($photoData['fstop'])
@@ -91,7 +118,7 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
         return $exifCaption;
     }
 
-    public function formatDateForCaption($date = null) {
+    public function formatDateForHighslideCaption($date = null) {
         if (!$date) {
             return null;
         }
