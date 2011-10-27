@@ -87,12 +87,12 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
     }
 
     // degenerate
-    public function formatExifDataForCaption() {
+    public function formatExifDataForHighslideCaption() {
         return null;
     }
 
     // degenerate
-    public function formatDateForCaption($date = null) {
+    public function formatDateForHighslideCaption($date = null) {
         return null;
     }
 }
