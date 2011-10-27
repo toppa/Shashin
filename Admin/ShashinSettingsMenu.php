@@ -87,14 +87,6 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('This will sync all your albums in Shashin once daily. It will not automatically add new albums.', 'shashin'),
                 'group' => 'general'
             ),
-            'captionExif' => array(
-                'input' => array('type' => 'radio', 'subgroup' => array('date' => 'Date Only', 'all' => 'All', 'none' => 'None')),
-                'validateFunction' => 'in_array',
-                'validValues' => array('date', 'all', 'none'),
-                'label' => __('Add camera EXIF data to expanded view caption?', 'shashin'),
-                'help' => __('"All" includes the camera make, model, fstop, focal length, exposure time, and ISO.', 'shashin'),
-                'group' => 'general'
-            ),
             'thumbPadding' => array(
                 'input' => array('type' => 'text', 'size' => 2),
                 'validateFunction' => 'is_numeric',
@@ -259,6 +251,14 @@ class Admin_ShashinSettingsMenu {
                 'validValues' => array('left', 'center', 'right'),
                 'label' => __('Slideshow controller horizontal position', 'shashin'),
                 'help' => '',
+                'group' => 'highslide'
+            ),
+            'captionExif' => array(
+                'input' => array('type' => 'radio', 'subgroup' => array('date' => 'Date Only', 'all' => 'All', 'none' => 'None')),
+                'validateFunction' => 'in_array',
+                'validValues' => array('date', 'all', 'none'),
+                'label' => __('Add camera EXIF data to expanded view caption?', 'shashin'),
+                'help' => __('"All" includes the camera make, model, fstop, focal length, exposure time, and ISO.', 'shashin'),
                 'group' => 'highslide'
             ),
             'otherRelImage' => array(
