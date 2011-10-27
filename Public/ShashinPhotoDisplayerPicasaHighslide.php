@@ -41,14 +41,7 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
 
     public function setCaption() {
         parent::setCaption();
-        $this->caption .= '<div class="highslide-caption">';
-
-        if ($this->dataObject->description) {
-            $this->caption .= $this->dataObject->description;
-        }
-
-        $this->caption .= $this->formatExifDataForCaption();
-        $this->caption .= '</div>';
+        $this->caption .= $this->setCaptionForHighslide();
         return $this->caption;
     }
 }

@@ -26,19 +26,7 @@ class Public_ShashinPhotoDisplayerTwitpicHighslide extends Public_ShashinPhotoDi
 
     public function setCaption() {
         parent::setCaption();
-        $this->caption .= '<div class="highslide-caption">';
-
-        // twitpic community guidelines require a link back to the original photo
-        $this->caption .= ' <div style="float:right;"><a href="' . $this->dataObject->linkUrl . '">';
-        $this->caption .= __('View at Twitpic', 'shashin');
-        $this->caption .= '</a></div>';
-
-        if ($this->dataObject->description) {
-            $this->caption .= $this->dataObject->description;
-        }
-
-        $this->caption .= $this->formatExifDataForCaption();
-        $this->caption .= '</div>';
+        $this->caption .= $this->setCaptionForHighslide();
         return $this->caption;
     }
 }
