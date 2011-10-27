@@ -62,3 +62,8 @@
     display: block;
     color: darkgray;
 }
+
+.shashinHighslideLinkToOriginalPhoto {
+    float: right;
+    padding-left: 5px;
+}
