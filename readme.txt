@@ -6,7 +6,7 @@ Requires at least: 3.0
 Tested up to: 3.2.1
 Stable tag: 3.0
 
-Shashin is a powerful WordPress plugin that lets you display photos and albums from Picasa, photos from Twitpic, and videos from Youtube anywhere in your WordPress site.
+Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
 
 == Description ==
 
@@ -69,24 +69,46 @@ Shashin has many features for displaying photos and videos from Picasa, Youtube,
 **Upgrading from Shashin 2**
 
 1. Download and activate [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/), which contains required libraries.
-1. Do the standard download, de-activation, and re-activation steps for upgrading a plugin.
+1. For Shashin, do the standard download, de-activation, and re-activation steps for upgrading a plugin.
 1. Go to the Shashin Tools Menu and click "sync all" to complete the upgrade
-1. Go to the Shashin Settings Menu and select the option to support the old shortcode format
+1. Go to the Shashin Settings Menu and select the option to support the old shortcode format (or you can revise your shortcodes to the new format)
 1. Carefully review pages and posts that contain Shashin tags to make sure everything looks correct
 1. If all is well, click the link on the Shashin Tools Menu to remove the Shashin 2 database table backups
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want (the old widgets are gone)
-1. If you were calling Shashin functions directly in PHP, they are no longer supported. There is a new function you can call. See the documentation page linked from the FAQ.
+1. If you were calling Shashin functions directly in PHP, they are no longer supported. There is a new function you can call. See the documentation page linked from the FAQ section.
+
+== Upgrade Notice ==
+
+You need to install "Toppa Plugin Libraries for WordPress" before upgrading to Shashin 3. Please follow the upgrade instructions in the "Installation" section of this readme file.
 
 == Frequently Asked Questions ==
 
 Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a Usage Guide and other information.
 
-For troubleshooting help, please [post a comment in my latest Shashin post](http://www.toppa.com/category/wordpress-plugins/).
+For troubleshooting help, please [post a comment on my latest Shashin post](http://www.toppa.com/category/wordpress-plugins/).
+
+== Screenshots ==
+
+1. Album thumbnails
+2. Photos in a post
+3. The Shashin media browser
+4. A Highslide slideshow
 
 == Changelog ==
 
 = 3.0 =
 * Complete rewrite
+* Added Twitpic and Youtube Support
+* New shortcode format (the old format is still supported)
+* Fixed issues many were experiencing with album synchronizing
+* Added jQuery based display of album photos and photo paging
+* Now uses a single widget
+* Displays photo and album thumbnails in any size
+* Includes Highslide 4.19
+* Removed support for private Picasa albums (too unreliable)
+* Deprecated [salbumlist] tag (now renders as a regular album thumbnail display)
+* Deprecated the "c" option for captions (it is now treated as an "n")
+* Removed the 2 Shashin PHP functions that could be called directly, and replaced with ShashinWP::display()
 
 = 2.6.3 =
 * Added support for child themes

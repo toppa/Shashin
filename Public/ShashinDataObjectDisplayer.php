@@ -206,7 +206,7 @@ abstract class Public_ShashinDataObjectDisplayer {
     abstract public function setImgAlt();
     abstract public function setImgTitle();
 
-    protected function makeTextQuotable($text) {
+    public function makeTextQuotable($text) {
         // there may already be entities in the text, so we want to be very
         // conservative with what we replace
         return str_replace('"', '&quot;', $text);
@@ -218,7 +218,7 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     // I'm not sure why, but when using max-width, we need to knock
-    // a couple pixels off the paddding to get it right (there's an extra 2px
+    // a couple pixels off the padding to get it right (there's an extra 2px
     // coming from somewhere)
     public function setImgStyle() {
         if (!$this->imgWidth) {
