@@ -97,6 +97,7 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 == Changelog ==
 
 = 3.0.2 =
+* Added .pot translation file
 * Album photos table now inherits position from parent album thumbnail table
 * Now handles Shashin 2 shashin_album_key query string arg, for old links
 * Bug fix: numeric fields (like photo count, pub date) were getting cleared when updating 'include in random' settings
