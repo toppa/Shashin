@@ -79,7 +79,7 @@ if ($dataObjects) {
     <tr>
     <td colspan="2">&nbsp;</td>
     <td class="shashinCenter"><strong><?php echo $this->generateSyncAllLink(); ?></strong></td>
-    <td colspan="4">&nbsp;</td>
+    <td colspan="5">&nbsp;</td>
     <td class="shashinCenter"><input class="button-secondary" type="submit" name="update_random_display" value="<?php _e("Update Random Display", 'shashin'); ?>" /></td>
     </tr>
     </table>
