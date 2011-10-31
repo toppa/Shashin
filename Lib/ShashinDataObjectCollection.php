@@ -141,11 +141,23 @@ abstract class Lib_ShashinDataObjectCollection {
 
     public function setWhereClause() {
         if ($this->shortcode->type == 'albumphotos') {
-            $this->whereClause = "where albumId in (" . $this->idString . ")";
+            $this->whereClause = 'where albumId in (' . $this->idString . ')';
         }
 
         elseif ($this->idString) {
-            $this->whereClause = "where id in (" . $this->idString . ")";
+            $this->whereClause = 'where id in (' . $this->idString . ')';
+        }
+
+        if ($this->shortcode->order == 'random') {
+            if ($this->whereClause) {
+                 $this->whereClause .= ' and';
+            }
+
+            else {
+                $this->whereClause = 'where';
+            }
+
+            $this->whereClause .= ' includeInRandom = "Y"';
         }
 
         return $this->whereClause;
