@@ -143,7 +143,7 @@ class ShashinWp {
         $settings = $publicContainer->getSettings();
         $shortcode = array(
             'type' => 'albumphotos',
-            'id' => $_REQUEST['shashinAlbumId'],
+            'id' => htmlentities($_REQUEST['shashinAlbumId']),
             'size' => $settings->albumPhotosSize,
             'crop' => $settings->albumPhotosCrop,
             'columns' => $settings->albumPhotosColumns,
@@ -152,7 +152,9 @@ class ShashinWp {
             'caption' => $settings->albumPhotosCaption
         );
 
-        echo '<div id="shashinPhotosForSelectedAlbum">' .$this->handleShortcode($shortcode) . '</div>';
+        echo '<div id="shashinPhotosForSelectedAlbum" style="display: table; '
+            . htmlentities($_REQUEST['shashinParentTableStyle'])
+            . '">' .$this->handleShortcode($shortcode) . '</div>';
         die();
     }
 
