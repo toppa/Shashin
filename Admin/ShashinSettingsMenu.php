@@ -105,17 +105,17 @@ class Admin_ShashinSettingsMenu {
                 'input' => array(
                     'type' => 'select',
                     'subgroup' =>  array(
-                        'xsmall' => __('X-Small (~75px)', 'shashin'),
-                        'small' => __('Small (~150px)', 'shashin'),
-                        'medium' => __('Medium (~300px)', 'shashin'),
-                        'large' => __('Large (~600px)', 'shashin'),
-                        'xlarge' => __('X-Large (~800px)', 'shashin')
+                        'xsmall' => __('X-Small (72px)', 'shashin'),
+                        'small' => __('Small (150px)', 'shashin'),
+                        'medium' => __('Medium (300px)', 'shashin'),
+                        'large' => __('Large (600px)', 'shashin'),
+                        'xlarge' => __('X-Large (800px)', 'shashin')
                     )
                 ),
                 'validateFunction' => 'in_array',
                 'validValues' => array('xsmall', 'small', 'medium', 'large', 'xlarge'),
                 'label' => __('Photo thumbnail size', 'shashin'),
-                'help' => __('The exact size displayed depends on the sizes available from your photo hosting service.', 'shashin'),
+                'help' => '',
                 'group' => 'albumPhotos'
             ),
             'albumPhotosCrop' => array(
