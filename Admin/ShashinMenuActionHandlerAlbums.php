@@ -114,8 +114,8 @@ class Admin_ShashinMenuActionHandlerAlbums {
             $albumToSync->get($this->request['id']);
         }
 
-        $synchronizerGetter = 'getSynchronizer' . ucfirst($albumToSync->albumType);
-        $synchronizer = $this->adminContainer->$synchronizerGetter();
+        $synchronizerToGet = 'getSynchronizer' . ucfirst($albumToSync->albumType);
+        $synchronizer = $this->adminContainer->$synchronizerToGet();
         $syncedAlbum = $synchronizer->syncExistingAlbum($albumToSync);
         return __('Synchronized', 'shashin') . ' "' . $syncedAlbum->title . '"';
     }
