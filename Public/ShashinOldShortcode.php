@@ -200,7 +200,7 @@ class Public_ShashinOldShortcode {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $arrayShortcode = $this->initializeArrayShortcodeForAlbums($match[1]);
                 $arrayShortcode['caption'] = ($match[3] == 'y' || $match[4] == 'y') ? 'y' : 'n';
-                $arrayShortcode['size'] = 'large';
+                $arrayShortcode['size'] = 160;
                 $arrayShortcode['columns'] = $match[2];
                 $arrayShortcode['position'] = $match[5];
                 $arrayShortcode['clear'] = $match[6];
@@ -220,7 +220,7 @@ class Public_ShashinOldShortcode {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $arrayShortcode = $this->initializeArrayShortcodeForAlbums($match[1]);
                 $arrayShortcode['caption'] = $match[2];
-                $arrayShortcode['size'] = 'large';
+                $arrayShortcode['size'] = 160;
                 $arrayShortcode['columns'] = 1;
                 $markup = $this->parseShortcode($arrayShortcode);
                 $this->content = str_replace($match[0], $markup, $this->content);
