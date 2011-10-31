@@ -46,8 +46,7 @@ abstract class Lib_ShashinDataObject {
 
         foreach ($this->getRefData() as $k=>$v) {
             // needed for compatibility with mySql on Windows
-            // but don't convert a null id to zero
-            if ($k != 'id' && in_array($v['db']['type'], $intTypes)) {
+            if (in_array($v['db']['type'], $intTypes) && array_key_exists($k, $fields)) {
                 $fields[$k] = intval($fields[$k]);
             }
         }
