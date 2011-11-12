@@ -72,49 +72,41 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     public function run() {
-        try {
-            $this->initializeSessionIdCounter();
-            $requestedSize = $this->shortcode->size ? $this->shortcode->size : 'xsmall';
-            $this->setDisplayThumbnailSize($requestedSize);
-            $this->setActualThumbnailSize();
-            $this->setActualExpandedSize();
-            $this->setDisplayCropped();
-            $this->setImgWidthAndHeight();
-            $this->setImgSrc();
-            $this->setImgAlt();
-            $this->setImgTitle();
-            $this->setImgClass();
-            $this->setImgStyle();
-            $this->setImgTag();
+        $this->initializeSessionIdCounter();
+        $requestedSize = $this->shortcode->size ? $this->shortcode->size : 'xsmall';
+        $this->setDisplayThumbnailSize($requestedSize);
+        $this->setActualThumbnailSize();
+        $this->setActualExpandedSize();
+        $this->setDisplayCropped();
+        $this->setImgWidthAndHeight();
+        $this->setImgSrc();
+        $this->setImgAlt();
+        $this->setImgTitle();
+        $this->setImgClass();
+        $this->setImgStyle();
+        $this->setImgTag();
 
-            if ($this->dataObject->isVideo()) {
-                $this->setLinkHrefVideo();
-                $this->setLinkOnClickVideo();
-                $this->setLinkRelVideo();
-            }
-
-            else {
-                $this->setLinkHref();
-                $this->setLinkOnClick();
-                $this->setLinkRel();
-            }
-
-            $this->setLinkTitle();
-            $this->setLinkIdForImg();
-            $this->setLinkIdForCaption();
-            $this->setLinkClass();
-            $this->setLinkTagForImg();
-            $this->setLinkTagForCaption();
-            $this->setCaption();
-            $this->setCombinedTags();
-            $this->incrementSessionIdCounter();
-
+        if ($this->dataObject->isVideo()) {
+            $this->setLinkHrefVideo();
+            $this->setLinkOnClickVideo();
+            $this->setLinkRelVideo();
         }
 
-        catch (Exception $e) {
-            return "<strong>" . $e->getMessage() . "</strong>";
+        else {
+            $this->setLinkHref();
+            $this->setLinkOnClick();
+            $this->setLinkRel();
         }
 
+        $this->setLinkTitle();
+        $this->setLinkIdForImg();
+        $this->setLinkIdForCaption();
+        $this->setLinkClass();
+        $this->setLinkTagForImg();
+        $this->setLinkTagForCaption();
+        $this->setCaption();
+        $this->setCombinedTags();
+        $this->incrementSessionIdCounter();
         return $this->combinedTags;
     }
 
