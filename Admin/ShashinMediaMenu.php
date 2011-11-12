@@ -50,15 +50,25 @@ class Admin_ShashinMediaMenu {
     }
 
     private function buildMediaMenu($templatePath) {
-        $this->functionsFacade->useFilter('media_upload_tabs', array($this, 'addMediaMenuTabs'));
-        $this->functionsFacade->addMediaMenuHeader();
-        $rawShortcode = array('type' => 'album', 'order' => 'date', 'reverse' => 'y');
-        $shortcode = $this->container->getShortcode($rawShortcode);
-        $albumCollection = $this->container->getClonableAlbumCollection();
-        $albumCollection->setNoLimit(true);
-        $albums = $albumCollection->getCollectionForShortcode($shortcode);
-        $loaderUrl = $this->functionsFacade->getPluginsUrl('/Display/images/', __FILE__) .'loader.gif';
-        require_once $templatePath;
+        try {
+            $this->functionsFacade->useFilter('media_upload_tabs', array($this, 'addMediaMenuTabs'));
+            $this->functionsFacade->addMediaMenuHeader();
+            $rawShortcode = array('type' => 'album', 'order' => 'date', 'reverse' => 'y');
+            $shortcode = $this->container->getShortcode($rawShortcode);
+            $albumCollection = $this->container->getClonableAlbumCollection();
+            $albumCollection->setNoLimit(true);
+            $albums = $albumCollection->getCollectionForShortcode($shortcode);
+            $loaderUrl = $this->functionsFacade->getPluginsUrl('/Display/images/', __FILE__) .'loader.gif';
+            require_once $templatePath;
+        }
+
+        catch (Exception $e) {
+            return '<p><strong>'
+                . __('Shashin Error', 'shashin')
+                . ':<strong></p><pre>'
+                . $e->getMessage()
+                . '</pre>';
+        }
     }
 
     public function addMediaMenuTabs() {
