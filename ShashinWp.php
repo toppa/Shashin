@@ -19,13 +19,12 @@ class ShashinWp {
             $upgrader->run();
             $installer = $adminContainer->getInstaller();
             $status = $installer->run();
+            return $status;
         }
 
         catch (Exception $e) {
-            return __('Activation of Shashin failed. Error Message: ', 'shashin') . $e->getMessage();
+            return $this->formatExceptionMessage($e);
         }
-
-        return $status;
     }
 
     public function run() {
@@ -44,6 +43,7 @@ class ShashinWp {
         $this->supportOldShortcodesIfNeeded();
         add_action('widgets_init', array($this, 'registerWidget'));
         add_action('admin_head', array($this, 'displayPluginPageUpgradeNag'));
+        return true;
     }
 
     public function initToolsMenu() {
@@ -60,17 +60,23 @@ class ShashinWp {
     }
 
     public function displayToolsMenu() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
 
-        if ($_REQUEST['shashinMenu'] == 'photos') {
-            $menuActionHandler = $adminContainer->getMenuActionHandlerPhotos($_REQUEST['id']);
+            if ($_REQUEST['shashinMenu'] == 'photos') {
+                $menuActionHandler = $adminContainer->getMenuActionHandlerPhotos($_REQUEST['id']);
+            }
+
+            else {
+                $menuActionHandler = $adminContainer->getMenuActionHandlerAlbums();
+            }
+
+            echo $menuActionHandler->run();
         }
 
-        else {
-            $menuActionHandler = $adminContainer->getMenuActionHandlerAlbums();
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
         }
-
-        echo $menuActionHandler->run();
     }
 
     public function initSettingsMenu() {
@@ -84,22 +90,40 @@ class ShashinWp {
     }
 
     public function displaySettingsMenu() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $settingsMenuManager = $adminContainer->getSettingsMenuManager();
-        echo $settingsMenuManager->run();
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $settingsMenuManager = $adminContainer->getSettingsMenuManager();
+            echo $settingsMenuManager->run();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
     }
 
 
     public function displayAdminHeadTags() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $headTags = $adminContainer->getHeadTags($this->version);
-        $headTags->run();
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $headTags = $adminContainer->getHeadTags($this->version);
+            $headTags->run();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
     }
 
     public function displayPublicHeadTags() {
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $headTags = $publicContainer->getHeadTags($this->version);
-        $headTags->run();
+        try {
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $headTags = $publicContainer->getHeadTags($this->version);
+            $headTags->run();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
     }
 
     public function handleShortcode($arrayShortcode) {
@@ -134,34 +158,40 @@ class ShashinWp {
         }
 
         catch (Exception $e) {
-            return '<strong>' . __('Shashin Error: ', 'shashin') . $e->getMessage() . '<strong>';
+            return $this->formatExceptionMessage($e);
         }
     }
 
     public function ajaxDisplayAlbumPhotos() {
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $settings = $publicContainer->getSettings();
-        $shortcode = array(
-            'type' => 'albumphotos',
-            'id' => htmlentities($_REQUEST['shashinAlbumId']),
-            'size' => $settings->albumPhotosSize,
-            'crop' => $settings->albumPhotosCrop,
-            'columns' => $settings->albumPhotosColumns,
-            'order' => $settings->albumPhotosOrder,
-            'reverse' => $settings->albumPhotosOrderReverse,
-            'caption' => $settings->albumPhotosCaption
-        );
+        try {
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $settings = $publicContainer->getSettings();
+            $shortcode = array(
+                'type' => 'albumphotos',
+                'id' => htmlentities($_REQUEST['shashinAlbumId']),
+                'size' => $settings->albumPhotosSize,
+                'crop' => $settings->albumPhotosCrop,
+                'columns' => $settings->albumPhotosColumns,
+                'order' => $settings->albumPhotosOrder,
+                'reverse' => $settings->albumPhotosOrderReverse,
+                'caption' => $settings->albumPhotosCaption
+            );
 
-        echo '<div id="shashinPhotosForSelectedAlbum" style="display: table; '
-            . htmlentities($_REQUEST['shashinParentTableStyle'])
-            . '">' .$this->handleShortcode($shortcode) . '</div>';
+            echo '<div id="shashinPhotosForSelectedAlbum" style="display: table; '
+                . htmlentities($_REQUEST['shashinParentTableStyle'])
+                . '">' .$this->handleShortcode($shortcode) . '</div>';
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
+
         die();
     }
 
     public function addMediaButton() {
         global $post_ID, $temp_ID;
         $iframeId = (int) (0 == $post_ID ? $temp_ID : $post_ID);
-
         $photoBrowserUrl = 'media-upload.php?post_id='
             . $iframeId
             . '&amp;type=shashin&amp;tab=shashin_photos&amp;TB_iframe=true';
@@ -185,9 +215,16 @@ class ShashinWp {
     }
 
     public function ajaxGetPhotosForMediaMenu() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
-        echo $mediaMenu->getPhotosForMenu();
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
+            echo $mediaMenu->getPhotosForMenu();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
+
         exit;
     }
 
@@ -212,9 +249,16 @@ class ShashinWp {
     }
 
     public function runScheduledSync() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $scheduledSynchronizer = $adminContainer->getScheduledSynchronizer();
-        $scheduledSynchronizer->run();
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $scheduledSynchronizer = $adminContainer->getScheduledSynchronizer();
+            $scheduledSynchronizer->run();
+        }
+
+        // suppress any exceptions since this is running through wp cron
+        catch (Exception $e) {
+            return false;
+        }
     }
 
     public function supportOldShortcodesIfNeeded() {
@@ -230,14 +274,20 @@ class ShashinWp {
         }
 
         catch (Exception $e) {
-            return '<strong>' . __('Shashin Error: ', 'shashin') . $e->getMessage() . '<strong>';
+            return $this->formatExceptionMessage($e);
         }
     }
 
     public function handleOldShortcodes($content) {
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
-        $oldShortcode = $publicContainer->getOldShortcode($content, $_REQUEST);
-        return $oldShortcode->run();
+        try {
+            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $oldShortcode = $publicContainer->getOldShortcode($content, $_REQUEST);
+            return $oldShortcode->run();
+        }
+
+        catch (Exception $e) {
+            return $this->formatExceptionMessage($e);
+        }
     }
 
     public function registerWidget() {
@@ -255,6 +305,14 @@ class ShashinWp {
                 echo '</p></div>' . PHP_EOL;
             }
         }
+    }
+
+    public function formatExceptionMessage($e) {
+        return '<p><strong>'
+            . __('Shashin Error', 'shashin')
+            . ':<strong></p><pre>'
+            . $e->getMessage()
+            . '</pre>';
     }
 
     public static function display($arrayShortcode) {
