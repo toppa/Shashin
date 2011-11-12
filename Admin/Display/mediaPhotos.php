@@ -179,19 +179,19 @@ jQuery(document).ready(function($) {
     <div id="shashinMediaMenuPhotoPreview">&nbsp;</div>
     <div id="shashinMediaMenuPhotoGrid"></div>
 
-    <div id="shashinMediaMenuSelectedPhotos"><h3><?php _e('Selected Photos', 'shashin'); ?></h3></div>
+    <div id="shashinMediaMenuSelectedPhotos"><h3><?php _e('Selected photos', 'shashin'); ?></h3></div>
     <div id="shashinMediaMenuShortcodeCriteria">
-        <h3><?php _e('Insert Shortcode', 'shashin') ?></h3>
+        <h3><?php _e('Shortcode attributes', 'shashin') ?></h3>
         <table id="shashinMediaMenuShortcodeCriteriaTable">
             <tbody>
                 <tr>
                     <td><label for="shashinSize"><?php _e('Size', 'shashin') ?></label></td>
                     <td><select name="shashinSize" id="shashinSize">
-                        <option value="xsmall"><?php _e('X-Small (~75px)', 'shashin') ?></option>
-                        <option value="small" selected="selected"><?php _e('Small (~150px)', 'shashin') ?></option>
-                        <option value="medium"><?php _e('Medium (~300px)', 'shashin') ?></option>
-                        <option value="large"><?php _e('Large (~600px)', 'shashin') ?></option>
-                        <option value="xlarge"><?php _e('X-Large (~800px)', 'shashin') ?></option>
+                        <option value="xsmall"><?php _e('X-Small (72px)', 'shashin') ?></option>
+                        <option value="small" selected="selected"><?php _e('Small (150px)', 'shashin') ?></option>
+                        <option value="medium"><?php _e('Medium (300px)', 'shashin') ?></option>
+                        <option value="large"><?php _e('Large (600px)', 'shashin') ?></option>
+                        <option value="xlarge"><?php _e('X-Large (800px)', 'shashin') ?></option>
                         <option value="max"><?php _e('Max', 'shashin') ?></option>
                     </select></td>
                     <td><label for="shashinColumns"><?php _e('Columns', 'shashin') ?></label></td>
@@ -217,12 +217,12 @@ jQuery(document).ready(function($) {
                     </select></td>
                 </tr>
                 <tr>
-                    <td><label for="shashinCrop"><?php _e('Clear', 'shashin') ?></label></td>
+                    <td><label for="shashinCrop"><?php _e('Crop', 'shashin') ?></label></td>
                     <td><select name="shashinCrop" id="shashinCrop">
                         <option value="n"><?php _e('No', 'shashin'); ?></option>
                         <option value="y"><?php _e('Yes', 'shashin'); ?></option>
                     </select></td>
-                    <td colspan="2"><input type="button" class="button" name="shashinInsertShortcode" id="shashinInsertShortcode" value="<?php _e('Insert and return', 'shashin') ?>" /></td>
+                    <td colspan="2"><input type="button" class="button" name="shashinInsertShortcode" id="shashinInsertShortcode" value="<?php _e('Insert shortcode', 'shashin') ?>" /></td>
                 </tr>
             </tbody>
         </table>
