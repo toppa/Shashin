@@ -1,29 +1,23 @@
-This is the beta version of Shashin 3. Testing and feedback is appreciated.
-If you encounter a problem, please submit an issue ticket here:
-https://github.com/toppa/Shashin/issues
+This is the latest development version of Shashin.
 
-Progress updates and working examples are here:
-http://www.toppa.com/shashin-3-development-progress/
+For the current stable release, go to
+http://www.wordpress.org/extend/plugins/shashin/
 
-Information about Shashin 2 (the current version at wordpress.org) is here:
+See the readme.txt file for basic information about Shashin.
+
+Complete documentation is available at
 http://www.toppa.com/shashin-wordpress-plugin/
 
 IMPORTANT GITHUB INSTALLATION NOTES:
 
-1. The Shashin 3 beta version will replace and upgrade an existing Shashin 2
-installation. Before installing, deactivate and delete your Shashin 3 Alpha
-installation if you have one. Then deactivate your current Shashin 2
-installation, make a backup of the "shashin" folder in your plugins directory,
-and then delete the "shashin" folder.
-
-2. Download and activate the toppa-libs plugin before installing Shashin 3, as
+1. Download and activate the toppa-libs plugin before installing Shashin, as
 it contains required libraries. Rename the toppa-libs folder to
 "toppa-plugin-libraries-for-wordpress" before uploading to your plugins
 folder. https://github.com/toppa/toppa-libs/
 
-3. After downloading Shashin 3 from GitHub, rename the folder to "shashin"
+2. After downloading Shashin from GitHub, rename the folder to "shashin"
 before uploading to your WordPress plugin directory.
 
-4. Follow the rest of the installation steps outlined in readme.txt
+3. Follow the rest of the installation steps outlined in readme.txt
 
 
