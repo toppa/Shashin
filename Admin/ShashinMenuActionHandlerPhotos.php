@@ -30,24 +30,16 @@ class Admin_ShashinMenuActionHandlerPhotos {
     }
 
     public function run() {
-        try {
-            if ($this->request['switchingFromAlbumsMenu']) {
-                $this->functionsFacade->checkAdminNonceFields("shashinNoncePhotosMenu_" . $this->request['id']);
-            }
-
-            if ($this->request['shashinAction'] == 'updateIncludeInRandom') {
-                $this->functionsFacade->checkAdminNonceFields("shashinNonceUpdate", "shashinNonceUpdate");
-                $message = $this->runUpdateIncludeInRandom();
-            }
-
-            return $this->menuDisplayer->run($message);
+        if ($this->request['switchingFromAlbumsMenu']) {
+            $this->functionsFacade->checkAdminNonceFields("shashinNoncePhotosMenu_" . $this->request['id']);
         }
 
-        catch (Exception $e) {
-            echo "<p>" . __("Shashin Error: ", "shashin") . $e->getMessage() . "</p>";
+        if ($this->request['shashinAction'] == 'updateIncludeInRandom') {
+            $this->functionsFacade->checkAdminNonceFields("shashinNonceUpdate", "shashinNonceUpdate");
+            $message = $this->runUpdateIncludeInRandom();
         }
 
-        return true;
+        return $this->menuDisplayer->run($message);
     }
 
     public function runUpdateIncludeInRandom() {
