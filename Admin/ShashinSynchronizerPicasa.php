@@ -56,7 +56,8 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
                 $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
                 $photoData['sourceOrder'] = ++$sourceOrder;
                 $photoData['lastSync'] = $this->syncTime;
-                $photoData['exposure'] = round($photoData['exposure'], 3);
+                // there can be a comma in the exposure, so quote it
+                $photoData['exposure'] = "'" . round($photoData['exposure'], 3) . "'";
                 $photo = clone $this->clonablePhoto;
                 $photo->set($photoData);
                 $photo->flush();
