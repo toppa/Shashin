@@ -96,6 +96,8 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 
 == Changelog ==
 
+= 3.0.4 = Automatically crop photos as appropriate when reading old shortcodes
+
 = 3.0.3 =
 * Fixed display of "crop" input field on media menu for photos and albums
 * Improved exception handling
