@@ -4,6 +4,7 @@ class Public_ShashinOldShortcode {
     private $content;
     private $container;
     private $request;
+    private $cropSizes = array(32, 48, 64, 72, 104, 144, 150, 160);
 
     public function __construct() {
     }
@@ -41,11 +42,13 @@ class Public_ShashinOldShortcode {
             foreach ($matches as $match) {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $caption = $this->setCaption($match[3]);
+                $crop = $this->setCrop($match[2]);
 
                 $arrayShortcode = array(
                     'type' => 'photo',
                     'id' => $match[1],
                     'size' => $match[2],
+                    'crop' => $crop,
                     'columns' => 1,
                     'caption' => $caption,
                     'position' => $match[4],
@@ -66,6 +69,7 @@ class Public_ShashinOldShortcode {
             foreach ($matches as $match) {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $caption = $this->setCaption($match[5]);
+                $crop = $this->setCrop($match[2]);
 
                 if ($match[1] == 'any') {
                     $type = 'photo';
@@ -83,6 +87,7 @@ class Public_ShashinOldShortcode {
                     'caption' => $caption,
                     'order' => 'random',
                     'size' => $match[2],
+                    'crop' => $crop,
                     'columns' => $match[3],
                     'limit' => $match[4],
                     'position' => $match[6],
@@ -105,12 +110,14 @@ class Public_ShashinOldShortcode {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $id = str_replace('|', ',', $match[1]);
                 $caption = $this->setCaption($match[4]);
+                $crop = $this->setCrop($match[2]);
                 $arrayShortcode = array(
                     'type' => 'photo',
                     'id' => $id,
                     'caption' => $caption,
                     'order' => 'user',
                     'size' => $match[2],
+                    'crop' => $crop,
                     'columns' => $match[3],
                     'position' => $match[5],
                     'clear' => $match[6]
@@ -131,6 +138,7 @@ class Public_ShashinOldShortcode {
             foreach ($matches as $match) {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $caption = $this->setCaption($match[5]);
+                $crop = $this->setCrop($match[2]);
 
                 if ($match[1] == 'any') {
                     $type = 'photo';
@@ -149,6 +157,7 @@ class Public_ShashinOldShortcode {
                     'order' => 'date',
                     'reverse' => 'y',
                     'size' => $match[2],
+                    'crop' => $crop,
                     'columns' => $match[3],
                     'limit' => $match[4],
                     'position' => $match[6],
@@ -171,6 +180,7 @@ class Public_ShashinOldShortcode {
                 array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
                 $id = str_replace('|', ',', $match[1]);
                 $caption = $this->setCaption($match[4]);
+                $crop = $this->setCrop($match[2]);
                 list($order, $reverse) = explode(' ', $match[6]);
                 $order = $this->setOrder($order);
                 $reverse = $this->setReverse($reverse);
@@ -181,6 +191,7 @@ class Public_ShashinOldShortcode {
                     'order' => $order,
                     'reverse' => $reverse,
                     'size' => $match[2],
+                    'crop' => $crop,
                     'columns' => $match[3],
                     'position' => $match[7],
                     'clear' => $match[8]
@@ -201,6 +212,7 @@ class Public_ShashinOldShortcode {
                 $arrayShortcode = $this->initializeArrayShortcodeForAlbums($match[1]);
                 $arrayShortcode['caption'] = ($match[3] == 'y' || $match[4] == 'y') ? 'y' : 'n';
                 $arrayShortcode['size'] = 160;
+                $arrayShortcode['crop'] = 'y';
                 $arrayShortcode['columns'] = $match[2];
                 $arrayShortcode['position'] = $match[5];
                 $arrayShortcode['clear'] = $match[6];
@@ -221,6 +233,7 @@ class Public_ShashinOldShortcode {
                 $arrayShortcode = $this->initializeArrayShortcodeForAlbums($match[1]);
                 $arrayShortcode['caption'] = $match[2];
                 $arrayShortcode['size'] = 160;
+                $arrayShortcode['crop'] = 'y';
                 $arrayShortcode['columns'] = 1;
                 $markup = $this->parseShortcode($arrayShortcode);
                 $this->content = str_replace($match[0], $markup, $this->content);
@@ -272,6 +285,10 @@ class Public_ShashinOldShortcode {
 
     public function setReverse($reverse) {
         return ($reverse == 'desc') ? 'y' : 'n';
+    }
+
+    public function setCrop($size) {
+        return (in_array($size, $this->cropSizes)) ? 'y' : 'n';
     }
 
     public function initializeArrayShortcodeForAlbums($orderOrId) {
