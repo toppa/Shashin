@@ -177,7 +177,7 @@ class ShashinWp {
                 'caption' => $settings->albumPhotosCaption
             );
 
-            echo '<div id="shashinPhotosForSelectedAlbum" style="display: table; '
+            echo '<div id="shashinAlbumPhotos_' . $shortcode['id'] . '" style="display: table; '
                 . htmlentities($_REQUEST['shashinParentTableStyle'])
                 . '">' .$this->handleShortcode($shortcode) . '</div>';
         }
