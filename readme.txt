@@ -4,7 +4,7 @@ Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Highslide, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
 Tested up to: 3.2.1
-Stable tag: 3.0.3
+Stable tag: 3.0.5
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
 
@@ -95,6 +95,8 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 4. A Highslide slideshow
 
 == Changelog ==
+
+= 3.0.5 = Now correctly handles when multiple album thumbnails are opened at the same time to show their album photos
 
 = 3.0.4 = Automatically crop photos as appropriate when reading old shortcodes
 
