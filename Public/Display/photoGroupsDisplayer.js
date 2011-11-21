@@ -51,21 +51,20 @@ jQuery(document).ready(function($) {
         $.get(shashinPhotoGroupsDisplayer.ajaxurl, dataToSend, function(dataReceived) {
             $(parentTable).fadeOut('slow', function() {
                 $(parentTable).after($(dataReceived).hide());
-                $('#shashinPhotosForSelectedAlbum').fadeIn('slow');
+                $('#shashinAlbumPhotos_' + linkIdParts[2]).fadeIn('slow');
             })
         });
 
         event.preventDefault();
     });
 
-
     $('.shashinPhotoGroups').delegate('.shashinReturn', 'click', function(event) {
         var returnLinkIdParts = $(this).attr('id').split('_');
         var parentTableId = '#shashinGroup_' + returnLinkIdParts[1];
-
-        $('#shashinPhotosForSelectedAlbum').fadeOut('slow', function() {
+        var selectedAlbumPhotosId = '#shashinAlbumPhotos_' + returnLinkIdParts[1]
+        $(selectedAlbumPhotosId).fadeOut('slow', function() {
             $(parentTableId).fadeIn('slow');
-            $('#shashinPhotosForSelectedAlbum').remove();
+            $(selectedAlbumPhotosId).remove();
         })
 
         event.preventDefault();
