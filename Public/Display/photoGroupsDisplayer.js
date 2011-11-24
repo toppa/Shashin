@@ -61,7 +61,7 @@ jQuery(document).ready(function($) {
     $('.shashinPhotoGroups').delegate('.shashinReturn', 'click', function(event) {
         var returnLinkIdParts = $(this).attr('id').split('_');
         var parentTableId = '#shashinGroup_' + returnLinkIdParts[1];
-        var selectedAlbumPhotosId = '#shashinAlbumPhotos_' + returnLinkIdParts[1]
+        var selectedAlbumPhotosId = '#shashinAlbumPhotos_' + returnLinkIdParts[2]
         $(selectedAlbumPhotosId).fadeOut('slow', function() {
             $(parentTableId).fadeIn('slow');
             $(selectedAlbumPhotosId).remove();
