@@ -12,6 +12,9 @@ class Lib_ShashinAlbumPhotosCollection extends Lib_ShashinDataObjectCollection {
             case 'date':
                 $this->orderBy = 'takenTimestamp';
                 break;
+            case 'uploaded':
+                $this->orderBy = 'uploadedTimestamp';
+                break;
             case 'filename':
                 $this->orderBy = 'filename';
                 break;
