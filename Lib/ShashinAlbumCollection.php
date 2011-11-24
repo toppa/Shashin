@@ -12,6 +12,9 @@ class Lib_ShashinAlbumCollection extends Lib_ShashinDataObjectCollection {
             case 'date':
                 $this->orderBy = 'pubDate';
                 break;
+            case 'uploaded':
+                throw New Exception(__('"uploaded" is not allowed for ordering albums', 'shashin'));
+                break;
             case 'filename':
                 throw New Exception(__('"filename" is not allowed for ordering albums', 'shashin'));
                 break;
