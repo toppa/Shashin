@@ -268,16 +268,22 @@ class Public_ShashinOldShortcode {
     }
 
     public function setOrder($oldOrder) {
-        if ($oldOrder == 'pub_date') {
-            $newOrder = 'date';
-        }
-
-        elseif ($oldOrder == 'last_updated') {
-            $newOrder = 'sync';
-        }
-
-        else {
-            $newOrder = $oldOrder;
+        switch($oldOrder) {
+            case 'pub_date':
+            case 'taken_timestamp':
+                $newOrder = 'date';
+                break;
+            case 'uploaded_timestamp':
+                $newOrder = 'uploaded';
+                break;
+            case 'last_updated':
+                $newOrder = 'sync';
+                break;
+            case 'picasa_order':
+                $newOrder = 'source';
+                break;
+            default:
+                $newOrder = $oldOrder;
         }
 
         return $newOrder;
