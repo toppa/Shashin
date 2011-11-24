@@ -222,6 +222,8 @@ class Public_ShashinLayoutManager {
         if ($this->request['shashinParentTableId']) {
             $navLinks[] = '<a href="#" class="shashinReturn" id="shashinReturn_'
                 . $this->request['shashinParentTableId']
+                . '_'
+                . $this->request['shashinAlbumId']
                 . '">'
                 .  __('Return', 'shashin')
                 . '</a>';
