@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2011-11-12 20:38:05+00:00\n"
+"POT-Creation-Date: 2011-11-21 14:01:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,13 +12,36 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: Public/ShashinPhotoDisplayer.php:79
-msgid "View at"
+#: start.php:28
+msgid "To activate Shashin you need to first install"
 msgstr ""
 
-#: Public/ShashinAlbumDisplayer.php:85 Admin/ShashinMediaMenu.php:76
-#: Admin/Display/mediaAlbums.php:49
-msgid "Photos"
+#: start.php:34
+msgid "You must have at least PHP 5.1.2 to use Shashin"
+msgstr ""
+
+#: start.php:38
+msgid "You must have at least WordPress 3.0 to use Shashin"
+msgstr ""
+
+#: uninstall.php:15
+msgid "Uninstall failed: "
+msgstr ""
+
+#: Public/ShashinLayoutManager.php:215 Admin/Display/mediaPhotos.php:170
+msgid "Previous"
+msgstr ""
+
+#: Public/ShashinLayoutManager.php:226
+msgid "Return"
+msgstr ""
+
+#: Public/ShashinLayoutManager.php:235 Admin/Display/mediaPhotos.php:172
+msgid "Next"
+msgstr ""
+
+#: Public/ShashinPhotoDisplayer.php:79
+msgid "View at"
 msgstr ""
 
 #: Public/ShashinPhotoDisplayerTwitpic.php:42
@@ -49,116 +72,85 @@ msgstr ""
 msgid "\"size\" and \"columns\" can not both me \"max\""
 msgstr ""
 
+#: Public/ShashinAlbumDisplayer.php:85 Admin/Display/mediaAlbums.php:49
+#: Admin/ShashinMediaMenu.php:76
+msgid "Photos"
+msgstr ""
+
 #: Public/ShashinDataObjectDisplayer.php:134
 msgid "invalid size requested"
 msgstr ""
 
-#: Public/ShashinLayoutManager.php:215 Admin/Display/mediaPhotos.php:170
-msgid "Previous"
+#: Lib/ShashinAlbumPhotosCollection.php:19
+msgid "\"title\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Public/ShashinLayoutManager.php:226
-msgid "Return"
+#: Lib/ShashinAlbumPhotosCollection.php:22
+msgid "\"location\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Public/ShashinLayoutManager.php:235 Admin/Display/mediaPhotos.php:172
-msgid "Next"
+#: Lib/ShashinAlbumPhotosCollection.php:25
+msgid "\"count\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: start.php:28
-msgid "To activate Shashin you need to first install"
+#: Lib/ShashinAlbumPhotosCollection.php:28
+msgid "\"sync\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: start.php:34
-msgid "You must have at least PHP 5.1.2 to use Shashin"
+#: Lib/ShashinAlbumPhotosCollection.php:37
+msgid "\"user\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: start.php:38
-msgid "You must have at least WordPress 3.0 to use Shashin"
+#: Lib/ShashinAlbumCollection.php:16
+msgid "\"filename\" is not allowed for ordering albums"
 msgstr ""
 
-#: uninstall.php:15
-msgid "Uninstall failed: "
+#: Lib/ShashinAlbumCollection.php:34
+msgid "\"source\" is not allowed for ordering albums"
 msgstr ""
 
-#: Admin/ShashinUpgradeWp.php:53
-msgid ""
-"Shashin upgrade is needed, but is not possible because the Shashin 2 Picasa "
-"server settings are missing. Please re-install Shashin 2 before upgrading to "
-"Shashin 3"
+#: Lib/ShashinPhotoCollection.php:19
+msgid "\"title\" is not allowed for ordering photos"
 msgstr ""
 
-#: Admin/ShashinUpgradeWp.php:104
-msgid "Shashin album table not in correct state for upgrade"
+#: Lib/ShashinPhotoCollection.php:22
+msgid "\"location\" is not allowed for ordering photos"
 msgstr ""
 
-#: Admin/ShashinInstall.php:87 Admin/ShashinInstall.php:101
-msgid "Failed to create table "
+#: Lib/ShashinPhotoCollection.php:25
+msgid "\"count\" is not allowed for ordering photos"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:63
-msgid "Upgrade cleanup completed"
+#: Lib/ShashinPhotoCollection.php:28
+msgid "\"sync\" is not allowed for ordering photos"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:74
-msgid "Added"
+#: Lib/ShashinDataObject.php:28 Lib/ShashinSettings.php:26
+msgid "Invalid data property __get for "
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:74
-msgid "Picasa albums"
+#: Lib/ShashinDataObject.php:37
+msgid "Invalid data property __set for "
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:81
-msgid "Added Picasa album"
+#: Lib/ShashinPhoto.php:20
+msgid "Invalid photo key"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:88
-msgid "Added YouTube videos"
+#: Lib/ShashinPhoto.php:27
+msgid "Failed to find database record for photo"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:95
-msgid "Added Twitpic photos"
+#: Lib/ShashinAlbum.php:28
+msgid "Invalid album key"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:99
-msgid "Unrecognized RSS feed"
+#: Lib/ShashinAlbum.php:35
+msgid "Failed to find database record for album"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:112
-msgid "Synchronized"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:125
-msgid "Synchronized all"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:125
-msgid "albums"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:132
-msgid "Deleted album"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:145
-#: Admin/ShashinMenuActionHandlerPhotos.php:56
-msgid "Updated \"Include In Random\" settings"
-msgstr ""
-
-#: Admin/ShashinSynchronizer.php:47
-msgid "Invalid json url"
-msgstr ""
-
-#: Admin/ShashinSynchronizer.php:87 Admin/ShashinSynchronizer.php:91
-msgid "Failed to retrieve album feed at "
-msgstr ""
-
-#: Admin/ShashinSynchronizer.php:100
-msgid "Failed to parse album feed at "
-msgstr ""
-
-#: Admin/ShashinSynchronizer.php:139
-msgid "Unexpected number of fields in feed"
+#: Lib/ShashinSettings.php:58
+msgid "Failed to delete settings"
 msgstr ""
 
 #: Admin/ShashinMenuDisplayerAlbums.php:32
@@ -171,44 +163,20 @@ msgstr ""
 msgid "Sync All"
 msgstr ""
 
-#: Admin/ShashinMediaMenu.php:67 ShashinWp.php:312
-msgid "Shashin Error"
+#: Admin/ShashinMenuActionHandlerPhotos.php:56
+#: Admin/ShashinMenuActionHandlerAlbums.php:145
+msgid "Updated \"Include In Random\" settings"
 msgstr ""
 
-#: Admin/ShashinMediaMenu.php:77
-msgid "Albums"
-msgstr ""
-
-#: Admin/ShashinUninstaller.php:35 Admin/ShashinUninstaller.php:43
-msgid "Failed to drop table "
-msgstr ""
-
-#: Admin/ShashinMenuDisplayer.php:62
-msgid "Upgrade notice"
-msgstr ""
-
-#: Admin/ShashinMenuDisplayer.php:64
+#: Admin/ShashinUpgradeWp.php:53
 msgid ""
-"Please click \"Sync All\" below to complete the upgrade. Then review your "
-"Shashin albums, tags, and photos. If everything looks correct, please"
+"Shashin upgrade is needed, but is not possible because the Shashin 2 Picasa "
+"server settings are missing. Please re-install Shashin 2 before upgrading to "
+"Shashin 3"
 msgstr ""
 
-#: Admin/ShashinMenuDisplayer.php:66
-msgid "click here to remove the old settings and database backup"
-msgstr ""
-
-#: Admin/ShashinMenuDisplayer.php:68
-msgid ""
-"(which will remove this nag). Also, if you have posts containing Shashin "
-"tags, go to the Shashin settings menu to turn on support for old-style tags."
-msgstr ""
-
-#: Admin/Display/donate.php:5 Admin/Display/donate.php:6
-msgid "Support Shashin"
-msgstr ""
-
-#: Admin/Display/donate.php:7
-msgid "Shashin Help"
+#: Admin/ShashinUpgradeWp.php:104
+msgid "Shashin album table not in correct state for upgrade"
 msgstr ""
 
 #: Admin/Display/toolsPhotos.php:5 Admin/Display/toolsAlbums.php:6
@@ -399,69 +367,8 @@ msgstr ""
 msgid "Insert shortcode"
 msgstr ""
 
-#: Admin/Display/mediaAlbums.php:6
-msgid "No albums selected"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:43 Admin/Display/toolsAlbums.php:13
+#: Admin/Display/toolsAlbums.php:13 Admin/Display/mediaAlbums.php:43
 msgid "Your Albums"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:50
-msgid "Published"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:58
-msgid "Selected Albums"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:69
-msgid "Type"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:71
-msgid "Album thumbnails"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:72
-msgid "All album photos"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:101 Admin/ShashinWidgetWp.php:109
-msgid "Date"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:102 Admin/ShashinWidgetWp.php:110
-#: Admin/ShashinSettingsMenu.php:143
-msgid "Random"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:103
-msgid "User (album thumbnails only)"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:104
-msgid "Title (album thumbnails only)"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:105
-msgid "Location (album thumbnails only)"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:106
-msgid "Photo Count (album thumbnails only)"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:107
-msgid "Source (album photos only)"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:108
-msgid "Filename (album photos only)"
-msgstr ""
-
-#: Admin/Display/mediaAlbums.php:119
-msgid "Reverse Order"
 msgstr ""
 
 #: Admin/Display/toolsAlbums.php:17
@@ -591,6 +498,147 @@ msgstr ""
 msgid "Include album's photos in random photo displays?"
 msgstr ""
 
+#: Admin/Display/mediaAlbums.php:6
+msgid "No albums selected"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:50
+msgid "Published"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:58
+msgid "Selected Albums"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:69
+msgid "Type"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:71
+msgid "Album thumbnails"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:72
+msgid "All album photos"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:101 Admin/ShashinWidgetWp.php:109
+msgid "Date"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:102 Admin/ShashinWidgetWp.php:110
+#: Admin/ShashinSettingsMenu.php:143
+msgid "Random"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:103
+msgid "User (album thumbnails only)"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:104
+msgid "Title (album thumbnails only)"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:105
+msgid "Location (album thumbnails only)"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:106
+msgid "Photo Count (album thumbnails only)"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:107
+msgid "Source (album photos only)"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:108
+msgid "Filename (album photos only)"
+msgstr ""
+
+#: Admin/Display/mediaAlbums.php:119
+msgid "Reverse Order"
+msgstr ""
+
+#: Admin/Display/donate.php:5 Admin/Display/donate.php:6
+msgid "Support Shashin"
+msgstr ""
+
+#: Admin/Display/donate.php:7
+msgid "Shashin Help"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:63
+msgid "Upgrade cleanup completed"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:74
+msgid "Added"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:74
+msgid "Picasa albums"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:81
+msgid "Added Picasa album"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:88
+msgid "Added YouTube videos"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:95
+msgid "Added Twitpic photos"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:99
+msgid "Unrecognized RSS feed"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:112
+msgid "Synchronized"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:125
+msgid "Synchronized all"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:125
+msgid "albums"
+msgstr ""
+
+#: Admin/ShashinMenuActionHandlerAlbums.php:132
+msgid "Deleted album"
+msgstr ""
+
+#: Admin/ShashinMediaMenu.php:67 ShashinWp.php:312
+msgid "Shashin Error"
+msgstr ""
+
+#: Admin/ShashinMediaMenu.php:77
+msgid "Albums"
+msgstr ""
+
+#: Admin/ShashinMenuDisplayer.php:62
+msgid "Upgrade notice"
+msgstr ""
+
+#: Admin/ShashinMenuDisplayer.php:64
+msgid ""
+"Please click \"Sync All\" below to complete the upgrade. Then review your "
+"Shashin albums, tags, and photos. If everything looks correct, please"
+msgstr ""
+
+#: Admin/ShashinMenuDisplayer.php:66
+msgid "click here to remove the old settings and database backup"
+msgstr ""
+
+#: Admin/ShashinMenuDisplayer.php:68
+msgid ""
+"(which will remove this nag). Also, if you have posts containing Shashin "
+"tags, go to the Shashin settings menu to turn on support for old-style tags."
+msgstr ""
+
 #: Admin/ShashinWidgetWp.php:22
 msgid ""
 "Display Shashin Photos. Review your photos in the Shashin Tools menu to get "
@@ -671,6 +719,26 @@ msgstr ""
 
 #: Admin/ShashinWidgetWp.php:154
 msgid "Alt. Thumb IDs"
+msgstr ""
+
+#: Admin/ShashinInstall.php:87 Admin/ShashinInstall.php:101
+msgid "Failed to create table "
+msgstr ""
+
+#: Admin/ShashinSynchronizer.php:47
+msgid "Invalid json url"
+msgstr ""
+
+#: Admin/ShashinSynchronizer.php:87 Admin/ShashinSynchronizer.php:91
+msgid "Failed to retrieve album feed at "
+msgstr ""
+
+#: Admin/ShashinSynchronizer.php:100
+msgid "Failed to parse album feed at "
+msgstr ""
+
+#: Admin/ShashinSynchronizer.php:139
+msgid "Unexpected number of fields in feed"
 msgstr ""
 
 #: Admin/ShashinSettingsMenu.php:18
@@ -1063,76 +1131,8 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: Lib/ShashinAlbumCollection.php:16
-msgid "\"filename\" is not allowed for ordering albums"
-msgstr ""
-
-#: Lib/ShashinAlbumCollection.php:34
-msgid "\"source\" is not allowed for ordering albums"
-msgstr ""
-
-#: Lib/ShashinAlbum.php:28
-msgid "Invalid album key"
-msgstr ""
-
-#: Lib/ShashinAlbum.php:35
-msgid "Failed to find database record for album"
-msgstr ""
-
-#: Lib/ShashinPhoto.php:20
-msgid "Invalid photo key"
-msgstr ""
-
-#: Lib/ShashinPhoto.php:27
-msgid "Failed to find database record for photo"
-msgstr ""
-
-#: Lib/ShashinPhotoCollection.php:19
-msgid "\"title\" is not allowed for ordering photos"
-msgstr ""
-
-#: Lib/ShashinPhotoCollection.php:22
-msgid "\"location\" is not allowed for ordering photos"
-msgstr ""
-
-#: Lib/ShashinPhotoCollection.php:25
-msgid "\"count\" is not allowed for ordering photos"
-msgstr ""
-
-#: Lib/ShashinPhotoCollection.php:28
-msgid "\"sync\" is not allowed for ordering photos"
-msgstr ""
-
-#: Lib/ShashinDataObject.php:28 Lib/ShashinSettings.php:26
-msgid "Invalid data property __get for "
-msgstr ""
-
-#: Lib/ShashinDataObject.php:37
-msgid "Invalid data property __set for "
-msgstr ""
-
-#: Lib/ShashinSettings.php:58
-msgid "Failed to delete settings"
-msgstr ""
-
-#: Lib/ShashinAlbumPhotosCollection.php:19
-msgid "\"title\" is not allowed for ordering with type=albumphotos"
-msgstr ""
-
-#: Lib/ShashinAlbumPhotosCollection.php:22
-msgid "\"location\" is not allowed for ordering with type=albumphotos"
-msgstr ""
-
-#: Lib/ShashinAlbumPhotosCollection.php:25
-msgid "\"count\" is not allowed for ordering with type=albumphotos"
-msgstr ""
-
-#: Lib/ShashinAlbumPhotosCollection.php:28
-msgid "\"sync\" is not allowed for ordering with type=albumphotos"
-msgstr ""
-
-#: Lib/ShashinAlbumPhotosCollection.php:37
-msgid "\"user\" is not allowed for ordering with type=albumphotos"
+#: Admin/ShashinUninstaller.php:35 Admin/ShashinUninstaller.php:43
+msgid "Failed to drop table "
 msgstr ""
 
 #: ShashinWp.php:153
