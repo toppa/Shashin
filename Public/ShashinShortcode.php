@@ -21,7 +21,7 @@ class Public_ShashinShortcode {
 
     private $validInputValues = array(
         'caption' => array(null, 'y', 'n'),
-        'order' => array(null, 'id', 'date', 'filename', 'title', 'location', 'count', 'sync', 'random', 'source', 'user'),
+        'order' => array(null, 'id', 'date', 'filename', 'title', 'location', 'count', 'sync', 'random', 'source', 'user', 'uploaded'),
         'reverse' => array(null, 'y', 'n'),
         'crop' => array(null, 'y', 'n'),
         'position' => array(null, 'left', 'right', 'none', 'inherit', 'center'),
