@@ -97,6 +97,11 @@ class Public_ShashinLayoutManager {
 
     public function setCollection() {
         $this->collection = $this->dataObjectCollection->getCollectionForShortcode($this->shortcode);
+
+        if (empty($this->collection)) {
+            throw New Exception(__('No photos found for specified shortcode', 'shashin'));
+        }
+
         return $this->collection;
     }
 
