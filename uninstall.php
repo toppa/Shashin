@@ -6,6 +6,7 @@ if (!defined( 'ABSPATH') && !defined('WP_UNINSTALL_PLUGIN')) {
 
 require_once(dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php');
 
+$shashinToppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
 $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
 $shashinAdminContainer = new Admin_ShashinContainer($shashinAutoLoader);
 $shashinUninstaller = $shashinAdminContainer->getUninstaller();
