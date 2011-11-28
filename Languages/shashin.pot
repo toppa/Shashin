@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2011-11-21 14:01:53+00:00\n"
+"POT-Creation-Date: 2011-11-28 18:57:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,19 +24,23 @@ msgstr ""
 msgid "You must have at least WordPress 3.0 to use Shashin"
 msgstr ""
 
-#: uninstall.php:15
+#: uninstall.php:16
 msgid "Uninstall failed: "
 msgstr ""
 
-#: Public/ShashinLayoutManager.php:215 Admin/Display/mediaPhotos.php:170
+#: Public/ShashinLayoutManager.php:102
+msgid "No photos found for specified shortcode"
+msgstr ""
+
+#: Public/ShashinLayoutManager.php:220 Admin/Display/mediaPhotos.php:170
 msgid "Previous"
 msgstr ""
 
-#: Public/ShashinLayoutManager.php:226
+#: Public/ShashinLayoutManager.php:233
 msgid "Return"
 msgstr ""
 
-#: Public/ShashinLayoutManager.php:235 Admin/Display/mediaPhotos.php:172
+#: Public/ShashinLayoutManager.php:242 Admin/Display/mediaPhotos.php:172
 msgid "Next"
 msgstr ""
 
@@ -81,47 +85,51 @@ msgstr ""
 msgid "invalid size requested"
 msgstr ""
 
-#: Lib/ShashinAlbumPhotosCollection.php:19
+#: Lib/ShashinAlbumPhotosCollection.php:22
 msgid "\"title\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Lib/ShashinAlbumPhotosCollection.php:22
+#: Lib/ShashinAlbumPhotosCollection.php:25
 msgid "\"location\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Lib/ShashinAlbumPhotosCollection.php:25
+#: Lib/ShashinAlbumPhotosCollection.php:28
 msgid "\"count\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Lib/ShashinAlbumPhotosCollection.php:28
+#: Lib/ShashinAlbumPhotosCollection.php:31
 msgid "\"sync\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Lib/ShashinAlbumPhotosCollection.php:37
+#: Lib/ShashinAlbumPhotosCollection.php:40
 msgid "\"user\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
 #: Lib/ShashinAlbumCollection.php:16
+msgid "\"uploaded\" is not allowed for ordering albums"
+msgstr ""
+
+#: Lib/ShashinAlbumCollection.php:19
 msgid "\"filename\" is not allowed for ordering albums"
 msgstr ""
 
-#: Lib/ShashinAlbumCollection.php:34
+#: Lib/ShashinAlbumCollection.php:37
 msgid "\"source\" is not allowed for ordering albums"
 msgstr ""
 
-#: Lib/ShashinPhotoCollection.php:19
+#: Lib/ShashinPhotoCollection.php:22
 msgid "\"title\" is not allowed for ordering photos"
 msgstr ""
 
-#: Lib/ShashinPhotoCollection.php:22
+#: Lib/ShashinPhotoCollection.php:25
 msgid "\"location\" is not allowed for ordering photos"
 msgstr ""
 
-#: Lib/ShashinPhotoCollection.php:25
+#: Lib/ShashinPhotoCollection.php:28
 msgid "\"count\" is not allowed for ordering photos"
 msgstr ""
 
-#: Lib/ShashinPhotoCollection.php:28
+#: Lib/ShashinPhotoCollection.php:31
 msgid "\"sync\" is not allowed for ordering photos"
 msgstr ""
 
