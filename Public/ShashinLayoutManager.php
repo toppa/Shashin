@@ -318,7 +318,9 @@ class Public_ShashinLayoutManager {
         $this->currentDataObjectDisplayer = $this->container->getDataObjectDisplayer(
             $this->shortcode,
             $this->collection[$i],
-            $alternateThumbnail
+            $alternateThumbnail,
+            null,
+            $this->request['shashinAlbumId']
         );
 
         return $this->currentDataObjectDisplayer;
@@ -415,8 +417,14 @@ class Public_ShashinLayoutManager {
         if ($this->shortcode->type != 'album'
           && $this->settings->imageDisplay == 'highslide') {
 
+            $groupNumber = $this->sessionManager->getGroupCounter();
+
+            if ($this->request['shashinAlbumId']) {
+                $groupNumber .= '_' . $this->request['shashinAlbumId'];
+            }
+
             $this->highslideGroupCounter = '<script type="text/javascript">'
-                . "addHSSlideshow('group" . $this->sessionManager->getGroupCounter() . "');</script>"
+                . "addHSSlideshow('group" . $groupNumber . "');</script>"
                 . PHP_EOL;
         }
 

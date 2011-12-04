@@ -7,6 +7,7 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $dataObject;
     protected $thumbnail;
     protected $sessionManager;
+    protected $albumIdForAjaxHighslideDisplay;
     protected $actualThumbnailSize;
     protected $displayThumbnailSize;
     protected $actualExpandedSize;
@@ -71,7 +72,12 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->sessionManager;
     }
 
-    public function run() {
+    public function setAlbumIdForAjaxHighslideDisplay($albumIdForAjaxHighslideDisplay = null) {
+        $this->albumIdForAjaxHighslideDisplay = $albumIdForAjaxHighslideDisplay;
+        return $this->albumIdForAjaxHighslideDisplay;
+    }
+
+    public function run($albumIdForAjaxHighslideDisplay = null) {
         $this->initializeSessionIdCounter();
         $requestedSize = $this->shortcode->size ? $this->shortcode->size : 'xsmall';
         $this->setDisplayThumbnailSize($requestedSize);
@@ -88,13 +94,13 @@ abstract class Public_ShashinDataObjectDisplayer {
 
         if ($this->dataObject->isVideo()) {
             $this->setLinkHrefVideo();
-            $this->setLinkOnClickVideo();
+            $this->setLinkOnClickVideo($albumIdForAjaxHighslideDisplay);
             $this->setLinkRelVideo();
         }
 
         else {
             $this->setLinkHref();
-            $this->setLinkOnClick();
+            $this->setLinkOnClick($albumIdForAjaxHighslideDisplay);
             $this->setLinkRel();
         }
 

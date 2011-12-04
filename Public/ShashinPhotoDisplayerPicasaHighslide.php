@@ -27,10 +27,16 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
     }
 
     private function appendLinkOnClick() {
+        $groupNumber = $this->sessionManager->getGroupCounter();
+
+        if ($this->albumIdForAjaxHighslideDisplay) {
+            $groupNumber .= '_' . $this->albumIdForAjaxHighslideDisplay;
+        }
+
         return "autoplay: "
             . $this->settings->highslideAutoplay
             . ", slideshowGroup: 'group"
-            . $this->sessionManager->getGroupCounter()
+            . $groupNumber
             . "' })";
     }
 

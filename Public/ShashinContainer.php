@@ -58,7 +58,8 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
       Public_ShashinShortcode $shortcode,
       Lib_ShashinDataObject $dataObject,
       Lib_ShashinDataObject $alternativeThumbnail = null,
-      $forceViewer = null) {
+      $forceViewer = null,
+      $albumIdForAjaxHighslideDisplay = null) {
 
         $this->getFunctionsFacade();
         $this->getSettings();
@@ -87,6 +88,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $dataObjectDisplayer->setDataObject($dataObject);
         $dataObjectDisplayer->setThumbnail($alternativeThumbnail);
         $dataObjectDisplayer->setSessionManager($this->sessionManager);
+        $dataObjectDisplayer->setAlbumIdForAjaxHighslideDisplay($albumIdForAjaxHighslideDisplay);
         return $dataObjectDisplayer;
     }
 
