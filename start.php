@@ -4,9 +4,10 @@ Plugin Name: Shashin
 Plugin URI: http://www.toppa.com/shashin-wordpress-plugin/
 Description: A plugin for integrating photos and videos from Picasa, YouTube, and Twitpic in WordPress.
 Author: Michael Toppa
-Version: 3.0.8
+Version: 3.0.9
 Author URI: http://www.toppa.com
 */
+
 
 $shashinAutoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
 register_activation_hook(__FILE__, 'shashinActivate');
@@ -49,6 +50,7 @@ function shashinActivate() {
             shashinCancelActivation($status);
         }
     }
+
 }
 
 function shashinCancelActivation($message) {
