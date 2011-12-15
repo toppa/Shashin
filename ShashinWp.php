@@ -34,9 +34,9 @@ class ShashinWp {
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
-        add_action('media_buttons', array($this, 'addMediaButton'), 30);
-        add_action('media_upload_shashin_photos', array($this, 'initPhotoMediaMenu'));
-        add_action('media_upload_shashin_albums', array($this, 'initAlbumMediaMenu'));
+        add_filter('media_upload_tabs', array($this, 'addMediaMenuTabs'));
+        add_action('media_upload_shashinPhotos', array($this, 'initPhotoMediaMenu'));
+        add_action('media_upload_shashinAlbums', array($this, 'initAlbumMediaMenu'));
         add_action('wp_ajax_shashinGetPhotosForMediaMenu', array($this, 'ajaxGetPhotosForMediaMenu'));
         $this->scheduleSyncIfNeeded();
         add_action('shashinSync', array($this, 'runScheduledSync'));
@@ -79,6 +79,19 @@ class ShashinWp {
         }
     }
 
+    public function displayAdminHeadTags() {
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $headTags = $adminContainer->getHeadTags($this->version);
+            $headTags->run();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
+    }
+
+
     public function initSettingsMenu() {
         add_options_page(
             'Shashin',
@@ -94,19 +107,6 @@ class ShashinWp {
             $adminContainer = new Admin_ShashinContainer($this->autoLoader);
             $settingsMenuManager = $adminContainer->getSettingsMenuManager();
             echo $settingsMenuManager->run();
-        }
-
-        catch (Exception $e) {
-            echo $this->formatExceptionMessage($e);
-        }
-    }
-
-
-    public function displayAdminHeadTags() {
-        try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-            $headTags = $adminContainer->getHeadTags($this->version);
-            $headTags->run();
         }
 
         catch (Exception $e) {
@@ -189,29 +189,36 @@ class ShashinWp {
         die();
     }
 
-    public function addMediaButton() {
-        global $post_ID, $temp_ID;
-        $iframeId = (int) (0 == $post_ID ? $temp_ID : $post_ID);
-        $photoBrowserUrl = 'media-upload.php?post_id='
-            . $iframeId
-            . '&amp;type=shashin&amp;tab=shashin_photos&amp;TB_iframe=true';
-        $title = __('Add Shashin photos', 'shashin');
-        $imageUrl = plugins_url('Admin/Display/images/', __FILE__) .'picasa.gif';
-        $markup = '<a href="%s" class="thickbox" title="%s"><img src="%s" alt="%s"></a>';
-        printf($markup, $photoBrowserUrl, $title, $imageUrl, $title);
-        return true;
+    public function addMediaMenuTabs($tabs) {
+    	$shashinTab = array(
+            'shashinPhotos' => __('Shashin Photos', 'shashin'),
+            'shashinAlbums' => __('Shashin Albums', 'shashin')
+        );
+    	return array_merge($tabs, $shashinTab);
     }
 
     public function initPhotoMediaMenu() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
-        $mediaMenu->displayPhotoMenu();
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
+            $mediaMenu->initPhotoMenu();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
     }
 
     public function initAlbumMediaMenu() {
-        $adminContainer = new Admin_ShashinContainer($this->autoLoader);
-        $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
-        $mediaMenu->displayAlbumMenu();
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
+            $mediaMenu->initAlbumMenu();
+        }
+
+        catch (Exception $e) {
+            echo $this->formatExceptionMessage($e);
+        }
     }
 
     public function ajaxGetPhotosForMediaMenu() {
