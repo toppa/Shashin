@@ -178,10 +178,8 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
 
     public function getMediaMenu($version, array $request) {
         if (!$this->mediaMenu) {
-            $this->getFunctionsFacade();
             $publicContainer = new Public_ShashinContainer($this->autoLoader);
-            $this->mediaMenu = new Admin_ShashinMediaMenu($version);
-            $this->mediaMenu->setFunctionsFacade($this->functionsFacade);
+            $this->mediaMenu = new Admin_ShashinMediaMenuWp($version);
             $this->mediaMenu->setRequest($request);
             $this->mediaMenu->setContainer($publicContainer);
         }
