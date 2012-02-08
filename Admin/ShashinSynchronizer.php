@@ -82,16 +82,25 @@ abstract class Admin_ShashinSynchronizer {
     }
 
     public function checkResponseAndDecodeAlbumData($response) {
-        // don't have an interface for WP_Http :-( this could be a WP_Error object
-        if (!is_array($response)) {
-            throw new Exception(__("Failed to retrieve album feed at ", "shashin") . $this->jsonUrl);
+        if (is_a($response, 'WP_Error')) {
+            throw new Exception(
+                __('Failed to retrieve album feed at ', 'shashin')
+                . $this->jsonUrl
+                . '<br />'
+                . __('WP_Http Error: ', 'shashin')
+                . $response->get_error_message()
+            );
         }
 
-        if ($response['response']['code'] != 200) {
-            throw new Exception(__("Failed to retrieve album feed at ")
-                . $this->jsonUrl . " "
+        elseif (is_array($response) && $response['response']['code'] != 200) {
+            throw new Exception(
+                __("Failed to retrieve album feed at ")
+                . $this->jsonUrl
+                . '<br />'
+                . __('Error Response: ', 'shashin')
                 . $response['response']['code'] . " "
-                . $response['response']['message']);
+                . $response['response']['message']
+            );
         }
 
         $decodedAlbumData = json_decode($response['body'], true);
