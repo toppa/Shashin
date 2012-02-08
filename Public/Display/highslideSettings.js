@@ -7,20 +7,29 @@ hs.outlineType = ((highslideSettings.outlineType == "none") ? null : highslideSe
 hs.fadeInOut = true;
 hs.dimmingOpacity = highslideSettings.dimmingOpacity-0;
 
+
+// need this to make sure we don't add controls for a slideshowGroup
+// more than once (if we do, a stray, extra navbar appears on the page)
+window.shashinGroupIDs = new Array();
+
 // Add the controlbar for slideshows
 function addHSSlideshow(groupID) {
-    hs.addSlideshow({
-        slideshowGroup: groupID,
-        interval: highslideSettings.interval-0,
-        repeat: !!(highslideSettings.repeat-0),
-        useControls: true,
-        fixedControls: true,
-        overlayOptions: {
-            opacity: .75,
-            position: highslideSettings.position,
-            hideOnMouseOut: !!(highslideSettings.hideController-0)
-        }
-    });
+    if (jQuery.inArray(groupID, window.shashinGroupIDs) == -1) {
+        window.shashinGroupIDs.push(groupID);
+
+        hs.addSlideshow({
+            slideshowGroup: groupID,
+            interval: highslideSettings.interval-0,
+            repeat: !!(highslideSettings.repeat-0),
+            useControls: true,
+            fixedControls: true,
+            overlayOptions: {
+                opacity: .75,
+                position: highslideSettings.position,
+                hideOnMouseOut: !!(highslideSettings.hideController-0)
+            }
+        });
+    }
 }
 
 // for Flash
