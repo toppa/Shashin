@@ -77,7 +77,7 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->albumIdForAjaxHighslideDisplay;
     }
 
-    public function run($albumIdForAjaxHighslideDisplay = null) {
+    public function run() {
         $this->initializeSessionIdCounter();
         $requestedSize = $this->shortcode->size ? $this->shortcode->size : 'xsmall';
         $this->setDisplayThumbnailSize($requestedSize);
@@ -94,13 +94,13 @@ abstract class Public_ShashinDataObjectDisplayer {
 
         if ($this->dataObject->isVideo()) {
             $this->setLinkHrefVideo();
-            $this->setLinkOnClickVideo($albumIdForAjaxHighslideDisplay);
+            $this->setLinkOnClickVideo();
             $this->setLinkRelVideo();
         }
 
         else {
             $this->setLinkHref();
-            $this->setLinkOnClick($albumIdForAjaxHighslideDisplay);
+            $this->setLinkOnClick();
             $this->setLinkRel();
         }
 
