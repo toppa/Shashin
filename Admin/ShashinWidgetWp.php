@@ -3,6 +3,7 @@
 class Admin_ShashinWidgetWp extends WP_Widget {
     private $shashinFormFields;
     private $shashinDefaults = array(
+        'type' => 'photo',
         'limit' => null,
         'size' => 'small',
         'id' => null,
@@ -56,6 +57,17 @@ class Admin_ShashinWidgetWp extends WP_Widget {
 
     public function setFormFields() {
         $this->shashinFormFields = array(
+            'type' => array(
+                'input' => array(
+                    'type' => 'select',
+                    'subgroup' =>  array(
+                        'photo' => __('Individual Photos', 'shashin'),
+                        'album' => __('Album', 'shashin'),
+                        'albumphotos' => __('All Photos in Album', 'shashin'),
+                    )
+                ),
+                'label' => __('Widget Type', 'shashin')
+            ),
             'title' => array(
                 'input' => array('type' => 'text', 'size' => 10),
                 'label' => __('Title', 'shashin')
@@ -197,7 +209,7 @@ class Admin_ShashinWidgetWp extends WP_Widget {
 
         $arrayShortcode = $instance;
         unset($arrayShortcode['title']);
-        $arrayShortcode['type'] = 'photo';
+        //$arrayShortcode['type'] = 'photo';
         $autoLoader = new ToppaAutoLoaderWp('/shashin');
         $shashinWp = new ShashinWp($autoLoader);
         echo $shashinWp->handleShortcode($arrayShortcode);
