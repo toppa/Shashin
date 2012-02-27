@@ -38,7 +38,7 @@ abstract class Admin_ShashinMenuDisplayer {
     }
 
     public function run($message = null) {
-        if ($this->request['shashinOrderBy']) {
+        if (array_key_exists('shashinOrderBy', $this->request) && $this->request['shashinOrderBy']) {
             $this->checkOrderByNonce();
         }
 
@@ -54,26 +54,27 @@ abstract class Admin_ShashinMenuDisplayer {
     }
 
     public function showUpgradeCleanupNotice() {
-        if ($this->functionsFacade->getSetting('shashin_options')) {
-            $url = '?page=ShashinToolsMenu&amp;shashinAction=cleanupUpgrade';
-            $noncedUrl = $this->functionsFacade->addNonceToUrl($url, 'shashinNonceCleanupUpgrade');
-
-            $notice = '<p><strong>';
-            $notice .= __('Upgrade notice', 'shashin');
-            $notice .= ':</strong> ';
-            $notice .= __('Please click "Sync All" below to complete the upgrade. Then review your Shashin albums, tags, and photos. If everything looks correct, please', 'shashin');
-            $notice .= ' <a href="' . $noncedUrl . '">';
-            $notice .= __('click here to remove the old settings and database backup', 'shashin');
-            $notice .= '</a> ';
-            $notice .= __('(which will remove this nag). Also, if you have posts containing Shashin tags, go to the Shashin settings menu to turn on support for old-style tags.', 'shashin');
-            $notice .= '</p>';
+        if (!$this->functionsFacade->getSetting('shashin_options')) {
+            return null;
         }
 
+        $url = '?page=ShashinToolsMenu&amp;shashinAction=cleanupUpgrade';
+        $noncedUrl = $this->functionsFacade->addNonceToUrl($url, 'shashinNonceCleanupUpgrade');
+
+        $notice = '<p><strong>';
+        $notice .= __('Upgrade notice', 'shashin');
+        $notice .= ':</strong> ';
+        $notice .= __('Please click "Sync All" below to complete the upgrade. Then review your Shashin albums, tags, and photos. If everything looks correct, please', 'shashin');
+        $notice .= ' <a href="' . $noncedUrl . '">';
+        $notice .= __('click here to remove the old settings and database backup', 'shashin');
+        $notice .= '</a> ';
+        $notice .= __('(which will remove this nag). Also, if you have posts containing Shashin tags, go to the Shashin settings menu to turn on support for old-style tags.', 'shashin');
+        $notice .= '</p>';
         return $notice;
     }
 
     public function mimicShortcode() {
-        if (is_string($this->request['shashinOrderBy'])) {
+        if (array_key_exists('shashinOrderBy', $this->request) && is_string($this->request['shashinOrderBy'])) {
             $orderBy = $this->request['shashinOrderBy'];
         }
 
@@ -81,7 +82,7 @@ abstract class Admin_ShashinMenuDisplayer {
             $orderBy = $this->defaultOrderBy;
         }
 
-        if (is_string($this->request['shashinReverse'])) {
+        if (array_key_exists('shashinReverse', $this->request) && is_string($this->request['shashinReverse'])) {
             $reverse = $this->request['shashinReverse'];
         }
 

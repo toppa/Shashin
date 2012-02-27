@@ -119,6 +119,10 @@ abstract class Admin_ShashinSynchronizer {
         $extractedFields = array();
 
         foreach ($refData as $k=>$v) {
+            if (!isset($v[$albumType])) {
+                continue;
+            }
+
             switch(count($v[$albumType])) {
                 case 0:
                     break;

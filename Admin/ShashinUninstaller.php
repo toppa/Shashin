@@ -6,28 +6,54 @@ class Admin_ShashinUninstaller {
     private $album;
     private $photo;
 
-    public function __construct($dbFacade, $album, $photo, $settings) {
+    public function __construct() {
+    }
+
+    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
+        return $this->dbFacade;
+    }
+
+    public function setAlbum(Lib_ShashinAlbum $album) {
         $this->album = $album;
+        return $this->album;
+    }
+
+    public function setPhoto(Lib_ShashinPhoto $photo) {
         $this->photo = $photo;
+        return $this->photo;
+    }
+
+    public function setSettings(Lib_ShashinSettings $settings) {
         $this->settings = $settings;
+        return $this->settings;
+    }
+
+    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+        $this->functionsFacade = $functionsFacade;
+        return $this->functionsFacade;
     }
 
     public function run() {
         try {
-            $this->dropTables();
-            $this->deleteSettings();
+            $status = $this->functionsFacade->callFunctionForNetworkSites(array($this, 'runForNetworkSites'), false);
         }
 
         catch (Exception $e) {
             return $e->getMessage();
         }
 
+        return $status;
+    }
+
+    public function runForNetworkSites() {
+        $this->dropTables();
+        $this->deleteSettings();
         return true;
     }
 
     public function dropTables() {
-        $albumTable = $this->album->getTableName();
+        $albumTable = $this->dbFacade->getTableNamePrefix() . $this->album->getBaseTableName();
         $albumRefData = $this->album->getRefData();
         $this->dbFacade->dropTable($albumTable);
 
@@ -35,7 +61,7 @@ class Admin_ShashinUninstaller {
             throw new Exception(__('Failed to drop table ', 'shashin') . $albumTable);
         }
 
-        $photoTable = $this->photo->getTableName();
+        $photoTable = $this->dbFacade->getTableNamePrefix() . $this->photo->getBaseTableName();
         $photoRefData = $this->photo->getRefData();
         $this->dbFacade->dropTable($photoTable);
 

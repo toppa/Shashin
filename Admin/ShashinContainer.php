@@ -26,11 +26,13 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
             $this->getClonableAlbum();
             $this->getClonablePhoto();
             $this->getSettings();
+            $this->getFunctionsFacade();
             $this->installer = new Admin_ShashinInstall();
             $this->installer->setDbFacade($this->dbFacade);
-            $this->installer->setAlbumAndAlbumVars($this->clonableAlbum);
-            $this->installer->setPhotoAndPhotoVars($this->clonablePhoto);
+            $this->installer->setAlbum($this->clonableAlbum);
+            $this->installer->setPhoto($this->clonablePhoto);
             $this->installer->setSettings($this->settings);
+            $this->installer->setFunctionsFacade($this->functionsFacade);
         }
 
         return $this->installer;
@@ -59,8 +61,15 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
             $this->getClonableAlbum();
             $this->getClonablePhoto();
             $this->getSettings();
-            $this->uninstaller = new Admin_ShashinUninstaller($this->dbFacade, $this->clonableAlbum, $this->clonablePhoto, $this->settings);
+            $this->getFunctionsFacade();
+            $this->uninstaller = new Admin_ShashinUninstaller();
+            $this->uninstaller->setDbFacade($this->dbFacade);
+            $this->uninstaller->setAlbum($this->clonableAlbum);
+            $this->uninstaller->setPhoto($this->clonablePhoto);
+            $this->uninstaller->setSettings($this->settings);
+            $this->uninstaller->setFunctionsFacade($this->functionsFacade);
         }
+
         return $this->uninstaller;
     }
 

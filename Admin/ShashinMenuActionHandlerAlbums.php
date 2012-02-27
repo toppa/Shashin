@@ -36,6 +36,10 @@ class Admin_ShashinMenuActionHandlerAlbums {
     }
 
     public function run() {
+        if (!array_key_exists('shashinAction', $this->request)) {
+            return $this->menuDisplayer->run();
+        }
+
         switch ($this->request['shashinAction']) {
             case 'addAlbums':
                 $this->functionsFacade->checkAdminNonceFields('shashinNonceAdd', 'shashinNonceAdd');
@@ -133,13 +137,28 @@ class Admin_ShashinMenuActionHandlerAlbums {
     }
 
     public function runUpdateIncludeInRandom() {
-        $shortcodeMimic = array('type' => 'album', 'order' => 'title');
-        $albums = $this->menuDisplayer->getDataObjects($shortcodeMimic);
+        $albumsShortcodeMimic = array('type' => 'album', 'order' => 'title');
+        $albums = $this->menuDisplayer->getDataObjects($albumsShortcodeMimic);
 
         foreach ($albums as $album) {
-            $albumData = array('includeInRandom'=> $this->request['includeInRandom'][$album->id]);
-            $album->set($albumData);
+            if ($album->includeInRandom == $this->request['includeInRandom'][$album->id]) {
+                continue;
+            }
+
+            $includeInRandom = array('includeInRandom'=> $this->request['includeInRandom'][$album->id]);
+            $album->set($includeInRandom);
             $album->flush();
+
+            /* I want to set this for every photo in the album as well, but this isn't
+             working - commenting out for now
+            $albumPhotosShortcodeMimic = array('id' => $album->id, 'type' => 'albumphotos');
+            $albumPhotos = $this->menuDisplayer->getDataObjects($albumPhotosShortcodeMimic);
+
+            foreach ($albumPhotos as $photo) {
+                $photo->set($includeInRandom);
+                $photo->flush();
+            }
+            */
         }
 
         return __('Updated "Include In Random" settings', 'shashin');
