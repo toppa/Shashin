@@ -17,23 +17,20 @@ jQuery(document).ready(function($) {
         'titleFormat': shashinFancyboxFormatTitle
     });
 
-    function shashinFancyboxVideo(title, width, height, href) {
-        jQuery.fancybox({
-            'padding': 0,
-            'autoScale': false,
-            'transitionIn': 'none',
-            'transitionOut': 'none',
-            'title': title,
-            'width': width,
-            'height': height,
-            'href': href,
-            'type': 'swf',
-            'swf': {
-                'wmode': 'transparent',
-                'allowfullscreen': 'true'
-            }
-        });
+    $(".shashinFancyboxVideo").fancybox({
+        'padding': 0,
+        'autoScale': false,
+        'width': 640,
+        'height': 480,
+        'href': this.href,
+        'type': 'swf',
+        'swf': {
+            'wmode': 'transparent',
+            'allowfullscreen': 'true'
+        }
+    });
 
-        return false;
-    }
 });
+
+
+

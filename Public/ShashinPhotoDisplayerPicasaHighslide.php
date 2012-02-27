@@ -57,6 +57,10 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
         return $this->linkClass;
     }
 
+    public function setLinkClassVideo() {
+        return $this->setLinkClass();
+    }
+
     public function setCaption() {
         parent::setCaption();
         $this->caption .= $this->setCaptionForHighslide();

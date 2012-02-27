@@ -30,6 +30,10 @@ class Public_ShashinPhotoDisplayerTwitpicHighslide extends Public_ShashinPhotoDi
         return $this->linkClass;
     }
 
+    public function setLinkClassVideo() {
+        return $this->setLinkClass();
+    }
+
     public function setCaption() {
         parent::setCaption();
         $this->caption .= $this->setCaptionForHighslide();

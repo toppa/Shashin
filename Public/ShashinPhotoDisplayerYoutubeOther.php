@@ -49,6 +49,10 @@ class Public_ShashinPhotoDisplayerYoutubeOther extends Public_ShashinPhotoDispla
         return $this->linkTitle;
     }
 
+    public function setLinkTitleVideo() {
+        return $this->setLinkTitle();
+    }
+
     public function setLinkClass() {
         $this->linkClass = null;
 
@@ -57,5 +61,9 @@ class Public_ShashinPhotoDisplayerYoutubeOther extends Public_ShashinPhotoDispla
         }
 
         return $this->linkClass;
+    }
+
+    public function setLinkClassVideo() {
+        return $this->setLinkClass();
     }
 }

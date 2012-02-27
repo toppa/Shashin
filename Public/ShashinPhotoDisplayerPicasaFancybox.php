@@ -5,25 +5,6 @@ class Public_ShashinPhotoDisplayerPicasaFancybox extends Public_ShashinPhotoDisp
         parent::__construct();
     }
 
-    public function setLinkOnClickVideo() {
-        // don't let the videos be larger than 80% of the largest desired photo size
-        $maxVideoWidth = $this->actualExpandedSize * .8;
-
-        if ($this->dataObject->videoWidth > $maxVideoWidth) {
-            $heightRatio = $maxVideoWidth / $this->dataObject->videoWidth;
-            $width = $maxVideoWidth;
-            $height = $this->dataObject->videoHeight * $heightRatio;
-        }
-
-        else {
-            $width = $this->dataObject->videoWidth;
-            $height = $this->dataObject->videoHeight;
-        }
-
-        $this->linkOnClick = "return shashinFancyboxVideo('test title', $width, $height, '{$this->linkHref}')";
-        return $this->linkOnClick;
-    }
-
     public function setImgTitle() {
         $this->imgTitle = null;
         return $this->imgTitle;
@@ -35,21 +16,32 @@ class Public_ShashinPhotoDisplayerPicasaFancybox extends Public_ShashinPhotoDisp
     }
 
     public function setLinkRelVideo() {
-        $this->linkRel = 'shashinFancybox_' . $this->sessionManager->getGroupCounter();
-        return $this->linkRel;
+        return $this->setLinkRel();
     }
 
     // htmlspecialchars lets us put links within the title (but we want single quotes,
     // which are not converted to entities)
     public function setLinkTitle() {
-        $this->linkTitle = htmlspecialchars(str_replace('"', "'", $this->setOriginalPhotoLinkForCaption()))
-            . $this->dataObject->description
+        $this->linkTitle = htmlspecialchars(str_replace('"', "'", $this->setDivOriginalPhotoLinkForCaption()))
+            . $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description)
             . htmlspecialchars(str_replace('"', "'", $this->setExifDataForCaption()));
+        return $this->linkTitle;
+    }
+
+    public function setLinkTitleVideo() {
+        $this->linkTitle = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description)
+            . ' - '
+            . htmlspecialchars(str_replace('"', "'", $this->setOriginalPhotoLinkForCaption()));
         return $this->linkTitle;
     }
 
     public function setLinkClass() {
         $this->linkClass = 'shashinFancybox';
+        return $this->linkClass;
+    }
+
+    public function setLinkClassVideo() {
+        $this->linkClass = 'shashinFancyboxVideo';
         return $this->linkClass;
     }
 }

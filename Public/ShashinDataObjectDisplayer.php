@@ -96,18 +96,20 @@ abstract class Public_ShashinDataObjectDisplayer {
             $this->setLinkHrefVideo();
             $this->setLinkOnClickVideo();
             $this->setLinkRelVideo();
+            $this->setLinkClassVideo();
+            $this->setLinkTitleVideo();
         }
 
         else {
             $this->setLinkHref();
             $this->setLinkOnClick();
             $this->setLinkRel();
+            $this->setLinkClass();
+            $this->setLinkTitle();
         }
 
-        $this->setLinkTitle();
         $this->setLinkIdForImg();
         $this->setLinkIdForCaption();
-        $this->setLinkClass();
         $this->setLinkTagForImg();
         $this->setLinkTagForCaption();
         $this->setCaption();
@@ -259,16 +261,25 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->linkRel;
     }
 
-    public function setLinkTitle() {
-        $this->linkTitle = null;
-        return $this->linkTitle;
-    }
-
     public function setLinkClass() {
         $this->linkClass = null;
         return $this->linkClass;
     }
 
+    public function setLinkClassVideo() {
+        $this->linkClass = null;
+        return $this->linkClass;
+    }
+
+    public function setLinkTitle() {
+        $this->linkTitle = null;
+        return $this->linkTitle;
+    }
+
+    public function setLinkTitleVideo() {
+        $this->linkTitle = null;
+        return $this->linkTitle;
+    }
     abstract public function setLinkIdForImg();
     abstract public function setLinkIdForCaption();
 
