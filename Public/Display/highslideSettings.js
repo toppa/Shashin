@@ -1,11 +1,11 @@
 // The "-0" and "!!" are for type casting, as all vars brought over
 // from wp_localize_script come in as strings
-hs.graphicsDir = highslideSettings.graphicsDir;
+hs.graphicsDir = shashinHighslideSettings.graphicsDir;
 hs.align = 'center';
 hs.transitions = ['expand', 'crossfade'];
-hs.outlineType = ((highslideSettings.outlineType == "none") ? null : highslideSettings.outlineType);
+hs.outlineType = ((shashinHighslideSettings.outlineType == "none") ? null : shashinHighslideSettings.outlineType);
 hs.fadeInOut = true;
-hs.dimmingOpacity = highslideSettings.dimmingOpacity-0;
+hs.dimmingOpacity = shashinHighslideSettings.dimmingOpacity-0;
 
 
 // need this to make sure we don't add controls for a slideshowGroup
@@ -19,14 +19,14 @@ function addHSSlideshow(groupID) {
 
         hs.addSlideshow({
             slideshowGroup: groupID,
-            interval: highslideSettings.interval-0,
-            repeat: !!(highslideSettings.repeat-0),
+            interval: shashinHighslideSettings.interval-0,
+            repeat: !!(shashinHighslideSettings.repeat-0),
             useControls: true,
             fixedControls: true,
             overlayOptions: {
                 opacity: .75,
-                position: highslideSettings.position,
-                hideOnMouseOut: !!(highslideSettings.hideController-0)
+                position: shashinHighslideSettings.position,
+                hideOnMouseOut: !!(shashinHighslideSettings.hideController-0)
             }
         });
     }

@@ -6,13 +6,11 @@ class Public_ShashinPhotoDisplayerPicasaOther extends Public_ShashinPhotoDisplay
     }
 
     public function setImgTitle() {
-        $this->imgTitle = null;
-
         if (in_array('images', $this->settings->otherTitle)) {
-            $this->imgTitle = $this->makeTextQuotable($this->dataObject->description);
+            return parent::setImgTitle();
         }
 
-        return $this->imgTitle;
+        return null;
     }
 
     public function setImgClass() {

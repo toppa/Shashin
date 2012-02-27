@@ -4,14 +4,11 @@ class Admin_ShashinInstall {
     private $dbFacade;
     private $album;
     private $photo;
-    private $albumTable;
-    private $albumRefData;
-    private $photoTable;
-    private $photoRefData;
+    private $functionsFacade;
     private $settings;
     private $settingsDefaults = array(
         'supportOldShortcodes' => 'n',
-        'imageDisplay' => 'highslide',
+        'imageDisplay' => 'fancybox',
         'expandedImageSize' => 'medium',
         'defaultPhotoLimit' => 18,
         'scheduledUpdate' => 'n',
@@ -48,17 +45,13 @@ class Admin_ShashinInstall {
         return $this->dbFacade;
     }
 
-    public function setAlbumAndAlbumVars(Lib_ShashinAlbum $album) {
+    public function setAlbum(Lib_ShashinAlbum $album) {
         $this->album = $album;
-        $this->albumTable = $this->album->getTableName();
-        $this->albumRefData = $this->album->getRefData();
         return $this->album;
     }
 
-    public function setPhotoAndPhotoVars(Lib_ShashinPhoto $photo) {
+    public function setPhoto(Lib_ShashinPhoto $photo) {
         $this->photo = $photo;
-        $this->photoTable = $this->photo->getTableName();
-        $this->photoRefData = $this->photo->getRefData();
         return $this->photo;
     }
 
@@ -67,38 +60,51 @@ class Admin_ShashinInstall {
         return $this->settings;
     }
 
+    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+        $this->functionsFacade = $functionsFacade;
+        return $this->functionsFacade;
+    }
+
     public function run() {
-        $this->createAlbumTable();
-        $this->verifyAlbumTable();
-        $this->createPhotoTable();
-        $this->verifyPhotoTable();
+        return $this->functionsFacade->callFunctionForNetworkSites(array($this, 'runForNetworkSites'));
+    }
+
+    public function runForNetworkSites() {
+        // this is called for each site in the network, so the table
+        // name prefix will be different for each call
+        $albumTable = $this->dbFacade->getTableNamePrefix() . $this->album->getBaseTableName();
+        $photoTable = $this->dbFacade->getTableNamePrefix() . $this->photo->getBaseTableName();
+        $this->createAlbumTable($albumTable);
+        $this->verifyAlbumTable($albumTable);
+        $this->createPhotoTable($photoTable);
+        $this->verifyPhotoTable($photoTable);
         $this->updateSettings();
         return true;
     }
 
-    public function createAlbumTable() {
-        return $this->dbFacade->createTable($this->albumTable, $this->albumRefData);
+    public function createAlbumTable($albumTable) {
+        return $this->dbFacade->createTable($albumTable, $this->album->getRefData());
     }
 
-    public function verifyAlbumTable() {
-        $result = $this->dbFacade->verifyTableExists($this->albumTable, $this->albumRefData);
+    public function verifyAlbumTable($albumTable) {
+        $result = $this->dbFacade->verifyTableExists($albumTable, $this->album->getRefData());
 
         if (!$result) {
-            throw new Exception(__('Failed to create table ', 'shashin') . $this->albumTable);
+            throw new Exception(__('Failed to create table ', 'shashin') . $albumTable);
         }
 
         return $result;
     }
 
-    public function createPhotoTable() {
-        return $this->dbFacade->createTable($this->photoTable, $this->photoRefData);
+    public function createPhotoTable($photoTable) {
+        return $this->dbFacade->createTable($photoTable, $this->photo->getRefData());
     }
 
-    public function verifyPhotoTable() {
-        $result = $this->dbFacade->verifyTableExists($this->photoTable, $this->photoRefData);
+    public function verifyPhotoTable($photoTable) {
+        $result = $this->dbFacade->verifyTableExists($photoTable, $this->photo->getRefData());
 
         if (!$result) {
-            throw new Exception(__('Failed to create table ', 'shashin') . $this->photoTable);
+            throw new Exception(__('Failed to create table ', 'shashin') . $photoTable);
         }
 
         return $result;

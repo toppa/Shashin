@@ -6,12 +6,12 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
     }
 
     public function setImgAlt() {
-        $this->imgAlt = $this->makeTextQuotable($this->dataObject->title);
+        $this->imgAlt = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->title);
         return $this->imgAlt;
     }
 
     public function setImgTitle() {
-        $this->imgTitle = $this->makeTextQuotable($this->dataObject->title);
+        $this->imgTitle = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->title);
         return $this->imgTitle;
     }
 
@@ -87,12 +87,12 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
     }
 
     // degenerate
-    public function formatExifDataForHighslideCaption() {
+    public function setExifDataForCaption() {
         return null;
     }
 
     // degenerate
-    public function formatDateForHighslideCaption($date = null) {
+    public function setDateForCaption($date = null) {
         return null;
     }
 }

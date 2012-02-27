@@ -45,14 +45,15 @@ class Admin_ShashinSettingsMenu {
                     'type' => 'select',
                     'subgroup' =>  array(
                         'source' => __('Display at photo hosting site', 'shashin'),
+                        'fancybox' => __('Use FancyBox', 'shashin'),
                         'highslide' => __('Use Highslide', 'shashin'),
                         'other' => __('Use another viewer', 'shashin')
                     )
                 ),
                 'validateFunction' => 'in_array',
-                'validValues' => array('source', 'highslide', 'other'),
+                'validValues' => array('source', 'fancybox', 'highslide', 'other'),
                 'label' => __('How to display a full-size photo when its thumbnail is clicked', 'shashin'),
-                'help' => __('Highslide is included with Shashin and works "out of the box." If you select "Use another viewer," you are responsible for implementing your own image viewer. See "Highslide Settings" and "Other Viewer Settings" below.', 'shashin'),
+                'help' => __('FancyBox is included with Shashin and works "out of the box." If you select "Use another viewer," you are responsible for implementing your own image viewer. See "Highslide Settings" and "Other Viewer Settings" below.', 'shashin'),
                 'group' => 'general'
             ),
             'expandedImageSize' => array(

@@ -3,6 +3,7 @@
 abstract class Lib_ShashinDataObject {
     protected $dbFacade;
     protected $tableName;
+    protected $baseTableName;
     protected $data = array();
     protected $refData;
     protected $videoFileTypes = array('mpg', 'mod', 'mmv', 'tod', 'wmv', 'asf', 'avi', 'divx', 'mov', 'm4v', '3gp', '3g2', 'mp4', 'm2t', 'm2ts', 'mts', 'mkv');
@@ -18,6 +19,10 @@ abstract class Lib_ShashinDataObject {
 
     public function getTableName() {
         return $this->tableName;
+    }
+
+    public function getBaseTableName() {
+        return $this->baseTableName;
     }
 
     public function __get($name) {

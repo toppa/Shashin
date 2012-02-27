@@ -204,12 +204,6 @@ abstract class Public_ShashinDataObjectDisplayer {
     abstract public function setImgAlt();
     abstract public function setImgTitle();
 
-    public function makeTextQuotable($text) {
-        // there may already be entities in the text, so we want to be very
-        // conservative with what we replace
-        return str_replace('"', '&quot;', $text);
-    }
-
     public function setImgClass() {
         $this->imgClass = 'shashinThumbnailImage';
         return $this->imgClass;
@@ -325,6 +319,6 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->imgWidth;
     }
 
-    abstract public function formatExifDataForHighslideCaption();
-    abstract public function formatDateForHighslideCaption($date = null);
+    abstract public function setExifDataForCaption();
+    abstract public function setDateForCaption($date = null);
 }

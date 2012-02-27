@@ -63,7 +63,7 @@ class ShashinWp {
         try {
             $adminContainer = new Admin_ShashinContainer($this->autoLoader);
 
-            if ($_REQUEST['shashinMenu'] == 'photos') {
+            if (array_key_exists('shashinMenu', $_REQUEST) && $_REQUEST['shashinMenu'] == 'photos') {
                 $menuActionHandler = $adminContainer->getMenuActionHandlerPhotos($_REQUEST['id']);
             }
 

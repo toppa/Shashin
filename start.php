@@ -8,10 +8,10 @@ Version: 3.0.9
 Author URI: http://www.toppa.com
 */
 
-
 $shashinAutoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
+add_action('wpmu_new_blog', 'shashinActivateForNewNetworkSite');
 register_activation_hook(__FILE__, 'shashinActivate');
-register_deactivation_hook(__FILE__, 'shashinDeactivate');
+register_deactivation_hook(__FILE__, 'shashinDeactivateForNetworkSites');
 load_plugin_textdomain('shashin', false, basename(dirname(__FILE__)) . '/Languages/');
 
 if (file_exists($shashinAutoLoaderPath)) {
@@ -20,6 +20,17 @@ if (file_exists($shashinAutoLoaderPath)) {
     $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
     $shashin = new ShashinWp($shashinAutoLoader);
     $shashin->run();
+}
+
+function shashinActivateForNewNetworkSite($blog_id) {
+    global $wpdb;
+
+    if (is_plugin_active_for_network(__FILE__)) {
+        $old_blog = $wpdb->blogid;
+        switch_to_blog($blog_id);
+        shashinActivate();
+        switch_to_blog($old_blog);
+    }
 }
 
 function shashinActivate() {
@@ -50,12 +61,17 @@ function shashinActivate() {
             shashinCancelActivation($status);
         }
     }
-
 }
 
 function shashinCancelActivation($message) {
     deactivate_plugins(basename(__FILE__));
     wp_die($message);
+}
+
+function shashinDeactivateForNetworkSites() {
+    $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
+    $functionsFacade = new ToppaFunctionsFacadeWp();
+    $functionsFacade->callFunctionForNetworkSites('shashinDeactivate');
 }
 
 function shashinDeactivate() {

@@ -13,12 +13,12 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
     }
 
     public function setImgAlt() {
-        $this->imgAlt = $this->makeTextQuotable($this->dataObject->description);
+        $this->imgAlt = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description);
         return $this->imgAlt;
     }
 
     public function setImgTitle() {
-        $this->imgTitle = $this->makeTextQuotable($this->dataObject->description);
+        $this->imgTitle = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description);
         return $this->imgTitle;
     }
 
@@ -56,32 +56,33 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
 
     // awkward to put this here, but I don't want to duplicate it in each Highslide
     // child class, and making it another class seems like overkill (can't wait for
-    // need traits!). In the child class, override setCaption, call it in the
-    // parent, and then call this
+    // traits!). In the child class, override setCaption, call parent::setCaption,
+    // and then call this
     public function setCaptionForHighslide() {
         $highslideCaption = '<div class="highslide-caption">';
-        $highslideCaption .= $this->formatOriginalPhotoLinkForHighslideCaption();
+        $highslideCaption .= $this->setOriginalPhotoLinkForCaption();
 
         if ($this->dataObject->description) {
             $highslideCaption .= $this->dataObject->description;
         }
 
-        $highslideCaption .= $this->formatExifDataForHighslideCaption();
+        $highslideCaption .= $this->setExifDataForCaption();
         $highslideCaption .= '</div>';
         return $highslideCaption;
     }
 
     // twitpic community guidelines require a link back to the original photo,
     // and it's nice to acknowledge the others too
-    public function formatOriginalPhotoLinkForHighslideCaption() {
-        return ' <div class="shashinHighslideLinkToOriginalPhoto">'
+    public function setOriginalPhotoLinkForCaption() {
+        return '<div class="shashinLinkToOriginalPhoto">'
             . '<a href="' . $this->dataObject->linkUrl . '">'
             . __('View at', 'shashin')
             . ' ' . ucfirst($this->dataObject->albumType)
-            . '</a></div>';
+            . '</a>'
+            . '</div>';
     }
 
-    public function formatExifDataForHighslideCaption() {
+    public function setExifDataForCaption() {
         $exifCaption = null;
         $exifParts = array();
         $photoData = $this->dataObject->getData();
@@ -89,14 +90,14 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
         switch ($this->settings->captionExif) {
             case'date':
                 if ($photoData['takenTimestamp'])
-                    $exifParts[] = $this->formatDateForHighslideCaption($photoData['takenTimestamp']);
+                    $exifParts[] = $this->setDateForCaption($photoData['takenTimestamp']);
                 break;
             case 'none':
                 break;
             case 'all':
             default:
                 if ($photoData['takenTimestamp'])
-                    $exifParts[] = $this->formatDateForHighslideCaption($photoData['takenTimestamp']);
+                    $exifParts[] = $this->setDateForCaption($photoData['takenTimestamp']);
                 if ($photoData['make'])
                     $exifParts[] = $photoData['make'] . " " . $photoData['model'];
                 if ($photoData['fstop'])
@@ -110,15 +111,15 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
         }
 
         if (!empty($exifParts)) {
-            $exifCaption = '<span class="shashinCaptionExif">';
-            $exifCaption .= implode(', ', $exifParts);
-            $exifCaption .= '</span>';
+            $exifCaption .= '<span class="shashinCaptionExif">'
+                . implode(', ', $exifParts)
+                . '</span>';
         }
 
         return $exifCaption;
     }
 
-    public function formatDateForHighslideCaption($date = null) {
+    public function setDateForCaption($date = null) {
         if (!$date) {
             return null;
         }
