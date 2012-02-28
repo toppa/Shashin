@@ -12,27 +12,15 @@ class Public_ShashinPhotoDisplayerPicasaHighslide extends Public_ShashinPhotoDis
     }
 
     public function setLinkOnClickVideo() {
-        // don't let the videos be larger than 80% of the largest desired photo size
-        $maxVideoWidth = $this->actualExpandedSize * .8;
-
-        if ($this->dataObject->videoWidth > $maxVideoWidth) {
-            $heightRatio = $maxVideoWidth / $this->dataObject->videoWidth;
-            $width = $maxVideoWidth;
-            $height = $this->dataObject->videoHeight * $heightRatio;
-        }
-
-        else {
-            $width = $this->dataObject->videoWidth;
-            $height = $this->dataObject->videoHeight;
-        }
+        $dimensions = $this->adjustVideoDimensions();
 
         // need minWidth because width was not autosizing for content
         // need "preserveContent: false" so the video and audio will stop when the window is closed
         $this->linkOnClick = "return hs.htmlExpand(this, { objectType:'swf', "
-                . 'minWidth: ' . ($width+20)
-                . ', minHeight: ' . ($height+20)
-                . ", objectWidth: $width"
-                . ", objectHeight: $height"
+                . 'minWidth: ' . ($dimensions['width'] + 20)
+                . ', minHeight: ' . ($dimensions['height'] +20)
+                . ", objectWidth: {$dimensions['width']}"
+                . ", objectHeight: {$dimensions['height']}"
                 . ", allowSizeReduction: false, preserveContent: false, ";
         $this->linkOnClick .= $this->appendLinkOnClick();
         return $this->linkOnClick;

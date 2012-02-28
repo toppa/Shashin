@@ -130,4 +130,24 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
 
         return $this->functionsFacade->dateI18n("d-M-Y H:i", $date);
     }
+
+    public function adjustVideoDimensions() {
+        $dimensions = array();
+        // don't let the videos be larger than 80% of the largest desired photo size
+        // (best guess based on typical video quality)
+        $maxVideoWidth = $this->actualExpandedSize * .8;
+
+        if ($this->dataObject->videoWidth > $maxVideoWidth) {
+            $heightRatio = $maxVideoWidth / $this->dataObject->videoWidth;
+            $dimensions['width'] = $maxVideoWidth;
+            $dimensions['height'] = $this->dataObject->videoHeight * $heightRatio;
+        }
+
+        else {
+            $dimensions['width'] = $this->dataObject->videoWidth;
+            $dimensions['height'] = $this->dataObject->videoHeight;
+        }
+
+        return $dimensions;
+    }
 }

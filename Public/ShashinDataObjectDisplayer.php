@@ -332,4 +332,5 @@ abstract class Public_ShashinDataObjectDisplayer {
 
     abstract public function setExifDataForCaption();
     abstract public function setDateForCaption($date = null);
+    abstract public function adjustVideoDimensions();
 }
