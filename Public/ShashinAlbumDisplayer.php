@@ -95,4 +95,9 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
     public function setDateForCaption($date = null) {
         return null;
     }
+
+    // degenerate
+    public function adjustVideoDimensions() {
+        return null;
+    }
 }

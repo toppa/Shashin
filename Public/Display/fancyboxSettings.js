@@ -17,11 +17,20 @@ jQuery(document).ready(function($) {
         'titleFormat': shashinFancyboxFormatTitle
     });
 
+
+    /* problem with videos in groups with Fancybox:
+     * you can mix videos with images in groups this way:
+     * http://groups.google.com/group/fancybox/browse_thread/thread/8c50659a082f9272
+     * you can dynamically set the dimensions of videos this way:
+     * http://groups.google.com/group/fancybox/browse_thread/thread/22843096d7870691
+     * but the two are not compatible
+     *
+     * Not setting the width and height at all will do. Fancybox sets a default size,
+     * which is smaller than ideal but acceptable
+     */
     $(".shashinFancyboxVideo").fancybox({
         'padding': 0,
         'autoScale': false,
-        'width': 640,
-        'height': 480,
         'href': this.href,
         'type': 'swf',
         'swf': {
@@ -29,8 +38,8 @@ jQuery(document).ready(function($) {
             'allowfullscreen': 'true'
         }
     });
-
 });
+
 
 
 
