@@ -106,7 +106,7 @@ class Public_ShashinLayoutManager {
     }
 
     public function initializeSessionGroupCounter() {
-        if (!$this->sessionManager->getGroupCounter() && $this->request['shashinParentTableId']) {
+        if (!$this->sessionManager->getGroupCounter() && isset($this->request['shashinParentTableId'])) {
             $this->sessionManager->setGroupCounter($this->request['shashinParentTableId']);
         }
 
@@ -224,7 +224,7 @@ class Public_ShashinLayoutManager {
     }
 
     public function addReturnLinkIfNeeded($navLinks) {
-        if ($this->request['shashinParentTableId']) {
+        if (isset($this->request['shashinParentTableId'])) {
             $navLinks[] = '<a href="#" class="shashinReturn" id="shashinReturn_'
                 . $this->request['shashinParentTableId']
                 . '_'
@@ -248,7 +248,7 @@ class Public_ShashinLayoutManager {
     public function addAlbumTitleIfNeeded() {
         $albumTitle = '';
 
-        if ($this->request['shashinParentAlbumTitle']) {
+        if (isset($this->request['shashinParentAlbumTitle'])) {
             $albumTitle =
                 '<strong>'
                 . htmlentities(stripslashes($this->request['shashinParentAlbumTitle']), ENT_COMPAT, 'UTF-8')
@@ -315,12 +315,13 @@ class Public_ShashinLayoutManager {
 
     public function getDataObjectDisplayerForThisCell($i) {
         $alternateThumbnail = $this->getAlternateThumbnailIfNeeded($i);
+        $albumId = isset($this->request['shashinAlbumId']) ? $this->request['shashinAlbumId'] : null;
         $this->currentDataObjectDisplayer = $this->container->getDataObjectDisplayer(
             $this->shortcode,
             $this->collection[$i],
             $alternateThumbnail,
             null,
-            $this->request['shashinAlbumId']
+            $albumId
         );
 
         return $this->currentDataObjectDisplayer;

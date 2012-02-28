@@ -22,7 +22,11 @@ class Public_ShashinSessionManager {
     }
 
     public function getThumbnailCounter() {
-        return $_SESSION['shashinThumbnailCounter'];
+        if (isset($_SESSION['shashinThumbnailCounter'])) {
+            return $_SESSION['shashinThumbnailCounter'];
+        }
+
+        return null;
     }
 
     public function setThumbnailCounter($value) {
