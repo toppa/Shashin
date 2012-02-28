@@ -6,7 +6,11 @@ class Public_ShashinSessionManager {
     }
 
     public function getGroupCounter() {
-        return $_SESSION['shashinGroupCounter'];
+        if (isset($_SESSION['shashinGroupCounter'])) {
+            return $_SESSION['shashinGroupCounter'];
+        }
+
+        return null;
     }
 
     public function setGroupCounter($value) {
