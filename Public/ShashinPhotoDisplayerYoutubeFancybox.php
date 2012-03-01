@@ -5,6 +5,11 @@ class Public_ShashinPhotoDisplayerYoutubeFancybox extends Public_ShashinPhotoDis
         parent::__construct();
     }
 
+    public function setLinkHrefVideo() {
+        $this->linkHref = str_replace('watch?v=', 'v/', $this->dataObject->videoUrl);
+        return $this->linkHref;
+    }
+
     public function setImgTitle() {
         $this->imgTitle = null;
         return $this->imgTitle;
