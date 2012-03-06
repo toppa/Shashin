@@ -12,23 +12,11 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 
 **Installation of [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/) is required. Please download and activate it before installing Shashin.**
 
-**What's new in Shashin 3**
+**What's new in Shashin 3.1**
 
-* Support for Youtube and Twitpic. You can now mix and match photos and videos from Picasa, Youtube, and Twitpic
-* New, easier to read shortcode format (the old format is still supported)
-* Fixed issues many were experiencing with album synchronizing
-* Cool jQuery based display of album photos and photo paging
-* Easier to use widget
-* Display photo and album thumbnails in any size
-* Includes Fancybox 1.3.4 for displaying photos
-
-**What's removed in Shashin 3**
-
-* Support for private Picasa albums. There are simply too many variations in web host PHP configurations and security settings for me to continue supporting this feature
-* The [salbumlist] tag is deprecated - it will now render as a regular album thumbnail display (I intend to include a proper list layout in a future version)
-* The "c" option for captions is deprecated (it is now treated as an "n")
-* The Shashin 2 PHP functions you could call directly have been removed, and replace with a new one
-* The previous widgets have been replaced with a new one
+* Fanycbox 1.3.4 for displaying photos (Highslide has been removed as its license is incompatiblw with wordpress.org's requirements)
+* Multi-site compatible
+* Improved error reporting when there are problems with album synchronizing
 
 **Overview**
 
