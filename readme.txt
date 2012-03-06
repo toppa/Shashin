@@ -99,7 +99,12 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 = 3.1 =
 * Removed Highslide due to licensing conflict (Highslide is not GPL and therefore is not allowed in the wordpress.org plugin repository). Replaced with Fanybox 1.3.4
 * Added support for WordPress multi-site installations
-
+* Improved error reporting when album synchronization fails
+* General cleanup of PHP warnings when running WordPress in debug mode
+* Improve handling of htmlentities in photo descriptions (as img alt text - never double convert)
+* Bug fix: correctly handle recursive arrays in settings data
+* Bug fix: correctly clear checkboxes as needed in saving data from settings menu
+* Bug fix: "other viewer" settings now set photo groups "rel" attribute correctly when clicking through from album thumbnails
 
 = 3.0.9 = Modified Shashin media menu to make it compatible with WordPress 3.3. There is no longer a separate Shashin media button. The Shashin menus are now tabs within WordPress 3.3's new, unified media button
 
