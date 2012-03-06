@@ -14,7 +14,7 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 
 **What's new in Shashin 3.1**
 
-* Fanycbox 1.3.4 for displaying photos (Highslide has been removed as its license is incompatiblw with wordpress.org's requirements)
+* Fanycbox 1.3.4 for displaying photos (Highslide has been removed as its license is incompatible with wordpress.org's requirements)
 * Multi-site compatible
 * Improved error reporting when there are problems with album synchronizing
 
