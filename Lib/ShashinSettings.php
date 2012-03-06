@@ -32,7 +32,6 @@ class Lib_ShashinSettings {
         if (is_array($oldSettings)) {
             $this->data = $oldSettings;
         }
-
         return $this->data;
     }
 
@@ -40,11 +39,11 @@ class Lib_ShashinSettings {
         $this->refresh();
 
         if ($preferExisting) {
-            $this->data = array_merge($newSettings, $this->data);
+            $this->data = ToppaFunctions::arrayMergeRecursiveForSettings($newSettings, $this->data);
         }
 
         else {
-            $this->data = array_merge($this->data, $newSettings);
+            $this->data = ToppaFunctions::arrayMergeRecursiveForSettings($this->data, $newSettings);
         }
 
         $this->functionsFacade->setSetting($this->name, $this->data);

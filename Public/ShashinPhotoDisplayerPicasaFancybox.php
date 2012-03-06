@@ -11,7 +11,13 @@ class Public_ShashinPhotoDisplayerPicasaFancybox extends Public_ShashinPhotoDisp
     }
 
     public function setLinkRel() {
-        $this->linkRel = 'shashinFancybox_' . $this->sessionManager->getGroupCounter();
+        $groupNumber = $this->sessionManager->getGroupCounter();
+
+        if ($this->albumIdForAjaxPhotoDisplay) {
+            $groupNumber .= '_' . $this->albumIdForAjaxPhotoDisplay;
+        }
+
+        $this->linkRel = 'shashinFancybox_' . $groupNumber;
         return $this->linkRel;
     }
 

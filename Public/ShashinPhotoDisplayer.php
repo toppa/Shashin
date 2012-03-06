@@ -45,30 +45,19 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
     }
 
     public function setLinkIdForImg() {
-        $this->linkIdForImg = 'shashinThumbnailLink_' . $this->sessionManager->getThumbnailCounter();
+        $linkId = $this->sessionManager->getThumbnailCounter();
+
+        if ($this->albumIdForAjaxPhotoDisplay) {
+            $linkId .= '_' . $this->albumIdForAjaxPhotoDisplay;
+        }
+
+        $this->linkIdForImg = 'shashinThumbnailLink_' . $linkId;
         return $this->linkIdForImg;
     }
 
     // degenerate
     public function setLinkIdForCaption() {
         return null;
-    }
-
-    // awkward to put this here, but I don't want to duplicate it in each Highslide
-    // child class, and making it another class seems like overkill (can't wait for
-    // traits!). In the child class, override setCaption, call parent::setCaption,
-    // and then call this
-    public function setCaptionForHighslide() {
-        $highslideCaption = '<div class="highslide-caption">';
-        $highslideCaption .= $this->setDivOriginalPhotoLinkForCaption();
-
-        if ($this->dataObject->description) {
-            $highslideCaption .= $this->dataObject->description;
-        }
-
-        $highslideCaption .= $this->setExifDataForCaption();
-        $highslideCaption .= '</div>';
-        return $highslideCaption;
     }
 
     // twitpic community guidelines require a link back to the original photo,

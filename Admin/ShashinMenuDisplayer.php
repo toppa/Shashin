@@ -119,6 +119,10 @@ abstract class Admin_ShashinMenuDisplayer {
     }
 
     public function setSortArrowAndOrderByUrl($column) {
+        if (!isset($this->request['shashinReverse'])) {
+            $this->request['shashinReverse'] = null;
+        }
+
         switch ($this->request['shashinReverse']) {
         case 'y':
             $reverse = 'n';

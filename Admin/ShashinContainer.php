@@ -20,14 +20,14 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         parent::__construct($autoLoader);
     }
 
-    public function getInstaller() {
+    public function getInstaller($version) {
         if (!$this->installer) {
             $this->getDatabaseFacade();
             $this->getClonableAlbum();
             $this->getClonablePhoto();
             $this->getSettings();
             $this->getFunctionsFacade();
-            $this->installer = new Admin_ShashinInstall();
+            $this->installer = new Admin_ShashinInstall($version);
             $this->installer->setDbFacade($this->dbFacade);
             $this->installer->setAlbum($this->clonableAlbum);
             $this->installer->setPhoto($this->clonablePhoto);

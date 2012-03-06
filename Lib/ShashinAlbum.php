@@ -17,7 +17,7 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
 
     public function get($id = null) {
         // check a field we would have only if we have a fully constructed album
-        if (!$this->data['sourceId']) {
+        if (!isset($this->data['sourceId'])) {
             return $this->refresh($id);
         }
 

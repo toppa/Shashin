@@ -5,8 +5,10 @@ class Admin_ShashinInstall {
     private $album;
     private $photo;
     private $functionsFacade;
+    private $version;
     private $settings;
     private $settingsDefaults = array(
+        'version' => null,
         'supportOldShortcodes' => 'n',
         'imageDisplay' => 'fancybox',
         'expandedImageSize' => 'medium',
@@ -21,15 +23,21 @@ class Admin_ShashinInstall {
         'albumPhotosOrder' => 'source',
         'albumPhotosOrderReverse' => 'n',
         'albumPhotosCaption' => 'n',
+        'fancyboxCyclic' => '0',
+        'fancyboxVideoWidth' => '560',
+        'fancyboxVideoHeight' => '340',
+        'fancyboxTransition' => 'fade',
         'otherRelImage' => null,
         'otherRelVideo' => null,
         'otherRelDelimiter' => null,
         'otherLinkClass' => null,
         'otherImageClass' => null,
         'otherTitle' => array(),
+        'externalViewers' => array()
     );
 
-    public function __construct() {
+    public function __construct($version) {
+        $this->version = $version;
     }
 
     public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
@@ -103,6 +111,15 @@ class Admin_ShashinInstall {
     }
 
     public function updateSettings() {
+        // if upgrading from 3,0, the version is not set
+        // need to change the viewer selection from highslide to fancybox
+        $allSettings = $this->settings->refresh();
+
+        if (!isset($allSettings['version']) && $this->settings->imageDisplay == 'highslide') {
+            $this->settings->set(array('imageDisplay' => 'fancybox'));
+        }
+
+        $this->settings->set(array('version' => $this->version));
         return $this->settings->set($this->settingsDefaults, true);
     }
 }

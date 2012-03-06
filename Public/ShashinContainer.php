@@ -40,6 +40,13 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $layoutManager->setDataObjectCollection($dataObjectCollection);
         $layoutManager->setRequest($request);
         $layoutManager->setSessionManager($this->sessionManager);
+
+        if (array_key_exists($this->settings->imageDisplay, $this->settings->externalViewers)) {
+            $className = 'Public_' . ucfirst($this->settings->imageDisplay) . 'SlideshowJs';
+            $slideshowJs = new $className;
+            $layoutManager->setSlideshowJs($slideshowJs);
+        }
+
         return $layoutManager;
     }
 
@@ -59,7 +66,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
       Lib_ShashinDataObject $dataObject,
       Lib_ShashinDataObject $alternativeThumbnail = null,
       $forceViewer = null,
-      $albumIdForAjaxHighslideDisplay = null) {
+      $albumIdForAjaxPhotoDisplay = null) {
 
         $this->getFunctionsFacade();
         $this->getSettings();
@@ -88,7 +95,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $dataObjectDisplayer->setDataObject($dataObject);
         $dataObjectDisplayer->setThumbnail($alternativeThumbnail);
         $dataObjectDisplayer->setSessionManager($this->sessionManager);
-        $dataObjectDisplayer->setAlbumIdForAjaxHighslideDisplay($albumIdForAjaxHighslideDisplay);
+        $dataObjectDisplayer->setAlbumIdForAjaxPhotoDisplay($albumIdForAjaxPhotoDisplay);
         return $dataObjectDisplayer;
     }
 

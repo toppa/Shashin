@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.0';
+    private $version = '3.1';
     private $autoLoader;
 
     public function __construct(ToppaAutoLoader $autoLoader) {
@@ -17,7 +17,7 @@ class ShashinWp {
             $adminContainer = new Admin_ShashinContainer($this->autoLoader);
             $upgrader = $adminContainer->getUpgrader();
             $upgrader->run();
-            $installer = $adminContainer->getInstaller();
+            $installer = $adminContainer->getInstaller($this->version);
             $status = $installer->run();
             return $status;
         }
@@ -90,7 +90,6 @@ class ShashinWp {
             echo $this->formatExceptionMessage($e);
         }
     }
-
 
     public function initSettingsMenu() {
         add_options_page(

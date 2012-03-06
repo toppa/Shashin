@@ -36,13 +36,21 @@ class Public_ShashinPhotoDisplayerPicasaOther extends Public_ShashinPhotoDisplay
     }
 
     private function generateLinkRelGroupMarker() {
+        $groupNumber = $this->sessionManager->getGroupCounter();
+
+        if ($this->albumIdForAjaxPhotoDisplay) {
+            $groupNumber .= '_' . $this->albumIdForAjaxPhotoDisplay;
+        }
+
         if ($this->settings->otherRelDelimiter == 'brackets') {
-            $this->linkRel .= '[' . $this->sessionManager->getGroupCounter() . ']';
+            $this->linkRel .= "[$groupNumber]";
         }
 
         else {
-            $this->linkRel .= '-' . $this->sessionManager->getGroupCounter();
+            $this->linkRel .= "-$groupNumber";
         }
+
+        return $this->linkRel;
     }
 
     public function setLinkTitle() {

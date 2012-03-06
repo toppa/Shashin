@@ -11,6 +11,7 @@ class Public_ShashinLayoutManager {
     private $shortcode;
     private $request;
     private $sessionManager;
+    private $slideshowJs;
     private $totalTables = 1;
     private $currentDataObjectDisplayer;
     private $numericColumns;
@@ -24,7 +25,7 @@ class Public_ShashinLayoutManager {
     private $openingTableTag;
     private $tableCaptionTag;
     private $tableBody;
-    private $highslideGroupCounter;
+    private $slideshowGroupCounter;
     private $combinedTags;
 
     public function __construct() {
@@ -65,6 +66,11 @@ class Public_ShashinLayoutManager {
         return $this->sessionManager;
     }
 
+    public function setSlideshowJs($slideshowJs) {
+        $this->slideshowJs = $slideshowJs;
+        return $this->slideshowJs;
+    }
+
     public function run() {
         $this->setThumbnailCollectionIfNeeded();
         $this->setCollection();
@@ -77,7 +83,7 @@ class Public_ShashinLayoutManager {
             $this->setOpeningTableTag();
             $this->setTableCaptionTag();
             $this->setTableBody();
-            $this->setHighslideGroupCounter();
+            $this->setSlideshowGroupCounter();
             $this->setCombinedTags();
             $this->incrementSessionGroupCounter();
         }
@@ -412,24 +418,20 @@ class Public_ShashinLayoutManager {
         return $this->startTableWithThisPhoto;
     }
 
-    public function setHighslideGroupCounter() {
-        $this->highslideGroupCounter = null;
+    public function setSlideshowGroupCounter() {
+        $this->slideshowGroupCounter = null;
 
-        if ($this->shortcode->type != 'album'
-          && $this->settings->imageDisplay == 'highslide') {
-
+        if ($this->shortcode->type != 'album' && isset($this->slideshowJs)) {
             $groupNumber = $this->sessionManager->getGroupCounter();
 
-            if ($this->request['shashinAlbumId']) {
+            if (isset($this->request['shashinAlbumId'])) {
                 $groupNumber .= '_' . $this->request['shashinAlbumId'];
             }
 
-            $this->highslideGroupCounter = '<script type="text/javascript">'
-                . "addHSSlideshow('group" . $groupNumber . "');</script>"
-                . PHP_EOL;
+            $this->slideshowGroupCounter = $this->slideshowJs->run($groupNumber);
         }
 
-        return $this->highslideGroupCounter;
+        return $this->slideshowGroupCounter;
     }
 
     public function setCombinedTags() {
@@ -439,7 +441,7 @@ class Public_ShashinLayoutManager {
                 . $this->tableBody
                 . '</table>'
                 . PHP_EOL
-                . $this->highslideGroupCounter;
+                . $this->slideshowGroupCounter;
         return $this->combinedTags;
     }
 

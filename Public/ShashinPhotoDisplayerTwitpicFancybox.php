@@ -11,7 +11,13 @@ class Public_ShashinPhotoDisplayerTwitpicFancybox extends Public_ShashinPhotoDis
     }
 
     public function setLinkRel() {
-        $this->linkRel = 'shashinFancybox_' . $this->sessionManager->getGroupCounter();
+        $groupNumber = $this->sessionManager->getGroupCounter();
+
+        if ($this->albumIdForAjaxPhotoDisplay) {
+            $groupNumber .= '_' . $this->albumIdForAjaxPhotoDisplay;
+        }
+
+        $this->linkRel = 'shashinFancybox_' . $groupNumber;
         return $this->linkRel;
     }
 
@@ -43,5 +49,18 @@ class Public_ShashinPhotoDisplayerTwitpicFancybox extends Public_ShashinPhotoDis
     public function setLinkClassVideo() {
         $this->linkClass = 'shashinFancyboxVideo';
         return $this->linkClass;
+    }
+
+    // Fancybox cannot resolve url redirects, so we have to find the final url ourselves
+    public function setLinkHref() {
+        parent::setLinkHref();
+
+        $this->linkHref = ToppaFunctions::followRedirect($this->linkHref);
+    }
+
+    public function setLinkHrefVideo() {
+        parent::setLinkHrefVideo();
+
+        $this->linkHref = ToppaFunctions::followRedirect($this->linkHref);
     }
 }

@@ -7,7 +7,7 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $dataObject;
     protected $thumbnail;
     protected $sessionManager;
-    protected $albumIdForAjaxHighslideDisplay;
+    protected $albumIdForAjaxPhotoDisplay;
     protected $actualThumbnailSize;
     protected $displayThumbnailSize;
     protected $actualExpandedSize;
@@ -72,9 +72,9 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->sessionManager;
     }
 
-    public function setAlbumIdForAjaxHighslideDisplay($albumIdForAjaxHighslideDisplay = null) {
-        $this->albumIdForAjaxHighslideDisplay = $albumIdForAjaxHighslideDisplay;
-        return $this->albumIdForAjaxHighslideDisplay;
+    public function setAlbumIdForAjaxPhotoDisplay($albumIdForAjaxPhotoDisplay = null) {
+        $this->albumIdForAjaxPhotoDisplay = $albumIdForAjaxPhotoDisplay;
+        return $this->albumIdForAjaxPhotoDisplay;
     }
 
     public function run() {

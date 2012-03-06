@@ -26,8 +26,12 @@ abstract class Lib_ShashinDataObject {
     }
 
     public function __get($name) {
-        if (array_key_exists($name, $this->getRefData())) {
+        if (isset($this->data[$name])) {
             return $this->data[$name];
+        }
+
+        elseif (array_key_exists($name, $this->getRefData())) {
+            return null;
         }
 
         throw New Exception(__("Invalid data property __get for ", "shashin") . htmlentities($name));

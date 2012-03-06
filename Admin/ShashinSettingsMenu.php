@@ -22,16 +22,17 @@ class Admin_ShashinSettingsMenu {
                 'label' => __('Album Photos Display', 'shashin'),
                 'description' => __('When clicking a Shashin album thumbnail to view its photos, these settings control how the album\'s photos are displayed.', 'shashin')
             ),
-            'highslide' => array(
-                'label' => __('Highslide Settings', 'shashin'),
-                'description' => __('Highslide is the photo viewer included with Shashin. These settings apply only if you select "Use Highslide" above.', 'shashin')
+            'fancybox' => array(
+                'label' => __('Fancybox Settings', 'shashin'),
+                'description' => __('Fancybox is the photo viewer included with Shashin. These settings apply only if you select "Use Fancybox" above.', 'shashin')
             ),
             'otherViewer' => array(
                 'label' => __('Other Viewer Settings', 'shashin'),
                 'description' => __('These settings apply only if you select "Use another viewer" above. There are a wide variety of configuration requirements for different viewers. Shashin accommodates them by letting you control the attributes for the link and image tags used for its thumbnails. All links and thumbnails automatically get unique IDs (e.g. "shashinThumbnailLink_24", "shashinThumbnailImage_24").', 'shashin')
             ),
         );
-        $this->refData =  array(
+        $this->refData = array(
+            // General Settings
             'supportOldShortcodes' => array(
                 'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
                 'validateFunction' => 'in_array',
@@ -46,14 +47,13 @@ class Admin_ShashinSettingsMenu {
                     'subgroup' =>  array(
                         'source' => __('Display at photo hosting site', 'shashin'),
                         'fancybox' => __('Use FancyBox', 'shashin'),
-                        'highslide' => __('Use Highslide', 'shashin'),
                         'other' => __('Use another viewer', 'shashin')
                     )
                 ),
                 'validateFunction' => 'in_array',
-                'validValues' => array('source', 'fancybox', 'highslide', 'other'),
+                'validValues' => array('source', 'fancybox', 'other'),
                 'label' => __('How to display a full-size photo when its thumbnail is clicked', 'shashin'),
-                'help' => __('FancyBox is included with Shashin and works "out of the box." If you select "Use another viewer," you are responsible for implementing your own image viewer. See "Highslide Settings" and "Other Viewer Settings" below.', 'shashin'),
+                'help' => __('FancyBox is included with Shashin and works "out of the box." If you select "Use another viewer," you are responsible for implementing your own image viewer. See "Other Viewer Settings" below.', 'shashin'),
                 'group' => 'general'
             ),
             'expandedImageSize' => array(
@@ -102,6 +102,16 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('The maximum width available in your theme for a Shashin photo (or set of photos). This number is used to determine photo sizes when you use "max" as the number of columns or the size in a Shashin tag. Shashin will use the closest, smaller size available.', 'shashin'),
                 'group' => 'general'
             ),
+            'captionExif' => array(
+                'input' => array('type' => 'radio', 'subgroup' => array('date' => 'Date Only', 'all' => 'All', 'none' => 'None')),
+                'validateFunction' => 'in_array',
+                'validValues' => array('date', 'all', 'none'),
+                'label' => __('Add camera EXIF data to expanded view caption?', 'shashin'),
+                'help' => __('"All" includes the camera make, model, fstop, focal length, exposure time, and ISO.', 'shashin'),
+                'group' => 'general'
+            ),
+
+            // Album Photos settings
             'albumPhotosSize' => array(
                 'input' => array(
                     'type' => 'select',
@@ -167,101 +177,47 @@ class Admin_ShashinSettingsMenu {
                 'help' => '',
                 'group' => 'albumPhotos'
             ),
-            'highslideAutoplay' => array(
-                'input' => array('type' => 'radio', 'subgroup' => array('true' => __('Yes', 'shashin'), 'false' => __('No', 'shashin'))),
-                'validateFunction' => 'in_array',
-                'validValues' => array('true', 'false'),
-                'label' => __('Autoplay slideshows?', 'shashin'),
-                'help' => __('After someone clicks a thumbnail in a slideshow group, this determines whether the slideshow plays automatically.', 'shashin'),
-                'group' => 'highslide'
-            ),
-            'highslideInterval' => array(
-                'input' => array('type' => 'text', 'size' => 6),
-                'validateFunction' => 'is_numeric',
-                'label' => __('Autoplay image display time', 'shashin'),
-                'help' => __('How long each photo is displayed in a autoplay slideshow (in milliseconds).', 'shashin'),
-                'group' => 'highslide'
-            ),
-            'highslideRepeat' => array(
+
+            // Fancybox settings
+            'fancyboxCyclic' => array(
                 'input' => array('type' => 'radio', 'subgroup' => array('1' => __('Yes', 'shashin'), '0' => __('No', 'shashin'))),
                 'validateFunction' => 'in_array',
                 'validValues' => array('1', '0'),
                 'label' => __('Repeat slideshows?', 'shashin'),
                 'help' => __('When viewing the final photo in slideshow, whether clicking "next" will start the slideshow over again with the first photo.', 'shashin'),
-                'group' => 'highslide'
+                'group' => 'fancybox'
             ),
-            'highslideOutlineType' => array(
+            'fancyboxVideoWidth' => array(
+                'input' => array('type' => 'text', 'size' => 3),
+                'validateFunction' => 'is_numeric',
+                'label' => __('Video Width', 'shashin'),
+                'help' => __('Unfortunately video dimensions cannot be set dynamically with Fancybox', 'shashin'),
+                'group' => 'fancybox'
+            ),
+            'fancyboxVideoHeight' => array(
+                'input' => array('type' => 'text', 'size' => 3),
+                'validateFunction' => 'is_numeric',
+                'label' => __('Video Height', 'shashin'),
+                'help' => '',
+                'group' => 'fancybox'
+            ),
+            'fancyboxTransition' => array(
                 'input' => array(
                     'type' => 'select',
                     'subgroup' =>  array(
-                        'beveled' => __('Beveled', 'shashin'),
-                        'glossy-dark' => __('Glossy Dark', 'shashin'),
-                        'rounded-black' => __('Rounded Black', 'shashin'),
-                        'drop-shadow' => __('Drop Shadow', 'shashin'),
-                        'outer-glow' => __('Outer Glow', 'shashin'),
-                        'rounded-white' => __('Rounded White', 'shashin'),
+                        'fade' => __('Fade', 'shashin'),
+                        'elastic' => __('Elastic', 'shashin'),
                         'none' => __('None', 'shashin')
                     )
                 ),
                 'validateFunction' => 'in_array',
-                'validValues' => array('beveled', 'glossy-dark', 'rounded-black', 'drop-shadow', 'outer-glow', 'rounded-white', 'none'),
-                'label' => __('Expanded view outline style', 'shashin'),
-                'help' => __('The graphic outline applied to expanded images.', 'shashin'),
-                'group' => 'highslide'
+                'validValues' => array('fade', 'elastic', 'none'),
+                'label' => __('Trasition effect', 'shashin'),
+                'help' => __('The transition effect to apply when navigating between photos', 'shashin'),
+                'group' => 'fancybox'
             ),
-            'highslideDimmingOpacity' => array(
-                'input' => array('type' => 'text', 'size' => 6),
-                'validateFunction' => 'is_numeric',
-                'label' => __('Background dimming opacity', 'shashin'),
-                'help' => __('Enter a number between 0 and 1. Indicates how much to dim the background when an image is expanded (enter 0 for no dimming). The default color is black (you can change it by editing .highslide-dimming in highslide.css.', 'shashin'),
-                'group' => 'highslide'
-            ),
-            'highslideHideController' => array(
-                'input' => array('type' => 'radio', 'subgroup' => array('1' => __('Yes', 'shashin'), '0' => __('No', 'shashin'))),
-                'validateFunction' => 'in_array',
-                'validValues' => array('1', '0'),
-                'label' => __('Hide slideshow controller on mouseout?', 'shashin'),
-                'help' => __('Whether the slideshow controller should be hidden when the mouse leaves the expanded image.', 'shashin'),
-                'group' => 'highslide'
-            ),
-            'highslideVPosition' => array(
-                'input' => array(
-                    'type' => 'select',
-                    'subgroup' =>  array(
-                        'top' => __('Top', 'shashin'),
-                        'middle' => __('Middle', 'shashin'),
-                        'bottom' => __('Bottom', 'shashin')
-                    )
-                ),
-                'validateFunction' => 'in_array',
-                'validValues' => array('top', 'middle', 'bottom'),
-                'label' => __('Slideshow controller vertical position', 'shashin'),
-                'help' => '',
-                'group' => 'highslide'
-            ),
-            'highslideHPosition' => array(
-                'input' => array(
-                    'type' => 'select',
-                    'subgroup' =>  array(
-                        'left' => __('Left', 'shashin'),
-                        'center' => __('Center', 'shashin'),
-                        'right' => __('Right', 'shashin')
-                    )
-                ),
-                'validateFunction' => 'in_array',
-                'validValues' => array('left', 'center', 'right'),
-                'label' => __('Slideshow controller horizontal position', 'shashin'),
-                'help' => '',
-                'group' => 'highslide'
-            ),
-            'captionExif' => array(
-                'input' => array('type' => 'radio', 'subgroup' => array('date' => 'Date Only', 'all' => 'All', 'none' => 'None')),
-                'validateFunction' => 'in_array',
-                'validValues' => array('date', 'all', 'none'),
-                'label' => __('Add camera EXIF data to expanded view caption?', 'shashin'),
-                'help' => __('"All" includes the camera make, model, fstop, focal length, exposure time, and ISO.', 'shashin'),
-                'group' => 'highslide'
-            ),
+
+            // Other viewer settings
             'otherRelImage' => array(
                 'input' => array('type' => 'text', 'size' => 15),
                 'validateFunction' => 'htmlentities',
@@ -326,13 +282,23 @@ class Admin_ShashinSettingsMenu {
     }
 
     public function run() {
-        if ($this->request['shashinAction'] == 'updateSettings') {
+        $this->addExternalViewers();
+        if (isset($this->request['shashinAction']) && $this->request['shashinAction'] == 'updateSettings') {
             $this->validateSettings();
             $this->updateSettingsAndSetSuccessMessageIfNeeded();
             $this->setErrorMessageIfNeeded();
         }
 
         return $this->displayMenu();
+    }
+
+    public function addExternalViewers() {
+        foreach ($this->settings->externalViewers as $key => $label) {
+            $this->refData['imageDisplay']['input']['subgroup'][$key] = __('Use') . ' ' . $label;
+            $this->refData['imageDisplay']['validValues'][] = $key;
+        }
+
+        return true;
     }
 
     public function displayMenu() {
@@ -392,7 +358,7 @@ class Admin_ShashinSettingsMenu {
 
             // a checkbox group with all unchecked will not appear at all in $this->request
             elseif ($v['input']['type'] == 'checkbox') {
-                $this->validSettings[$k] = array();
+                $this->validSettings[$k] = array_fill(0, count($v['input']['subgroup']), null);
             }
         }
 

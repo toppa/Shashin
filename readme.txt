@@ -1,10 +1,10 @@
 === Shashin ===
 Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
-Tags: Picasa, Highslide, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
+Tags: Picasa, Fancybox, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
-Tested up to: 3.3
-Stable tag: 3.0.9
+Tested up to: 3.3.1
+Stable tag: 3.1
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
 
@@ -20,7 +20,7 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 * Cool jQuery based display of album photos and photo paging
 * Easier to use widget
 * Display photo and album thumbnails in any size
-* Includes the latest version of Highslide for displaying photos
+* Includes Fancybox 1.3.4 for displaying photos
 
 **What's removed in Shashin 3**
 
@@ -36,14 +36,14 @@ Shashin has many features for displaying photos and videos from Picasa, Youtube,
 
 * Show a gallery of all your albums, photos, and videos, with multiple options for organizing them
 * Use a jQuery based WYSIWYG media browser for easily adding photos, videos, and albums to your posts
-* Show your photos and vidoes with your favorite image viewer. Highslide is included with Shashin, but you can use a different viewer of your choice
+* Show your photos and vidoes with your favorite image viewer. Fanycbox is included with Shashin, but you can use a different viewer of your choice
 * Pick individual photos or videos to display, in any size, including captions and EXIF data
 * Pick photos and videos from any combination of Picasa, Youtube, and Twitpic to display in groups of thumbnails
 * Show thumbnails of your newest photos and videos, from one or more albums
 * Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps
 * Display any number of random photos and videos. You can also choose to exclude certain photos or albums from random display
 * Use a widget to display Shashin photos in your sidebar
-* Customize the Shashin and Highslide stylesheets to suit the theme of your site.
+* Customize the Shashin stylesheet to suit the theme of your site.
 * Internationalization: Shashin supports translations into other languages (please contribute a translation if you're bilingual!)
 * Schedule daily automatic synchronization of Shashin with your feeds from Picasa, Twitpic, and Youtube.
 
@@ -61,7 +61,7 @@ Shashin has many features for displaying photos and videos from Picasa, Youtube,
 1. Then download and activate Shahsin just like any other plugin
 1. Go to the Shashin Tools Menu to add your Picasa, Youtube, or Twitpic feeds (expand the "Examples" section for more details)
 1. Go to the Shashin Settings Menu to review and update your preferences
-  * If you use an image viewer other than Highslide, you need to set it up and configure it yourself. The Shashin Settings Menu provides several options to support the use of other image viewers.
+  * If you use an image viewer other than Fancybox, you need to set it up and configure it yourself. The Shashin Settings Menu provides several options to support the use of other image viewers.
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want
 1. Edit a post or page and use the Shashin media browser to add photos and albums
 1. Note that Shashin will add two tables to your WordPress database, named wp\_shashin\_album and wp\_shashin\_photo. **It's important to include these tables when making backups of your WordPress tables.** The Shashin shortcodes rely on ID numbers from these tables that will be permanently lost if anything happens to these tables.
@@ -92,9 +92,14 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 1. Album thumbnails
 2. Photos in a post
 3. The Shashin media browser
-4. A Highslide slideshow
+4. A Fancybox slideshow
 
 == Changelog ==
+
+= 3.1 =
+* Removed Highslide due to licensing conflict (Highslide is not GPL and therefore is not allowed in the wordpress.org plugin repository). Replaced with Fanybox 1.3.4
+* Added support for WordPress multi-site installations
+
 
 = 3.0.9 = Modified Shashin media menu to make it compatible with WordPress 3.3. There is no longer a separate Shashin media button. The Shashin menus are now tabs within WordPress 3.3's new, unified media button
 
