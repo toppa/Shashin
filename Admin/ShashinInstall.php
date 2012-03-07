@@ -115,8 +115,16 @@ class Admin_ShashinInstall {
         // need to change the viewer selection from highslide to fancybox
         $allSettings = $this->settings->refresh();
 
-        if (!isset($allSettings['version']) && $this->settings->imageDisplay == 'highslide') {
-            $this->settings->set(array('imageDisplay' => 'fancybox'));
+        // for a new installation, imageDisplay is not set, so catch that exception
+        // and do nothing
+        try {
+            if (!isset($allSettings['version']) && $this->settings->imageDisplay == 'highslide') {
+                $this->settings->set(array('imageDisplay' => 'fancybox'));
+            }
+        }
+
+        catch (Exception $e) {
+
         }
 
         $this->settings->set(array('version' => $this->version));
