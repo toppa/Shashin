@@ -22,8 +22,6 @@ class Public_ShashinHeadTags {
 
     public function run() {
         $this->baseUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__);
-        $shashinCssUrl = $this->functionsFacade->getUrlforCustomizableFile('shashin.css', __FILE__, 'Display/');
-        $this->functionsFacade->enqueueStylesheet('shashinStyle', $shashinCssUrl, false, $this->version);
 
         if ($this->settings->imageDisplay == 'fancybox') {
             $fancyboxCssUrl = $this->functionsFacade->getUrlforCustomizableFile('jquery.fancybox.css', __FILE__, 'Display/fancybox/');
@@ -42,6 +40,10 @@ class Public_ShashinHeadTags {
             array('jquery'),
             $this->version
         );
+
+        // need to load this after the fancybox stylesheet since we are doing some overriding
+        $shashinCssUrl = $this->functionsFacade->getUrlforCustomizableFile('shashin.css', __FILE__, 'Display/');
+        $this->functionsFacade->enqueueStylesheet('shashinStyle', $shashinCssUrl, array('shashinFancyboxStyle'), $this->version);
 
         $adminAjax = $this->functionsFacade->getAdminUrl('admin-ajax.php');
         $shashinJsParams = array(

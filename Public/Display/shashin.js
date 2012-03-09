@@ -1,15 +1,5 @@
 jQuery(document).ready(function($) {
     if (shashinJs.imageDisplayer == 'fancybox') {
-        function shashinFancyboxFormatTitle(title, currentArray, currentIndex, currentOpts) {
-            return '<div class="shashinFancyboxCaptionTitle"><span class="shashinFancyboxCaptionClose">'
-                + '<a href="javascript:;" onclick="jQuery.fancybox.close();">'
-                + '<img src="' + shashinJs.fancyboxDir + 'closelabel.gif" />'
-                + '</a></span>'
-                + (title && title.length ? '<b>' + title + '</b>' : '' )
-                + 'Image ' + (currentIndex + 1) + ' of ' + currentArray.length
-                + '</div>';
-        }
-
         $("a.shashinFancybox").fancybox();
         $("a.shashinFancyboxVideo").fancybox();
 
@@ -18,10 +8,17 @@ jQuery(document).ready(function($) {
         $(".shashinFancybox").fancybox({
             'showCloseButton': false,
             'titlePosition': 'inside',
-            'titleFormat': shashinFancyboxFormatTitle,
             'cyclic': !!(shashinJs.fancyboxCyclic-0),
             'transitionIn': shashinJs.fancyboxTransition,
-            'transitionOut': shashinJs.fancyboxTransition
+            'transitionOut': shashinJs.fancyboxTransition,
+            'onStart':function(currentArray, currentIndex, currentOpts) {
+                var link = currentArray[ currentIndex ];
+                var linkId = $(link).attr('id');
+                var linkIdParts = linkId.split('_');
+                this.title = $('#shashinFancyboxCaption_' + linkIdParts[1]).html();
+                this.title = this.title.replace('</strong></div>', '');
+                this.title = this.title + '</strong>Image ' + (currentIndex + 1) + ' of ' + currentArray.length + '</div>';
+            }
         });
 
         /* The problem with videos in groups with Fancybox:

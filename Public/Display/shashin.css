@@ -66,17 +66,24 @@
 .shashinLinkToOriginalPhoto {
     float: right;
     padding-left: 5px;
+    padding-right: 5px;
 }
 
-.shashinFancyboxCaptionTitle {
+.shashinFancyboxCaptionWrapper {
+    display: none;
+}
+
+.shashinFancyboxCaption {
     text-align: left;
-}
-
-.shashinFancyboxCaptionTitle b {
-    display: block;
-    margin-right: 80px;
 }
 
 .shashinFancyboxCaptionClose {
     float: right;
+}
+
+#fancybox-left, #fancybox-right {
+    /* this prevents the navigation overlay from hiding video controls */
+    bottom: auto;
+    top: 0px;
+    height: 90%;
 }

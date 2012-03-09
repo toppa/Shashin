@@ -25,20 +25,13 @@ class Public_ShashinPhotoDisplayerTwitpicFancybox extends Public_ShashinPhotoDis
         return $this->setLinkRel();
     }
 
-    // htmlspecialchars lets us put links within the title (but we want single quotes,
-    // which are not converted to entities)
     public function setLinkTitle() {
-        $this->linkTitle = htmlspecialchars(str_replace('"', "'", $this->setDivOriginalPhotoLinkForCaption()))
-            . $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description)
-            . htmlspecialchars(str_replace('"', "'", $this->setExifDataForCaption()));
+        $this->linkTitle = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description);
         return $this->linkTitle;
     }
 
     public function setLinkTitleVideo() {
-        $this->linkTitle = $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description)
-            . ' - '
-            . htmlspecialchars(str_replace('"', "'", $this->setOriginalPhotoLinkForCaption()));
-        return $this->linkTitle;
+        return $this->setLinkTitle();
     }
 
     public function setLinkClass() {
@@ -49,6 +42,11 @@ class Public_ShashinPhotoDisplayerTwitpicFancybox extends Public_ShashinPhotoDis
     public function setLinkClassVideo() {
         $this->linkClass = 'shashinFancyboxVideo';
         return $this->linkClass;
+    }
+
+    public function setCaption() {
+        parent::setCaption();
+        return $this->setCaptionForFancybox();
     }
 
     // Fancybox cannot resolve url redirects, so we have to find the final url ourselves

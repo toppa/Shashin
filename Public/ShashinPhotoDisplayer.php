@@ -60,6 +60,35 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
         return null;
     }
 
+    //  putting this here to avoid repeating it in every fancybox subclass - need PHP 5.3 traits!
+    public function setCaptionForFancybox() {
+        $this->caption .= '<div class="shashinFancyboxCaptionWrapper" id="shashinFancyboxCaption_'
+            . $this->sessionManager->getThumbnailCounter()
+            . '">' . PHP_EOL;
+        $this->caption .= '<div class="shashinFancyboxCaption">' . PHP_EOL;
+        $this->caption .= '<div class="shashinFancyboxCaptionClose">'
+            . '<a href="javascript:;" onclick="jQuery.fancybox.close();">'
+            . '<img src="'
+            . $this->functionsFacade->getPluginsUrl('/Display/', __FILE__)
+            . 'fancybox/closelabel.gif" />'
+            . '</a>'
+            . '</div>' . PHP_EOL;
+
+        $this->caption .= $this->setDivOriginalPhotoLinkForCaption();
+
+        if ($this->dataObject->description) {
+            $this->caption .= '<strong>'
+                . $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description)
+                . $this->setExifDataForCaption()
+                . '</strong>';
+        }
+
+        // shashin.js will manipulate this closing div - it looks for </strong></div>
+        $this->caption .= '</div>' . PHP_EOL;
+        $this->caption .= '</div>' . PHP_EOL;
+        return $this->caption;
+    }
+
     // twitpic community guidelines require a link back to the original photo,
     // and it's nice to acknowledge the others too
     public function setOriginalPhotoLinkForCaption() {
@@ -72,7 +101,8 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
     public function setDivOriginalPhotoLinkForCaption() {
         return '<div class="shashinLinkToOriginalPhoto">'
             . $this->setOriginalPhotoLinkForCaption()
-            . '</div>';
+            . '</div>'
+            . PHP_EOL;
     }
 
     public function setExifDataForCaption() {
