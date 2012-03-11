@@ -53,7 +53,8 @@ class Public_ShashinHeadTags {
             'fancyboxCyclic' => $this->settings->fancyboxCyclic,
             'fancyboxVideoWidth' => $this->settings->fancyboxVideoWidth,
             'fancyboxVideoHeight' => $this->settings->fancyboxVideoHeight,
-            'fancyboxTransition' => $this->settings->fancyboxTransition
+            'fancyboxTransition' => $this->settings->fancyboxTransition,
+            'fancyboxInterval' => $this->settings->fancyboxInterval
         );
 
         $this->functionsFacade->localizeScript('shashinJs', 'shashinJs', $shashinJsParams);
