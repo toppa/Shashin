@@ -160,7 +160,7 @@ abstract class Admin_ShashinSynchronizer {
     public function deleteOldPhotos() {
         $sql = 'delete from ' . $this->clonablePhoto->getTableName()
             . ' where albumId = ' . $this->album->id
-            . ' and lastSync < ' . $this->syncTime;
+            . ' and lastSync < ' . ($this->syncTime - 30); // allow a buffer in case syncing is a bit slow
         return $this->dbFacade->executeQuery($sql);
     }
 
