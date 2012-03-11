@@ -216,6 +216,13 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('The transition effect to apply when navigating between photos', 'shashin'),
                 'group' => 'fancybox'
             ),
+            'fancyboxInterval' => array(
+                'input' => array('type' => 'text', 'size' => 5),
+                'validateFunction' => 'is_numeric_or_empty',
+                'label' => __('Autoplay image display time', 'shashin'),
+                'help' => __('Enter a duration in milliseconds (e.g. "5000" for 5 seconds) to have all your slideshows run on an automatic timer. Leave blank for manually navigated slideshows.', 'shashin'),
+                'group' => 'fancybox'
+            ),
 
             // Other viewer settings
             'otherRelImage' => array(
@@ -348,6 +355,9 @@ class Admin_ShashinSettingsMenu {
                     case 'is_numeric':
                         $this->validateSettingsForIsNumeric($k);
                     break;
+                    case 'is_numeric_or_empty':
+                        $this->validateSettingsForIsNumericOrEmpty($k);
+                        break;
                     case 'htmlentities':
                         $this->validateSettingsForHtmlEntities($k);
                     break;
@@ -379,6 +389,16 @@ class Admin_ShashinSettingsMenu {
 
     public function validateSettingsForIsNumeric($k) {
         if (is_numeric($this->request[$k])) {
+            $this->validSettings[$k] = $this->request[$k];
+        }
+
+        else {
+            $this->invalidSettings[$k] = $this->request[$k];
+        }
+    }
+
+    public function validateSettingsForIsNumericOrEmpty($k) {
+        if (is_numeric($this->request[$k]) || !$this->request[$k]) {
             $this->validSettings[$k] = $this->request[$k];
         }
 
