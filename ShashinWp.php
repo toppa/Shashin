@@ -316,7 +316,7 @@ class ShashinWp {
     public function formatExceptionMessage($e) {
         return '<p><strong>'
             . __('Shashin Error', 'shashin')
-            . ':<strong></p><pre>'
+            . ':</strong></p><pre>'
             . $e->getMessage()
             . '</pre>';
     }
