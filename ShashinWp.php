@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.1';
+    private $version = '3.1.3';
     private $autoLoader;
 
     public function __construct(ToppaAutoLoader $autoLoader) {
