@@ -27,6 +27,7 @@ class Admin_ShashinInstall {
         'fancyboxVideoWidth' => '560',
         'fancyboxVideoHeight' => '340',
         'fancyboxTransition' => 'fade',
+        'fancyboxInterval' => null,
         'otherRelImage' => null,
         'otherRelVideo' => null,
         'otherRelDelimiter' => null,
