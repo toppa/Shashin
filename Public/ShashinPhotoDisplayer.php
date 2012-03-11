@@ -45,16 +45,20 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
     }
 
     public function setLinkIdForImg() {
+        $linkId = $this->setLinkIdParts();
+        $this->linkIdForImg = 'shashinThumbnailLink_' . $linkId;
+        return $this->linkIdForImg;
+    }
+
+    private function setLinkIdParts() {
         $linkId = $this->sessionManager->getThumbnailCounter();
 
         if ($this->albumIdForAjaxPhotoDisplay) {
             $linkId .= '_' . $this->albumIdForAjaxPhotoDisplay;
         }
 
-        $this->linkIdForImg = 'shashinThumbnailLink_' . $linkId;
-        return $this->linkIdForImg;
+        return $linkId;
     }
-
     // degenerate
     public function setLinkIdForCaption() {
         return null;
@@ -62,8 +66,9 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
 
     //  putting this here to avoid repeating it in every fancybox subclass - need PHP 5.3 traits!
     public function setCaptionForFancybox() {
+        $linkId = $this->setLinkIdParts();
         $this->caption .= '<div class="shashinFancyboxCaptionWrapper" id="shashinFancyboxCaption_'
-            . $this->sessionManager->getThumbnailCounter()
+            . $linkId
             . '">' . PHP_EOL;
         $this->caption .= '<div class="shashinFancyboxCaption">' . PHP_EOL;
         $this->caption .= '<div class="shashinFancyboxCaptionClose">'
@@ -76,15 +81,24 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
 
         $this->caption .= $this->setDivOriginalPhotoLinkForCaption();
 
-        if ($this->dataObject->description) {
-            $this->caption .= '<strong>'
-                . $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description)
-                . $this->setExifDataForCaption()
-                . '</strong>';
+        $exifCaption = $this->setExifDataForCaption();
+
+        if ($this->dataObject->description || $exifCaption) {
+            $this->caption .= '<strong>';
+
+            if ($this->dataObject->description) {
+                $this->caption .= $this->functionsFacade->htmlSpecialCharsOnce($this->dataObject->description);
+            }
+
+            if ($exifCaption) {
+                $this->caption .= $exifCaption;
+            }
+
+            $this->caption .= '</strong>';
         }
 
-        // shashin.js will manipulate this closing div - it looks for </strong></div>
-        $this->caption .= '</div>' . PHP_EOL;
+        // leave this comment - shashin.js looks for it and will manipulate this closing div
+        $this->caption .= '<!-- comment for image counter --></div>' . PHP_EOL;
         $this->caption .= '</div>' . PHP_EOL;
         return $this->caption;
     }
