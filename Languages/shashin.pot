@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2012-03-06 12:42:13+00:00\n"
+"POT-Creation-Date: 2012-03-11 14:15:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,12 +12,40 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: Admin/Display/donate.php:5 Admin/Display/donate.php:6
+#: Admin/Display/donate.php:6
+msgid "Would you like to say anything to me?"
+msgstr ""
+
+#: Admin/Display/donate.php:11 Admin/Display/donate.php:27
 msgid "Support Shashin"
 msgstr ""
 
-#: Admin/Display/donate.php:7
-msgid "Shashin Help"
+#: Admin/Display/donate.php:14
+msgid "Tip your pizza delivery person?"
+msgstr ""
+
+#: Admin/Display/donate.php:15
+msgid "Tip your plugin developer too!"
+msgstr ""
+
+#: Admin/Display/donate.php:18
+msgid "$5.00"
+msgstr ""
+
+#: Admin/Display/donate.php:19
+msgid "$10.00"
+msgstr ""
+
+#: Admin/Display/donate.php:20
+msgid "$25.00"
+msgstr ""
+
+#: Admin/Display/donate.php:21
+msgid "$50.00"
+msgstr ""
+
+#: Admin/Display/donate.php:22
+msgid "or any amount!"
 msgstr ""
 
 #: Admin/Display/mediaAlbums.php:6
@@ -410,7 +438,7 @@ msgstr ""
 msgid "Photo ID"
 msgstr ""
 
-#: Admin/ShashinInstall.php:93 Admin/ShashinInstall.php:107
+#: Admin/ShashinInstall.php:94 Admin/ShashinInstall.php:108
 msgid "Failed to create table "
 msgstr ""
 
@@ -734,92 +762,103 @@ msgstr ""
 msgid "The transition effect to apply when navigating between photos"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:224
+#: Admin/ShashinSettingsMenu.php:222
+msgid "Autoplay image display time"
+msgstr ""
+
+#: Admin/ShashinSettingsMenu.php:223
+msgid ""
+"Enter a duration in milliseconds (e.g. \"5000\" for 5 seconds) to have all "
+"your slideshows run on an automatic timer. Leave blank for manually "
+"navigated slideshows."
+msgstr ""
+
+#: Admin/ShashinSettingsMenu.php:231
 msgid "Link \"rel\" for images"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:225
+#: Admin/ShashinSettingsMenu.php:232
 msgid ""
 "The \"rel\" attribute for image links; e.g. \"lightbox\" if you are using "
 "Lightbox."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:231
+#: Admin/ShashinSettingsMenu.php:238
 msgid "Link \"rel\" for videos"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:232
+#: Admin/ShashinSettingsMenu.php:239
 msgid ""
 "The \"rel\" attribute for links if displaying a video; e.g. \"vidbox\" if "
 "you are using Videobox."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:236
+#: Admin/ShashinSettingsMenu.php:243
 msgid "Brackets"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:236
+#: Admin/ShashinSettingsMenu.php:243
 msgid "Hyphen"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:239
+#: Admin/ShashinSettingsMenu.php:246
 msgid "\"rel\" delimiter for image groups"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:240
+#: Admin/ShashinSettingsMenu.php:247
 msgid ""
 "How to delimit image groups in a rel tag. Some viewers use brackets (e.g. "
 "\"lightbox[33]\") and some use hyphens (e.g. \"lightbox-33\")."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:246
+#: Admin/ShashinSettingsMenu.php:253
 msgid "Class for links"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:247
+#: Admin/ShashinSettingsMenu.php:254
 msgid ""
 "A CSS class to apply to the link tags for thumbnails. Leave blank for none."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:253
+#: Admin/ShashinSettingsMenu.php:260
 msgid "Class for thumbnails"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:254
+#: Admin/ShashinSettingsMenu.php:261
 msgid "A CSS class to apply to the thumbnail image tags. Leave blank for none."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:258
+#: Admin/ShashinSettingsMenu.php:265
 msgid "Links"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:258
+#: Admin/ShashinSettingsMenu.php:265
 msgid "Images"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:261
+#: Admin/ShashinSettingsMenu.php:268
 msgid "Use photo caption as \"title\" for"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:262
+#: Admin/ShashinSettingsMenu.php:269
 msgid ""
 "You can use the photo's caption as the \"title\" for for its link tag, its "
 "image tag, or both."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:297
+#: Admin/ShashinSettingsMenu.php:304
 msgid "Use"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:355
+#: Admin/ShashinSettingsMenu.php:365
 msgid "Unrecognized validation function"
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:396
+#: Admin/ShashinSettingsMenu.php:416
 msgid "The following settings have invalid values. Please try again."
 msgstr ""
 
-#: Admin/ShashinSettingsMenu.php:413
+#: Admin/ShashinSettingsMenu.php:433
 msgid "Settings saved"
 msgstr ""
 
@@ -1032,7 +1071,7 @@ msgstr ""
 msgid "Return"
 msgstr ""
 
-#: Public/ShashinPhotoDisplayer.php:67
+#: Public/ShashinPhotoDisplayer.php:110
 msgid "View at"
 msgstr ""
 
