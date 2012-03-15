@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.1.3';
+    private $version = '3.1.4';
     private $autoLoader;
 
     public function __construct(ToppaAutoLoader $autoLoader) {
@@ -28,6 +28,7 @@ class ShashinWp {
     }
 
     public function run() {
+        add_action('admin_init', array($this, 'runtimeUpgrade'));
         add_action('admin_menu', array($this, 'initToolsMenu'));
         add_action('admin_menu', array($this, 'initSettingsMenu'));
         add_action('template_redirect', array($this, 'displayPublicHeadTags'));
@@ -44,6 +45,32 @@ class ShashinWp {
         add_action('widgets_init', array($this, 'registerWidget'));
         add_action('admin_head', array($this, 'displayPluginPageUpgradeNag'));
         return true;
+    }
+
+    // we need to check if Shashin has been upgraded, since WP no longer calls
+    // the activation hook during an automatic plugin update
+    public function runtimeUpgrade() {
+        if (!current_user_can('activate_plugins')) {
+            return true;
+        }
+
+        try {
+            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $upgrader = $adminContainer->getUpgrader();
+            $upgrader->setTableProperties();
+
+            if ($upgrader->isUpgradeNeeded() == true) {
+                throw New Exception(__('You must deactivate and reactivate Shashin to upgrade from version 2', 'shashin'));
+            }
+
+            $installer = $adminContainer->getInstaller($this->version);
+            $status = $installer->runtimeUpgrade();
+            return $status;
+        }
+
+        catch (Exception $e) {
+            return $this->formatExceptionMessage($e);
+        }
     }
 
     public function initToolsMenu() {
