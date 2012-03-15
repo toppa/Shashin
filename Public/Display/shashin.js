@@ -3,6 +3,22 @@
 
 jQuery(document).ready(function($) {
     if (shashinJs.imageDisplayer == 'fancybox') {
+        // made this a separarte function as it is used below as well
+        function setShashinFancyBoxCaption(currentArray, currentIndex, currentOpts) {
+            var link = currentArray[ currentIndex ];
+            var linkId = $(link).attr('id');
+            var linkIdParts = linkId.split('_');
+            var captionId = '#shashinFancyboxCaption_' + linkIdParts[1]
+
+            if (linkIdParts[2]) {
+                captionId = captionId + '_' + linkIdParts[2];
+            }
+
+            this.title = $(captionId).html();
+            this.title = this.title.replace('<!-- comment for image counter --></div>', '');
+            this.title = this.title + 'Image ' + (currentIndex + 1) + ' of ' + currentArray.length + '</div>';
+        }
+
         $("a.shashinFancybox").fancybox();
         $("a.shashinFancyboxVideo").fancybox();
 
@@ -20,22 +36,6 @@ jQuery(document).ready(function($) {
             'transitionOut': shashinJs.fancyboxTransition,
             'onStart': setShashinFancyBoxCaption
         });
-
-        // made this a separarte function as it is used below as well
-        function setShashinFancyBoxCaption(currentArray, currentIndex, currentOpts) {
-            var link = currentArray[ currentIndex ];
-            var linkId = $(link).attr('id');
-            var linkIdParts = linkId.split('_');
-            var captionId = '#shashinFancyboxCaption_' + linkIdParts[1]
-
-            if (linkIdParts[2]) {
-                captionId = captionId + '_' + linkIdParts[2];
-            }
-
-            this.title = $(captionId).html();
-            this.title = this.title.replace('<!-- comment for image counter --></div>', '');
-            this.title = this.title + 'Image ' + (currentIndex + 1) + ' of ' + currentArray.length + '</div>';
-        }
 
         /* The problem with videos in groups with Fancybox:
          *
