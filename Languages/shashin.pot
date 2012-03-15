@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2012-03-11 14:15:18+00:00\n"
+"POT-Creation-Date: 2012-03-15 02:05:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -438,7 +438,7 @@ msgstr ""
 msgid "Photo ID"
 msgstr ""
 
-#: Admin/ShashinInstall.php:94 Admin/ShashinInstall.php:108
+#: Admin/ShashinInstall.php:107 Admin/ShashinInstall.php:121
 msgid "Failed to create table "
 msgstr ""
 
@@ -907,7 +907,7 @@ msgid ""
 "their Photo IDs."
 msgstr ""
 
-#: Admin/ShashinWidgetWp.php:25 ShashinWp.php:193
+#: Admin/ShashinWidgetWp.php:25 ShashinWp.php:220
 msgid "Shashin Photos"
 msgstr ""
 
@@ -1103,19 +1103,23 @@ msgstr ""
 msgid "\"size\" and \"columns\" can not both me \"max\""
 msgstr ""
 
-#: ShashinWp.php:152
+#: ShashinWp.php:63
+msgid "You must deactivate and reactivate Shashin to upgrade from version 2"
+msgstr ""
+
+#: ShashinWp.php:179
 msgid "Invalid shashin shortcode type: "
 msgstr ""
 
-#: ShashinWp.php:194
+#: ShashinWp.php:221
 msgid "Shashin Albums"
 msgstr ""
 
-#: ShashinWp.php:310
+#: ShashinWp.php:337
 msgid "Please go to the Shashin Tools Menu to complete the upgrade."
 msgstr ""
 
-#: ShashinWp.php:318
+#: ShashinWp.php:345
 msgid "Shashin Error"
 msgstr ""
 
