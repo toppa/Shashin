@@ -223,6 +223,14 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('Enter a duration in milliseconds (e.g. "5000" for 5 seconds) to have all your slideshows run on an automatic timer. Leave blank for manually navigated slideshows.', 'shashin'),
                 'group' => 'fancybox'
             ),
+            'fancyboxLoadScript' => array(
+                'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
+                'validateFunction' => 'in_array',
+                'validValues' => array('y', 'n'),
+                'label' => __('Load Shashin\'s Fancybox script?', 'shashin'),
+                'help' => __('If you already have Fancybox installed on your site, select "no" to prevent Shashin from loading its own copy of Fancybox. Note Shashin has been tested only with version 1.3.4 of Fancybox.', 'shashin'),
+                'group' => 'fancybox'
+            ),
 
             // Other viewer settings
             'otherRelImage' => array(

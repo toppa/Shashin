@@ -28,6 +28,7 @@ class Admin_ShashinInstall {
         'fancyboxVideoHeight' => '340',
         'fancyboxTransition' => 'fade',
         'fancyboxInterval' => null,
+        'fancyboxLoadScript' => 'y',
         'otherRelImage' => null,
         'otherRelVideo' => null,
         'otherRelDelimiter' => null,
@@ -70,10 +71,19 @@ class Admin_ShashinInstall {
         return $this->functionsFacade->callFunctionForNetworkSites(array($this, 'runForNetworkSites'));
     }
 
-    // need to run this even if the plugin is not deactivated and reactivated
-    // (which is the case during automatic upgrades)
-    // if a future upgrade includes table changes, probably just call run() from here
     public function runtimeUpgrade() {
+        // check if an activation error was logged
+        if (strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
+            $cantActivateReason = get_option('shashinCantActivateReason');
+
+            if ($cantActivateReason) {
+                echo '<div class="error"><p>';
+                echo $cantActivateReason;
+                echo '</p></div>' . PHP_EOL;
+            }
+        }
+
+        // update the version number if needed
         $allSettings = $this->settings->refresh();
 
         if (!isset($allSettings['version']) || version_compare($allSettings['version'], $this->version, '<')) {

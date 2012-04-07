@@ -23,7 +23,7 @@ class Public_ShashinHeadTags {
     public function run() {
         $this->baseUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__);
 
-        if ($this->settings->imageDisplay == 'fancybox') {
+        if ($this->settings->imageDisplay == 'fancybox' && $this->settings->fancyboxLoadScript != 'n') {
             $fancyboxCssUrl = $this->functionsFacade->getUrlforCustomizableFile('jquery.fancybox.css', __FILE__, 'Display/fancybox/');
             $this->functionsFacade->enqueueStylesheet('shashinFancyboxStyle', $fancyboxCssUrl, false, '1.3.4');
             $this->functionsFacade->enqueueScript(
