@@ -16,7 +16,7 @@
         }
     ?>
     <form method="post">
-        <?php settings_fields('shashin'); ?>
+        <?php $this->functionsFacade->createAdminHiddenInputFields('shashin'); ?>
         <input type="hidden" name="shashinAction" value="updateSettings" />
         <table class="form-table">
         <?php
