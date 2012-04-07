@@ -96,7 +96,7 @@ else {
 <?php $this->functionsFacade->createNonceFields('shashinNonceAdd', 'shashinNonceAdd'); ?>
 <input type="hidden" name="shashinAction" value="addAlbums" />
 
-<p><?php _e('Shashin can display photos from public <em>Picasa</em> albums, videos from <em>YouTube</em>, and <em>Twitpic</em> photos by importing their RSS feeds. Please enter an RSS URL below (click "examples" for further details).', 'shashin'); ?></p>
+<p><?php _e('Shashin can display photos and videos from public <em>Picasa (Google+)</em> albums, videos from <em>YouTube</em>, and photos from <em>Twitpic</em> by importing their RSS feeds. Please enter an RSS URL below (click "examples" for further details).', 'shashin'); ?></p>
 
 <h4><a href="#" id="shashinExamples" class="shashinAdminHeading"><img src="<?php echo $this->functionsFacade->getPluginsUrl('images/plus.gif', __FILE__); ?>" id="shashinExamplesButton" />Examples</a></h4>
 <dl id="shashinExamplesSection" class="shashinExamplesList">
@@ -104,6 +104,9 @@ else {
     <dd>Example: http://picasaweb.google.com/data/feed/base/user/<strong>michaeltoppa</strong>?alt=rss&amp;kind=album&amp;hl=en_US</dd>
 <dt><strong><?php _e("A single Picasa album", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link in the sidebar of the album's main page", 'shashin'); ?></dt>
     <dd>Example: http://picasaweb.google.com/data/feed/base/user/<strong>michaeltoppa</strong>/albumid/5269449390714706417?alt=rss&amp;kind=photo&amp;hl=en_US</dd>
+    <dt><strong><?php _e("Google+ albums", 'shashin'); ?>:</strong> <?php _e("Google+ actually uses Picasa in the background, but does not currently show an RSS link. If you enter your Google+ URL, Shashin will determine the RSS URL", 'shashin'); ?></dt>
+    <dd>Example - all of a users albums: https://plus.google.com/100291303544453276374/photos</dd>
+    <dd>Example - a single album: https://plus.google.com/photos/100291303544453276374/albums/5725071897625277617</dd>
 <dt><strong><?php _e("A YouTube user's videos", 'shashin'); ?>:</strong> <?php _e("Youtube does not display links for its feeds. You need to type in the RSS URL yourself", 'shashin'); ?></dt>
     <dd>Example: https://gdata.youtube.com/feeds/api/users/<strong>mttoppa</strong>/uploads</dd>
 <dt><strong><?php _e('Most popular YouTube videos', 'shashin'); ?>:</strong> <?php _e('Youtube has many standard feeds available (top rated, etc) - see the', 'shashin'); ?>

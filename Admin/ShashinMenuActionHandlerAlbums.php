@@ -77,7 +77,26 @@ class Admin_ShashinMenuActionHandlerAlbums {
 
         // Google Plus - an individual album
         if (strpos($this->request['userUrl'], 'plus.google.com/photos') !== false) {
+            $urlParts = explode('/', $this->request['userUrl']);
+            $userId = $urlParts[4];
+            $albumId = $urlParts[6];
+            $this->request['userUrl'] = 'http://picasaweb.google.com/data/feed/base/user/'
+                . $urlParts[4]
+                . '/albumid/'
+                . $urlParts[6]
+                . '?alt=rss&kind=photo&hl=en_US';
+        }
 
+        // Google Plus - all of a user's albums
+        elseif (strpos($this->request['userUrl'], 'plus.google.com') !== false) {
+            $urlParts = explode('/', $this->request['userUrl']);
+            $userId = $urlParts[4];
+            $albumId = $urlParts[6];
+            $this->request['userUrl'] = 'http://picasaweb.google.com/data/feed/base/user/'
+                . $urlParts[4]
+                . '/albumid/'
+                . $urlParts[6]
+                . '?alt=rss&kind=photo&hl=en_US';
         }
 
         // all of a Picasa user's albums
@@ -85,6 +104,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
             $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
             $albumCount = $synchronizer->addMultipleAlbumsFromRssUrl();
             return __('Added', 'shashin') . " $albumCount " . __('Picasa albums', 'shashin');
+
         }
 
         // a single Picasa album
