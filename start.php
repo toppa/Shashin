@@ -4,7 +4,7 @@ Plugin Name: Shashin
 Plugin URI: http://www.toppa.com/shashin-wordpress-plugin/
 Description: A plugin for integrating photos and videos from Picasa, YouTube, and Twitpic in WordPress.
 Author: Michael Toppa
-Version: 3.1.4
+Version: 3.2
 Author URI: http://www.toppa.com
 */
 
@@ -35,37 +35,50 @@ function shashinActivateForNewNetworkSite($blog_id) {
 
 function shashinActivate() {
     $autoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
+    $status = shashinActivationChecks($autoLoaderPath);
 
-    if (!file_exists($autoLoaderPath)) {
-        $message = __('To activate Shashin you need to first install', 'shashin')
+    if (is_string($status)) {
+        shashinCancelActivation($status);
+        return null;
+    }
+
+    require_once($autoLoaderPath);
+    $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
+    $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
+    $shashin = new ShashinWp($shashinAutoLoader);
+    $status = $shashin->install();
+
+    if (is_string($status)) {
+        shashinCancelActivation($status);
+        return null;
+    }
+
+    delete_option('shashinCantActivateReason');
+    return null;
+}
+
+function shashinActivationChecks($autoLoaderPath) {
+    $toppaLibsVersion = get_option('toppaLibsVersion');
+
+    if (!file_exists($autoLoaderPath) || !$toppaLibsVersion || version_compare($toppaLibsVersion, '1.3.2', '<')) {
+        return __('To activate Shashin you need to have the current version of', 'shashin')
             . ' <a href="http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/">Toppa Plugins Libraries for WordPress</a>';
-        shashinCancelActivation($message);
     }
 
-    elseif (!function_exists('spl_autoload_register')) {
-        shashinCancelActivation(__('You must have at least PHP 5.1.2 to use Shashin', 'shashin'));
+    if (!function_exists('spl_autoload_register')) {
+        return __('Shashin not activated. You must have at least PHP 5.1.2 to use Shashin', 'shashin');
     }
 
-    elseif (version_compare(get_bloginfo('version'), '3.0', '<')) {
-        shashinCancelActivation(__('You must have at least WordPress 3.0 to use Shashin', 'shashin'));
+    if (version_compare(get_bloginfo('version'), '3.0', '<')) {
+        return __('Shashin not activated. You must have at least WordPress 3.0 to use Shashin', 'shashin');
     }
 
-    else {
-        require_once($autoLoaderPath);
-        $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-        $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
-        $shashin = new ShashinWp($shashinAutoLoader);
-        $status = $shashin->install();
-
-        if (is_string($status)) {
-            shashinCancelActivation($status);
-        }
-    }
+    return true;
 }
 
 function shashinCancelActivation($message) {
     deactivate_plugins(basename(__FILE__));
-    wp_die($message);
+    update_option('shashinCantActivateReason', $message);
 }
 
 function shashinDeactivateForNetworkSites() {
