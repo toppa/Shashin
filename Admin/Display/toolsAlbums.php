@@ -118,8 +118,8 @@ else {
     <dd>Example: http://api.flickr.com/services/feeds/photos_public.gne?id=65384822@N00&amp;lang=en-us&amp;format=rss_200</dd>
  -->
 </dl>
-<p><strong><?php _e("RSS URL:", 'shashin'); ?></strong>
-<?php echo ToppaHtmlFormField::quickBuild('rssUrl', $refData['dataUrl']); ?><br />
+<p><strong><?php _e("URL:", 'shashin'); ?></strong>
+<?php echo ToppaHtmlFormField::quickBuild('userUrl', $refData['dataUrl']); ?><br />
 <?php _e("Include album's photos in random photo displays?", 'shashin'); ?>
 <?php echo ToppaHtmlFormField::quickBuild('includeInRandom', $refData['includeInRandom'], "Y"); ?></p>
 

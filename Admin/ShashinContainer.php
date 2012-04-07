@@ -159,7 +159,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
 
     private function setupSynchronizer($synchronizer, $type, $request = null) {
         if ($request) {
-            $synchronizer->setRssUrl($request['rssUrl']);
+            $synchronizer->setRssUrl($request['userUrl']);
             $synchronizer->setIncludeInRandom($request['includeInRandom']);
         }
 

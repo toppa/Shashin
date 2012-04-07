@@ -43,7 +43,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
         switch ($this->request['shashinAction']) {
             case 'addAlbums':
                 $this->functionsFacade->checkAdminNonceFields('shashinNonceAdd', 'shashinNonceAdd');
-                $message = $this->runSynchronizerBasedOnRssUrl();
+                $message = $this->runSynchronizerBasedOnUrl();
                 break;
             case 'syncAlbum':
                 $this->functionsFacade->checkAdminNonceFields('shashinNonceSync_' . $this->request['id']);
@@ -70,30 +70,39 @@ class Admin_ShashinMenuActionHandlerAlbums {
         return $this->menuDisplayer->run($message);
     }
 
-    public function runSynchronizerBasedOnRssUrl() {
+    // user albums: https://plus.google.com/100291303544453276374/photos
+    // an album's photos: https://plus.google.com/photos/100291303544453276374/albums/5725071897625277617
+    public function runSynchronizerBasedOnUrl() {
+        // if a non-RSS url, convert to the appropriate RSS url
+
+        // Google Plus - an individual album
+        if (strpos($this->request['userUrl'], 'plus.google.com/photos') !== false) {
+
+        }
+
         // all of a Picasa user's albums
-        if (strpos($this->request['rssUrl'], 'kind=album') !== false) {
+        if (strpos($this->request['userUrl'], 'kind=album') !== false) {
             $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
             $albumCount = $synchronizer->addMultipleAlbumsFromRssUrl();
             return __('Added', 'shashin') . " $albumCount " . __('Picasa albums', 'shashin');
         }
 
         // a single Picasa album
-        elseif (strpos($this->request['rssUrl'], 'kind=photo') !== false) {
+        elseif (strpos($this->request['userUrl'], 'kind=photo') !== false) {
             $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
             $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
             return __('Added Picasa album', 'shashin') . ' "' . $syncedAlbum->title . '"';
         }
 
         // a YouTube feed
-        elseif (strpos($this->request['rssUrl'], 'gdata.youtube.com') !== false) {
+        elseif (strpos($this->request['userUrl'], 'gdata.youtube.com') !== false) {
             $synchronizer = $this->adminContainer->getSynchronizerYoutube($this->request);
             $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
             return __('Added YouTube videos', 'shashin') . ' "' . $syncedAlbum->title . '"';
         }
 
         // a Twitpic feed
-        elseif (strpos($this->request['rssUrl'], 'twitpic.com/photos') !== false) {
+        elseif (strpos($this->request['userUrl'], 'twitpic.com/photos') !== false) {
             $synchronizer = $this->adminContainer->getSynchronizerTwitpic($this->request);
             $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
             return __('Added Twitpic photos', 'shashin') . ' "' . $syncedAlbum->title . '"';
