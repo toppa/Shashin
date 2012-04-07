@@ -6,6 +6,7 @@ Description: A plugin for integrating photos and videos from Picasa, YouTube, an
 Author: Michael Toppa
 Version: 3.2
 Author URI: http://www.toppa.com
+License: GPLv2 or later
 */
 
 $shashinAutoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
