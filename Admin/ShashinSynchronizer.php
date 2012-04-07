@@ -75,9 +75,9 @@ abstract class Admin_ShashinSynchronizer {
     }
 
     public function syncAlbum() {
-        $this->syncTime = time();
-        $response = $this->httpRequester->request($this->jsonUrl);
+        $response = $this->httpRequester->request($this->jsonUrl, array('timeout' => 30));
         $decodedAlbumData = $this->checkResponseAndDecodeAlbumData($response);
+        $this->syncTime = time();
         return $this->syncAlbumForThisAlbumType($decodedAlbumData);
     }
 
