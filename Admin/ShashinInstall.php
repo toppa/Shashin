@@ -140,9 +140,11 @@ class Admin_ShashinInstall {
         $allSettings = $this->settings->refresh();
 
         // for a new installation, imageDisplay is not set, so catch that exception
-        // and do nothing
+        // and do nothing (fancybox is already the default)
+        // checking for 'version' lets us know if this version of Shashin pre-dates
+        // the availability of the Highslide for Shashin plugin
         try {
-            if (!isset($allSettings['version']) && $this->settings->imageDisplay == 'highslide') {
+            if (!array_key_exists('version', $allSettings) && $this->settings->imageDisplay == 'highslide') {
                 $this->settings->set(array('imageDisplay' => 'fancybox'));
             }
         }
