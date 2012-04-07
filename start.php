@@ -35,15 +35,14 @@ function shashinActivateForNewNetworkSite($blog_id) {
 }
 
 function shashinActivate() {
-    $autoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
-    $status = shashinActivationChecks($autoLoaderPath);
+    $status = shashinActivationChecks();
 
     if (is_string($status)) {
         shashinCancelActivation($status);
         return null;
     }
 
-    require_once($autoLoaderPath);
+    require_once dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
     $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
     $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
     $shashin = new ShashinWp($shashinAutoLoader);
@@ -54,11 +53,12 @@ function shashinActivate() {
         return null;
     }
 
-    delete_option('shashinCantActivateReason');
+    //delete_option('shashinCantActivateReason');
     return null;
 }
 
-function shashinActivationChecks($autoLoaderPath) {
+function shashinActivationChecks() {
+    $autoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
     $toppaLibsVersion = get_option('toppaLibsVersion');
 
     if (!file_exists($autoLoaderPath) || !$toppaLibsVersion || version_compare($toppaLibsVersion, '1.3.2', '<')) {
@@ -79,7 +79,8 @@ function shashinActivationChecks($autoLoaderPath) {
 
 function shashinCancelActivation($message) {
     deactivate_plugins(basename(__FILE__));
-    update_option('shashinCantActivateReason', $message);
+    //update_option('shashinCantActivateReason', $message);
+    wp_die($message);
 }
 
 function shashinDeactivateForNetworkSites() {

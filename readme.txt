@@ -85,6 +85,9 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 
 == Changelog ==
 
+= 3.2 =
+* Add albums using Google+ URL and other non-RSS URLs
+
 = 3.1.4 =
 * Update settings even if plugin is not deactivated/reactivated, as WP no longer runs activation hooks during plugin auto-upgrades
 * Bug fix: Fancybox slideshow was not launching in Firefox (just needed to move the setShashinFancyboxCaption function)
