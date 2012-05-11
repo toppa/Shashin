@@ -3,8 +3,8 @@ Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
-Tested up to: 3.3.1
-Stable tag: 3.2
+Tested up to: 3.3.2
+Stable tag: 3.1.5
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
@@ -13,11 +13,11 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 
 **Installation of [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/) is required. Please download and activate it before installing Shashin.**
 
-**What's new in Shashin 3.1**
+**What's new in Shashin 3.1.5**
 
-* Fanycbox 1.3.4 for displaying photos (Highslide has been removed as its license is incompatible with wordpress.org's requirements)
-* Multi-site compatible
-* Improved error reporting when there are problems with album synchronizing
+* Improved installation and activation process (manual re-activation is no longer needed)
+* Ability to disable Shashin's Fancybox if you already have your own Fancybox installed
+* Improvements to album synchronizing, for handling slow connections and servers with misconfigured SSL settings (which is surprisingly common)
 
 **Overview**
 
@@ -58,7 +58,7 @@ Shashin has many features for displaying photos and videos from Picasa, Youtube,
 **Upgrading from Shashin 2**
 
 1. Download and activate [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/), which contains required libraries.
-1. For Shashin, do the standard download, de-activation, and re-activation steps for upgrading a plugin.
+1. For Shashin, download the current version, and then deactivate and reactivate from the main plugin menu.
 1. Go to the Shashin Tools Menu and click "sync all" to complete the upgrade
 1. Go to the Shashin Settings Menu and select the option to support the old shortcode format (or you can revise your shortcodes to the new format)
 1. Carefully review pages and posts that contain Shashin tags to make sure everything looks correct
@@ -85,8 +85,12 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 
 == Changelog ==
 
-= 3.2 =
-* Add albums using Google+ URL and other non-RSS URLs
+= 3.1.5 =
+* Improve handling of dependencies on Toppa Plugin Libraries, so there are no PHP error messages if you have an old or missing version of the libraries
+* Perform settings and other updates without relying on plugin re-activation
+* Option to not load Shashin's copy of Fancybox if you already have your own
+* Add a 30 second timeout when synchronizing albums
+* Turn off SSL verification when synchronizing albums (gets around misconfigured sites, and we trust Google anyway...)
 
 = 3.1.4 =
 * Update settings even if plugin is not deactivated/reactivated, as WP no longer runs activation hooks during plugin auto-upgrades

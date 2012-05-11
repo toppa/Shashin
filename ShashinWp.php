@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.2';
+    private $version = '3.1.5';
     private $autoLoader;
 
     public function __construct(ToppaAutoLoader $autoLoader) {
@@ -48,10 +48,6 @@ class ShashinWp {
     }
 
     public function runtimeUpgrade() {
-        if (!current_user_can('activate_plugins')) {
-            return true;
-        }
-
         try {
             $adminContainer = new Admin_ShashinContainer($this->autoLoader);
             $upgrader = $adminContainer->getUpgrader();

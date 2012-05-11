@@ -72,22 +72,11 @@ class Admin_ShashinInstall {
     }
 
     public function runtimeUpgrade() {
-        if (strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
-            $status = shashinActivationChecks();
+        $status = shashinActivationChecks();
 
-            if (is_string($status)) {
-                shashinCancelActivation($status);
-                return null;
-            }
-
-            //$cantActivateReason = get_option('shashinCantActivateReason');
-
-            //if ($cantActivateReason) {
-                //echo '<div class="error"><p>';
-                //echo $cantActivateReason;
-                //echo '</p></div>' . PHP_EOL;
-            //    wp_die($cantActivateReason);
-            //}
+        if (is_string($status)) {
+            shashinCancelActivation($status);
+            return null;
         }
 
         // update the version number if needed

@@ -4,11 +4,10 @@ Plugin Name: Shashin
 Plugin URI: http://www.toppa.com/shashin-wordpress-plugin/
 Description: A plugin for integrating photos and videos from Picasa, YouTube, and Twitpic in WordPress.
 Author: Michael Toppa
-Version: 3.2
+Version: 3.1.5
 Author URI: http://www.toppa.com
 License: GPLv2 or later
 */
-
 $shashinAutoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
 add_action('wpmu_new_blog', 'shashinActivateForNewNetworkSite');
 register_activation_hook(__FILE__, 'shashinActivate');
@@ -53,7 +52,6 @@ function shashinActivate() {
         return null;
     }
 
-    //delete_option('shashinCantActivateReason');
     return null;
 }
 
@@ -61,9 +59,10 @@ function shashinActivationChecks() {
     $autoLoaderPath = dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
     $toppaLibsVersion = get_option('toppaLibsVersion');
 
-    if (!file_exists($autoLoaderPath) || !$toppaLibsVersion || version_compare($toppaLibsVersion, '1.3.2', '<')) {
+    if (!file_exists($autoLoaderPath) || !$toppaLibsVersion || version_compare($toppaLibsVersion, '1.3.3', '<')) {
         return __('To activate Shashin you need to have the current version of', 'shashin')
-            . ' <a href="http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/">Toppa Plugins Libraries for WordPress</a>';
+            . ' <a href="plugin-install.php?tab=plugin-information&plugin=toppa-plugin-libraries-for-wordpress">Toppa Plugins Libraries for WordPress</a>. '
+            . __('Click this link to view details, and then click the "Install Now" button to get the current version. Then you can activate Shashin.', 'shashin');
     }
 
     if (!function_exists('spl_autoload_register')) {
@@ -78,8 +77,9 @@ function shashinActivationChecks() {
 }
 
 function shashinCancelActivation($message) {
-    deactivate_plugins(basename(__FILE__));
-    //update_option('shashinCantActivateReason', $message);
+    // deactivate without calling the deactivatation hook, as it relies
+    // on toppa-libs, which may not be available or may be an old version
+    deactivate_plugins('shashin/start.php', true);
     wp_die($message);
 }
 

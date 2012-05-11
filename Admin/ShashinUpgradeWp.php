@@ -76,6 +76,25 @@ class Admin_ShashinUpgradeWp {
         return false;
     }
 
+    public function checkTableNeedsUpgrade($tableName, $fieldToCheck) {
+        if ($this->dbFacade->executeQuery("show tables like '$tableName'", 'get_var')) {
+            $tableDescription = $this->dbFacade->executeQuery("describe $tableName", 'get_results');
+        }
+
+        else {
+            return false;
+        }
+
+        foreach ($tableDescription as $row) {
+            if ($row['Field'] == $fieldToCheck) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function setPicasaServer() {
         $oldSettings = $this->functionsFacade->getSetting('shashin_options');
 
@@ -176,25 +195,6 @@ class Admin_ShashinUpgradeWp {
         $this->dbFacade->executeQuery("alter table {$this->albumTable} drop column album_id");
         $this->dbFacade->executeQuery("update {$this->albumTable} set albumType = 'picasa' where albumType is null");
         return true;
-    }
-
-    public function checkTableNeedsUpgrade($tableName, $fieldToCheck) {
-        if ($this->dbFacade->executeQuery("show tables like '$tableName'", 'get_var')) {
-            $tableDescription = $this->dbFacade->executeQuery("describe $tableName", 'get_results');
-        }
-
-        else {
-            return false;
-        }
-
-        foreach ($tableDescription as $row) {
-            if ($row['Field'] == $fieldToCheck) {
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function cleanup() {
