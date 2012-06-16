@@ -47,7 +47,7 @@ class Admin_ShashinMenuActionHandlerPhotos {
     public function runUpdateIncludeInRandom() {
         //the order is important, as the default is 'user', which won't work in this context
         $shortcodeMimic = array('id' => $this->request['id'], 'type' => 'albumphotos', 'order' => 'source');
-        $photos = $this->menuDisplayer->getDataObjects($shortcodeMimic);
+        $photos = Admin_ShashinContainer::getDataObjectCollection($shortcodeMimic);
 
         foreach ($photos as $photo) {
             $photoData = array('includeInRandom'=> $this->request['includeInRandom'][$photo->id]);

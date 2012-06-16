@@ -42,7 +42,8 @@ class Admin_ShashinMenuActionHandlerAlbums {
 
         switch ($this->request['shashinAction']) {
             case 'addAlbums':
-                $this->functionsFacade->checkAdminNonceFields('shashinNonceAdd', 'shashinNonceAdd');
+                $nonceToCheck = 'shashinNonceAdd' . ucfirst($this->request['shashinAlbumType']);
+                $this->functionsFacade->checkAdminNonceFields($nonceToCheck, $nonceToCheck);
                 $message = $this->runSynchronizerBasedOnUrl();
                 break;
             case 'syncAlbum':
@@ -70,67 +71,9 @@ class Admin_ShashinMenuActionHandlerAlbums {
         return $this->menuDisplayer->run($message);
     }
 
-    // user albums: https://plus.google.com/100291303544453276374/photos
-    // an album's photos: https://plus.google.com/photos/100291303544453276374/albums/5725071897625277617
     public function runSynchronizerBasedOnUrl() {
-        // if a non-RSS url, convert to the appropriate RSS url
-
-        // Google Plus - an individual album
-        if (strpos($this->request['userUrl'], 'plus.google.com/photos') !== false) {
-            $urlParts = explode('/', $this->request['userUrl']);
-            $userId = $urlParts[4];
-            $albumId = $urlParts[6];
-            $this->request['userUrl'] = 'http://picasaweb.google.com/data/feed/base/user/'
-                . $urlParts[4]
-                . '/albumid/'
-                . $urlParts[6]
-                . '?alt=rss&kind=photo&hl=en_US';
-        }
-
-        // Google Plus - all of a user's albums
-        elseif (strpos($this->request['userUrl'], 'plus.google.com') !== false) {
-            $urlParts = explode('/', $this->request['userUrl']);
-            $userId = $urlParts[4];
-            $albumId = $urlParts[6];
-            $this->request['userUrl'] = 'http://picasaweb.google.com/data/feed/base/user/'
-                . $urlParts[4]
-                . '/albumid/'
-                . $urlParts[6]
-                . '?alt=rss&kind=photo&hl=en_US';
-        }
-
-        // all of a Picasa user's albums
-        if (strpos($this->request['userUrl'], 'kind=album') !== false) {
-            $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
-            $albumCount = $synchronizer->addMultipleAlbumsFromRssUrl();
-            return __('Added', 'shashin') . " $albumCount " . __('Picasa albums', 'shashin');
-
-        }
-
-        // a single Picasa album
-        elseif (strpos($this->request['userUrl'], 'kind=photo') !== false) {
-            $synchronizer = $this->adminContainer->getSynchronizerPicasa($this->request);
-            $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
-            return __('Added Picasa album', 'shashin') . ' "' . $syncedAlbum->title . '"';
-        }
-
-        // a YouTube feed
-        elseif (strpos($this->request['userUrl'], 'gdata.youtube.com') !== false) {
-            $synchronizer = $this->adminContainer->getSynchronizerYoutube($this->request);
-            $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
-            return __('Added YouTube videos', 'shashin') . ' "' . $syncedAlbum->title . '"';
-        }
-
-        // a Twitpic feed
-        elseif (strpos($this->request['userUrl'], 'twitpic.com/photos') !== false) {
-            $synchronizer = $this->adminContainer->getSynchronizerTwitpic($this->request);
-            $syncedAlbum = $synchronizer->addSingleAlbumFromRssUrl();
-            return __('Added Twitpic photos', 'shashin') . ' "' . $syncedAlbum->title . '"';
-        }
-
-        else {
-            throw new Exception(__('Unrecognized RSS feed', 'shashin'));
-        }
+        $synchronizer = $this->adminContainer->getSynchronizer($this->request);
+        return $synchronizer->syncUserRequest();
     }
 
     public function runSynchronizerForExistingAlbum(Lib_ShashinAlbum $albumToSync = null) {
@@ -139,8 +82,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
             $albumToSync->get($this->request['id']);
         }
 
-        $synchronizerToGet = 'getSynchronizer' . ucfirst($albumToSync->albumType);
-        $synchronizer = $this->adminContainer->$synchronizerToGet();
+        $synchronizer = $this->adminContainer->getSynchronizer(array('shashinAlbumType' => $albumToSync->albumType));
         $syncedAlbum = $synchronizer->syncExistingAlbum($albumToSync);
         return __('Synchronized', 'shashin') . ' "' . $syncedAlbum->title . '"';
     }
@@ -167,7 +109,7 @@ class Admin_ShashinMenuActionHandlerAlbums {
 
     public function runUpdateIncludeInRandom() {
         $albumsShortcodeMimic = array('type' => 'album', 'order' => 'title');
-        $albums = $this->menuDisplayer->getDataObjects($albumsShortcodeMimic);
+        $albums = Admin_ShashinContainer::getDataObjectCollection($albumsShortcodeMimic);
 
         foreach ($albums as $album) {
             if ($album->includeInRandom == $this->request['includeInRandom'][$album->id]) {
@@ -178,16 +120,13 @@ class Admin_ShashinMenuActionHandlerAlbums {
             $album->set($includeInRandom);
             $album->flush();
 
-            /* I want to set this for every photo in the album as well, but this isn't
-             working - commenting out for now
             $albumPhotosShortcodeMimic = array('id' => $album->id, 'type' => 'albumphotos');
-            $albumPhotos = $this->menuDisplayer->getDataObjects($albumPhotosShortcodeMimic);
+            $albumPhotos = Admin_ShashinContainer::getDataObjectCollection($albumPhotosShortcodeMimic);
 
             foreach ($albumPhotos as $photo) {
                 $photo->set($includeInRandom);
                 $photo->flush();
             }
-            */
         }
 
         return __('Updated "Include In Random" settings', 'shashin');
