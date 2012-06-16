@@ -9,15 +9,13 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
     private $menuDisplayerAlbums;
     private $menuActionHandlerAlbums;
     private $settingsMenuManager;
-    private $synchronizerPicasa;
-    private $synchronizerYoutube;
-    private $synchronizerTwitpic;
+    private $synchronizer;
     private $headTags;
     private $mediaMenu;
     private $scheduledSynchronizer;
 
-    public function __construct($autoLoader) {
-        parent::__construct($autoLoader);
+    public function __construct() {
+        parent::__construct();
     }
 
     public function getInstaller($version) {
@@ -78,7 +76,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         $this->getClonablePhotoCollection();
         $album = $this->getClonableAlbum();
         $album->get($albumKey);
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $publicContainer = new Public_ShashinContainer();
         $this->menuDisplayerPhotos = new Admin_ShashinMenuDisplayerPhotos();
         $this->menuDisplayerPhotos->setFunctionsFacade($this->functionsFacade);
         $this->menuDisplayerPhotos->setRequest($_REQUEST);
@@ -92,7 +90,7 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         if (!$this->menuDisplayerAlbums) {
             $this->getFunctionsFacade();
             $this->getClonableAlbumCollection();
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $publicContainer = new Public_ShashinContainer();
             $this->menuDisplayerAlbums = new Admin_ShashinMenuDisplayerAlbums();
             $this->menuDisplayerAlbums->setFunctionsFacade($this->functionsFacade);
             $this->menuDisplayerAlbums->setRequest($_REQUEST);
@@ -142,52 +140,41 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
         return $this->settingsMenuManager;
     }
 
-    public function getSynchronizerPicasa(array $request = null) {
-        $this->synchronizerPicasa = new Admin_ShashinSynchronizerPicasa();
-        return $this->setupSynchronizer($this->synchronizerPicasa, 'picasa', $request);
-    }
-
-    public function getSynchronizerYoutube(array $request = null) {
-        $this->synchronizerYoutube = new Admin_ShashinSynchronizerYoutube();
-        return $this->setupSynchronizer($this->synchronizerYoutube, 'youtube', $request);
-    }
-
-    public function getSynchronizerTwitpic(array $request = null) {
-        $this->synchronizerTwitpic = new Admin_ShashinSynchronizerTwitpic();
-        return $this->setupSynchronizer($this->synchronizerTwitpic, 'twitpic', $request);
-    }
-
-    private function setupSynchronizer($synchronizer, $type, $request = null) {
-        if ($request) {
-            $synchronizer->setRssUrl($request['userUrl']);
-            $synchronizer->setIncludeInRandom($request['includeInRandom']);
+    public function getSynchronizer(array $request) {
+        if (!in_array($request['shashinAlbumType'], array('picasa', 'youtube', 'twitpic'))) {
+            throw New Exception(__('Invalid album type: ', 'shashin') . htmlentities($request['shashinAlbumType']));
         }
 
+        $classToCall = 'Admin_ShashinSynchronizer' . ucfirst($request['shashinAlbumType']);
+        $this->synchronizer = new $classToCall();
+        $this->synchronizer->setRequest($request);
         $this->getFunctionsFacade();
         $httpRequester = $this->functionsFacade->getHttpRequestObject();
-        $synchronizer->setHttpRequester($httpRequester);
+        $this->synchronizer->setHttpRequester($httpRequester);
         $album = $this->getClonableAlbum();
-        $album->albumType = $type;
-        $synchronizer->setClonableAlbum($album);
+        $album->albumType = $request['shashinAlbumType'];
+        $this->synchronizer->setClonableAlbum($album);
         $this->getClonablePhoto();
-        $synchronizer->setClonablePhoto($this->clonablePhoto);
+        $this->synchronizer->setClonablePhoto($this->clonablePhoto);
         $this->getDatabaseFacade();
-        $synchronizer->setDatabaseFacade($this->dbFacade);
-        return $synchronizer;
+        $this->synchronizer->setDatabaseFacade($this->dbFacade);
+        return $this->synchronizer;
     }
 
     public function getHeadTags($version) {
         if (!$this->headTags) {
             $this->getFunctionsFacade();
             $this->headTags = new Admin_ShashinHeadTags($version);
+            $scriptsObject = $this->functionsFacade->getScriptsObject();
             $this->headTags->setFunctionsFacade($this->functionsFacade);
+            $this->headTags->setScriptsObject($scriptsObject);
         }
         return $this->headTags;
     }
 
     public function getMediaMenu($version, array $request) {
         if (!$this->mediaMenu) {
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $publicContainer = new Public_ShashinContainer();
             $this->mediaMenu = new Admin_ShashinMediaMenuWp($version);
             $this->mediaMenu->setRequest($request);
             $this->mediaMenu->setContainer($publicContainer);
@@ -197,12 +184,21 @@ class Admin_ShashinContainer extends Lib_ShashinContainer {
 
     public function getScheduledSynchronizer() {
         $this->scheduledSynchronizer = new Admin_ShashinScheduledSynchronizer();
-        $publicContainer = new Public_ShashinContainer($this->autoLoader);
+        $publicContainer = new Public_ShashinContainer();
         $this->getClonableAlbumCollection();
         $this->getMenuActionHandlerAlbums();
         $this->scheduledSynchronizer->setPublicContainer($publicContainer);
         $this->scheduledSynchronizer->setClonableAlbumCollection($this->clonableAlbumCollection);
         $this->scheduledSynchronizer->setAlbumHandler($this->menuActionHandlerAlbums);
         return $this->scheduledSynchronizer;
+    }
+
+    public static function getDataObjectCollection(array $shortcodeData) {
+        $publicContainer = new Public_ShashinContainer();
+        $shortcode = $publicContainer->getShortcode($shortcodeData);
+        $methodToCall = 'getClonable' . ucfirst($shortcodeData['type']) . 'Collection';
+        $collection = $publicContainer->$methodToCall();
+        $collection->setNoLimit(true);
+        return $collection->getCollectionForShortcode($shortcode);
     }
 }
