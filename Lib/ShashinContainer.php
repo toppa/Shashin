@@ -1,7 +1,6 @@
 <?php
 
 class Lib_ShashinContainer {
-    protected $autoLoader;
     protected $dbFacade;
     protected $functionsFacade;
     protected $photoRefData;
@@ -15,13 +14,12 @@ class Lib_ShashinContainer {
     protected $settings;
     protected $photoDisplayer;
 
-    public function __construct($autoLoader) {
-        $this->autoLoader = $autoLoader;
+    public function __construct() {
     }
 
     public function getDatabaseFacade() {
         if (!isset($this->dbFacade)) {
-            $this->dbFacade = new ToppaDatabaseFacadeWp($this->autoLoader);
+            $this->dbFacade = new ToppaDatabaseFacadeWp();
         }
 
         return $this->dbFacade;

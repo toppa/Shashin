@@ -4,8 +4,7 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
     private $headTags;
     private $sessionManager;
 
-    public function __construct($autoLoader) {
-        parent::__construct($autoLoader);
+    public function __construct() {
     }
 
     public function getShortcode(array $arrayShortcode) {
