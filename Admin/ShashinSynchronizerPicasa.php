@@ -5,10 +5,84 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         parent::__construct();
     }
 
-    public function deriveJsonUrl() {
-        $jsonUrl = str_ireplace('alt=rss', 'alt=json', $this->rssUrl);
-        $jsonUrl = str_ireplace('feed/base/user', 'feed/api/user', $jsonUrl);
+    public function syncUserRequest() {
+        $jsonUrl = $this->setJsonUrlFromUserUrl();
         $this->setJsonUrl($jsonUrl);
+
+        if (strpos($this->jsonUrl, 'kind=photo')) {
+            $album = $this->syncAlbum();
+            $message =  __('Added Picasa album', 'shashin') . ' "' . $album->title . '"';
+        }
+
+        else {
+            $albumCount = $this->syncMultipleAlbums();
+            $message = __('Added', 'shashin') . " $albumCount " . __('Google+ albums', 'shashin');
+
+        }
+
+        return $message;
+    }
+
+    public function setJsonUrlFromUserUrl() {
+        // Google Plus - an individual album
+        // https://plus.google.com/photos/100291303544453276374/albums/5725071897625277617
+        if (preg_match('#^https://plus\.google\.com/photos/(\d+)/albums/(\d+)#', $this->request['userUrl'], $matches) == 1) {
+            $jsonUrl = 'https://picasaweb.google.com/data/feed/api/user/'
+                . $matches[1]
+                . '/albumid/'
+                . $matches[2]
+                . '?alt=json&kind=photo';
+        }
+
+        // Google Plus - all of a user's albums
+        // https://plus.google.com/100291303544453276374/photos
+        else if (preg_match('#^https://plus.google.com/photos/(\d+)#', $this->request['userUrl'], $matches) == 1) {
+            $jsonUrl = 'https://picasaweb.google.com/data/feed/api/user/'
+                . $matches[1]
+                . '?alt=json&kind=album';
+        }
+
+        // Picasa - an individual album
+        elseif (preg_match('#^https://picasaweb\..+/\w+/\w+#', $this->request['userUrl'], $matches) == 1) {
+            $rssUrl = $this->retrievePicasaRssUrl();
+            $jsonUrl = str_replace('/base/', '/api/', $rssUrl);
+            $jsonUrl = str_replace('alt=rss', 'alt=json', $jsonUrl);
+        }
+
+        // Picasa - all of a user's albums
+        else if (preg_match('#^(https://picasaweb\..+)/(\w+)#', $this->request['userUrl'], $matches) == 1) {
+            $jsonUrl = $matches[1]
+                . '/data/feed/api/user/'
+                . $matches[2]
+                . '?alt=json&kind=album';
+        }
+
+        else {
+            throw New Exception (__('Unrecognized URL: ', 'shashin') . htmlentities($this->request['userUrl']));
+        }
+
+        return $this->setJsonUrl($jsonUrl);
+    }
+
+    public function retrievePicasaRssUrl() {
+        $rssUrl = null;
+        $response = $this->httpRequester->request($this->request['userUrl'], array('timeout' => 30, 'sslverify' => false));
+        $doc = new DOMDocument();
+        @$doc->loadHTML($response['body']);
+        $links = $doc->getElementsByTagName('link');
+
+        for ($i = 0; $i < $links->length; $i++) {
+            $link = $links->item($i);
+            if ($link->getAttribute('rel') == 'alternate' && $link->getAttribute('type') == 'application/rss+xml') {
+                $rssUrl = $link->getAttribute('href');
+            }
+        }
+
+        if (!$rssUrl) {
+            throw New Exception(__('Unable to determine RSS feed for URL', 'shashin') . ': ' . htmlentities($this->request['userUrl']));
+        }
+
+        return $rssUrl;
     }
 
     public function syncAlbumForThisAlbumType(array $decodedAlbumData) {
@@ -17,7 +91,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         $albumData = $this->extractFieldsFromDecodedData($decodedAlbumData['feed'], $albumRefData, 'picasa');
         $albumData['pubDate'] = ToppaFunctions::makeTimestampPhpSafe($albumData['pubDate']);
         $albumData['lastSync'] = $this->syncTime;
-        $albumData['albumType'] = 'picasa';
+        $albumData['albumType'] = $this->album->albumType;
 
         if ($this->includeInRandom) {
             $albumData['includeInRandom'] = $this->includeInRandom;
@@ -52,12 +126,16 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
                 $photoData = $this->extractFieldsFromDecodedData($entry, $photoRefData, 'picasa');
                 $photoData['albumId'] = $this->album->id;
                 $photoData['albumType'] = $this->album->albumType;
-                $photoData['takenTimestamp'] = ToppaFunctions::makeTimestampPhpSafe($photoData['takenTimestamp']);
+                if (isset($photoData['takenTimestamp'])) {
+                    $photoData['takenTimestamp'] = ToppaFunctions::makeTimestampPhpSafe($photoData['takenTimestamp']);
+                }
                 $photoData['uploadedTimestamp'] = strtotime($photoData['uploadedTimestamp']);
                 $photoData['sourceOrder'] = ++$sourceOrder;
                 $photoData['lastSync'] = $this->syncTime;
                 // at least one camera type can put a comma in the exposure, so save as a string
-                $photoData['exposure'] = strval(round($photoData['exposure'], 3));
+                if (isset($photoData['exposure'])) {
+                    $photoData['exposure'] = strval(round($photoData['exposure'], 3));
+                }
                 $photo = clone $this->clonablePhoto;
                 $photo->set($photoData);
                 $photo->flush();

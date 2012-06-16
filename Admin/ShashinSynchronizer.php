@@ -1,17 +1,21 @@
 <?php
 
 abstract class Admin_ShashinSynchronizer {
+    protected $request;
     protected $httpRequester;
     protected $clonableAlbum;
     protected $clonablePhoto;
     protected $dbFacade;
     protected $album;
-    protected $rssUrl;
     protected $jsonUrl;
     protected $includeInRandom;
     protected $syncTime;
 
     public function __construct() {
+    }
+
+    public function setRequest(array $request) {
+        $this->request = $request;
     }
 
     public function setHttpRequester($httpRequester) {
@@ -30,42 +34,21 @@ abstract class Admin_ShashinSynchronizer {
         $this->dbFacade = $dbFacade;
     }
 
-    abstract public function deriveJsonUrl();
+    abstract public function syncUserRequest();
+    abstract public function setJsonUrlFromUserUrl();
 
-    public function setRssUrl($rssUrl) {
-        // use strip_tags instead of htmlentities, since the URL will
-        // probably contain special chars that we shouldn't convert
-        $this->rssUrl = trim(strip_tags($rssUrl));
+    public function setJsonUrl($url) {
+        $this->jsonUrl = $url;
+        return $this->jsonUrl;
     }
 
     public function getJsonUrl() {
         return $this->jsonUrl;
     }
 
-    public function setJsonUrl($jsonUrl) {
-        if (!is_string($jsonUrl)) {
-            throw new Exception(__('Invalid json url', 'shashin'));
-        }
-
-        $this->jsonUrl = $jsonUrl;
-    }
 
     public function setIncludeInRandom($includeInRandom) {
         $this->includeInRandom = htmlentities($includeInRandom);
-    }
-
-    public function addSingleAlbumFromRssUrl() {
-        $this->deriveJsonUrl();
-        $album = $this->syncAlbum();
-        return $album;
-    }
-
-    public function addMultipleAlbumsFromRssUrl() {
-        $this->deriveJsonUrl();
-        $response = $this->httpRequester->request($this->jsonUrl);
-        $decodedMultipleAlbumsData = $this->checkResponseAndDecodeAlbumData($response);
-        $albumCount = $this->syncMultipleAlbumsForThisAlbumType($decodedMultipleAlbumsData);
-        return $albumCount;
     }
 
     public function syncExistingAlbum(Lib_ShashinAlbum $album) {
@@ -75,10 +58,21 @@ abstract class Admin_ShashinSynchronizer {
     }
 
     public function syncAlbum() {
-        $response = $this->httpRequester->request($this->jsonUrl, array('timeout' => 30, 'sslverify' => false));
-        $decodedAlbumData = $this->checkResponseAndDecodeAlbumData($response);
+        $decodedAlbumData = $this->getDataForSync();
         $this->syncTime = time();
         return $this->syncAlbumForThisAlbumType($decodedAlbumData);
+    }
+
+    public function syncMultipleAlbums() {
+        $decodedMultipleAlbumsData = $this->getDataForSync();
+        $this->syncTime = time();
+        $albumCount = $this->syncMultipleAlbumsForThisAlbumType($decodedMultipleAlbumsData);
+        return $albumCount;
+    }
+
+    private function getDataForSync() {
+        $response = $this->httpRequester->request($this->jsonUrl, array('timeout' => 30, 'sslverify' => false));
+        return $this->checkResponseAndDecodeAlbumData($response);
     }
 
     public function checkResponseAndDecodeAlbumData($response) {
@@ -128,26 +122,48 @@ abstract class Admin_ShashinSynchronizer {
                 case 0:
                     break;
                 case 1:
-                    $extractedFields[$k] = $decodedData
-                        [$v[$albumType][0]];
+                    if (isset($decodedData
+                        [$v[$albumType][0]])) {
+
+                        $extractedFields[$k] = $decodedData
+                            [$v[$albumType][0]];
+                    }
                     break;
                 case 2:
-                    $extractedFields[$k] = $decodedData
+                    if (isset($decodedData
                         [$v[$albumType][0]]
-                        [$v[$albumType][1]];
+                        [$v[$albumType][1]])) {
+
+                        $extractedFields[$k] = $decodedData
+                            [$v[$albumType][0]]
+                            [$v[$albumType][1]];
+                    }
                     break;
                 case 3:
-                    $extractedFields[$k] = $decodedData
+                    if (isset($decodedData
                         [$v[$albumType][0]]
                         [$v[$albumType][1]]
-                        [$v[$albumType][2]];
+                        [$v[$albumType][2]])) {
+
+                        $extractedFields[$k] = $decodedData
+                            [$v[$albumType][0]]
+                            [$v[$albumType][1]]
+                            [$v[$albumType][2]];
+                    }
                     break;
                 case 4:
-                    $extractedFields[$k] = $decodedData
+                    if (isset($decodedData
                         [$v[$albumType][0]]
                         [$v[$albumType][1]]
                         [$v[$albumType][2]]
-                        [$v[$albumType][3]];
+                        [$v[$albumType][3]])) {
+
+                        $extractedFields[$k] = $decodedData
+                            [$v[$albumType][0]]
+                            [$v[$albumType][1]]
+                            [$v[$albumType][2]]
+                            [$v[$albumType][3]];
+                    }
                     break;
                 default:
                     throw new Exception(__("Unexpected number of fields in feed", "shashin"));

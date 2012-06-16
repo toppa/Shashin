@@ -11,7 +11,7 @@ class Admin_ShashinSynchronizerFlickr extends Admin_ShashinSynchronizer {
         // http://api.flickr.com/services/feeds/photoset.gne?set=72157624624016813&nsid=60624157@N00&lang=en-us&format=json
         // http://api.flickr.com/services/rest/?method=flickr.photosets.getInfo&api_key=fa807a54210159cb56aaa496069efb49&photoset_id=72157624624016813&format=json
         $jsonUrl = $this->rssUrl . '&format=json';
-        $this->setJsonUrl($jsonUrl);
+        $this->setJsonUrlFromUserUrl($jsonUrl);
     }
 
     public function syncAlbumForThisAlbumType(array $decodedAlbumData) {

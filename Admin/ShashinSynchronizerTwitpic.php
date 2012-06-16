@@ -5,13 +5,25 @@ class Admin_ShashinSynchronizerTwitpic extends Admin_ShashinSynchronizer {
         parent::__construct();
     }
 
-    public function deriveJsonUrl() {
+    public function syncUserRequest() {
+        $this->setJsonUrlFromUserUrl();
+        $album = $this->syncAlbum();
+        return __('Added Twitpic photos', 'shashin') . ' "' . $album->title . '"';
+    }
+
+    public function setJsonUrlFromUserUrl() {
         // example:
-        // http://twitpic.com/photos/mtoppa/feed.rss
-        // http://api.twitpic.com/2/users/show.json?username=mtoppa
-        $jsonUrl = str_ireplace('/twitpic.com/photos/', '/api.twitpic.com/2/users/show.json?username=', $this->rssUrl);
-        $jsonUrl = str_ireplace('/feed.rss', '', $jsonUrl);
-        $this->setJsonUrl($jsonUrl);
+        // http://twitpic.com/photos/mtoppa
+        // becomes http://api.twitpic.com/2/users/show.json?username=mtoppa
+        if (preg_match('#twitpic\.com/photos/(\w+)#', $this->request['userUrl'], $matches) == 1) {
+            $jsonUrl = 'http://api.twitpic.com/2/users/show.json?username=' . $matches[1];
+        }
+
+        else {
+            throw New Exception (__('Unrecognized URL: ', 'shashin') . htmlentities($this->request['userUrl']));
+        }
+
+        return $this->setJsonUrl($jsonUrl);
     }
 
     public function syncAlbumForThisAlbumType(array $decodedAlbumData) {
@@ -23,7 +35,7 @@ class Admin_ShashinSynchronizerTwitpic extends Admin_ShashinSynchronizer {
         $albumData['title'] = 'Twitpic: ' . $albumData['name'];
         $albumData['pubDate'] = strtotime($albumData['pubDate']);
         $albumData['lastSync'] = $this->syncTime;
-        $albumData['albumType'] = 'twitpic';
+        $albumData['albumType'] = $this->album->albumType;
         if ($this->includeInRandom) {
             $albumData['includeInRandom'] = $this->includeInRandom;
         }
