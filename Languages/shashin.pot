@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2012-05-10 01:12:54+00:00\n"
+"POT-Creation-Date: 2012-06-16 22:01:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -340,88 +340,132 @@ msgstr ""
 msgid "You have not added any albums yet."
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:93 Admin/Display/toolsAlbums.php:126
+#: Admin/Display/toolsAlbums.php:93 Admin/Display/toolsAlbums.php:135
 msgid "Add Albums"
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:99
-msgid ""
-"Shashin can display photos from public <em>Picasa</em> albums, videos from "
-"<em>YouTube</em>, and <em>Twitpic</em> photos by importing their RSS feeds. "
-"Please enter an RSS URL below (click \"examples\" for further details)."
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:103
-msgid "All the Picasa albums for a user"
-msgstr ""
-
 #: Admin/Display/toolsAlbums.php:103
 msgid ""
-"Look for the 'RSS' link on the bottom right of the Picasa user's home page"
+"Shashin can display photos and videos from several photo and video sharing "
+"sites. Shashin does not make copies of the photos or videos. Instead it "
+"downloads data about them into your WordPress site via JSON data feeds, and "
+"then makes it easy for you to display them on your site by making them "
+"available in the post editor's media browser. You will want to \"synchronize"
+"\" Shashin with your photos or videos when you upload new ones (on the "
+"Shashin settings page, you can set Shashin do this automatically). To get "
+"started, click the tab for the sites you want to synchronize with Shashin."
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:105
-msgid "A single Picasa album"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:105
-msgid "Look for the 'RSS' link in the sidebar of the album's main page"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:107
-msgid "A YouTube user's videos"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:107
+#: Admin/Display/toolsAlbums.php:111
 msgid ""
-"Youtube does not display links for its feeds. You need to type in the RSS "
-"URL yourself"
+"Enter the URL for a Picasa/Google+ user to synchronize Shashin with all of "
+"his or her albums, or enter the URL for an individual album."
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:109
+#: Admin/Display/toolsAlbums.php:112 Admin/Display/toolsAlbums.php:146
+msgid "Important notes:"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:114
+msgid ""
+"Google is migrating Picasa to Google+ and making changes without advance "
+"notification. If you are unable to add an album, please"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:115
+msgid "let me know"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:116
+msgid ""
+"Shashin only works with albums where the visibility is set to \"Public on "
+"the web\" or \"Limited, anyone with the link\""
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:118 Admin/Display/toolsAlbums.php:153
+msgid "Examples"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:120
+msgid "All the Picasa/Google+ albums for a user"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:125
+msgid "A single Picasa/Google+ album"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:131 Admin/Display/toolsAlbums.php:185
+msgid "URL:"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:133 Admin/Display/toolsAlbums.php:187
+msgid "Include these photos in random photo displays?"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:145
+msgid ""
+"For YouTube, you need to enter the RSS URL for the feed you want to "
+"synchronize."
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:148
+msgid ""
+"Unfortunately Youtube does not display links for its feeds, but there are "
+"many standard feeds available (top rated, etc) - see the"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:149
+msgid "YouTube API page for examples"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:150
+msgid "It also explains how to write the URLs for other kinds of feeds."
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:151
+msgid "Shashin will synchronize with the first 50 videos in a YouTube feed."
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:155
+msgid "A YouTube user's videos (put his or her username in the URL)"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:157
 msgid "Most popular YouTube videos"
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:109
-msgid "Youtube has many standard feeds available (top rated, etc) - see the"
+#: Admin/Display/toolsAlbums.php:159
+msgid "Most recent videos in the comedy category"
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:110
-msgid "YouTube API page for more"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:112
-msgid "A Twitpic user's photos"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:112
-msgid "Look for the RSS link near the top right of the user's page"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:115
-msgid "A Flickr set"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:115
-msgid "Look for the 'Feed' link on the bottom left of the set's main page."
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:117
-msgid "A Flickr photostream"
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:117
-msgid ""
-"Look for the 'Latest' link near the RSS icon on the bottom left of the "
-"photostream's main page."
-msgstr ""
-
-#: Admin/Display/toolsAlbums.php:121
+#: Admin/Display/toolsAlbums.php:163
 msgid "RSS URL:"
 msgstr ""
 
-#: Admin/Display/toolsAlbums.php:123
-msgid "Include album's photos in random photo displays?"
+#: Admin/Display/toolsAlbums.php:165
+msgid "Include these videos in random photo/video displays?"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:167
+msgid "Add Videos"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:177
+msgid ""
+"Enter the URL for a Twitpic user to synchronize Shashin with all of his or "
+"her photos."
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:179
+msgid "Example"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:182
+msgid "A Twitpic user's photos"
+msgstr ""
+
+#: Admin/Display/toolsAlbums.php:189
+msgid "Add Photos"
 msgstr ""
 
 #: Admin/Display/toolsPhotos.php:13
@@ -440,55 +484,35 @@ msgstr ""
 msgid "Photo ID"
 msgstr ""
 
+#: Admin/ShashinContainer.php:145
+msgid "Invalid album type: "
+msgstr ""
+
 #: Admin/ShashinInstall.php:113 Admin/ShashinInstall.php:127
 msgid "Failed to create table "
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:67
+#: Admin/ShashinMenuActionHandlerAlbums.php:68
 msgid "Upgrade cleanup completed"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:78
-msgid "Added"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:78
-msgid "Picasa albums"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:85
-msgid "Added Picasa album"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:92
-msgid "Added YouTube videos"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:99
-msgid "Added Twitpic photos"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:103
-msgid "Unrecognized RSS feed"
-msgstr ""
-
-#: Admin/ShashinMenuActionHandlerAlbums.php:116
+#: Admin/ShashinMenuActionHandlerAlbums.php:87
 msgid "Synchronized"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:129
+#: Admin/ShashinMenuActionHandlerAlbums.php:100
 msgid "Synchronized all"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:129
+#: Admin/ShashinMenuActionHandlerAlbums.php:100
 msgid "albums"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:136
+#: Admin/ShashinMenuActionHandlerAlbums.php:107
 msgid "Deleted album"
 msgstr ""
 
-#: Admin/ShashinMenuActionHandlerAlbums.php:164
+#: Admin/ShashinMenuActionHandlerAlbums.php:132
 #: Admin/ShashinMenuActionHandlerPhotos.php:58
 msgid "Updated \"Include In Random\" settings"
 msgstr ""
@@ -875,28 +899,54 @@ msgstr ""
 msgid "Settings saved"
 msgstr ""
 
-#: Admin/ShashinSynchronizer.php:47
-msgid "Invalid json url"
-msgstr ""
-
-#: Admin/ShashinSynchronizer.php:88 Admin/ShashinSynchronizer.php:98
+#: Admin/ShashinSynchronizer.php:82 Admin/ShashinSynchronizer.php:92
 msgid "Failed to retrieve album feed at "
 msgstr ""
 
-#: Admin/ShashinSynchronizer.php:91
+#: Admin/ShashinSynchronizer.php:85
 msgid "WP_Http Error: "
 msgstr ""
 
-#: Admin/ShashinSynchronizer.php:101
+#: Admin/ShashinSynchronizer.php:95
 msgid "Error Response: "
 msgstr ""
 
-#: Admin/ShashinSynchronizer.php:110
+#: Admin/ShashinSynchronizer.php:104
 msgid "Failed to parse album feed at "
 msgstr ""
 
-#: Admin/ShashinSynchronizer.php:153
+#: Admin/ShashinSynchronizer.php:169
 msgid "Unexpected number of fields in feed"
+msgstr ""
+
+#: Admin/ShashinSynchronizerPicasa.php:14
+msgid "Added Picasa album"
+msgstr ""
+
+#: Admin/ShashinSynchronizerPicasa.php:19
+msgid "Added"
+msgstr ""
+
+#: Admin/ShashinSynchronizerPicasa.php:19
+msgid "Google+ albums"
+msgstr ""
+
+#: Admin/ShashinSynchronizerPicasa.php:61
+#: Admin/ShashinSynchronizerTwitpic.php:23
+#: Admin/ShashinSynchronizerYoutube.php:20
+msgid "Unrecognized URL: "
+msgstr ""
+
+#: Admin/ShashinSynchronizerPicasa.php:82
+msgid "Unable to determine RSS feed for URL"
+msgstr ""
+
+#: Admin/ShashinSynchronizerTwitpic.php:11
+msgid "Added Twitpic photos"
+msgstr ""
+
+#: Admin/ShashinSynchronizerYoutube.php:11
+msgid "Added YouTube videos for"
 msgstr ""
 
 #: Admin/ShashinUninstaller.php:61 Admin/ShashinUninstaller.php:69
@@ -920,7 +970,7 @@ msgid ""
 "their Photo IDs."
 msgstr ""
 
-#: Admin/ShashinWidgetWp.php:25 ShashinWp.php:214
+#: Admin/ShashinWidgetWp.php:25 ShashinWp.php:212
 msgid "Shashin Photos"
 msgstr ""
 
@@ -1116,41 +1166,41 @@ msgstr ""
 msgid "\"size\" and \"columns\" can not both me \"max\""
 msgstr ""
 
-#: ShashinWp.php:57
+#: ShashinWp.php:55
 msgid "You must deactivate and reactivate Shashin to upgrade from version 2"
 msgstr ""
 
-#: ShashinWp.php:173
+#: ShashinWp.php:171
 msgid "Invalid shashin shortcode type: "
 msgstr ""
 
-#: ShashinWp.php:215
+#: ShashinWp.php:213
 msgid "Shashin Albums"
 msgstr ""
 
-#: ShashinWp.php:331
+#: ShashinWp.php:329
 msgid "Please go to the Shashin Tools Menu to complete the upgrade."
 msgstr ""
 
-#: ShashinWp.php:339
+#: ShashinWp.php:337
 msgid "Shashin Error"
 msgstr ""
 
-#: start.php:63
+#: start.php:61
 msgid "To activate Shashin you need to have the current version of"
 msgstr ""
 
-#: start.php:65
+#: start.php:63
 msgid ""
 "Click this link to view details, and then click the \"Install Now\" button "
 "to get the current version. Then you can activate Shashin."
 msgstr ""
 
-#: start.php:69
+#: start.php:67
 msgid "Shashin not activated. You must have at least PHP 5.1.2 to use Shashin"
 msgstr ""
 
-#: start.php:73
+#: start.php:71
 msgid ""
 "Shashin not activated. You must have at least WordPress 3.0 to use Shashin"
 msgstr ""

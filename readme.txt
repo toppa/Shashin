@@ -3,7 +3,7 @@ Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
-Tested up to: 3.3.2
+Tested up to: 3.4
 Stable tag: 3.2
 License: GPLv2 or later
 
@@ -88,6 +88,7 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 * More user friendly UI for adding albums, photos, and videos (uses jQuery tabs menu)
 * Accepts Google+ URLs for adding albums
 * Bug fix: When "include in random" is set for an album, it now correctly cascades to the photos in the album
+* Adjust fancybox css z-index so it appears over the Twenty Eleven header
 * Code refactor: Removed unneeded passing around of autoloader object
 * Code refactor: Refactored setup for synchronizing
 
