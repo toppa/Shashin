@@ -4,7 +4,7 @@ Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
 Tested up to: 3.3.2
-Stable tag: 3.1.5
+Stable tag: 3.2
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
@@ -13,11 +13,10 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 
 **Installation of [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/) is required. Please download and activate it before installing Shashin.**
 
-**What's new in Shashin 3.1.5**
+**What's new in Shashin 3.2**
 
-* Improved installation and activation process (manual re-activation is no longer needed)
-* Ability to disable Shashin's Fancybox if you already have your own Fancybox installed
-* Improvements to album synchronizing, for handling slow connections and servers with misconfigured SSL settings (which is surprisingly common)
+* More user friendly UI for adding albums, photos, and videos (uses jQuery tabs menu)
+* Accepts Google+ URLs for adding albums
 
 **Overview**
 
@@ -84,6 +83,13 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 4. A Fancybox slideshow
 
 == Changelog ==
+
+= 3.2 =
+* More user friendly UI for adding albums, photos, and videos (uses jQuery tabs menu)
+* Accepts Google+ URLs for adding albums
+* Bug fix: When "include in random" is set for an album, it now correctly cascades to the photos in the album
+* Code refactor: Removed unneeded passing around of autoloader object
+* Code refactor: Refactored setup for synchronizing
 
 = 3.1.5 =
 * Improve handling of dependencies on Toppa Plugin Libraries, so there are no PHP error messages if you have an old or missing version of the libraries
