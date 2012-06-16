@@ -177,8 +177,7 @@ class Admin_ShashinWidgetWp extends WP_Widget {
 
     // yuck - there's no way to do dependency injection with a WP_Widget instance
     public function getShortcodeForWidget($arrayShortcode) {
-        $autoLoader = new ToppaAutoLoaderWp('/shashin');
-        $publicContainer = new Public_ShashinContainer($autoLoader);
+        $publicContainer = new Public_ShashinContainer();
         return $publicContainer->getShortcode($arrayShortcode);
     }
 
@@ -198,8 +197,7 @@ class Admin_ShashinWidgetWp extends WP_Widget {
         $arrayShortcode = $instance;
         unset($arrayShortcode['title']);
         $arrayShortcode['type'] = 'photo';
-        $autoLoader = new ToppaAutoLoaderWp('/shashin');
-        $shashinWp = new ShashinWp($autoLoader);
+        $shashinWp = new ShashinWp();
         echo $shashinWp->handleShortcode($arrayShortcode);
         echo $after_widget;
     }

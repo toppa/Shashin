@@ -16,9 +16,9 @@ load_plugin_textdomain('shashin', false, basename(dirname(__FILE__)) . '/Languag
 
 if (file_exists($shashinAutoLoaderPath)) {
     require_once($shashinAutoLoaderPath);
-    $shashinToppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-    $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
-    $shashin = new ShashinWp($shashinAutoLoader);
+    new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
+    new ToppaAutoLoaderWp('/shashin');
+    $shashin = new ShashinWp();
     $shashin->run();
 }
 
@@ -42,9 +42,7 @@ function shashinActivate() {
     }
 
     require_once dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
-    $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-    $shashinAutoLoader = new ToppaAutoLoaderWp('/shashin');
-    $shashin = new ShashinWp($shashinAutoLoader);
+    $shashin = new ShashinWp();
     $status = $shashin->install();
 
     if (is_string($status)) {
@@ -84,7 +82,6 @@ function shashinCancelActivation($message) {
 }
 
 function shashinDeactivateForNetworkSites() {
-    $toppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
     $functionsFacade = new ToppaFunctionsFacadeWp();
     $functionsFacade->callFunctionForNetworkSites('shashinDeactivate');
 }

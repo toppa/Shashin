@@ -2,10 +2,8 @@
 
 class ShashinWp {
     private $version = '3.1.5';
-    private $autoLoader;
 
-    public function __construct(ToppaAutoLoader $autoLoader) {
-        $this->autoLoader = $autoLoader;
+    public function __construct() {
     }
 
     public function getVersion() {
@@ -14,7 +12,7 @@ class ShashinWp {
 
     public function install() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $upgrader = $adminContainer->getUpgrader();
             $upgrader->run();
             $installer = $adminContainer->getInstaller($this->version);
@@ -49,7 +47,7 @@ class ShashinWp {
 
     public function runtimeUpgrade() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $upgrader = $adminContainer->getUpgrader();
             $upgrader->setTableProperties();
 
@@ -82,7 +80,7 @@ class ShashinWp {
 
     public function displayToolsMenu() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
 
             if (array_key_exists('shashinMenu', $_REQUEST) && $_REQUEST['shashinMenu'] == 'photos') {
                 $menuActionHandler = $adminContainer->getMenuActionHandlerPhotos($_REQUEST['id']);
@@ -102,7 +100,7 @@ class ShashinWp {
 
     public function displayAdminHeadTags() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $headTags = $adminContainer->getHeadTags($this->version);
             $headTags->run();
         }
@@ -124,7 +122,7 @@ class ShashinWp {
 
     public function displaySettingsMenu() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $settingsMenuManager = $adminContainer->getSettingsMenuManager();
             echo $settingsMenuManager->run();
         }
@@ -136,7 +134,7 @@ class ShashinWp {
 
     public function displayPublicHeadTags() {
         try {
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $publicContainer = new Public_ShashinContainer();
             $headTags = $publicContainer->getHeadTags($this->version);
             $headTags->run();
         }
@@ -154,7 +152,7 @@ class ShashinWp {
                 $arrayShortcode = array();
             }
 
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $publicContainer = new Public_ShashinContainer();
             $shortcode = $publicContainer->getShortcode($arrayShortcode);
 
             switch ($shortcode->type) {
@@ -184,7 +182,7 @@ class ShashinWp {
 
     public function ajaxDisplayAlbumPhotos() {
         try {
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $publicContainer = new Public_ShashinContainer();
             $settings = $publicContainer->getSettings();
             $shortcode = array(
                 'type' => 'albumphotos',
@@ -219,7 +217,7 @@ class ShashinWp {
 
     public function initPhotoMediaMenu() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
             $mediaMenu->initPhotoMenu();
         }
@@ -231,7 +229,7 @@ class ShashinWp {
 
     public function initAlbumMediaMenu() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
             $mediaMenu->initAlbumMenu();
         }
@@ -243,7 +241,7 @@ class ShashinWp {
 
     public function ajaxGetPhotosForMediaMenu() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $mediaMenu = $adminContainer->getMediaMenu($this->version, $_REQUEST);
             echo $mediaMenu->getPhotosForMenu();
         }
@@ -258,7 +256,7 @@ class ShashinWp {
     public function scheduleSyncIfNeeded() {
         try {
             if (!wp_next_scheduled('shashinSync') ) {
-                $publicContainer = new Public_ShashinContainer($this->autoLoader);
+                $publicContainer = new Public_ShashinContainer();
                 $settings = $publicContainer->getSettings();
 
                 if ($settings->scheduledUpdate == 'y') {
@@ -277,7 +275,7 @@ class ShashinWp {
 
     public function runScheduledSync() {
         try {
-            $adminContainer = new Admin_ShashinContainer($this->autoLoader);
+            $adminContainer = new Admin_ShashinContainer();
             $scheduledSynchronizer = $adminContainer->getScheduledSynchronizer();
             $scheduledSynchronizer->run();
         }
@@ -290,7 +288,7 @@ class ShashinWp {
 
     public function supportOldShortcodesIfNeeded() {
         try {
-            $libContainer = new Lib_ShashinContainer($this->autoLoader);
+            $libContainer = new Lib_ShashinContainer();
             $settings = $libContainer->getSettings();
 
             if ($settings->supportOldShortcodes == 'y') {
@@ -307,7 +305,7 @@ class ShashinWp {
 
     public function handleOldShortcodes($content) {
         try {
-            $publicContainer = new Public_ShashinContainer($this->autoLoader);
+            $publicContainer = new Public_ShashinContainer();
             $oldShortcode = $publicContainer->getOldShortcode($content, $_REQUEST);
             return $oldShortcode->run();
         }
@@ -323,7 +321,7 @@ class ShashinWp {
 
     public function displayPluginPageUpgradeNag() {
         if (strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
-            $libContainer = new Lib_ShashinContainer($this->autoLoader);
+            $libContainer = new Lib_ShashinContainer();
             $functionsFacade = $libContainer->getFunctionsFacade();
 
             if ($functionsFacade->getSetting('shashin_options')) {
@@ -343,8 +341,7 @@ class ShashinWp {
     }
 
     public static function display($arrayShortcode) {
-        $autoLoader = new ToppaAutoLoaderWp('/shashin');
-        $shashinWp = new ShashinWp($autoLoader);
+        $shashinWp = new ShashinWp();
         return $shashinWp->handleShortcode($arrayShortcode);
     }
 }
