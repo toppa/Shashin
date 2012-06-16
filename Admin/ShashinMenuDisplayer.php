@@ -90,23 +90,23 @@ abstract class Admin_ShashinMenuDisplayer {
             $reverse = $this->defaultReverse;
         }
 
-        $shortcodeMimic = array(
+        $shortcodeData = array(
             'order' => $orderBy,
             'reverse' => $reverse,
         );
 
         if ($this->album) {
-            $shortcodeMimic['id'] = $this->album->id;
-            $shortcodeMimic['type'] = 'albumphotos';
-            $shortcodeMimic['size'] = 'xsmall';
-            $shortcodeMimic['crop'] = 'y';
+            $shortcodeData['id'] = $this->album->id;
+            $shortcodeData['type'] = 'albumphotos';
+            $shortcodeData['size'] = 'xsmall';
+            $shortcodeData['crop'] = 'y';
         }
 
-        return $shortcodeMimic;
+        return $shortcodeData;
     }
 
-    public function getDataObjects($shortcodeMimic) {
-        $this->shortcode = $this->container->getShortcode($shortcodeMimic);
+    public function getDataObjects($shortcodeData) {
+        $this->shortcode = $this->container->getShortcode($shortcodeData);
         $this->collection->setNoLimit(true);
         return $this->collection->getCollectionForShortcode($this->shortcode);
     }
