@@ -4,6 +4,7 @@
 class Admin_ShashinHeadTags {
     private $version;
     private $functionsFacade;
+    private $scriptsObject;
 
     public function __construct($version) {
         $this->version = $version;
@@ -13,12 +14,31 @@ class Admin_ShashinHeadTags {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }
+
+    public function setScriptsObject($scriptsObject) {
+        $this->scriptsObject = $scriptsObject;
+        return $this->scriptsObject;
+    }
+
     public function run() {
         $cssUrl = $this->functionsFacade->getUrlforCustomizableFile('admin.css', __FILE__, 'Display/');
         $this->functionsFacade->enqueueStylesheet('shashinAdminStyle', $cssUrl, false, $this->version);
         $jsUrl = $this->functionsFacade->getUrlforCustomizableFile('admin.js', __FILE__, 'Display/');
-        $this->functionsFacade->enqueueScript('shashinAdminScript', $jsUrl, array('jquery'), $this->version);
+        $this->functionsFacade->enqueueScript('shashinAdminScript', $jsUrl, array('jquery', 'jquery-ui-tabs'), $this->version);
         $menuDisplayUrl = $this->functionsFacade->getPluginsUrl('/Display/', __FILE__);
         $this->functionsFacade->localizeScript('shashinAdminScript', 'shashinDisplay', array('url' => $menuDisplayUrl));
+
+        // WordPress comes with jquery-ui scripts but not the themes
+        // thank you http://snippets.webaware.com.au/snippets/load-a-nice-jquery-ui-theme-in-wordpress/
+        $jqueryUi = $this->scriptsObject->query('jquery-ui-core');
+
+        if ($jqueryUi) {
+            $uiBase = "https://ajax.googleapis.com/ajax/libs/jqueryui/{$jqueryUi->ver}/themes/base";
+            $this->functionsFacade->registerStylesheet('jquery-ui-core', "$uiBase/jquery.ui.core.css", FALSE, $jqueryUi->ver);
+            $this->functionsFacade->registerStylesheet('jquery-ui-theme', "$uiBase/jquery.ui.theme.css", FALSE, $jqueryUi->ver);
+            $this->functionsFacade->registerStylesheet('jquery-ui-tabs', "$uiBase/jquery.ui.tabs.css", array('jquery-ui-core','jquery-ui-theme'), $jqueryUi->ver);
+            $this->functionsFacade->enqueueStylesheet('jquery-ui-tabs');
+        }
+
     }
 }
