@@ -92,40 +92,104 @@ else {
 
 <h3><?php _e("Add Albums", 'shashin'); ?></h3>
 
-<form method="post">
-<?php $this->functionsFacade->createNonceFields('shashinNonceAdd', 'shashinNonceAdd'); ?>
-<input type="hidden" name="shashinAction" value="addAlbums" />
+<div id="shashinTabs">
+    <ul>
+        <li><a href="#shashinTabs-overview">How does this work?</a></li>
+        <li><a href="#shashinTabs-picasa">Picasa/Google+</a></li>
+        <li><a href="#shashinTabs-youtube">YouTube</a></li>
+        <li><a href="#shashinTabs-twitpic">Twitpic</a></li>
+    </ul>
+    <div id="shashinTabs-overview">
+        <p><?php _e('Shashin can display photos and videos from several photo and video sharing sites. Shashin does not make copies of the photos or videos. Instead it downloads data about them into your WordPress site via JSON data feeds, and then makes it easy for you to display them on your site by making them available in the post editor\'s media browser. You will want to "synchronize" Shashin with your photos or videos when you upload new ones (on the Shashin settings page, you can set Shashin do this automatically). To get started, click the tab for the sites you want to synchronize with Shashin.', 'shashin'); ?></p>
+    </div>
+    <div id="shashinTabs-picasa">
+        <form method="post">
+        <?php $this->functionsFacade->createNonceFields('shashinNonceAddPicasa', 'shashinNonceAddPicasa'); ?>
+        <input type="hidden" name="shashinAction" value="addAlbums" />
+        <input type="hidden" name="shashinAlbumType" value="picasa" />
 
-<p><?php _e('Shashin can display photos and videos from public <em>Picasa (Google+)</em> albums, videos from <em>YouTube</em>, and photos from <em>Twitpic</em> by importing their RSS feeds. Please enter an RSS URL below (click "examples" for further details).', 'shashin'); ?></p>
+        <p><?php _e('Enter the URL for a Picasa/Google+ user to synchronize Shashin with all of his or her albums, or enter the URL for an individual album.', 'shashin'); ?>
+        <p><strong><?php _e('Important notes:', 'shashin'); ?></strong></p>
+        <ul>
+        <li><?php _e('Google is migrating Picasa to Google+ and making changes without advance notification. If you are unable to add an album, please', 'shashin'); ?>
+            <a href="http://www.toppa.com/category/technical/wordpress-plugins/support/"><?php _e('let me know', 'shashin'); ?></a></li>
+        <li><?php _e('Shashin only works with albums where the visibility is set to "Public on the web" or "Limited, anyone with the link"', 'shashin'); ?></li>
+        </ul>
+        <p><strong><?php _e('Examples', 'shashin'); ?>:</strong></p>
+        <dl>
+        <dt><?php _e("All the Picasa/Google+ albums for a user", 'shashin'); ?>:</dt>
+            <dd>https://picasaweb.google.com/100291303544453276374/</dd>
+            <dd>https://picasaweb.google.com/michaeltoppa/</dd>
+            <dd>https://plus.google.com/photos/100291303544453276374/albums</dd>
+            <dd></dd>
+        <dt><?php _e("A single Picasa/Google+ album", 'shashin'); ?>:</dt>
+            <dd>https://picasaweb.google.com/100291303544453276374/2012WordCampNashville</dd>
+            <dd>https://picasaweb.google.com/michaeltoppa/2012WordCampNashville</dd>
+            <dd>https://plus.google.com/photos/100291303544453276374/albums/5733852964209389153</dd>
+        </dl>
 
-<h4><a href="#" id="shashinExamples" class="shashinAdminHeading"><img src="<?php echo $this->functionsFacade->getPluginsUrl('images/plus.gif', __FILE__); ?>" id="shashinExamplesButton" />Examples</a></h4>
-<dl id="shashinExamplesSection" class="shashinExamplesList">
-<dt><strong><?php _e("All the Picasa albums for a user", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link on the bottom right of the Picasa user's home page", 'shashin'); ?></dt>
-    <dd>Example: http://picasaweb.google.com/data/feed/base/user/<strong>michaeltoppa</strong>?alt=rss&amp;kind=album&amp;hl=en_US</dd>
-<dt><strong><?php _e("A single Picasa album", 'shashin'); ?>:</strong> <?php _e("Look for the 'RSS' link in the sidebar of the album's main page", 'shashin'); ?></dt>
-    <dd>Example: http://picasaweb.google.com/data/feed/base/user/<strong>michaeltoppa</strong>/albumid/5269449390714706417?alt=rss&amp;kind=photo&amp;hl=en_US</dd>
-    <dt><strong><?php _e("Google+ albums", 'shashin'); ?>:</strong> <?php _e("Google+ actually uses Picasa in the background, but does not currently show an RSS link. If you enter your Google+ URL, Shashin will determine the RSS URL", 'shashin'); ?></dt>
-    <dd>Example - all of a users albums: https://plus.google.com/100291303544453276374/photos</dd>
-    <dd>Example - a single album: https://plus.google.com/photos/100291303544453276374/albums/5725071897625277617</dd>
-<dt><strong><?php _e("A YouTube user's videos", 'shashin'); ?>:</strong> <?php _e("Youtube does not display links for its feeds. You need to type in the RSS URL yourself", 'shashin'); ?></dt>
-    <dd>Example: https://gdata.youtube.com/feeds/api/users/<strong>mttoppa</strong>/uploads</dd>
-<dt><strong><?php _e('Most popular YouTube videos', 'shashin'); ?>:</strong> <?php _e('Youtube has many standard feeds available (top rated, etc) - see the', 'shashin'); ?>
-    <a href="http://code.google.com/apis/youtube/2.0/developers_guide_protocol.html#Retrieving_and_searching_for_videos"><?php _e('YouTube API page for more', 'shashin'); ?></a></dt>
-    <dd>Example: https://gdata.youtube.com/feeds/api/standardfeeds/most_popular</dd>
-<dt><strong><?php _e("A Twitpic user's photos", 'shashin'); ?>:</strong> <?php _e('Look for the RSS link near the top right of the user\'s page', 'shashin'); ?></dt>
-    <dd>Example: http://twitpic.com/photos/<strong>mtoppa</strong>/feed.rss</dd>
-<!--
-<dt><strong><?php _e("A Flickr set", 'shashin'); ?>:</strong> <?php _e("Look for the 'Feed' link on the bottom left of the set's main page.", 'shashin'); ?></dt>
-    <dd>Example: http://api.flickr.com/services/feeds/photoset.gne?set=72157622514276629&amp;nsid=65384822@N00&amp;lang=en-us</dd>
-<dt><strong><?php _e("A Flickr photostream", 'shashin'); ?>:</strong> <?php _e("Look for the 'Latest' link near the RSS icon on the bottom left of the photostream's main page.", 'shashin'); ?></dt>
-    <dd>Example: http://api.flickr.com/services/feeds/photos_public.gne?id=65384822@N00&amp;lang=en-us&amp;format=rss_200</dd>
- -->
-</dl>
-<p><strong><?php _e("URL:", 'shashin'); ?></strong>
-<?php echo ToppaHtmlFormField::quickBuild('userUrl', $refData['dataUrl']); ?><br />
-<?php _e("Include album's photos in random photo displays?", 'shashin'); ?>
-<?php echo ToppaHtmlFormField::quickBuild('includeInRandom', $refData['includeInRandom'], "Y"); ?></p>
+        <p><strong><?php _e("URL:", 'shashin'); ?></strong>
+            <?php echo ToppaHtmlFormField::quickBuild('userUrl', $refData['dataUrl']); ?><br />
+            <?php _e("Include these photos in random photo displays?", 'shashin'); ?>
+            <?php echo ToppaHtmlFormField::quickBuild('includeInRandom', $refData['includeInRandom'], 'Y'); ?></p>
+        <p><input class="button-primary" type="submit" name="submit" value="<?php _e("Add Albums", 'shashin'); ?>" /></p>
+        </form>
 
-<p><input class="button-primary" type="submit" name="submit" value="<?php _e("Add Albums", 'shashin'); ?>" /></p>
-</form>
+    </div>
+    <div id="shashinTabs-youtube">
+        <form method="post">
+        <?php $this->functionsFacade->createNonceFields('shashinNonceAddYoutube', 'shashinNonceAddYoutube'); ?>
+        <input type="hidden" name="shashinAction" value="addAlbums" />
+        <input type="hidden" name="shashinAlbumType" value="youtube" />
+
+        <p><?php _e('For YouTube, you need to enter the RSS URL for the feed you want to synchronize.', 'shashin'); ?></p>
+        <p><strong><?php _e('Important notes:', 'shashin'); ?></strong></p>
+            <ul>
+            <li><?php _e('Unfortunately Youtube does not display links for its feeds, but there are many standard feeds available (top rated, etc) - see the', 'shashin'); ?>
+                <a href="http://code.google.com/apis/youtube/2.0/developers_guide_protocol.html#Retrieving_and_searching_for_videos"><?php _e('YouTube API page for examples', 'shashin'); ?>.</a>
+                <?php _e('It also explains how to write the URLs for other kinds of feeds.', 'shashin'); ?></li>
+            <li><?php _e('Shashin will synchronize with the first 50 videos in a YouTube feed.', 'shashin'); ?></li>
+            </ul>
+        <p><strong><?php _e('Examples', 'shashin'); ?>:</strong></p>
+        <dl>
+        <dt><?php _e("A YouTube user's videos (put his or her username in the URL)", 'shashin'); ?>:</dt>
+            <dd>https://gdata.youtube.com/feeds/api/users/<strong>mttoppa</strong>/uploads</dd>
+        <dt><?php _e('Most popular YouTube videos', 'shashin'); ?>:</strong></dt>
+            <dd>https://gdata.youtube.com/feeds/api/standardfeeds/most_popular</dd>
+        <dt><?php _e('Most recent videos in the comedy category', 'shashin'); ?>:</dt>
+            <dd>https://gdata.youtube.com/feeds/api/videos/-/Comedy</dd>
+        </dl>
+
+        <p><strong><?php _e("RSS URL:", 'shashin'); ?></strong>
+            <?php echo ToppaHtmlFormField::quickBuild('userUrl', $refData['dataUrl']); ?><br />
+            <?php _e("Include these videos in random photo/video displays?", 'shashin'); ?>
+            <?php echo ToppaHtmlFormField::quickBuild('includeInRandom', $refData['includeInRandom'], 'Y'); ?></p>
+        <p><input class="button-primary" type="submit" name="submit" value="<?php _e("Add Videos", 'shashin'); ?>" /></p>
+        </form>
+
+    </div>
+    <div id="shashinTabs-twitpic">
+        <form method="post">
+            <?php $this->functionsFacade->createNonceFields('shashinNonceAddTwitpic', 'shashinNonceAddTwitpic'); ?>
+            <input type="hidden" name="shashinAction" value="addAlbums" />
+            <input type="hidden" name="shashinAlbumType" value="twitpic" />
+
+            <p><?php _e('Enter the URL for a Twitpic user to synchronize Shashin with all of his or her photos.', 'shashin'); ?>
+
+            <p><strong><?php _e('Example', 'shashin'); ?>:</strong></p>
+
+            <dl>
+            <dt><?php _e("A Twitpic user's photos", 'shashin'); ?>:</dt>
+            <dd>http://twitpic.com/photos/<strong>mtoppa</strong></dd>
+            </dl>
+            <p><strong><?php _e("URL:", 'shashin'); ?></strong>
+                <?php echo ToppaHtmlFormField::quickBuild('userUrl', $refData['dataUrl']); ?><br />
+                <?php _e("Include these photos in random photo displays?", 'shashin'); ?>
+                <?php echo ToppaHtmlFormField::quickBuild('includeInRandom', $refData['includeInRandom'], 'Y'); ?></p>
+            <p><input class="button-primary" type="submit" name="submit" value="<?php _e("Add Photos", 'shashin'); ?>" /></p>
+        </form>
+
+    </div>
+</div>
+
 </div>
