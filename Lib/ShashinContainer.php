@@ -19,7 +19,8 @@ class Lib_ShashinContainer {
 
     public function getDatabaseFacade() {
         if (!isset($this->dbFacade)) {
-            $this->dbFacade = new ToppaDatabaseFacadeWp();
+            $autoLoader = new ToppaAutoLoaderWp('/shashin');
+            $this->dbFacade = new ToppaDatabaseFacadeWp($autoLoader);
         }
 
         return $this->dbFacade;
