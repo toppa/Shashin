@@ -19,6 +19,9 @@ class Lib_ShashinContainer {
 
     public function getDatabaseFacade() {
         if (!isset($this->dbFacade)) {
+            /*
+             * @todo: remove the $autoLoader - it's needed here only for temporary compatibility with the old version of toppa-libs, which may still be active when upgrading through the wp plugin admin
+             */
             $autoLoader = new ToppaAutoLoaderWp('/shashin');
             $this->dbFacade = new ToppaDatabaseFacadeWp($autoLoader);
         }
