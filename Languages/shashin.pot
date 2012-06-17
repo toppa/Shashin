@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2012-06-16 22:01:55+00:00\n"
+"POT-Creation-Date: 2012-06-17 14:04:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1186,21 +1186,21 @@ msgstr ""
 msgid "Shashin Error"
 msgstr ""
 
-#: start.php:61
+#: start.php:63
 msgid "To activate Shashin you need to have the current version of"
 msgstr ""
 
-#: start.php:63
+#: start.php:65
 msgid ""
 "Click this link to view details, and then click the \"Install Now\" button "
 "to get the current version. Then you can activate Shashin."
 msgstr ""
 
-#: start.php:67
+#: start.php:69
 msgid "Shashin not activated. You must have at least PHP 5.1.2 to use Shashin"
 msgstr ""
 
-#: start.php:71
+#: start.php:73
 msgid ""
 "Shashin not activated. You must have at least WordPress 3.0 to use Shashin"
 msgstr ""
