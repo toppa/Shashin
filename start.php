@@ -42,6 +42,8 @@ function shashinActivate() {
     }
 
     require_once dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
+    new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
+    new ToppaAutoLoaderWp('/shashin');
     $shashin = new ShashinWp();
     $status = $shashin->install();
 
