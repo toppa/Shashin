@@ -43,7 +43,7 @@ class Public_ShashinHeadTags {
 
         // need to load this after the fancybox stylesheet since we are doing some overriding
         $shashinCssUrl = $this->functionsFacade->getUrlforCustomizableFile('shashin.css', __FILE__, 'Display/');
-        $this->functionsFacade->enqueueStylesheet('shashinStyle', $shashinCssUrl, array('shashinFancyboxStyle'), $this->version);
+        $this->functionsFacade->enqueueStylesheet('shashinStyle', $shashinCssUrl, false, $this->version);
 
         $adminAjax = $this->functionsFacade->getAdminUrl('admin-ajax.php');
         $shashinJsParams = array(
