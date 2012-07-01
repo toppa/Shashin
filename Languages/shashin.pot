@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2012-06-17 14:04:07+00:00\n"
+"POT-Creation-Date: 2012-07-01 00:45:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -931,13 +931,13 @@ msgstr ""
 msgid "Google+ albums"
 msgstr ""
 
-#: Admin/ShashinSynchronizerPicasa.php:61
+#: Admin/ShashinSynchronizerPicasa.php:67
 #: Admin/ShashinSynchronizerTwitpic.php:23
 #: Admin/ShashinSynchronizerYoutube.php:20
 msgid "Unrecognized URL: "
 msgstr ""
 
-#: Admin/ShashinSynchronizerPicasa.php:82
+#: Admin/ShashinSynchronizerPicasa.php:88
 msgid "Unable to determine RSS feed for URL"
 msgstr ""
 
@@ -1046,11 +1046,11 @@ msgstr ""
 msgid "Alt. Thumb IDs"
 msgstr ""
 
-#: Lib/ShashinAlbum.php:29
+#: Lib/ShashinAlbum.php:148
 msgid "Invalid album key"
 msgstr ""
 
-#: Lib/ShashinAlbum.php:36
+#: Lib/ShashinAlbum.php:155
 msgid "Failed to find database record for album"
 msgstr ""
 
@@ -1086,19 +1086,19 @@ msgstr ""
 msgid "\"user\" is not allowed for ordering with type=albumphotos"
 msgstr ""
 
-#: Lib/ShashinDataObject.php:37 Lib/ShashinSettings.php:26
+#: Lib/ShashinDataObject.php:36 Lib/ShashinSettings.php:26
 msgid "Invalid data property __get for "
 msgstr ""
 
-#: Lib/ShashinDataObject.php:46
+#: Lib/ShashinDataObject.php:45
 msgid "Invalid data property __set for "
 msgstr ""
 
-#: Lib/ShashinPhoto.php:21
+#: Lib/ShashinPhoto.php:179
 msgid "Invalid photo key"
 msgstr ""
 
-#: Lib/ShashinPhoto.php:28
+#: Lib/ShashinPhoto.php:186
 msgid "Failed to find database record for photo"
 msgstr ""
 
