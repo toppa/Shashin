@@ -47,8 +47,7 @@ class Lib_ShashinContainer {
     public function getClonablePhoto() {
         if (!isset($this->clonablePhoto)) {
             $this->getDatabaseFacade();
-            $this->getPhotoRefData();
-            $this->clonablePhoto = new Lib_ShashinPhoto($this->dbFacade, $this->photoRefData);
+            $this->clonablePhoto = new Lib_ShashinPhoto($this->dbFacade);
         }
 
         return $this->clonablePhoto;
@@ -93,9 +92,8 @@ class Lib_ShashinContainer {
     public function getClonableAlbum() {
         if (!isset($this->clonableAlbum)) {
             $this->getDatabaseFacade();
-            $this->getAlbumRefData();
             $this->getClonablePhoto();;
-            $this->clonableAlbum = new Lib_ShashinAlbum($this->dbFacade, $this->albumRefData, $this->clonablePhoto);
+            $this->clonableAlbum = new Lib_ShashinAlbum($this->dbFacade, $this->clonablePhoto);
         }
 
         return $this->clonableAlbum;

@@ -8,13 +8,12 @@ abstract class Lib_ShashinDataObject {
     protected $refData;
     protected $videoFileTypes = array('mpg', 'mod', 'mmv', 'tod', 'wmv', 'asf', 'avi', 'divx', 'mov', 'm4v', '3gp', '3g2', 'mp4', 'm2t', 'm2ts', 'mts', 'mkv');
 
-    public function __construct(ToppaDatabaseFacade $dbFacade, Lib_ShashinDataObjectRefData $refData) {
+    public function __construct(ToppaDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
-        $this->refData = $refData;
     }
 
     public function getRefData() {
-        return $this->refData->getRefData();
+        return $this->refData;
     }
 
     public function getTableName() {
@@ -30,7 +29,7 @@ abstract class Lib_ShashinDataObject {
             return $this->data[$name];
         }
 
-        elseif (array_key_exists($name, $this->getRefData())) {
+        elseif (array_key_exists($name, $this->refData)) {
             return null;
         }
 
@@ -38,7 +37,7 @@ abstract class Lib_ShashinDataObject {
     }
 
     public function __set($name, $value) {
-        if (array_key_exists($name, $this->getRefData())) {
+        if (array_key_exists($name, $this->refData)) {
             $this->data[$name] = $value;
             return true;
         }
@@ -53,7 +52,7 @@ abstract class Lib_ShashinDataObject {
     public function set(array $fields) {
         $intTypes = $this->dbFacade->getIntTypes();
 
-        foreach ($this->getRefData() as $k=>$v) {
+        foreach ($this->refData as $k=>$v) {
             // needed for compatibility with mySql on Windows
             if (in_array($v['db']['type'], $intTypes) && array_key_exists($k, $fields)) {
                 $fields[$k] = intval($fields[$k]);
