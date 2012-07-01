@@ -88,6 +88,7 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 = 3.2.4 =
 * Add support for limited view Picasa albums (works with Picasa URLs only, not Google+)
 * Bug fix: setup to enqueue scripts and styles with wp_enqueue_scripts() (not template_redirect)
+* Support additional formats of Picasa and Google+ URLs
 * Start refactoring unit tests
 
 = 3.2.3 = Remove explicit depedency on Fancybox stylesheet when loading the Shashin stylesheet (to facilitate support of other photo viewers)
