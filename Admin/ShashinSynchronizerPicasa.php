@@ -26,35 +26,41 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
     public function setJsonUrlFromUserUrl() {
         // Google Plus - an individual album
         // https://plus.google.com/photos/100291303544453276374/albums/5725071897625277617
-        if (preg_match('#^https://plus\.google\.com/photos/(\d+)/albums/(\d+)#', $this->request['userUrl'], $matches) == 1) {
+        // https://plus.google.com/u/0/photos/111831862730326767526/albums/5758674999667643409
+        if (preg_match('#^https://plus\.google\.com/.*photos/(\d+)/albums/(\d+)(.*)#', $this->request['userUrl'], $matches) == 1) {
             $jsonUrl = 'https://picasaweb.google.com/data/feed/api/user/'
                 . $matches[1]
                 . '/albumid/'
                 . $matches[2]
                 . '?alt=json&kind=photo';
+            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[3]);
         }
 
         // Google Plus - all of a user's albums
         // https://plus.google.com/100291303544453276374/photos
-        else if (preg_match('#^https://plus.google.com/photos/(\d+)#', $this->request['userUrl'], $matches) == 1) {
+        // https://plus.google.com/u/0/photos/111831862730326767526/albums
+        else if (preg_match('#^https://plus.google.com/.*photos/(\d+)(.*)#', $this->request['userUrl'], $matches) == 1) {
             $jsonUrl = 'https://picasaweb.google.com/data/feed/api/user/'
                 . $matches[1]
                 . '?alt=json&kind=album';
+            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[2]);
         }
 
         // Picasa - an individual album
-        elseif (preg_match('#^https://picasaweb\..+/\w+/\w+#', $this->request['userUrl'], $matches) == 1) {
+        elseif (preg_match('#^https://picasaweb\..+/.+/(.+)#', $this->request['userUrl'], $matches) == 1) {
             $rssUrl = $this->retrievePicasaRssUrl();
             $jsonUrl = str_replace('/base/', '/api/', $rssUrl);
             $jsonUrl = str_replace('alt=rss', 'alt=json', $jsonUrl);
+            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[1]);
         }
 
         // Picasa - all of a user's albums
-        else if (preg_match('#^(https://picasaweb\..+)/(\w+)#', $this->request['userUrl'], $matches) == 1) {
+        else if (preg_match('#^(https://picasaweb\..+)/(.+)#', $this->request['userUrl'], $matches) == 1) {
             $jsonUrl = $matches[1]
                 . '/data/feed/api/user/'
                 . $matches[2]
                 . '?alt=json&kind=album';
+            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[2]);
         }
 
         else {
@@ -83,6 +89,18 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         }
 
         return $rssUrl;
+    }
+
+    public function addAuthKeyIfNeeded($urlMatch = null) {
+        if (!isset($urlMatch)) {
+            return null;
+        }
+
+        if (preg_match('/(authkey=\w+)/', $urlMatch, $authKeyMatches) != 1) {
+            return null;
+        }
+
+        return '&' . $authKeyMatches[1];
     }
 
     public function syncAlbumForThisAlbumType(array $decodedAlbumData) {

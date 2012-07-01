@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.2.3';
+    private $version = '3.2.4';
 
     public function __construct() {
     }
@@ -29,7 +29,7 @@ class ShashinWp {
         add_action('admin_init', array($this, 'runtimeUpgrade'));
         add_action('admin_menu', array($this, 'initToolsMenu'));
         add_action('admin_menu', array($this, 'initSettingsMenu'));
-        add_action('template_redirect', array($this, 'displayPublicHeadTags'));
+        add_action('wp_enqueue_scripts', array($this, 'displayPublicHeadTags'));
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));

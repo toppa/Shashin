@@ -58,3 +58,4 @@ class Admin_ShashinMenuActionHandlerPhotos {
         return __('Updated "Include In Random" settings', 'shashin');
     }
 }
+// 610-316-5890
