@@ -14,8 +14,7 @@ if (file_exists($shashinTestsAutoLoaderPath)) {
 class ShashinUnitTestsSuite extends TestSuite {
    function __construct() {
        parent::__construct();
-       $this->addFile('Lib/UnitShashinAlbumRefData.php');
-       $this->addFile('Lib/UnitShashinPhotoRefData.php');
+       $this->addFile('Lib/UnitShashinPhoto.php');
    }
 }
 
