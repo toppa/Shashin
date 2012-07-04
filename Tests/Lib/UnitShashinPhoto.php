@@ -3,34 +3,33 @@
 Mock::generate('ToppaDatabaseFacadeWp');
 
 class UnitLib_ShashinPhoto extends UnitTestCase {
-    private $samplePhotoData;
+    private $samplePhotoData = array(
+        'id' => 1,
+        'sourceId' => 5590273098322362706,
+        'albumId' => 2,
+        'filename' => 'IMG_0360.JPG',
+        'description' => 'Kai is not so sure about his new friend',
+        'linkUrl' => 'https://picasaweb.google.com/michaeltoppa/2011Honolulu',
+        'contentUrl' => 'https://lh5.googleusercontent.com/_e1IlgcNcTSg/TZSjw67tQVI/AAAAAAAAIik/LI3EeUEGJYs/IMG_0360.JPG',
+        'contentType' => 'image/jpeg',
+        'width' => 1024,
+        'height' => 768,
+        'takenTimestamp' => 1301524665,
+        'uploadedTimestamp' => 1301586883,
+        'tags' => null,
+        'lastSync' => 1304249789,
+        'includeInRandom' => 'Y',
+        'sourceOrder' => 1,
+        'fstop' => 3.2,
+        'make' => 'Canon',
+        'model' => 'Canon PowerShot SD78',
+        'exposure' => 0.0125,
+        'focalLength' => 5.9,
+        'iso' => 100
+    );
     private $photo;
 
     public function __construct() {
-        $this->samplePhotoData = array(
-            'id' => 1,
-            'photoId' => 5590273098322362706,
-            'albumId' => 2,
-            'filename' => 'IMG_0360.JPG',
-            'description' => 'Kai is not so sure about his new friend',
-            'linkUrl' => 'https://picasaweb.google.com/michaeltoppa/2011Honolulu',
-            'contentUrl' => 'https://lh5.googleusercontent.com/_e1IlgcNcTSg/TZSjw67tQVI/AAAAAAAAIik/LI3EeUEGJYs/IMG_0360.JPG',
-            'contentType' => 'image/jpeg',
-            'width' => 1024,
-            'height' => 768,
-            'takenTimestamp' => 1301524665,
-            'uploadedTimestamp' => 1301586883,
-            'tags' => null,
-            'lastSync' => 1304249789,
-            'includeInRandom' => 'Y',
-            'sourceOrder' => 1,
-            'fstop' => 3.2,
-            'make' => 'Canon',
-            'model' => 'Canon PowerShot SD78',
-            'exposure' => 0.0125,
-            'focalLength' => 5.9,
-            'iso' => 100
-        );
     }
 
     public function setUp() {
@@ -39,6 +38,11 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $dbFacade->setReturnValue('getTableNamePrefix', 'wp_');
         $dbFacade->setReturnValue('sqlInsert', 1);
         $dbFacade->setReturnValue('sqlDelete', true);
+        $dbFacade->setReturnValue('getIntTypes', array(
+                'tinyint', 'smallint', 'mediumint', 'int', 'bigint',
+                'tinyint unsigned', 'smallint unsigned', 'mediumint unsigned', 'int unsigned', 'bigint unsigned'
+            )
+        );
         $this->photo = new Lib_ShashinPhoto($dbFacade);
     }
 
@@ -77,7 +81,44 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->assertTrue(empty($data));
     }
 
+    public function testSetWithNoArgument() {
+        $this->expectError(); // for the type hinting fail
+        $this->expectException(); // for the argument not being set
+        $this->photo->set();
+    }
+
+    public function testSetWithEmptyArray() {
+        $this->expectException();
+        $this->photo->set(array());
+    }
+
+    public function testSetWithValidData() {
+        $this->assertEqual($this->samplePhotoData, $this->photo->set($this->samplePhotoData));
+    }
+
+    public function testSetWithNonNumericAlbumId() {
+        $badData = $this->samplePhotoData;
+        $badData['albumId'] = 'foo';
+        $this->expectException();
+        $this->photo->set($badData);
+    }
+
+    public function testRefreshWithNoArgument() {
+        $this->expectError(); // for the type hinting fail
+        $this->expectException(); // for the argument not being set
+        $this->photo->refresh();
+    }
+
+    public function testRefreshSetWithNonNumericId() {
+        $this->expectException();
+        $this->photo->refresh('foo');
+    }
+
+    public function testRefreshWithValidId() {
+        $this->assertEqual($this->samplePhotoData, $this->photo->refresh(1));
+    }
 /*
+ * @todo: old tests - need to clean up
 
     public function testGetPhoto() {
         $photoData = $photo->get(1);
