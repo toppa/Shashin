@@ -30,7 +30,14 @@ class Admin_ShashinHeadTags {
 
         // WordPress comes with jquery-ui scripts but not the themes
         // thank you http://snippets.webaware.com.au/snippets/load-a-nice-jquery-ui-theme-in-wordpress/
-        $jqueryUi = $this->scriptsObject->query('jquery-ui-core');
+
+        /*
+         * @todo: in WP 3.4.1 this returns 1.8.20, which returns a 404 from google
+         * hardcoding to 1.8.18 for now
+         */
+        //$jqueryUi = $this->scriptsObject->query('jquery-ui-core');
+        $jqueryUi = new stdClass();
+        $jqueryUi->ver = '1.8.18';
 
         if ($jqueryUi) {
             $uiBase = "https://ajax.googleapis.com/ajax/libs/jqueryui/{$jqueryUi->ver}/themes/base";
