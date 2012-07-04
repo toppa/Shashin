@@ -175,7 +175,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     }
 
     public function refresh($id) {
-        if (!is_numeric($id)) {
+        if (!isset($id) || !is_numeric($id)) {
             throw New Exception(__("Invalid photo key", "shashin"));
         }
 
