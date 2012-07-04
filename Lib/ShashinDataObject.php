@@ -42,7 +42,7 @@ abstract class Lib_ShashinDataObject {
             return true;
         }
 
-        throw New Exception(__("Invalid data property __set for ", "shashin") . htmlentities($name));
+        throw New Exception(__('Invalid data property __set for ', 'shashin') . htmlentities($name));
     }
 
     public function getData() {
@@ -50,17 +50,31 @@ abstract class Lib_ShashinDataObject {
     }
 
     public function set(array $fields) {
+        if (!isset($fields) || empty($fields)) {
+            throw New Exception(__('set() must be caled with an array', 'shashin'));
+        }
+
         $intTypes = $this->dbFacade->getIntTypes();
 
         foreach ($this->refData as $k=>$v) {
-            // needed for compatibility with mySql on Windows
-            if (in_array($v['db']['type'], $intTypes) && array_key_exists($k, $fields)) {
+            // needed for compatibility with mySql on Windows, and a good check anyway
+            if (in_array($v['db']['type'], $intTypes) && isset($fields[$k])) {
+                if (!is_numeric($fields[$k])) {
+                    throw New Exception($k . __(' must be numeric', 'shashin'));
+                }
+
                 $fields[$k] = intval($fields[$k]);
             }
         }
 
-        $this->data = array_merge($this->data, $fields);
-        return true;
+        foreach ($fields as $k=>$v) {
+            if (array_key_exists($k, $this->refData)) {
+                $this->data[$k] = $v;
+            }
+        }
+
+        //$this->data = array_merge($this->data, $fields);
+        return $this->data;
     }
 
     abstract public function isVideo();
