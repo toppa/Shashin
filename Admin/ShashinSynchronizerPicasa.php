@@ -96,7 +96,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
             return null;
         }
 
-        if (preg_match('/(authkey=\w+)/', $urlMatch, $authKeyMatches) != 1) {
+        if (preg_match('/(authkey=[\w-]+)/', $urlMatch, $authKeyMatches) != 1) {
             return null;
         }
 
@@ -163,6 +163,9 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         return $sourceOrder;
     }
 
+    /*
+     * @todo: add a setting that allows for setting the maximum desired resolution
+     */
     public function getHighestResolutionVideoIfNeeded(array $entry, array $photoRefData) {
         if (!is_array($entry['media$group']['media$content'])) {
             return $photoRefData;
