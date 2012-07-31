@@ -34,7 +34,8 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
 
     public function setUp() {
         $dbFacade = new MockToppaDatabaseFacadeWp();
-        $dbFacade->setReturnValue('sqlSelectRow', $this->samplePhotoData);
+        // the sample data has an ID of 1, so only return the data if the ID requested is 1
+        $dbFacade->setReturnValue('sqlSelectRow', $this->samplePhotoData, array('*', '*', array('id' => 1)));
         $dbFacade->setReturnValue('getTableNamePrefix', 'wp_');
         $dbFacade->setReturnValue('sqlInsert', 1);
         $dbFacade->setReturnValue('sqlDelete', true);
@@ -60,9 +61,13 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->assertEqual('shashin_photo', $this->photo->getBaseTableName());
     }
 
-    public function testMagicSetAndGetWithValidProperty() {
+    public function testMagicSetAndGetWithValidValue() {
         $this->photo->filename = 'test filename';
         $this->assertEqual('test filename', $this->photo->filename);
+    }
+
+    public function testMagicSetAndGetWithUnsetValue() {
+        $this->assertNull($this->photo->filename);
     }
 
     public function testMagicGetWithInvalidProperty() {
@@ -75,10 +80,33 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->photo->foobar = 'test foobar';
     }
 
-    public function testGetDataBeforePopulated() {
-        $data = $this->photo->getData();
-        $this->assertTrue(is_array($data));
-        $this->assertTrue(empty($data));
+    public function testRefreshWithNoArgument() {
+        $this->expectError(); // for the missing argument
+        $this->expectException(); // for the explicitly thrown exception
+        $this->photo->refresh();
+    }
+
+    public function testRefreshWithInvalidIdDataType() {
+        $this->expectException();
+        $this->photo->refresh('foo');
+    }
+
+    public function testRefreshWithValidId() {
+        $photoData = $this->photo->refresh(1);
+        $this->assertTrue(is_array($photoData));
+        $this->assertEqual(1, $photoData['id']);
+    }
+
+    public function testRefreshWithPhotoNotFound() {
+        $this->expectException();
+        $this->photo->refresh(2);
+    }
+
+    // this is essentially the same as testing refresh()
+    public function testGet() {
+        $photoData = $this->photo->refresh(1);
+        $this->assertTrue(is_array($photoData));
+        $this->assertEqual(1, $photoData['id']);
     }
 
     public function testSetWithNoArgument() {
@@ -103,55 +131,20 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->photo->set($badData);
     }
 
-    public function testRefreshWithNoArgument() {
-        $this->expectError(); // for the type hinting fail
-        $this->expectException(); // for the argument not being set
-        $this->photo->refresh();
+    public function testFlush() {
+        $this->assertTrue($this->photo->flush());
+        $this->assertEqual(1, $this->photo->id);
     }
 
-    public function testRefreshSetWithNonNumericId() {
-        $this->expectException();
-        $this->photo->refresh('foo');
-    }
-
-    public function testRefreshWithValidId() {
-        $this->assertEqual($this->samplePhotoData, $this->photo->refresh(1));
+    public function testDelete() {
+        $this->photo->set($this->samplePhotoData);
+        // the deleted data is returned
+        $this->assertEqual($this->samplePhotoData, $this->photo->delete());
     }
 /*
  * @todo: old tests - need to clean up
 
-    public function testGetPhoto() {
-        $photoData = $photo->get(1);
-        $this->assertEqual($photo->filename, $this->samplePhotoData['filename']);
-        $this->assertEqual($photo->width, $this->samplePhotoData['width']);
-        $this->assertEqual($this->samplePhotoData, $photoData);
-    }
 
-
-    public function testRefreshPhotoUsingInvalidKey() {
-        try {
-            $photo = new Lib_ShashinPhoto($this->dbFacade);
-            $photo->refresh('hello');
-            $this->fail("Exception was expected - invalid test case");
-        }
-
-        catch (Exception $e) {
-            $this->pass("received expected invalid test case");
-        }
-    }
-
-    public function testUpdateOfPhotoFields() {
-        $originalFields = array('title' => 'old title', 'description' => 'test description');
-        $revisedFields = array('title' => 'new title');
-        $expectedFinalFields = array('title' => 'new title', 'description' => 'test description');
-        $photo = new Lib_ShashinPhoto($this->dbFacade);
-        $photo->set($originalFields);
-        $photo->set($revisedFields);
-        $photoData = $photo->getData();
-        $this->assertEqual($expectedFinalFields['filename'], $photo->filename);
-        $this->assertEqual($expectedFinalFields['description'], $photo->description);
-        $this->assertEqual($expectedFinalFields, $photoData);
-    }
 
     public function testDeletePhoto() {
         $photo = new Lib_ShashinPhoto($this->dbFacade);
