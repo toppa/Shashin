@@ -95,6 +95,14 @@ jQuery(document).ready(function($) {
     });
 
     $('.shashinThumbnailDiv').delegate('.shashinAlbumThumbLink', 'click', function(event) {
+
+        // to prevent the photos showing up twice if the user double-clicks
+        if ($('.shashinAlbumThumbLink').data('clicked')) {
+            return false;
+        }
+
+        $('.shashinAlbumThumbLink').data('clicked', true);
+
         var parentTable = $(this).closest('table');
         var parentTableIdParts = $(parentTable).attr('id').split('_');
         var parentTableStyle = $(parentTable).attr('style');
@@ -158,6 +166,7 @@ jQuery(document).ready(function($) {
     });
 
     $('.shashinPhotoGroups').delegate('.shashinReturn', 'click', function(event) {
+        $('.shashinAlbumThumbLink').data('clicked', false); // ok to click an album thumbnail again
         var returnLinkIdParts = $(this).attr('id').split('_');
         var parentTableId = '#shashinGroup_' + returnLinkIdParts[1];
         var selectedAlbumPhotosId = '#shashinAlbumPhotos_' + returnLinkIdParts[2]
