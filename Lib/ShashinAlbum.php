@@ -134,6 +134,29 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
         parent::__construct($dbFacade);
     }
 
+    public function get($id = null) {
+        // check a field we would have only if we have a fully constructed album
+        if (!isset($this->data['sourceId'])) {
+            return $this->refresh($id);
+        }
+
+        return $this->data;
+    }
+
+    public function refresh($id) {
+        if (!is_numeric($id)) {
+            throw New Exception(__("Invalid album key", "shashin"));
+        }
+
+        $where = array("id" => $id);
+        $this->data = $this->dbFacade->sqlSelectRow($this->tableName, null, $where);
+
+        if (empty($this->data)) {
+            throw New Exception(__("Failed to find database record for album", "shashin"));
+        }
+
+        return $this->data;
+    }
 
     public function delete() {
         $photosTableName = $this->clonablePhoto->getTableName();
@@ -142,6 +165,16 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
         $albumData = $this->data;
         $this->data = array(); // do not use unset
         return $albumData;
+    }
+
+    public function flush() {
+        $insertId = $this->dbFacade->sqlInsert($this->tableName, $this->data, true);
+
+        if (!$this->id) {
+            $this->id = $insertId;
+        }
+
+        return true;
     }
 
     // degenerate

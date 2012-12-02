@@ -144,7 +144,7 @@ class ShashinWp {
         }
     }
 
-    public function handleShortcode($arrayShortcode, $returnCollectionOnly = false) {
+    public function handleShortcode($arrayShortcode) {
         try {
             // if the shortcode has no attributes specified, WP passes
             // an empty string instead of an array
@@ -169,10 +169,6 @@ class ShashinWp {
                     break;
                 default:
                     return __('Invalid shashin shortcode type: ', 'shashin') . htmlentities($shortcode->type());
-            }
-
-            if ($returnCollectionOnly) {
-                return $dataObjectCollection->getCollectionForShortcode($shortcode);
             }
 
             $layoutManager = $publicContainer->getLayoutManager($shortcode, $dataObjectCollection, $_REQUEST);
@@ -347,10 +343,5 @@ class ShashinWp {
     public static function display($arrayShortcode) {
         $shashinWp = new ShashinWp();
         return $shashinWp->handleShortcode($arrayShortcode);
-    }
-
-    public static function getDataObjects($arrayShortcode) {
-        $shashinWp = new ShashinWp();
-        return $shashinWp->handleShortcode($arrayShortcode, true);
     }
 }
