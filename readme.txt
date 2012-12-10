@@ -3,8 +3,8 @@ Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
-Tested up to: 3.4.1
-Stable tag: 3.2.5
+Tested up to: 3.5
+Stable tag: 3.2.6
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
@@ -16,7 +16,7 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 **What's new in Shashin 3.2**
 
 * More user friendly UI for adding albums, photos, and videos (uses jQuery tabs menu)
-* Accepts Google+ URLs for adding albums
+* Accepts Google+ URLs for adding public albums
 * "Limited view" album support for Picasa albums (works with Picasa URLs only, not Google+)
 
 **Overview**
@@ -85,9 +85,13 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 
 == Changelog ==
 
+= 3.2.6 =
+* Bug fix: album photos were being loaded multiple times if someone clicked an album thumbnail multiple times. Now only loads them once.
+* Bug fix: on rare occasions, album synchronizing resulted in photos being deleted and reloaded, which broke photo tags relying on the original ID numbers. I've made a change to the synchronizing process that should fix this.
+
 = 3.2.5 =
 * Bug fix: handle Picasa authkeys that includes hyphens
-* Workaround: WP 3.4.1 is returning 1.8.20 for the version of $wp_scripts->->query('jquery-ui-core'), which is not available through Googlel APIs. The Shashin Tools screen relies on this, so hardcoded to 1.8.18 for now
+* Workaround: WP 3.4.1 is returning 1.8.20 for the version of $wp_scripts->->query('jquery-ui-core'), which is not available through Google APIs. The Shashin Tools screen relies on this, so hardcoded to 1.8.18 for now
 * Various internal improvements to ShashinDataObject and ShashinPhoto, driven by new unit tests
 
 = 3.2.4 =

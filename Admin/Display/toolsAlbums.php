@@ -112,8 +112,8 @@ else {
         <p><strong><?php _e('Important notes:', 'shashin'); ?></strong></p>
         <ul>
         <li><?php _e('Google is migrating Picasa to Google+ and making changes without advance notification. If you are unable to add an album, please', 'shashin'); ?>
-            <a href="http://www.toppa.com/category/technical/wordpress-plugins/support/"><?php _e('let me know', 'shashin'); ?></a></li>
-        <li><?php _e('Shashin only works with albums where the visibility is set to "Public" (and for Picasa only, if you include the authkey in the URL, it will also support albums set to "Limited, anyone with the link")', 'shashin'); ?></li>
+            <a href="http://www.toppa.com/category/technical/wordpress-plugins/support/"><?php _e('let me know', 'shashin'); ?></a>.</li>
+        <li><?php _e('Shashin works with albums where the visibility is set to "public." Also, for albums with visibility set to "limited, anyone with the link", they will work if you include the "authkey" when pasting the URL in the form below (this is supported for Picasa, not Google+).', 'shashin'); ?></li>
         </ul>
         <p><strong><?php _e('Examples', 'shashin'); ?>:</strong></p>
         <dl>
