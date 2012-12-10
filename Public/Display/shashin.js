@@ -126,39 +126,41 @@ jQuery(document).ready(function($) {
 
         $.get(shashinJs.ajaxUrl, dataToSend, function(dataReceived) {
             $(parentTable).fadeOut('slow', function() {
-                $(parentTable).after($(dataReceived).hide());
-                $('#shashinAlbumPhotos_' + linkIdParts[2]).fadeIn('slow');
+				if($(".shashinPhotoGroups > div").length == 0){
+					$(parentTable).after($(dataReceived).hide());
+					$('#shashinAlbumPhotos_' + linkIdParts[2]).fadeIn('slow');
 
-                // Fancybox isn't aware of photos not included in the initial page load
-                // thank you http://jdmweb.com/resources/FancyBox (see comment reply to @pazul)
-                if (shashinJs.imageDisplayer == 'fancybox') {
-                    $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox();
-                    $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancyboxVideo').fancybox();
-                    $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox({
-                        'showCloseButton': false,
-                        'titlePosition': 'inside',
-                        'cyclic': !!(shashinJs.fancyboxCyclic-0),
-                        'transitionIn': shashinJs.fancyboxTransition,
-                        'transitionOut': shashinJs.fancyboxTransition,
-                        'onStart': setShashinFancyBoxCaption
-                    });
+					// Fancybox isn't aware of photos not included in the initial page load
+					// thank you http://jdmweb.com/resources/FancyBox (see comment reply to @pazul)
+					if (shashinJs.imageDisplayer == 'fancybox') {
+						$('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox();
+						$('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancyboxVideo').fancybox();
+						$('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox({
+							'showCloseButton': false,
+							'titlePosition': 'inside',
+							'cyclic': !!(shashinJs.fancyboxCyclic-0),
+							'transitionIn': shashinJs.fancyboxTransition,
+							'transitionOut': shashinJs.fancyboxTransition,
+							'onStart': setShashinFancyBoxCaption
+						});
 
-                    $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancyboxVideo').fancybox({
-                        'padding': 0,
-                        'autoScale': false,
-                        'href': this.href,
-                        'type': 'swf',
-                        'cyclic': !!(shashinJs.fancyboxCyclic-0),
-                        'width': shashinJs.fancyboxVideoWidth-0,
-                        'height': shashinJs.fancyboxVideoHeight-0,
-                        'transitionIn': shashinJs.fancyboxTransition,
-                        'transitionOut': shashinJs.fancyboxTransition,
-                        'swf': {
-                            'wmode': 'transparent',
-                            'allowfullscreen': 'true'
-                        }
-                    });
-                }
+						$('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancyboxVideo').fancybox({
+							'padding': 0,
+							'autoScale': false,
+							'href': this.href,
+							'type': 'swf',
+							'cyclic': !!(shashinJs.fancyboxCyclic-0),
+							'width': shashinJs.fancyboxVideoWidth-0,
+							'height': shashinJs.fancyboxVideoHeight-0,
+							'transitionIn': shashinJs.fancyboxTransition,
+							'transitionOut': shashinJs.fancyboxTransition,
+							'swf': {
+								'wmode': 'transparent',
+								'allowfullscreen': 'true'
+							}
+						});
+					}
+				}
             })
         });
 
