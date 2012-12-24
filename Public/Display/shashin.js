@@ -95,13 +95,14 @@ jQuery(document).ready(function($) {
     });
 
     $('.shashinThumbnailDiv').delegate('.shashinAlbumThumbLink', 'click', function(event) {
+        uniqueThumbnailDivId = '#' + $(this).attr('id');
 
         // to prevent the photos showing up twice if the user double-clicks
-        if ($('.shashinAlbumThumbLink').data('clicked')) {
+        if ($(uniqueThumbnailDivId).data('clicked')) {
             return false;
         }
 
-        $('.shashinAlbumThumbLink').data('clicked', true);
+        $(uniqueThumbnailDivId).data('clicked', true);
 
         var parentTable = $(this).closest('table');
         var parentTableIdParts = $(parentTable).attr('id').split('_');

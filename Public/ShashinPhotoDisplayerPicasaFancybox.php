@@ -17,7 +17,6 @@ class Public_ShashinPhotoDisplayerPicasaFancybox extends Public_ShashinPhotoDisp
             $groupNumber .= '_' . $this->albumIdForAjaxPhotoDisplay;
         }
 
-        $this->linkRel = 'shashinFancybox_' . $groupNumber;
         return $this->linkRel;
     }
 
