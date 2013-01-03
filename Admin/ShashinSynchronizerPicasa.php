@@ -73,6 +73,11 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
     public function retrievePicasaRssUrl() {
         $rssUrl = null;
         $response = $this->httpRequester->request($this->request['userUrl'], array('timeout' => 30, 'sslverify' => false));
+
+        if (!class_exists('DOMDocument')) {
+            throw New Exception(__('Your installation of PHP has been configured without DOM support. DOM support is required to sync Picasa albums. If you are using Google+, try using the Google+ URL instead.', 'shashin'));
+        }
+
         $doc = new DOMDocument();
         @$doc->loadHTML($response['body']);
         $links = $doc->getElementsByTagName('link');
