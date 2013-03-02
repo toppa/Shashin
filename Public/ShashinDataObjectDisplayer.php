@@ -330,6 +330,10 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->imgWidth;
     }
 
+    public function getExpandedSizesMap() {
+        return $this->expandedSizesMap;
+    }
+
     abstract public function setExifDataForCaption();
     abstract public function setDateForCaption($date = null);
     abstract public function adjustVideoDimensions();
