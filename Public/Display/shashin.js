@@ -2,7 +2,19 @@
 // from wp_localize_script come in as strings
 
 jQuery(document).ready(function($) {
-    if (shashinJs.imageDisplayer == 'fancybox') {
+    if (shashinJs.imageDisplayer == 'prettyphoto') {
+        $("a[rel^='prettyPhoto']").prettyPhoto({
+            theme: shashinJs.prettyPhotoTheme,
+            overlay_gallery: !!(shashinJs.prettyPhotoOverlayGallery-0),
+            default_width: shashinJs.prettyPhotoDefaultWidth-0,
+            default_height: shashinJs.prettyPhotoDefaultHeight-0,
+            show_title: !!(shashinJs.prettyPhotoShowTitle-0),
+            autoplay_slideshow: !!(shashinJs.prettyPhotoAutoplaySlideshow-0),
+            slideshow: shashinJs.prettyPhotoSlideshow-0
+        });
+    }
+
+    else if (shashinJs.imageDisplayer == 'fancybox') {
         // made this a separarte function as it is used below as well
         function setShashinFancyBoxCaption(currentArray, currentIndex, currentOpts) {
             var link = currentArray[ currentIndex ];
@@ -130,9 +142,21 @@ jQuery(document).ready(function($) {
                 $(parentTable).after($(dataReceived).hide());
                 $('#shashinAlbumPhotos_' + linkIdParts[2]).fadeIn('slow');
 
+                if (shashinJs.imageDisplayer == 'prettyphoto') {
+                    $('#shashinAlbumPhotos_' + linkIdParts[2] + " a[rel^='prettyPhoto']").prettyPhoto({
+                        theme: shashinJs.prettyPhotoTheme,
+                        overlay_gallery: !!(shashinJs.prettyPhotoOverlayGallery-0),
+                        default_width: shashinJs.prettyPhotoDefaultWidth-0,
+                        default_height: shashinJs.prettyPhotoDefaultHeight-0,
+                        show_title: !!(shashinJs.prettyPhotoShowTitle-0),
+                        autoplay_slideshow: !!(shashinJs.prettyPhotoAutoplaySlideshow-0),
+                        slideshow: shashinJs.prettyPhotoSlideshow-0
+                    });
+                }
+
                 // Fancybox isn't aware of photos not included in the initial page load
                 // thank you http://jdmweb.com/resources/FancyBox (see comment reply to @pazul)
-                if (shashinJs.imageDisplayer == 'fancybox') {
+                else if (shashinJs.imageDisplayer == 'fancybox') {
                     $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox();
                     $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancyboxVideo').fancybox();
                     $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox({
