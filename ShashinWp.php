@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.2.6';
+    private $version = '3.3';
 
     public function __construct() {
     }
@@ -111,13 +111,15 @@ class ShashinWp {
     }
 
     public function initSettingsMenu() {
-        add_options_page(
+       $optionsPage = add_options_page(
             'Shashin',
             'Shashin',
             'manage_options',
             'shashin',
             array($this, 'displaySettingsMenu')
         );
+
+        add_action("admin_print_styles-$optionsPage", array($this, 'displayAdminHeadTags'));
     }
 
     public function displaySettingsMenu() {
