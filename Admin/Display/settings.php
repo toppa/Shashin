@@ -18,9 +18,22 @@
     <form method="post">
         <?php $this->functionsFacade->createAdminHiddenInputFields('shashin'); ?>
         <input type="hidden" name="shashinAction" value="updateSettings" />
-        <table class="form-table">
+        <div id="shashinTabs">
         <?php
+            echo '<ul>' . PHP_EOL;
+
+            foreach($this->settingsGroups as $groupData) {
+                $label = strtolower(str_replace(" ", "_", $groupData['label']));
+                echo "<li><a href='#shashinTabs-$label'>{$groupData['label']}</a></li>" . PHP_EOL;
+            }
+
+            echo '</ul>' .PHP_EOL;
+
             foreach ($this->settingsGroups as $groupName=>$groupData) {
+                $label = strtolower(str_replace(" ", "_", $groupData['label']));
+
+                echo "<div id='shashinTabs-$label'>" . PHP_EOL;
+                echo "<table class='form-table'>" . PHP_EOL;
                 echo $this->createHtmlForSettingsGroupHeader($groupData);
 
                 foreach ($this->refData as $k=>$v) {
@@ -28,10 +41,12 @@
                         echo $this->createHtmlForSettingsField($k);
                     }
                 }
+
+                echo '</table></div>' . PHP_EOL;
             }
         ?>
-        </table>
+        </div>
         <p class="submit"><input class="button-primary" type="submit" name="save" value="<?php _e('Save Settings', 'shashin'); ?>" /></p>
     </form>
-
 </div>
+
