@@ -98,7 +98,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
                 'youtube' => array('media$group', 'media$thumbnail', 0, 'height')),
             'takenTimestamp' => array(
                 'db' => array(
-                    'type' => 'int unsigned',
+                    'type' => 'int',
                     'not_null' => true),
                 'picasa' => array('exif$tags', 'exif$time', '$t'),
                 'twitpic' => array('timestamp'),
