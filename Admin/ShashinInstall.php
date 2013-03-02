@@ -10,8 +10,8 @@ class Admin_ShashinInstall {
     private $settingsDefaults = array(
         'version' => null,
         'supportOldShortcodes' => 'n',
-        'imageDisplay' => 'fancybox',
-        'expandedImageSize' => 'medium',
+        'imageDisplay' => 'prettyphoto',
+        'expandedImageSize' => 'small',
         'defaultPhotoLimit' => 18,
         'scheduledUpdate' => 'n',
         'captionExif' => 'all',
@@ -23,6 +23,11 @@ class Admin_ShashinInstall {
         'albumPhotosOrder' => 'source',
         'albumPhotosOrderReverse' => 'n',
         'albumPhotosCaption' => 'n',
+        'prettyPhotoTheme' => 'pp_default',
+        'prettyPhotoOverlayGallery' => '1',
+        'prettyPhotoShowTitle' => '1',
+        'prettyPhotoAutoplaySlideshow' => '0',
+        'prettyPhotoSlideshow' => '5000',
         'fancyboxCyclic' => '0',
         'fancyboxVideoWidth' => '560',
         'fancyboxVideoHeight' => '340',
@@ -82,9 +87,9 @@ class Admin_ShashinInstall {
         // update the version number if needed
         $allSettings = $this->settings->refresh();
 
-        if (!isset($allSettings['version']) || version_compare($allSettings['version'], $this->version, '<')) {
+        //if (!isset($allSettings['version']) || version_compare($allSettings['version'], $this->version, '<')) {
             $this->updateSettings();
-        }
+        //}
 
         return true;
     }
