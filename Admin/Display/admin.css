@@ -20,3 +20,11 @@
 .shashinCenter {
     text-align: center !important;
 }
+
+#shashinTabs {
+    margin-top: 30px;
+}
+
+#shashinTabs h3 {
+    margin: 0;
+}
