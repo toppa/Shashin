@@ -760,13 +760,14 @@
 				currentGalleryPage = 0;
 				toInject = "";
 				for (var i=0; i < pp_images.length; i++) {
-					if(!pp_images[i].match(/\b(jpg|jpeg|png|gif)\b/gi)){
-						classname = 'default';
-						img_src = '';
-					}else{
+					// edit for Shashin - there isn't always a standard photo extension
+					//if(!pp_images[i].match(/\b(jpg|jpeg|png|gif)\b/gi)){
+					//	classname = 'default';
+					//	img_src = '';
+					//}else{
 						classname = '';
 						img_src = pp_images[i];
-					}
+					//}
 					toInject += "<li class='"+classname+"'><a href='#'><img src='" + img_src + "' width='50' alt='' /></a></li>";
 				};
 				
