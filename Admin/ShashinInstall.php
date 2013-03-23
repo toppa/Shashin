@@ -47,7 +47,7 @@ class Admin_ShashinInstall {
         $this->version = $version;
     }
 
-    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
+    public function setDbFacade(Lib_ShashinDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
         return $this->dbFacade;
     }
@@ -67,7 +67,7 @@ class Admin_ShashinInstall {
         return $this->settings;
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }

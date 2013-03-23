@@ -15,7 +15,7 @@ class Admin_ShashinUpgradeWp {
     public function __construct() {
     }
 
-    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
+    public function setDbFacade(Lib_ShashinDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
         return $this->dbFacade;
     }
@@ -30,7 +30,7 @@ class Admin_ShashinUpgradeWp {
         return $this->photo;
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }

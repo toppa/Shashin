@@ -40,7 +40,7 @@ class Public_ShashinOldShortcode {
 
         if (preg_match_all($sImage, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $caption = $this->setCaption($match[3]);
                 $crop = $this->setCrop($match[2]);
 
@@ -67,7 +67,7 @@ class Public_ShashinOldShortcode {
 
         if (preg_match_all($sRandom, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $caption = $this->setCaption($match[5]);
                 $crop = $this->setCrop($match[2]);
 
@@ -107,7 +107,7 @@ class Public_ShashinOldShortcode {
 
         if (preg_match_all($sThumbs, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $id = str_replace('|', ',', $match[1]);
                 $caption = $this->setCaption($match[4]);
                 $crop = $this->setCrop($match[2]);
@@ -136,7 +136,7 @@ class Public_ShashinOldShortcode {
 
         if (preg_match_all($sNewest, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $caption = $this->setCaption($match[5]);
                 $crop = $this->setCrop($match[2]);
 
@@ -177,7 +177,7 @@ class Public_ShashinOldShortcode {
 
         if (preg_match_all($sAlbumPhotos, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $id = str_replace('|', ',', $match[1]);
                 $caption = $this->setCaption($match[4]);
                 $crop = $this->setCrop($match[2]);
@@ -208,7 +208,7 @@ class Public_ShashinOldShortcode {
         $sAlbumThumbs = "/\[salbumthumbs=([\w\|\ ]+),(\d+|max),?(\w?),?(\w?),?(\w{0,6}),?(\w{0,5})\]/";
         if (preg_match_all($sAlbumThumbs, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $arrayShortcode = $this->initializeArrayShortcodeForAlbums($match[1]);
                 $arrayShortcode['caption'] = ($match[3] == 'y' || $match[4] == 'y') ? 'y' : 'n';
                 $arrayShortcode['size'] = 160;
@@ -229,7 +229,7 @@ class Public_ShashinOldShortcode {
 
         if (preg_match_all($sAlbumList, $this->content, $matches, PREG_SET_ORDER) > 0) {
             foreach ($matches as $match) {
-                array_walk($match, array('ToppaFunctions', 'strtolowerCallback'));
+                array_walk($match, array('Lib_ShashinFunctions', 'strtolowerCallback'));
                 $arrayShortcode = $this->initializeArrayShortcodeForAlbums($match[1]);
                 $arrayShortcode['caption'] = $match[2];
                 $arrayShortcode['size'] = 160;

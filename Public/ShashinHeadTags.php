@@ -10,7 +10,7 @@ class Public_ShashinHeadTags {
         $this->version = $version;
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }
@@ -31,7 +31,7 @@ class Public_ShashinHeadTags {
             $shashinJsParams['prettyPhotoTheme'] = $this->settings->prettyPhotoTheme;
             $shashinJsParams['prettyPhotoOverlayGallery'] = $this->settings->prettyPhotoOverlayGallery;
             // need to get the desired width - we can get it from any subclass of the PhotoDisplayer
-            $photoDisplayerSkeleton = new Public_ShashinPhotoDisplayerPicasaPrettyPhoto();
+            $photoDisplayerSkeleton = new Public_ShashinPhotoDisplayerPicasaPrettyphoto();
             $sizesMap = $photoDisplayerSkeleton->getExpandedSizesMap();
             $shashinJsParams['prettyPhotoDefaultWidth'] = $sizesMap[$this->settings->expandedImageSize];
             // assume 4:3 ratio

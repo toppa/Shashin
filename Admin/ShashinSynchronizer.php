@@ -30,7 +30,7 @@ abstract class Admin_ShashinSynchronizer {
         $this->clonablePhoto = $clonablePhoto;
     }
 
-    public function setDatabaseFacade(ToppaDatabaseFacade $dbFacade) {
+    public function setDatabaseFacade(Lib_ShashinDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
     }
 

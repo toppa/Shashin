@@ -9,7 +9,7 @@ class Admin_ShashinUninstaller {
     public function __construct() {
     }
 
-    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
+    public function setDbFacade(Lib_ShashinDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
         return $this->dbFacade;
     }
@@ -29,7 +29,7 @@ class Admin_ShashinUninstaller {
         return $this->settings;
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }

@@ -54,8 +54,8 @@ class Public_ShashinShortcode {
     }
 
     public function cleanShortcode() {
-        array_walk($this->arrayShortcode, array('ToppaFunctions', 'trimCallback'));
-        array_walk($this->arrayShortcode, array('ToppaFunctions', 'strtolowerCallback'));
+        array_walk($this->arrayShortcode, array('Lib_ShashinFunctions', 'trimCallback'));
+        array_walk($this->arrayShortcode, array('Lib_ShashinFunctions', 'strtolowerCallback'));
         return $this->arrayShortcode;
     }
 
@@ -65,6 +65,9 @@ class Public_ShashinShortcode {
                 $this->data[$k] = $v;
             }
 
+            /*
+             * @todo: probably remove this - it causes unnecessary errors with widgets in some themes
+             */
             else {
                 throw New Exception(__('Invalid shortcode attribute: ', 'shashin') . htmlentities($k));
             }

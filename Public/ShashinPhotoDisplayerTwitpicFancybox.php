@@ -53,12 +53,12 @@ class Public_ShashinPhotoDisplayerTwitpicFancybox extends Public_ShashinPhotoDis
     public function setLinkHref() {
         parent::setLinkHref();
 
-        $this->linkHref = ToppaFunctions::followRedirect($this->linkHref);
+        $this->linkHref = Lib_ShashinFunctions::followRedirect($this->linkHref);
     }
 
     public function setLinkHrefVideo() {
         parent::setLinkHrefVideo();
 
-        $this->linkHref = ToppaFunctions::followRedirect($this->linkHref);
+        $this->linkHref = Lib_ShashinFunctions::followRedirect($this->linkHref);
     }
 }

@@ -4,7 +4,7 @@ class Lib_ShashinAlbum extends Lib_ShashinDataObject {
     private $clonablePhoto;
 
     public function __construct(
-      ToppaDatabaseFacade $dbFacade,
+      Lib_ShashinDatabaseFacade $dbFacade,
       Lib_ShashinPhoto $clonablePhoto) {
 
         $this->refData = array(

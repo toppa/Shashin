@@ -19,11 +19,7 @@ class Lib_ShashinContainer {
 
     public function getDatabaseFacade() {
         if (!isset($this->dbFacade)) {
-            /*
-             * @todo: remove the $autoLoader - it's needed here only for temporary compatibility with the old version of toppa-libs, which may still be active when upgrading through the wp plugin admin
-             */
-            $autoLoader = new ToppaAutoLoaderWp('/shashin');
-            $this->dbFacade = new ToppaDatabaseFacadeWp($autoLoader);
+            $this->dbFacade = new Lib_ShashinDatabaseFacade();
         }
 
         return $this->dbFacade;
@@ -31,17 +27,9 @@ class Lib_ShashinContainer {
 
     public function getFunctionsFacade() {
         if (!isset($this->functionsFacade)) {
-            $this->functionsFacade = new ToppaFunctionsFacadeWp();
+            $this->functionsFacade = new Lib_ShashinFunctionsFacade();
         }
         return $this->functionsFacade;
-    }
-
-    public function getPhotoRefData() {
-        if (!isset($this->photoRefData)) {
-            $this->photoRefData = new Lib_ShashinPhotoRefData();
-        }
-
-        return $this->photoRefData;
     }
 
     public function getClonablePhoto() {
@@ -79,14 +67,6 @@ class Lib_ShashinContainer {
         }
 
         return $this->clonableAlbumPhotosCollection;
-    }
-
-    public function getAlbumRefData() {
-        if (!isset($this->albumRefData)) {
-            $this->albumRefData = new Lib_ShashinAlbumRefData();
-        }
-
-        return $this->albumRefData;
     }
 
     public function getClonableAlbum() {

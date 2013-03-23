@@ -5,7 +5,7 @@ class Lib_ShashinSettings {
     private $name = 'shashin';
     private $data = array();
 
-    public function __construct(ToppaFunctionsFacade $functionsFacade) {
+    public function __construct(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
     }
 
@@ -39,11 +39,11 @@ class Lib_ShashinSettings {
         $this->refresh();
 
         if ($preferExisting) {
-            $this->data = ToppaFunctions::arrayMergeRecursiveForSettings($newSettings, $this->data);
+            $this->data = Lib_ShashinFunctions::arrayMergeRecursiveForSettings($newSettings, $this->data);
         }
 
         else {
-            $this->data = ToppaFunctions::arrayMergeRecursiveForSettings($this->data, $newSettings);
+            $this->data = Lib_ShashinFunctions::arrayMergeRecursiveForSettings($this->data, $newSettings);
         }
 
         $this->functionsFacade->setSetting($this->name, $this->data);

@@ -9,7 +9,7 @@ class Admin_ShashinMenuActionHandlerPhotos {
     public function __construct() {
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }
@@ -58,4 +58,4 @@ class Admin_ShashinMenuActionHandlerPhotos {
         return __('Updated "Include In Random" settings', 'shashin');
     }
 }
-// 610-316-5890
+

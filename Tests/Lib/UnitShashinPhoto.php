@@ -1,6 +1,6 @@
 <?php
 
-Mock::generate('ToppaDatabaseFacadeWp');
+Mock::generate('Lib_ShashinDatabaseFacade');
 
 class UnitLib_ShashinPhoto extends UnitTestCase {
     private $samplePhotoData = array(
@@ -33,7 +33,7 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
     }
 
     public function setUp() {
-        $dbFacade = new MockToppaDatabaseFacadeWp();
+        $dbFacade = new MockShashinDatabaseFacade();
         // the sample data has an ID of 1, so only return the data if the ID requested is 1
         $dbFacade->setReturnValue('sqlSelectRow', $this->samplePhotoData, array('*', '*', array('id' => 1)));
         $dbFacade->setReturnValue('getTableNamePrefix', 'wp_');

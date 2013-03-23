@@ -1,7 +1,7 @@
 <?php
 
 class Lib_ShashinPhoto extends Lib_ShashinDataObject {
-    public function __construct(ToppaDatabaseFacade $dbFacade) {
+    public function __construct(Lib_ShashinDatabaseFacade $dbFacade) {
         $this->refData = array(
             'id' => array(
                 'db' => array(
@@ -207,7 +207,7 @@ class Lib_ShashinPhoto extends Lib_ShashinDataObject {
     }
 
     public function isVideo() {
-        $fileExtension = strtolower(ToppaFunctions::getFileExtension($this->data['filename']));
+        $fileExtension = strtolower(Lib_ShashinFunctions::getFileExtension($this->data['filename']));
 
         if (in_array($fileExtension, $this->videoFileTypes)) {
             return true;

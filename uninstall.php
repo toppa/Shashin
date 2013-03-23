@@ -4,9 +4,12 @@ if (!defined( 'ABSPATH') && !defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-require_once(dirname(__FILE__) . '/../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php');
-new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-new ToppaAutoLoaderWp('/shashin');
+$shashinPath = dirname(__FILE__);
+$shashinParentDir = basename($shashinPath);
+$shashinAutoLoaderPath = $shashinPath . '/Lib/ShashinAutoLoader.php';
+
+require_once($shashinAutoLoaderPath);
+new ShashinAutoLoader('/shashin');
 $shashinAdminContainer = new Admin_ShashinContainer();
 $shashinUninstaller = $shashinAdminContainer->getUninstaller();
 $shashinUninstallStatus = $shashinUninstaller->run();

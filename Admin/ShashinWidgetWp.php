@@ -47,7 +47,7 @@ class Admin_ShashinWidgetWp extends WP_Widget {
         foreach ($this->shashinFormFields as $k=>$v) {
             $inputName = $this->get_field_name($k);
             echo '<tr><td>' . $v['label'] . ':</td><td>';
-            echo ToppaHtmlFormField::quickBuild($inputName, $v, $instance[$k]);
+            echo Lib_ShashinHtmlFormField::quickBuild($inputName, $v, $instance[$k]);
             echo '</td></tr>';
         }
 

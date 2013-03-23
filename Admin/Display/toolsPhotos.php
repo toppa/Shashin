@@ -48,7 +48,7 @@ foreach ($dataObjects as $photo) {
         ? 'Unknown' : date("d-M-Y H:i", $photo->takenTimestamp))
         . '</td>' . PHP_EOL;
     echo '<td>';
-    echo ToppaHtmlFormField::quickBuild(
+    echo Lib_ShashinHtmlFormField::quickBuild(
         "includeInRandom[{$photo->id}]",
         $refData['includeInRandom'],
         $photo->includeInRandom);

@@ -55,7 +55,7 @@ abstract class Public_ShashinDataObjectDisplayer {
         $this->shortcode = $shortcode;
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
     }
 

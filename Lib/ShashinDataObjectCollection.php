@@ -20,7 +20,7 @@ abstract class Lib_ShashinDataObjectCollection {
     public function __construct() {
     }
 
-    public function setDbFacade(ToppaDatabaseFacade $dbFacade) {
+    public function setDbFacade(Lib_ShashinDatabaseFacade $dbFacade) {
         $this->dbFacade = $dbFacade;
         return $this->dbFacade;
     }
@@ -195,7 +195,7 @@ abstract class Lib_ShashinDataObjectCollection {
         }
 
         $ids = explode(",", $this->idString);
-        array_walk($ids, array('ToppaFunctions', 'trimCallback'));
+        array_walk($ids, array('Lib_ShashinFunctions', 'trimCallback'));
 
         foreach ($ids as $id) {
             foreach ($rows as $row) {

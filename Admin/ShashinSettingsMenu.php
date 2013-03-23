@@ -337,7 +337,7 @@ class Admin_ShashinSettingsMenu {
         );
     }
 
-    public function setFunctionsFacade(ToppaFunctionsFacade $functionsFacade) {
+    public function setFunctionsFacade(Lib_ShashinFunctionsFacade $functionsFacade) {
         $this->functionsFacade = $functionsFacade;
         return $this->functionsFacade;
     }
@@ -401,7 +401,7 @@ class Admin_ShashinSettingsMenu {
             . $this->refData[$setting]['label']
             . '</label></th>' . PHP_EOL
             . '<td nowrap="nowrap">'
-            . ToppaHtmlFormField::quickBuild($setting, $this->refData[$setting], $value)
+            . Lib_ShashinHtmlFormField::quickBuild($setting, $this->refData[$setting], $value)
             . '</td>' . PHP_EOL
             . '<td>' . $this->refData[$setting]['help'] . '</td>' . PHP_EOL
             . '</tr>' . PHP_EOL;
