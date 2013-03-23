@@ -1,6 +1,6 @@
 <?php
 
-class Public_ShashinPhotoDisplayerYoutubePrettyPhoto extends Public_ShashinPhotoDisplayerYoutube {
+class Public_ShashinPhotoDisplayerYoutubePrettyphoto extends Public_ShashinPhotoDisplayerYoutube {
     public function __construct() {
         parent::__construct();
     }

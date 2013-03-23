@@ -1,6 +1,6 @@
 <?php
 
-class Public_ShashinPhotoDisplayerTwitpicPrettyPhoto extends Public_ShashinPhotoDisplayerPicasa {
+class Public_ShashinPhotoDisplayerTwitpicPrettyphoto extends Public_ShashinPhotoDisplayerTwitpic {
     public function __construct() {
         parent::__construct();
     }
