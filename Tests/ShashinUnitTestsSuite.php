@@ -3,12 +3,11 @@
 // this is needed for simpletest's addFile method
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__));
 
-$shashinTestsAutoLoaderPath = dirname(__FILE__) . '/../../toppa-plugin-libraries-for-wordpress/ToppaAutoLoaderWp.php';
+$shashinTestsAutoLoaderPath = dirname(__FILE__) . '/../Lib/ShashinAutoLoader.php';
 
 if (file_exists($shashinTestsAutoLoaderPath)) {
     require_once($shashinTestsAutoLoaderPath);
-    $shashinTestsToppaAutoLoader = new ToppaAutoLoaderWp('/toppa-plugin-libraries-for-wordpress');
-    $shashinTestsAutoLoader = new ToppaAutoLoaderWp('/shashin');
+    $shashinTestsAutoLoader = new ShashinAutoLoader('/shashin');
 }
 
 class ShashinUnitTestsSuite extends TestSuite {
