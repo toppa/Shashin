@@ -24,6 +24,11 @@ class ShashinAutoLoader {
     public function setFullPath() {
         $basePath = WP_PLUGIN_DIR . $this->relativePath;
         $classPath = str_replace('_', '/', $this->className) . '.php';
+
+        // shashin has lower-case directory names
+        if (strpos($classPath, '/') !== false) {
+            $classPath = lcfirst($classPath);
+        }
         $this->fullPath = $basePath . '/' . $classPath;
         return true;
     }
