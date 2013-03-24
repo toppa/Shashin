@@ -3,7 +3,7 @@
 
 jQuery(document).ready(function($) {
     if (shashinJs.imageDisplayer == 'prettyphoto') {
-        $("a[rel^='prettyphoto']").prettyPhoto({
+        $("a[rel^='prettyPhoto']").prettyPhoto({
             theme: shashinJs.prettyPhotoTheme,
             overlay_gallery: !!(shashinJs.prettyPhotoOverlayGallery-0),
             default_width: shashinJs.prettyPhotoDefaultWidth-0,

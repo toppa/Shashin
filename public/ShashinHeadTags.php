@@ -42,11 +42,11 @@ class Public_ShashinHeadTags {
 
             if ($this->settings->prettyPhotoLoadScript != 'n') {
                 // use same name to enqueue as the prettyphoto Media plugin
-                $prettyPhotoCssUrl = $this->functionsFacade->getUrlforCustomizableFile('prettyphoto.css', __FILE__, 'display/prettyphoto/');
+                $prettyPhotoCssUrl = $this->functionsFacade->getUrlforCustomizableFile('prettyPhoto.css', __FILE__, 'display/prettyphoto/');
                 $this->functionsFacade->enqueueStylesheet('prettyphoto', $prettyPhotoCssUrl, false, '3.1.5');
                 $this->functionsFacade->enqueueScript(
                     'prettyphoto',
-                    $this->baseUrl . 'prettyphoto/jquery.prettyphoto.js',
+                    $this->baseUrl . 'prettyphoto/jquery.prettyPhoto.js',
                     array('jquery'),
                     '3.1.5'
                 );
