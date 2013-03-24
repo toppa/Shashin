@@ -6,7 +6,7 @@ if (!defined( 'ABSPATH') && !defined('WP_UNINSTALL_PLUGIN')) {
 
 $shashinPath = dirname(__FILE__);
 $shashinParentDir = basename($shashinPath);
-$shashinAutoLoaderPath = $shashinPath . '/libxy/ShashinAutoLoader.php';
+$shashinAutoLoaderPath = $shashinPath . '/lib/ShashinAutoLoader.php';
 
 require_once($shashinAutoLoaderPath);
 new ShashinAutoLoader('/shashin');
