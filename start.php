@@ -11,12 +11,12 @@ License: GPLv2 or later
 
 $shashinPath = dirname(__FILE__);
 $shashinParentDir = basename($shashinPath);
-$shashinAutoLoaderPath = $shashinPath . '/libx/ShashinAutoLoader.php';
+$shashinAutoLoaderPath = $shashinPath . '/libxy/ShashinAutoLoader.php';
 
 add_action('wpmu_new_blog', 'shashinActivateForNewNetworkSite');
 register_activation_hook(__FILE__, 'shashinActivate');
 register_deactivation_hook(__FILE__, 'shashinDeactivateForNetworkSites');
-load_plugin_textdomain('shashin', false, $shashinParentDir . '/languagesx/');
+load_plugin_textdomain('shashin', false, $shashinParentDir . '/languagesxy/');
 
 if (file_exists($shashinAutoLoaderPath)) {
     require_once($shashinAutoLoaderPath);
@@ -44,7 +44,7 @@ function shashinActivate() {
         return null;
     }
 
-    require_once dirname(__FILE__) . '/libx/ShashinAutoLoader.php';
+    require_once dirname(__FILE__) . '/libxy/ShashinAutoLoader.php';
     new ShashinAutoLoader('/shashin');
     $shashin = new ShashinWp();
     $status = $shashin->install();

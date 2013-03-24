@@ -7,7 +7,7 @@ class IntegrationShashinWp extends UnitTestCase {
     }
 
     public function setUp() {
-        $autoLoaderPath = dirname(__FILE__) . '/../libx/ShashinAutoLoader.php';
+        $autoLoaderPath = dirname(__FILE__) . '/../libxy/ShashinAutoLoader.php';
         require_once($autoLoaderPath);
         new ShashinAutoLoader('/shashin');
         $this->shashin = new ShashinWp();

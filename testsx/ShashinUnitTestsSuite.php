@@ -3,7 +3,7 @@
 // this is needed for simpletest's addFile method
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__));
 
-$shashinTestsAutoLoaderPath = dirname(__FILE__) . '/../libx/ShashinAutoLoader.php';
+$shashinTestsAutoLoaderPath = dirname(__FILE__) . '/../libxy/ShashinAutoLoader.php';
 
 if (file_exists($shashinTestsAutoLoaderPath)) {
     require_once($shashinTestsAutoLoaderPath);
@@ -13,7 +13,7 @@ if (file_exists($shashinTestsAutoLoaderPath)) {
 class ShashinUnitTestsSuite extends TestSuite {
    function __construct() {
        parent::__construct();
-       $this->addFile('libx/UnitShashinPhoto.php');
+       $this->addFile('libxy/UnitShashinPhoto.php');
    }
 }
 
