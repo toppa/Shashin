@@ -28,6 +28,7 @@ class Admin_ShashinInstall {
         'prettyPhotoShowTitle' => '1',
         'prettyPhotoAutoplaySlideshow' => '0',
         'prettyPhotoSlideshow' => '5000',
+        'prettyPhotoLoadScript' => 'y',
         'fancyboxCyclic' => '0',
         'fancyboxVideoWidth' => '560',
         'fancyboxVideoHeight' => '340',
@@ -136,24 +137,7 @@ class Admin_ShashinInstall {
     }
 
     public function updateSettings() {
-        // if upgrading from 3,0, the version is not set
-        // need to change the viewer selection from highslide to fancybox
-        $allSettings = $this->settings->refresh();
-
-        // for a new installation, imageDisplay is not set, so catch that exception
-        // and do nothing (fancybox is already the default)
-        // checking for 'version' lets us know if this version of Shashin pre-dates
-        // the availability of the Highslide for Shashin plugin
-        try {
-            if (!array_key_exists('version', $allSettings) && $this->settings->imageDisplay == 'highslide') {
-                $this->settings->set(array('imageDisplay' => 'fancybox'));
-            }
-        }
-
-        catch (Exception $e) {
-
-        }
-
+        $this->settings->refresh();
         $this->settings->set(array('version' => $this->version));
         return $this->settings->set($this->settingsDefaults, true);
     }
