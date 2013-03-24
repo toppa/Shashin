@@ -33,17 +33,27 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
     }
 
     public function setUp() {
-        $dbFacade = new MockShashinDatabaseFacade();
+        $dbFacade = new MockLib_ShashinDatabaseFacade();
         // the sample data has an ID of 1, so only return the data if the ID requested is 1
         $dbFacade->setReturnValue('sqlSelectRow', $this->samplePhotoData, array('*', '*', array('id' => 1)));
         $dbFacade->setReturnValue('getTableNamePrefix', 'wp_');
         $dbFacade->setReturnValue('sqlInsert', 1);
         $dbFacade->setReturnValue('sqlDelete', true);
-        $dbFacade->setReturnValue('getIntTypes', array(
-                'tinyint', 'smallint', 'mediumint', 'int', 'bigint',
-                'tinyint unsigned', 'smallint unsigned', 'mediumint unsigned', 'int unsigned', 'bigint unsigned'
+        $dbFacade->setReturnValue('getIntTypes',
+            array(
+                'tinyint',
+                'smallint',
+                'mediumint',
+                'int',
+                'bigint',
+                'tinyint unsigned',
+                'smallint unsigned',
+                'mediumint unsigned',
+                'int unsigned',
+                'bigint unsigned'
             )
         );
+        $dbFacade->setReturnValue('sqlDelete', true);
         $this->photo = new Lib_ShashinPhoto($dbFacade);
     }
 
@@ -80,6 +90,33 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->photo->foobar = 'test foobar';
     }
 
+    public function testGetData() {
+        $this->photo->set($this->samplePhotoData);
+        $this->assertEqual($this->samplePhotoData, $this->photo->getData());
+    }
+
+    public function testSetWithNoArgument() {
+        $this->expectError(); // for the type hinting fail
+        $this->expectException(); // for the argument not being set
+        $this->photo->set();
+    }
+
+    public function testSetWithEmptyArray() {
+        $this->expectException();
+        $this->photo->set(array());
+    }
+
+    public function testSetWithValidData() {
+        $this->assertEqual($this->samplePhotoData, $this->photo->set($this->samplePhotoData));
+    }
+
+    public function testSetWithNonNumericAlbumId() {
+        $badData = $this->samplePhotoData;
+        $badData['albumId'] = 'foo';
+        $this->photo->set($badData);
+        $this->assertEqual($this->photo->albumId, 0);
+    }
+
     public function testRefreshWithNoArgument() {
         $this->expectError(); // for the missing argument
         $this->expectException(); // for the explicitly thrown exception
@@ -102,33 +139,10 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->photo->refresh(2);
     }
 
-    // this is essentially the same as testing refresh()
-    public function testGet() {
-        $photoData = $this->photo->refresh(1);
-        $this->assertTrue(is_array($photoData));
-        $this->assertEqual(1, $photoData['id']);
-    }
-
-    public function testSetWithNoArgument() {
-        $this->expectError(); // for the type hinting fail
-        $this->expectException(); // for the argument not being set
-        $this->photo->set();
-    }
-
-    public function testSetWithEmptyArray() {
-        $this->expectException();
-        $this->photo->set(array());
-    }
-
-    public function testSetWithValidData() {
-        $this->assertEqual($this->samplePhotoData, $this->photo->set($this->samplePhotoData));
-    }
-
-    public function testSetWithNonNumericAlbumId() {
-        $badData = $this->samplePhotoData;
-        $badData['albumId'] = 'foo';
-        $this->expectException();
-        $this->photo->set($badData);
+    public function testDelete() {
+        $this->photo->set($this->samplePhotoData);
+        // the deleted data is returned
+        $this->assertEqual($this->samplePhotoData, $this->photo->delete());
     }
 
     public function testFlush() {
@@ -136,36 +150,14 @@ class UnitLib_ShashinPhoto extends UnitTestCase {
         $this->assertEqual(1, $this->photo->id);
     }
 
-    public function testDelete() {
-        $this->photo->set($this->samplePhotoData);
-        // the deleted data is returned
-        $this->assertEqual($this->samplePhotoData, $this->photo->delete());
-    }
-/*
- * @todo: old tests - need to clean up
-
-
-
-    public function testDeletePhoto() {
-        $photo = new Lib_ShashinPhoto($this->dbFacade);
-        $photo->get(1);
-        $photoFilename = $photo->filename;
-        $photoData = $photo->delete();
-        $this->assertEqual($photoData['filename'], $photoFilename);
-
-        try {
-            $photo->filename;
-            $this->fail("Exception was expected - invalid test case");
-        }
-
-        catch (Exception $e) {
-            $this->pass("received expected invalid test case");
-        }
+    public function testIsVideoWhenAPhoto() {
+        $this->photo->get(1);
+        $this->assertFalse($this->photo->isVideo());
     }
 
-    public function testIsVideo() {
-        $photo = new Lib_ShashinPhoto($this->dbFacade);
-        $photo->get(1);
-        $this->assertFalse($photo->isVideo());
-    } */
+    public function testIsVideoWhenAVideo() {
+        $this->photo->get(1);
+        $this->photo->set(array('filename' => 'a_video.mpg'));
+        $this->assertTrue($this->photo->isVideo());
+    }
 }
