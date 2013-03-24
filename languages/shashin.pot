@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2013-03-24 03:17:23+00:00\n"
+"POT-Creation-Date: 2013-03-24 03:45:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1265,6 +1265,10 @@ msgstr ""
 
 #: lib/ShashinSettings.php:57
 msgid "Failed to delete settings"
+msgstr ""
+
+#: lib/ShashinSettings.php:79
+msgid "Failed to purge settings. Unsupport argument provided."
 msgstr ""
 
 #: public/ShashinDataObjectDisplayer.php:142
