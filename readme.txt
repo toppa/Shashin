@@ -1,40 +1,53 @@
 === Shashin ===
 Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
-Tags: Picasa, Fancybox, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
+Tags: Picasa, Fancybox, prettyPhoto, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
-Tested up to: 3.5
-Stable tag: 3.2.6
+Tested up to: 3.5.1
+Stable tag: 3.3
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
 
 == Description ==
 
-**Installation of [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/) is required. Please download and activate it before installing Shashin.**
 
-**What's new in Shashin 3.2**
+**What's new in Shashin 3.3**
 
-* More user friendly UI for adding albums, photos, and videos (uses jQuery tabs menu)
-* Accepts Google+ URLs for adding public albums
-* "Limited view" album support for Picasa albums (works with Picasa URLs only, not Google+)
+* Now includes the [PrettyPhoto](http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/) photo viewer (Fancybox is still included also, but switching to PrettyPhoto is recommended, as the GPL compliant version of Fancybox is no longer maintained. Highslide is no longer supported since it is not compliant with the GPL).
+* No longer depends on the Toppa Plugin Libraries plugin (plugin dependencies = bad idea)
+* Improved UI for Settings menu
+* Bug fixes
 
 **Overview**
 
 Shashin has many features for displaying photos and videos from Picasa, Youtube, and Twitpic in your Wordpress posts and pages:
 
 * Show a gallery of all your albums, photos, and videos, with multiple options for organizing them
-* Use a jQuery based WYSIWYG media browser for easily adding photos, videos, and albums to your posts
-* Show your photos and vidoes with your favorite image viewer. Fanycbox is included with Shashin, but you can use a different viewer of your choice
+* Use the Media Manager to easily create and add galleries to your posts
+* Show your photos and vidoes with your favorite image viewer. PrettyPhoto and Fancybox are included with Shashin, or you can use a different viewer of your choice
 * Pick individual photos or videos to display, in any size, including captions and EXIF data
 * Pick photos and videos from any combination of Picasa, Youtube, and Twitpic to display in groups of thumbnails
 * Show thumbnails of your newest photos and videos, from one or more albums
-* Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps
+* Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps (for Picasa albums with location data)
 * Display any number of random photos and videos. You can also choose to exclude certain photos or albums from random display
 * Use a widget to display Shashin photos in your sidebar
 * Customize the Shashin stylesheet to suit the theme of your site.
 * Internationalization: Shashin supports translations into other languages (please contribute a translation if you're bilingual!)
 * Schedule daily automatic synchronization of Shashin with your feeds from Picasa, Twitpic, and Youtube.
+
+Shashin is multi-site compatible.
+
+**Get Help**
+
+Enter a post in [the wordpress.org support forum for Shashin](http://wordpress.org/support/plugin/shashin), and I'll respond there.
+
+**Give Help**
+
+* Provide a language translation - [here's how](http://weblogtoolscollection.com/archives/2007/08/27/localizing-a-wordpress-plugin-using-poedit/)
+* Fork [the Shashin repository on github](https://github.com/toppa/Shashin) and make a code contribution
+* If you're savvy user of the plugin, [answer questions in the support forum](http://wordpress.org/support/plugin/shahsin)
+* If you tip your pizza delivery guy, tip your plugin developer - [make a donation](http://www.toppa.com/shashin/)
 
 == Installation ==
 
@@ -46,19 +59,17 @@ Shashin has many features for displaying photos and videos from Picasa, Youtube,
 
 **First time installation**
 
-1. Download and activate [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/), which contains required libraries.
-1. Then download and activate Shahsin just like any other plugin
-1. Go to the Shashin Tools Menu to add your Picasa, Youtube, or Twitpic feeds (expand the "Examples" section for more details)
+1. Download and activate Shahsin just like any other plugin
+1. Go to the Shashin Tools Menu to add your Picasa, Youtube, or Twitpic feeds (there are detailed instructions on the page)
 1. Go to the Shashin Settings Menu to review and update your preferences
-  * If you use an image viewer other than Fancybox, you need to set it up and configure it yourself. The Shashin Settings Menu provides several options to support the use of other image viewers.
+  * If you want to use an image viewer other than PrettyPhoto or Fancybox, you need to set it up and configure it yourself. The Shashin Settings Menu provides several options to support the use of other image viewers.
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want
-1. Edit a post or page and use the Shashin media browser to add photos and albums
+1. Edit a post or page and use the media manager to add photos and albums from Shashin
 1. Note that Shashin will add two tables to your WordPress database, named wp\_shashin\_album and wp\_shashin\_photo. **It's important to include these tables when making backups of your WordPress tables.** The Shashin shortcodes rely on ID numbers from these tables that will be permanently lost if anything happens to these tables.
 
 **Upgrading from Shashin 2**
 
-1. Download and activate [Toppa Plugin Libraries for WordPress](http://wordpress.org/extend/plugins/toppa-plugin-libraries-for-wordpress/), which contains required libraries.
-1. For Shashin, download the current version, and then deactivate and reactivate from the main plugin menu.
+1. Download the current version of Shashin, and then deactivate and reactivate it from the main plugin menu.
 1. Go to the Shashin Tools Menu and click "sync all" to complete the upgrade
 1. Go to the Shashin Settings Menu and select the option to support the old shortcode format (or you can revise your shortcodes to the new format)
 1. Carefully review pages and posts that contain Shashin tags to make sure everything looks correct
@@ -66,15 +77,9 @@ Shashin has many features for displaying photos and videos from Picasa, Youtube,
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want (the old widgets are gone)
 1. If you were calling Shashin functions directly in PHP, they are no longer supported. There is a new function you can call. See the documentation page linked from the FAQ section.
 
-== Upgrade Notice ==
-
-You need to install "Toppa Plugin Libraries for WordPress" before upgrading to Shashin 3. Please follow the upgrade instructions in the "Installation" section of this readme file.
-
 == Frequently Asked Questions ==
 
-Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a Usage Guide and other information.
-
-For troubleshooting help, please [post a comment on my latest Shashin post](http://www.toppa.com/category/wordpress-plugins/).
+Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a detailed usage guide.
 
 == Screenshots ==
 
@@ -85,8 +90,16 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 
 == Changelog ==
 
+= 3.3 =
+* Add prettyPhoto, deprecate Fancybox.
+* Automatically deactivate Highslide if "Highslide for Shashin" was being used. Highslide is no longer supported.
+* Add jQuery tabs to settings menu
+* Remove dependencies on Toppa Plugin Libraries plugin, and replicate its functionality within Shashin. This shoudl eliminate cross-plugin fragility problems some have experienced when upgrading.
+* Allow negative timestamp values on photos. This should help with rare timestamp issues when using mySql on Windows.
+* Ignore unrecognized shortcode attributes (previously Shashin deliberately raised an error). Some themes pass additional attributes with widgets, so we don't want them to trigger errors.
+
 = 3.2.6 =
-* Bug fix: album photos were being loaded multiple times if someone clicked an album thumbnail multiple times. Now only loads them once.
+* Bug fix: album photos were being displayed multiple times if someone clicked an album thumbnail multiple times. Now only loads them once.
 * Bug fix: on rare occasions, album synchronizing resulted in photos being deleted and reloaded, which broke photo tags relying on the original ID numbers. I've made a change to the synchronizing process that should fix this.
 
 = 3.2.5 =
@@ -98,7 +111,6 @@ For troubleshooting help, please [post a comment on my latest Shashin post](http
 * Add support for limited view Picasa albums (works with Picasa URLs only, not Google+)
 * Bug fix: setup to enqueue scripts and styles with wp_enqueue_scripts() (not template_redirect)
 * Support additional formats of Picasa and Google+ URLs
-* Start refactoring unit tests
 
 = 3.2.3 = Remove explicit depedency on Fancybox stylesheet when loading the Shashin stylesheet (to facilitate support of other photo viewers)
 
