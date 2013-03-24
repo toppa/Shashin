@@ -61,6 +61,7 @@ class ShashinWp {
 
             if ($settings->imageDisplay == 'highslide') {
                 $settings->set(array('imageDisplay' => 'prettyphoto'));
+                $settings->set(array('externalViewers' => array()));
                 $_SESSION['shashin_highslide_deactivated'] = 1;
             }
 
