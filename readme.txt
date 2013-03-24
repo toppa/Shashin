@@ -4,7 +4,7 @@ Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, prettyPhoto, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
@@ -90,7 +90,10 @@ Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpres
 
 == Changelog ==
 
+= 3.3.2 = Don't use lcfirst since it requires PHP 5.3
+
 = 3.3.1 = Gracefully handle shutting down the _Highside for Shashin_ add-on for anyone using it
+
 = 3.3 =
 * Add prettyPhoto, deprecate Fancybox.
 * Automatically deactivate Highslide if "Highslide for Shashin" was being used. Highslide is no longer supported.
