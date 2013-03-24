@@ -40,14 +40,17 @@ class Public_ShashinHeadTags {
             $shashinJsParams['prettyPhotoAutoplaySlideshow'] = $this->settings->prettyPhotoAutoplaySlideshow;
             $shashinJsParams['prettyPhotoSlideshow'] = $this->settings->prettyPhotoSlideshow;
 
-            $prettyPhotoCssUrl = $this->functionsFacade->getUrlforCustomizableFile('prettyPhoto.css', __FILE__, 'Display/prettyPhoto/');
-            $this->functionsFacade->enqueueStylesheet('shashinPrettyPhotoStyle', $prettyPhotoCssUrl, false, '1.3.4');
-            $this->functionsFacade->enqueueScript(
-                'shashinPrettyPhoto',
-                $this->baseUrl . 'prettyPhoto/jquery.prettyPhoto.js',
-                array('jquery'),
-                '3.1.5'
-            );
+            if ($this->settings->prettyPhotoLoadScript != 'n') {
+                // use same name to enqueue as the prettyPhoto Media plugin
+                $prettyPhotoCssUrl = $this->functionsFacade->getUrlforCustomizableFile('prettyPhoto.css', __FILE__, 'Display/prettyPhoto/');
+                $this->functionsFacade->enqueueStylesheet('prettyphoto', $prettyPhotoCssUrl, false, '3.1.5');
+                $this->functionsFacade->enqueueScript(
+                    'prettyphoto',
+                    $this->baseUrl . 'prettyPhoto/jquery.prettyPhoto.js',
+                    array('jquery'),
+                    '3.1.5'
+                );
+            }
         }
 
         elseif ($this->settings->imageDisplay == 'fancybox') {
@@ -65,13 +68,13 @@ class Public_ShashinHeadTags {
                     'Display/fancybox/'
                 );
                 $this->functionsFacade->enqueueStylesheet(
-                    'shashinFancyboxStyle',
+                    'fancybox',
                     $fancyboxCssUrl,
                     false,
                     '1.3.4'
                 );
                 $this->functionsFacade->enqueueScript(
-                    'shashinFancybox',
+                    'fancybox',
                     $this->baseUrl . 'fancybox/jquery.fancybox.js',
                     array('jquery'),
                     '1.3.4'
