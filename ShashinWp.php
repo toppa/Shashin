@@ -26,6 +26,7 @@ class ShashinWp {
     }
 
     public function run() {
+        add_filter('upgrader_pre_install', array($this, 'deactivateHighslide'));
         add_action('admin_init', array($this, 'runtimeUpgrade'));
         add_action('admin_menu', array($this, 'initToolsMenu'));
         add_action('admin_menu', array($this, 'initSettingsMenu'));
@@ -45,8 +46,40 @@ class ShashinWp {
         return true;
     }
 
+    public function deactivateHighslide() {
+        try {
+            $libContainer = new Lib_ShashinContainer();
+            $settings = $libContainer->getSettings();
+
+            if ($settings->imageDisplay == 'highslide') {
+                $settings->set(array('imageDisplay' => 'prettyphoto'));
+                $functionsFacade = $libContainer->getFunctionsFacade();
+                deactivate_plugins($functionsFacade->getPluginsPath() . '/highslide-for-shashin/start.php');
+                $_SESSION['shashin_highslide_deactivated'] = 1;
+                return $settings->imageDisplay;
+            }
+
+            return true;
+        }
+
+        catch (Exception $e) {
+            return $this->formatExceptionMessage($e);
+        }
+    }
+
     public function runtimeUpgrade() {
         try {
+            // check if Highslide was deactivated in upgrading to 3.3
+            if ($_SESSION['shashin_highslide_deactivated'] && strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
+                unset($_SESSION['shashin_highslide_deactivated']);
+                echo '<div class="updated"><p><em>';
+                echo __('Highslide for Shashin', 'shashin');
+                echo '</em> ';
+                echo __('is no longer supported and has been deactivated (please delete it). Your viewer for Shashin has been upgraded to PrettyPhoto.', 'shashin');
+                echo '</p></div>' . PHP_EOL;
+            }
+
+            // check if upgrading from Shashin 2
             $adminContainer = new Admin_ShashinContainer();
             $upgrader = $adminContainer->getUpgrader();
             $upgrader->setTableProperties();
