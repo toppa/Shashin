@@ -1,0 +1,89 @@
+.shashinThumbnailsTable {
+    margin: 5px;
+}
+
+.shashinThumbnailsTable caption {
+    text-align: center;
+    margin: 5px;
+}
+
+.shashinThumbnailsTable td {
+    vertical-align: top;
+}
+
+.shashinThumbnailDiv {
+    border: thin solid Black;
+    background-color: White;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.shashinThumbnailDiv:hover {
+    border-color: Silver;
+}
+
+.shashinThumbnailImage {
+    padding: 3px; /* this should be half of the "thumbnail div padding" setting */
+    border: none;
+}
+
+.shashinThumbnailCaption {
+    display: block;
+    padding: 0px 5px 5px 5px;
+    font-size: x-small;
+    font-weight: bold;
+}
+
+.shashinAlbumCaptionTitle {
+    display: block;
+    padding: 0px 5px 1px 5px;
+    font-size: x-small;
+    font-weight: bold;
+}
+
+.shashinAlbumCaptionDate {
+    display: block;
+    padding: 0px 5px 1px 5px;
+    font-size: x-small;
+}
+
+.shashinAlbumCaptionLocation {
+    display: block;
+    padding: 0px 5px 5px 5px;
+    font-size: x-small;
+}
+
+.shashinAlbumCaptionLocation img {
+    vertical-align: middle;
+    padding-right: 3px;
+}
+
+.shashinCaptionExif {
+    display: block;
+    color: darkgray;
+}
+
+.shashinLinkToOriginalPhoto {
+    float: right;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.shashinFancyboxCaptionWrapper {
+    display: none;
+}
+
+.shashinFancyboxCaption {
+    text-align: left;
+}
+
+.shashinFancyboxCaptionClose {
+    float: right;
+}
+
+#fancybox-left, #fancybox-right {
+    /* this prevents the navigation overlay from hiding video controls */
+    bottom: auto;
+    top: 0px;
+    height: 90%;
+}
