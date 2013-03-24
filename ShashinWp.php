@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.3';
+    private $version = '3.3.1';
 
     public function __construct() {
     }
@@ -47,29 +47,23 @@ class ShashinWp {
     }
 
     public function deactivateHighslide() {
+        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+
+        if (is_plugin_active('highslide-for-shashin/start.php')) {
+            deactivate_plugins(WP_PLUGIN_DIR . '/highslide-for-shashin/start.php');
+        }
+    }
+
+    public function runtimeUpgrade() {
         try {
             $libContainer = new Lib_ShashinContainer();
             $settings = $libContainer->getSettings();
 
             if ($settings->imageDisplay == 'highslide') {
                 $settings->set(array('imageDisplay' => 'prettyphoto'));
-                $functionsFacade = $libContainer->getFunctionsFacade();
-                deactivate_plugins($functionsFacade->getPluginsPath() . '/highslide-for-shashin/start.php');
                 $_SESSION['shashin_highslide_deactivated'] = 1;
-                return $settings->imageDisplay;
             }
 
-            return true;
-        }
-
-        catch (Exception $e) {
-            return $this->formatExceptionMessage($e);
-        }
-    }
-
-    public function runtimeUpgrade() {
-        try {
-            // check if Highslide was deactivated in upgrading to 3.3
             if ($_SESSION['shashin_highslide_deactivated'] && strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
                 unset($_SESSION['shashin_highslide_deactivated']);
                 echo '<div class="updated"><p><em>';
