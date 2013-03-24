@@ -61,16 +61,12 @@ class Public_ShashinShortcode {
 
     public function checkValidKeysAndAssign() {
         foreach($this->arrayShortcode as $k=>$v) {
+            // just ignore unrecognizes keys - some themes
+            // pass additional keys with widgets
             if (array_key_exists($k, $this->data)) {
                 $this->data[$k] = $v;
             }
 
-            /*
-             * @todo: probably remove this - it causes unnecessary errors with widgets in some themes
-             */
-            else {
-                throw New Exception(__('Invalid shortcode attribute: ', 'shashin') . htmlentities($k));
-            }
         }
     }
 
