@@ -27,8 +27,9 @@ class ShashinAutoLoader {
 
         // shashin has lower-case directory names
         if (strpos($classPath, '/') !== false) {
-            $classPath = lcfirst($classPath);
+            $classPath[0] = strtolower($classPath[0]);
         }
+
         $this->fullPath = $basePath . '/' . $classPath;
         return true;
     }
