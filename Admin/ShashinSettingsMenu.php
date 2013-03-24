@@ -28,7 +28,7 @@ class Admin_ShashinSettingsMenu {
             ),
             'fancybox' => array(
                 'label' => __('Fancybox Settings', 'shashin'),
-                'description' => __('Fancybox is another photo viewer included with Shashin. These settings apply only if you select "Use Fancybox" under General Settings.', 'shashin')
+                'description' => __('Fancybox is included with Shashin, but prettyPhoto is recommended, as v1 of Fancybox (the GPL compliant version) is no longer updated. These settings apply only if you select "Use Fancybox" under General Settings.', 'shashin')
             ),
             'otherViewer' => array(
                 'label' => __('Other Viewer Settings', 'shashin'),
@@ -231,6 +231,14 @@ class Admin_ShashinSettingsMenu {
                 'validateFunction' => 'is_numeric_or_empty',
                 'label' => __('Autoplay image display time', 'shashin'),
                 'help' => __('Enter a duration in milliseconds (e.g. "5000" for 5 seconds) for your slideshow speed.', 'shashin'),
+                'group' => 'prettyphoto'
+            ),
+            'prettyPhotoLoadScript' => array(
+                'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
+                'validateFunction' => 'in_array',
+                'validValues' => array('y', 'n'),
+                'label' => __('Load Shashin\'s PrettyPhoto script?', 'shashin'),
+                'help' => __('If you already have PrettyPhoto installed on your site, select "no" to prevent Shashin from loading its own copy of PrettyPhoto.', 'shashin'),
                 'group' => 'prettyphoto'
             ),
 
