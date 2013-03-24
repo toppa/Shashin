@@ -50,6 +50,10 @@ abstract class Lib_ShashinDataObject {
     }
 
     public function set(array $fields) {
+        if (!is_array($fields) || empty($fields)) {
+            throw New Exception(__('No array passed for set()', 'shashin'));
+        }
+
         $intTypes = $this->dbFacade->getIntTypes();
 
         foreach ($this->refData as $k=>$v) {
