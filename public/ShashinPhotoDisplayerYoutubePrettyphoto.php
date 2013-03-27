@@ -35,4 +35,9 @@ class Public_ShashinPhotoDisplayerYoutubePrettyphoto extends Public_ShashinPhoto
         $this->linkClass = 'shashinPrettyPhotoVideo';
         return $this->linkClass;
     }
+
+    public function setCaption() {
+        parent::setCaption();
+        return $this->setCaptionForPrettyphoto();
+    }
 }

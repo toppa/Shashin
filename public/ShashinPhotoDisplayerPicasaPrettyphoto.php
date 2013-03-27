@@ -39,4 +39,9 @@ class Public_ShashinPhotoDisplayerPicasaPrettyphoto extends Public_ShashinPhotoD
             . '&amp;autoPlay=true';
         return $this->linkHref;
     }
+
+    public function setCaption() {
+        parent::setCaption();
+        return $this->setCaptionForPrettyphoto();
+    }
 }

@@ -28,4 +28,9 @@ class Public_ShashinPhotoDisplayerTwitpicPrettyphoto extends Public_ShashinPhoto
     public function setLinkTitleVideo() {
         return $this->setLinkTitle();
     }
+
+    public function setCaption() {
+        parent::setCaption();
+        return $this->setCaptionForPrettyphoto();
+    }
 }
