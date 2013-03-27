@@ -48,7 +48,7 @@ class Public_ShashinHeadTags {
                     'prettyphoto',
                     $this->baseUrl . 'prettyphoto/jquery.prettyPhoto.js',
                     array('jquery'),
-                    '3.1.5'
+                    '3.1.5.shashin'
                 );
             }
         }
