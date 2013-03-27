@@ -87,3 +87,7 @@
     top: 0px;
     height: 90%;
 }
+
+.shashinPrettyphotoCaptionWrapper {
+    display: none;
+}
