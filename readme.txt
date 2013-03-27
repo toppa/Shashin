@@ -4,13 +4,12 @@ Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, prettyPhoto, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 3.3.2
+Stable tag: 3.3.3
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
 
 == Description ==
-
 
 **What's new in Shashin 3.3**
 
@@ -44,7 +43,7 @@ Enter a post in [the wordpress.org support forum for Shashin](http://wordpress.o
 
 **Give Help**
 
-* Provide a language translation - [here's how](http://weblogtoolscollection.com/archives/2007/08/27/localizing-a-wordpress-plugin-using-poedit/)
+* Provide a language translation - [here's how](http://weblogtoolscollection.com/archives/2007/08/27/localizing-a-wordpress-plugin-using-poedit/) or use the [online PO Editor](https://poeditor.com/)
 * Fork [the Shashin repository on github](https://github.com/toppa/Shashin) and make a code contribution
 * If you're savvy user of the plugin, [answer questions in the support forum](http://wordpress.org/support/plugin/shahsin)
 * If you tip your pizza delivery guy, tip your plugin developer - [make a donation](http://www.toppa.com/shashin/)
@@ -81,6 +80,8 @@ Enter a post in [the wordpress.org support forum for Shashin](http://wordpress.o
 
 Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a detailed usage guide.
 
+If you have a question, enter a post in [the wordpress.org support forum for Shashin](http://wordpress.org/support/plugin/shashin), and I'll respond there.
+
 == Screenshots ==
 
 1. Album thumbnails
@@ -90,13 +91,21 @@ Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpres
 
 == Changelog ==
 
+= 3.3.3 =
+* Bug fix: Fancybox galleries weren't being recognized (they were showing only one photo at a time) - fixed
+* Bug fix: show EXIF data in prettyPhoto captions when requested by setting (and include "View at Picasa", etc links)
+* Add video support for flv files (they aren't listed as a supported type for Picasa, but they work)
+* Update link for help on Tools Menu to point to the support forum
+* Added Slovenian translation
+* Removed old, out-of-date translations
+* Bug fix for certain versions of mySQL on Windows: unable to add albums because of the NOT NULL constraint on video fields in the photo's table - fixed
+
 = 3.3.2 = Don't use lcfirst since it requires PHP 5.3
 
 = 3.3.1 = Gracefully handle shutting down the _Highside for Shashin_ add-on for anyone using it
 
 = 3.3 =
-* Add prettyPhoto, deprecate Fancybox.
-* Automatically deactivate Highslide if "Highslide for Shashin" was being used. Highslide is no longer supported.
+* Add prettyPhoto, deprecate Fancybox
 * Add jQuery tabs to settings menu
 * Remove dependencies on Toppa Plugin Libraries plugin, and replicate its functionality within Shashin. This shoudl eliminate cross-plugin fragility problems some have experienced when upgrading.
 * Allow negative timestamp values on photos. This should help with rare timestamp issues when using mySql on Windows.
