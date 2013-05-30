@@ -94,10 +94,11 @@ else {
 
 <div id="shashinTabs">
     <ul>
-        <li><a href="#shashinTabs-overview">How does this work?</a></li>
+        <?php if (!$dataObjects) echo '<li><a href="#shashinTabs-overview">How does this work?</a></li>'; ?>
         <li><a href="#shashinTabs-picasa">Picasa/Google+</a></li>
         <li><a href="#shashinTabs-youtube">YouTube</a></li>
         <li><a href="#shashinTabs-twitpic">Twitpic</a></li>
+        <?php if ($dataObjects) echo '<li><a href="#shashinTabs-overview">How does this work?</a></li>'; ?>
     </ul>
     <div id="shashinTabs-overview">
         <p><?php _e('Shashin can display photos and videos from several photo and video sharing sites. Shashin does not make copies of the photos or videos. Instead it downloads data about them into your WordPress site via JSON data feeds, and then makes it easy for you to display them on your site by making them available in the post editor\'s media browser. You will want to "synchronize" Shashin with your photos or videos when you upload new ones (on the Shashin settings page, you can set Shashin do this automatically). To get started, click the tab for the sites you want to synchronize with Shashin.', 'shashin'); ?></p>
@@ -113,19 +114,20 @@ else {
         <ul>
         <li><?php _e('Google is migrating Picasa to Google+ and making changes without advance notification. If you are unable to add an album, please', 'shashin'); ?>
             <a href="http://wordpress.org/support/plugin/shashin/"><?php _e('let me know', 'shashin'); ?></a>.</li>
-        <li><?php _e('Shashin works with albums where the visibility is set to "public." Also, for albums with visibility set to "limited, anyone with the link", they will work if you include the "authkey" when pasting the URL in the form below (this is supported for Picasa, not Google+).', 'shashin'); ?></li>
+        <li><?php _e('Shashin works with albums where the visibility is set to "public." Also, for albums with visibility set to "limited, anyone with the link", they will work if you include the "authkey" when pasting the URL in the form below.', 'shashin'); ?></li>
         </ul>
         <p><strong><?php _e('Examples', 'shashin'); ?>:</strong></p>
         <dl>
-        <dt><?php _e("All the Picasa/Google+ albums for a user", 'shashin'); ?>:</dt>
-            <dd>https://picasaweb.google.com/100291303544453276374/</dd>
-            <dd>https://picasaweb.google.com/michaeltoppa/</dd>
-            <dd>https://plus.google.com/photos/100291303544453276374/albums</dd>
+        <dt><?php _e("All the <strong>public</strong> Picasa/Google+ albums for a user", 'shashin'); ?>:</dt>
+            <dd>https://picasaweb.google.com/100291303544453276374</dd>
+            <dd>https://plus.google.com/u/0/photos/100291303544453276374/albums</dd>
             <dd></dd>
-        <dt><?php _e("A single Picasa/Google+ album", 'shashin'); ?>:</dt>
+        <dt><?php _e("A single <strong>public</strong> Picasa/Google+ album", 'shashin'); ?>:</dt>
             <dd>https://picasaweb.google.com/100291303544453276374/2012WordCampNashville</dd>
-            <dd>https://picasaweb.google.com/michaeltoppa/2012WordCampNashville</dd>
-            <dd>https://plus.google.com/photos/100291303544453276374/albums/5733852964209389153</dd>
+            <dd>https://plus.google.com/u/0/photos/100291303544453276374/albums/5733852964209389153</dd>
+        <dt><?php _e("A Picasa/Google+ album requiring a link to view", 'shashin'); ?>:</dt>
+            <dd>https://picasaweb.google.com/100291303544453276374/2012WordCampNashville?authkey=Gv1sRgCKTR5_qNmdmKAQ</dd>
+            <dd>https://plus.google.com/photos/100291303544453276374/albums/5133627534214473681?authkey=CKTR5_qNmdmKAQ</dd>
         </dl>
 
         <p><strong><?php _e("URL:", 'shashin'); ?></strong>
