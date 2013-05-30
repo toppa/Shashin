@@ -24,8 +24,18 @@ abstract class Public_ShashinPhotoDisplayer extends Public_ShashinDataObjectDisp
 
     public function setCaption() {
         if ($this->shortcode->caption == 'y' && $this->dataObject->description) {
+
+            if (strlen($this->dataObject->description) > 50 ) {
+                # thank you - http://stackoverflow.com/questions/79960/how-to-truncate-a-string-in-php-to-the-word-closest-to-a-certain-number-of-chara
+                $truncated_caption = preg_replace('/\s+?(\S+)?$/', '', substr($this->dataObject->description, 0, 51)) . "&hellip;";
+            }
+
+            else {
+                $truncated_caption = $this->dataObject->description;
+            }
+
             $this->caption = '<span class="shashinThumbnailCaption">'
-                . $this->dataObject->description
+                . $truncated_caption
                 . '</span>';
         }
 

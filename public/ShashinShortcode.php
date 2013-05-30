@@ -28,6 +28,14 @@ class Public_ShashinShortcode {
         'clear' => array(null, 'left', 'right', 'none', 'both', 'inherit'),
     );
 
+    private $thumbnailSizesMap = array(
+        'xsmall' => 72,
+        'small' => 150,
+        'medium' => 300,
+        'large' => 600,
+        'xlarge' => 800,
+    );
+
     public function __construct(array $arrayShortcode) {
         $this->arrayShortcode = $arrayShortcode;
     }
@@ -124,5 +132,11 @@ class Public_ShashinShortcode {
         }
 
         return true;
+    }
+
+    public function mapStringSizeToNumericSize($stringSize) {
+        if (array_key_exists($stringSize, $this->thumbnailSizesMap)) {
+            return $this->thumbnailSizesMap[$stringSize];
+        }
     }
 }
