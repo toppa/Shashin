@@ -4,19 +4,19 @@ Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, prettyPhoto, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 3.3.3
+Stable tag: 3.3.99
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
 
 == Description ==
 
-**What's new in Shashin 3.3**
+**What's new in Shashin 3.4**
 
-* Now includes the [PrettyPhoto](http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/) photo viewer (Fancybox is still included also, but switching to PrettyPhoto is recommended, as the GPL compliant version of Fancybox is no longer maintained. Highslide is no longer supported since it is not compliant with the GPL).
-* No longer depends on the Toppa Plugin Libraries plugin (plugin dependencies = bad idea)
-* Improved UI for Settings menu
-* Bug fixes
+* Responsive design: your photos will look good on any size display
+* Improved experience when navigating thumbnails of photos within an album
+* Captions now overlay the bottom of thumbnails
+* Updates to handle the latest changes from Google in how Google+ interacts with the Picasa API
 
 **Overview**
 
@@ -90,6 +90,26 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
 4. A Fancybox slideshow
 
 == Changelog ==
+
+= 3.4 =
+
+* Responsive design
+  * No longer use tables for layout!
+  * Responsive images
+  * If thumbnails shrink to less than 80% of their intended size, show them all in a single column
+  * Dynamically update responsive display when the window is resized
+* When viewing thumbnails of photos in an album:
+  * Using the navigation controls will automatically scroll the view to the top row of photos
+  * T he title and navigation controls now appear at the top and bottom
+  * Bug fix: in certain situations the pagination of thumbnails was not working correctly
+* Thumbnail captions
+  * Overlay captions on thumbnails
+  * Truncate captions on thumbanils to the nearest word if they exceed 50 characters
+  * Don't show captions on thumbnails if they take up more than 30% of the height
+  * Don't show details in an album thumbnail caption if the thumbnail width is less than 300px
+* Add prettyPhoto setting for "Show social connect buttons?"
+* Update for how Google+ now handles viewing photos that are limited to people who have a link with an authkey
+* On the Shashin Tools menu, only default to the "How does this work?" tab if there are no albums added yet
 
 = 3.3.3 =
 * Bug fix: Fancybox galleries weren't being recognized (they were showing only one photo at a time) - fixed
