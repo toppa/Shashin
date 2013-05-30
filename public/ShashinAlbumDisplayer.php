@@ -47,16 +47,21 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
 
     public function setCaption() {
         if ($this->shortcode->caption != 'n') {
+            $this->caption = '<div class="shashinThumbnailCaption">';
             $this->generateCaptionTitle();
-            $this->generateCaptionDate();
-            $this->generateCaptionLocationAndPhotoCount();
+
+            if ($this->displayThumbnailSize >= 300) {
+                $this->generateCaptionDate();
+                $this->generateCaptionLocationAndPhotoCount();
+            }
+            $this->caption .= '</div>';
         }
 
         return $this->caption;
     }
 
     private function generateCaptionTitle() {
-        $this->caption = '<span class="shashinAlbumCaptionTitle">';
+        $this->caption .= '<span class="shashinAlbumCaptionTitle">';
         $this->caption .= $this->linkTagForCaption ? $this->linkTagForCaption : '';
         $this->caption .= $this->dataObject->title;
         $this->caption .= $this->linkTagForCaption ? '</a>' : '';

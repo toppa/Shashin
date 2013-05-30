@@ -93,18 +93,11 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('This will sync all your albums in Shashin once daily. It will not automatically add new albums.', 'shashin'),
                 'group' => 'general'
             ),
-            'thumbPadding' => array(
-                'input' => array('type' => 'text', 'size' => 2),
-                'validateFunction' => 'is_numeric',
-                'label' => __('Thumbnail div padding', 'shashin'),
-                'help' => __('If you change the ".shashinThumbnailImage" padding value in shashin.css, make this 2x that value', 'shashin'),
-                'group' => 'general'
-            ),
             'themeMaxSize' => array(
                 'input' => array('type' => 'text', 'size' => 4),
                 'validateFunction' => 'is_numeric',
-                'label' => __('Content width for your theme', 'shashin'),
-                'help' => __('The maximum width available in your theme for a Shashin photo (or set of photos). This number is used to determine photo sizes when you use "max" as the number of columns or the size in a Shashin tag. Shashin will use the closest, smaller size available.', 'shashin'),
+                'label' => __('Content width (in pixels) for your theme', 'shashin'),
+                'help' => __('This is used in layout calculations when you use "max" as the number of columns or the image size in a Shashin tag. For example, if you set this to 600, and then in a shashin tag specify 3 columns and a "max" image size, each image will be approximately 200 pixels wide.', 'shashin'),
                 'group' => 'general'
             ),
             'captionExif' => array(
@@ -216,6 +209,14 @@ class Admin_ShashinSettingsMenu {
                 'validValues' => array('1', '0'),
                 'label' => __('Show title?', 'shashin'),
                 'help' => __('If "yes", shows the photo caption in large text above the photo.', 'shashin'),
+                'group' => 'prettyphoto'
+            ),
+            'prettyPhotoShowSocialButtons' => array(
+                'input' => array('type' => 'radio', 'subgroup' => array('1' => __('Yes', 'shashin'), '0' => __('No', 'shashin'))),
+                'validateFunction' => 'in_array',
+                'validValues' => array('1', '0'),
+                'label' => __('Show social connect buttons?', 'shashin'),
+                'help' => __('If "yes", shows Twitter and Facebook buttons in the photo caption.', 'shashin'),
                 'group' => 'prettyphoto'
             ),
             'prettyPhotoAutoplaySlideshow' => array(

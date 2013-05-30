@@ -37,6 +37,7 @@ class Public_ShashinHeadTags {
             // assume 4:3 ratio
             $shashinJsParams['prettyPhotoDefaultHeight'] = $sizesMap[$this->settings->expandedImageSize] * .75;
             $shashinJsParams['prettyPhotoShowTitle'] = $this->settings->prettyPhotoShowTitle;
+            $shashinJsParams['prettyPhotoShowSocialButtons'] = $this->settings->prettyPhotoShowSocialButtons;
             $shashinJsParams['prettyPhotoAutoplaySlideshow'] = $this->settings->prettyPhotoAutoplaySlideshow;
             $shashinJsParams['prettyPhotoSlideshow'] = $this->settings->prettyPhotoSlideshow;
 
@@ -85,6 +86,14 @@ class Public_ShashinHeadTags {
         $this->functionsFacade->enqueueScript(
             'shashinJs',
             $this->baseUrl . 'shashin.js',
+            array('jquery'),
+            $this->version,
+            true
+        );
+
+        $this->functionsFacade->enqueueScript(
+            'jquery-imagesloaded',
+            $this->baseUrl . 'jquery.imagesloaded.min.js',
             array('jquery'),
             $this->version,
             true

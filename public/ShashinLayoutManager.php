@@ -153,7 +153,7 @@ class Public_ShashinLayoutManager {
     }
 
     public function setOpeningTableTag() {
-        $this->openingTableTag = '<table class="shashinThumbnailsTable" id="' . $this->currentTableId . '"'
+        $this->openingTableTag = '<div class="shashinThumbnailsTable" id="' . $this->currentTableId . '"'
             . $this->addStyleForOpeningTableTag()
             . '>'
             . PHP_EOL;
@@ -204,10 +204,10 @@ class Public_ShashinLayoutManager {
         $navLinks = $this->addReturnLinkIfNeeded($navLinks);
         $navLinks = $this->addNextLinkIfNeeded($mayNeedPreviousAndNext, $navLinks);
 
-        $this->tableCaptionTag = '<caption>';
+        $this->tableCaptionTag = '<div class="shashinCaption">';
         $this->tableCaptionTag .= $this->addAlbumTitleIfNeeded();
         $this->tableCaptionTag .= $this->addNavLinksIfNeeded($navLinks);
-        $this->tableCaptionTag .= '</caption>' . PHP_EOL;
+        $this->tableCaptionTag .= '</div>' . PHP_EOL;
         return $this->tableCaptionTag;
     }
 
@@ -274,13 +274,13 @@ class Public_ShashinLayoutManager {
 
     public function setTableBody() {
         $this->setEndTableWithThisPhoto();
+        $this->setNumericColumnsIfNeeded();
         $this->tableBody = '';
 
         for ($i = $this->startTableWithThisPhoto; $i <= $this->endTableWithThisPhoto; $i++) {
             $this->tableBody .= $this->startTableRowIfNeeded();
             $this->getDataObjectDisplayerForThisCell($i);
             $this->tableBody .= $this->addTableCell();
-            $this->setNumericColumnsIfNeeded();
             $this->tableBody .= $this->closeTableRowIfNeeded($i);
             $this->setTableCellCount($i);
             $this->setStartTableWithThisPhotoIfNeeded($i);
@@ -311,9 +311,36 @@ class Public_ShashinLayoutManager {
         return $this->endTableWithThisPhoto;
     }
 
+    public function setNumericColumnsIfNeeded() {
+        if (is_numeric($this->shortcode->columns)) {
+            $this->numericColumns = $this->shortcode->columns;
+        }
+
+        elseif ($this->shortcode->columns == 'max') {
+            if (!is_numeric($this->shortcode->size)) {
+                $thumbnailSize = $this->shortcode->mapStringSizeToNumericSize($this->shortcode->size);
+            }
+
+            else {
+                $thumbnailSize = $this->shortcode->size;
+            }
+
+            // guess 10px for padding/margins
+            $columns = $this->settings->themeMaxSize / ($thumbnailSize + 10);
+            $this->numericColumns = floor($columns) ? floor($columns) : 1;
+        }
+
+
+        else {
+            $this->numericColumns = 1;
+        }
+
+        return $this->numericColumns;
+    }
+
     public function startTableRowIfNeeded() {
         if ($this->tableCellCount == 1) {
-            return '<tr>' . PHP_EOL;
+            return '<div class="shashinTableRow">' . PHP_EOL;
         }
 
         return null;
@@ -343,63 +370,28 @@ class Public_ShashinLayoutManager {
 
     public function addTableCell() {
         $linkAndImageTags = $this->currentDataObjectDisplayer->run();
-        $cell = '<td><div class="shashinThumbnailDiv" id="shashinThumbnailDiv_'
-            . ($this->sessionManager->getThumbnailCounter() - 1)
-            . '"';
-        $cellWidth = $this->currentDataObjectDisplayer->getImgWidth();
-
-        if ($cellWidth) {
-            $cellWidth += $this->settings->thumbPadding;
-            $cell .= ' style="width: ' . $cellWidth . 'px;"';
-        }
-
-        // imperfect solution if the image dimensions are unknown:
-        // the caption won't wrap under the image if it has a portrait
-        // orientation, since we don't know which dimension is the long one
-        else {
-            $cellWidth = $this->currentDataObjectDisplayer->getDisplayThumbnailSize() + $this->settings->thumbPadding;
-            $cell .= ' style="display: table; max-width: ' . $cellWidth . 'px;"';
-        }
-
-        $cell .= '>';
-        $cell .= $linkAndImageTags;
-        $cell .= '</div></td>' . PHP_EOL;
+        $width = floor(100 / $this->numericColumns) - 4; // there is a 2% margin in the stylesheet
+        $maxWidth = $this->currentDataObjectDisplayer->getImgWidth();
+        $cell = '<div class="shashinTableCell"'
+            . ' data-original_width="' . $width . '%"' // to recalculate the width if the browser is being resized
+            . ' style=" width: ' . $width . '%;'
+            . ' max-width: ' . ($maxWidth ? ($maxWidth . 'px;') : 'none')
+            . '">'
+            . $linkAndImageTags
+            . '</div>' . PHP_EOL;
         return $cell;
     }
 
-    public function setNumericColumnsIfNeeded() {
-        if ($this->numericColumns) {
-            return $this->numericColumns;
-        }
-
-        if ($this->shortcode->columns == 'max') {
-            $thumbnailSize = $this->currentDataObjectDisplayer->getDisplayThumbnailSize();
-            // guess 10px for padding/margins
-            $columns = $this->settings->themeMaxSize / ($thumbnailSize + 10);
-            $this->numericColumns = floor($columns);
-        }
-
-        elseif (is_numeric($this->shortcode->columns)) {
-            $this->numericColumns = $this->shortcode->columns;
-        }
-
-        else {
-            $this->numericColumns = 1;
-        }
-
-        return $this->numericColumns;
-    }
-
     public function closeTableRowIfNeeded($i) {
-        if ($this->tableCellCount >= $this->numericColumns || $i == (count($this->collection) - 1)) {
-            return '</tr>' . PHP_EOL;
+        if ($this->atEndOfRow($i)) {
+            return '</div><div class="shashinTableRowClear">&nbsp;</div>' . PHP_EOL;
         }
 
         return null;
     }
 
     public function setTableCellCount($i) {
-        if ($this->tableCellCount >= $this->numericColumns || $i == (count($this->collection) - 1)) {
+        if ($this->atEndofRow($i)) {
             $this->tableCellCount = 1;
         }
 
@@ -408,6 +400,10 @@ class Public_ShashinLayoutManager {
         }
 
         return $this->tableCellCount;
+    }
+
+    private function atEndOfRow($i) {
+        return ($this->tableCellCount >= $this->numericColumns || $i == $this->endTableWithThisPhoto);
     }
 
     public function setStartTableWithThisPhotoIfNeeded($i) {
@@ -439,7 +435,8 @@ class Public_ShashinLayoutManager {
                 $this->openingTableTag
                 . $this->tableCaptionTag
                 . $this->tableBody
-                . '</table>'
+                . $this->tableCaptionTag
+                . '</div>'
                 . PHP_EOL
                 . $this->slideshowGroupCounter;
         return $this->combinedTags;

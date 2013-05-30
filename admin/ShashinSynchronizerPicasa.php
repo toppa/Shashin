@@ -33,7 +33,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
                 . '/albumid/'
                 . $matches[2]
                 . '?alt=json&kind=photo';
-            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[3]);
+            $jsonUrl .= $this->addGooglePlusAuthKeyIfNeeded($matches[3]);
         }
 
         // Google Plus - all of a user's albums
@@ -43,7 +43,6 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
             $jsonUrl = 'https://picasaweb.google.com/data/feed/api/user/'
                 . $matches[1]
                 . '?alt=json&kind=album';
-            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[2]);
         }
 
         // Picasa - an individual album
@@ -51,7 +50,7 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
             $rssUrl = $this->retrievePicasaRssUrl();
             $jsonUrl = str_replace('/base/', '/api/', $rssUrl);
             $jsonUrl = str_replace('alt=rss', 'alt=json', $jsonUrl);
-            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[1]);
+            $jsonUrl .= $this->addPicasaAuthKeyIfNeeded($matches[1]);
         }
 
         // Picasa - all of a user's albums
@@ -60,7 +59,6 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
                 . '/data/feed/api/user/'
                 . $matches[2]
                 . '?alt=json&kind=album';
-            $jsonUrl .= $this->addAuthKeyIfNeeded($matches[2]);
         }
 
         else {
@@ -72,20 +70,14 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
 
     public function retrievePicasaRssUrl() {
         $rssUrl = null;
-        $response = $this->httpRequester->request($this->request['userUrl'], array('timeout' => 30, 'sslverify' => false));
-
-        if (!class_exists('DOMDocument')) {
-            throw New Exception(__('Your installation of PHP has been configured without DOM support. DOM support is required to sync Picasa albums. If you are using Google+, try using the Google+ URL instead.', 'shashin'));
-        }
-
-        $doc = new DOMDocument();
-        @$doc->loadHTML($response['body']);
+        $doc = $this->getBodyOfPageForUserUrl();
         $links = $doc->getElementsByTagName('link');
 
         for ($i = 0; $i < $links->length; $i++) {
             $link = $links->item($i);
             if ($link->getAttribute('rel') == 'alternate' && $link->getAttribute('type') == 'application/rss+xml') {
                 $rssUrl = $link->getAttribute('href');
+                break;
             }
         }
 
@@ -96,7 +88,34 @@ class Admin_ShashinSynchronizerPicasa extends Admin_ShashinSynchronizer {
         return $rssUrl;
     }
 
-    public function addAuthKeyIfNeeded($urlMatch = null) {
+    private function getBodyOfPageForUserUrl() {
+        if (!class_exists('DOMDocument')) {
+            throw New Exception(__('Your installation of PHP has been configured without DOM support. DOM support is required to sync albums using Picasa URLs. Try synchronizing with the Google+ URL.', 'shashin'));
+        }
+
+        $response = $this->httpRequester->request(
+            $this->request['userUrl'],
+            array('timeout' => 30, 'sslverify' => false)
+        );
+        $doc = new DOMDocument();
+        @$doc->loadHTML($response['body']);
+        return $doc;
+    }
+
+    public function addGooglePlusAuthKeyIfNeeded($urlMatch = null) {
+        if (!isset($urlMatch)) {
+            return null;
+        }
+
+        if (preg_match('/(authkey=)([\w-]+)/', $urlMatch, $authKeyMatches) != 1) {
+            return null;
+        }
+
+        // Yes, seriously.
+        return '&' . $authKeyMatches[1] . 'Gv1sRg' . $authKeyMatches[2];
+    }
+
+    public function addPicasaAuthKeyIfNeeded($urlMatch = null) {
         if (!isset($urlMatch)) {
             return null;
         }

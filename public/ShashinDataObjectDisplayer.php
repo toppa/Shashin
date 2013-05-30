@@ -12,13 +12,11 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $displayThumbnailSize;
     protected $actualExpandedSize;
     protected $displayCropped = false;
-    protected $imgHeight;
     protected $imgWidth;
     protected $imgSrc;
     protected $imgAlt;
     protected $imgTitle;
     protected $imgClass;
-    protected $imgStyle;
     protected $imgTag;
     protected $linkHref;
     protected $linkOnClick;
@@ -35,13 +33,6 @@ abstract class Public_ShashinDataObjectDisplayer {
     protected $validCropSizes = array();
     protected $validExpandedSizes = array();
     protected $expandedSizesMap = array();
-    protected $thumbnailSizesMap = array(
-        'xsmall' => 72,
-        'small' => 150,
-        'medium' => 300,
-        'large' => 600,
-        'xlarge' => 800,
-    );
 
     public function __construct() {
     }
@@ -84,12 +75,11 @@ abstract class Public_ShashinDataObjectDisplayer {
         $this->setActualThumbnailSize();
         $this->setActualExpandedSize();
         $this->setDisplayCropped();
-        $this->setImgWidthAndHeight();
+        $this->setImgWidth();
         $this->setImgSrc();
         $this->setImgAlt();
         $this->setImgTitle();
         $this->setImgClass();
-        $this->setImgStyle();
         $this->setImgTag();
 
         if ($this->dataObject->isVideo()) {
@@ -125,8 +115,8 @@ abstract class Public_ShashinDataObjectDisplayer {
     }
 
     public function setDisplayThumbnailSize($requestedSize = 'xsmall') {
-        if (array_key_exists($requestedSize, $this->thumbnailSizesMap)) {
-            $this->displayThumbnailSize = $this->thumbnailSizesMap[$requestedSize];
+        if (is_numeric($requestedSize)) {
+            $this->displayThumbnailSize = $requestedSize;
         }
 
         elseif ($requestedSize == 'max') {
@@ -135,7 +125,7 @@ abstract class Public_ShashinDataObjectDisplayer {
         }
 
         else {
-            $this->displayThumbnailSize = $requestedSize;
+            $this->displayThumbnailSize = $this->shortcode->mapStringSizeToNumericSize($requestedSize);
         }
 
         if (!is_numeric($this->displayThumbnailSize)) {
@@ -174,32 +164,22 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->displayCropped;
     }
 
-    public function setImgWidthAndHeight() {
-        if ($this->displayCropped) {
+    public function setImgWidth() {
+        if ($this->displayCropped || ($this->thumbnail->width > $this->thumbnail->height)) {
             $this->imgWidth = $this->displayThumbnailSize;
-            $this->imgHeight = $this->displayThumbnailSize;
         }
 
-        elseif (!$this->thumbnail->width || !$this->thumbnail->height) {
-            $this->imgWidth = null;
-            $this->imgHeight = null;
-        }
-
-        elseif ($this->thumbnail->width > $this->thumbnail->height) {
-            $this->imgWidth = $this->displayThumbnailSize;
-            $percentage = $this->displayThumbnailSize / $this->thumbnail->width;
-            $this->imgHeight = $percentage * $this->thumbnail->height;
-            settype($this->imgHeight, 'int');
-        }
-
-        else {
-            $this->imgHeight = $this->displayThumbnailSize;
+        elseif ($this->thumbnail->height > $this->thumbnail->width) {
             $percentage = $this->displayThumbnailSize / $this->thumbnail->height;
             $this->imgWidth = $percentage * $this->thumbnail->width;
             settype($this->imgWidth, 'int');
         }
 
-        return array($this->imgWidth, $this->imgHeight);
+        else {
+            $this->imgWidth = null;
+        }
+
+        return $this->imgWidth;
     }
 
     abstract public function setImgSrc();
@@ -211,28 +191,12 @@ abstract class Public_ShashinDataObjectDisplayer {
         return $this->imgClass;
     }
 
-    // I'm not sure why, but when using max-width, we need to knock
-    // a couple pixels off the padding to get it right (there's an extra 2px
-    // coming from somewhere)
-    public function setImgStyle() {
-        if (!$this->imgWidth) {
-            $this->imgStyle = 'max-width: '
-                . $this->displayThumbnailSize . 'px; padding: '
-                . floor(($this->settings->thumbPadding / 2) - 2)
-                . 'px;';
-        }
-
-        return $this->imgStyle;
-    }
-
     public function setImgTag() {
         $this->imgTag =
             '<img src="' . $this->imgSrc . '"'
             . ' alt="' . $this->imgAlt . '"'
             . ($this->imgTitle ? (' title="' . $this->imgTitle . '"') : '')
             . ($this->imgWidth ? (' width="' . $this->imgWidth . '"') : '')
-            . ($this->imgHeight ? (' height="' . $this->imgHeight . '"') : '')
-            . ($this->imgStyle ? (' style="' . $this->imgStyle . '"') : '')
             . ' class="' . $this->imgClass . '"'
             . ' id="shashinThumbnailImage_' . $this->sessionManager->getThumbnailCounter() . '" />';
         return $this->imgTag;
