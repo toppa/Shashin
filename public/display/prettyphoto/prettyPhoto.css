@@ -2,6 +2,186 @@
 	This you can edit.
 ------------------------------------------------------------------------- */
 
+/* ----------------------------------
+        Shashin mobile styles for prettyphoto
+        I started with this:
+        http://themeforest.net/forums/thread/prettyphoto-mobile-devices/87094?page=1
+        and then modified it so the left and right nav controls always appear
+    ----------------------------------- */
+
+@media screen and (max-device-width: 768px) {
+    .pp_pic_holder.pp_default {
+        width: 100% !important;
+        left: 0 !important;
+    }
+    div.pp_default .pp_content_container .pp_left {
+        padding-left: 0 !important;
+    }
+    div.pp_default .pp_content_container .pp_right {
+        padding-right: 0 !important;
+    }
+    .pp_content {
+        width: 100% !important;
+        height: auto !important;
+    }
+    .pp_fade {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    a.pp_expand, a.pp_contract, .pp_gallery, .pp_top, .pp_bottom {
+        display: none !important;
+    }
+    .pp_hoverContainer {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    a.pp_closeMobile {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+    div.pp_default .pp_next {
+        background: url(../images/prettyPhoto/default/sprite_next.png) center right no-repeat;
+        cursor: pointer;
+    }
+    div.light_rounded .pp_next {
+        background: url(../images/prettyPhoto/light_rounded/btnNext.png) center right no-repeat;
+        cursor: pointer;
+    }
+    div.dark_rounded .pp_next {
+        background: url(../images/prettyPhoto/dark_rounded/btnNext.png) center right no-repeat;
+        cursor: pointer;
+    }
+    div.dark_square .pp_next {
+        background: url(../images/prettyPhoto/dark_square/btnNext.png) center right no-repeat;
+        cursor: pointer;
+    }
+    div.light_square .pp_next {
+        background: url(../images/prettyPhoto/light_square/btnNext.png) center right no-repeat;
+        cursor: pointer;
+    }
+    div.facebook .pp_next {
+        background: url(../images/prettyPhoto/facebook/btnNext.png) center right no-repeat;
+        cursor: pointer;
+    }
+    div.pp_default .pp_previous {
+        background: url(../images/prettyPhoto/default/sprite_prev.png) center left no-repeat;
+        cursor: pointer;
+    }
+    div.light_rounded .pp_previous {
+        background: url(../images/prettyPhoto/light_rounded/btnPrevious.png) center left no-repeat;
+        cursor: pointer;
+    }
+    div.dark_rounded .pp_previous {
+        background: url(../images/prettyPhoto/dark_rounded/btnPrevious.png) center left no-repeat;
+        cursor: pointer;
+    }
+    div.dark_square .pp_previous {
+        background: url(../images/prettyPhoto/dark_square/btnPrevious.png) center left no-repeat;
+        cursor: pointer;
+    }
+    div.light_square .pp_previous {
+        background: url(../images/prettyPhoto/light_square/btnPrevious.png) center left no-repeat;
+        cursor: pointer;
+    }
+    div.facebook .pp_previous {
+        background: url(../images/prettyPhoto/facebook/btnPrevious.png) center left no-repeat;
+        cursor: pointer;
+    }
+    #pp_full_res img {
+        width: 100% !important;
+        height: auto !important;
+    }
+    #pp_full_res {
+        line-height: 0.7 !important;
+    }
+    .pp_details {
+        width: 94% !important;
+        padding: 15px 3% 15px 3%;
+        min-height: 35px;
+        background-color: #fff;
+        margin: 0 !important;
+    }
+    div.pp_default .pp_description {
+        margin: 11px 50px 5px 153px !important;
+    }
+    div.ppt {
+        display:none !important;
+    }
+    .pp_play {
+        margin-right: 20px !important;
+    }
+    .pp_arrow_previous {
+        margin-right: 5px !important;
+    }
+    div.pp_default .pp_nav .currentTextHolder {
+        left: 96px;
+    }
+}
+
+/* ----------------------------------
+        Shashin social sharing styles for prettyPhoto
+    ----------------------------------- */
+
+.pp_social .pp_twitter {
+    float: left;
+}
+.pp_social .pp_facebook {
+    float: left;
+    margin-left: 5px;
+    width: 58px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.pp_social .pp_facebook .facebookShareDialog {
+    display: none;
+}
+
+.pp_social .pp_facebook a {
+    background-image: url(../images/fb_share_button.png);
+    display: block;
+    text-indent:-9999px;
+    width: 58px;
+    height: 20px;
+}
+
+.pp_social .pp_pinterest {
+    float: left;
+    margin-left: 5px;
+    width: 40px;
+    height: 20px;
+    overflow: hidden;
+}
+
+
+.pp_social .pp_pinterest a {
+    background-image: url(../images/pin_it_button.png);
+    display: block;
+    text-indent:-9999px;
+    width: 40px;
+    height: 20px;
+}
+
+.pp_social .pp_link {
+    float: left;
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+}
+
+
+.pp_social .pp_link a {
+    background-image: url(../images/link_button.png);
+    display: block;
+    text-indent:-9999px;
+    width: 20px;
+    height: 20px;
+}
+
 	/* ----------------------------------
 		Default Theme
 	----------------------------------- */
