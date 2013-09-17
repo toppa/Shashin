@@ -7,7 +7,7 @@
 (function($) {
 	$.prettyPhoto = {version: '3.1.5'};
 	
-	$.fn.prettyPhoto = function(pp_settings) {
+	$.fn.shashinPrettyPhoto = function(pp_settings) {
 		pp_settings = jQuery.extend({
 			hook: 'rel', /* the attribute tag to use for prettyphoto hooks. default: 'rel'. For HTML5, use "data-rel" or similar. */
 			animation_speed: 'fast', /* fast/slow/normal */
@@ -34,6 +34,7 @@
 			changepicturecallback: function(){}, /* Called everytime an item is shown/changed */
 			callback: function(){}, /* Called when prettyphoto is closed */
 			ie6_fallback: true,
+            /* edit for Shashin - added pp_closeMoble and customized social_tools */
 			markup: '<div class="pp_pic_holder"> \
 						<div class="ppt">&nbsp;</div> \
 						<div class="pp_top"> \
@@ -49,6 +50,7 @@
 									<div class="pp_fade"> \
 										<a href="#" class="pp_expand" title="Expand the image">Expand</a> \
 										<div class="pp_hoverContainer"> \
+										    <a class="pp_close pp_closeMobile" href="#">Close</a> \
 											<a class="pp_next" href="#">next</a> \
 											<a class="pp_previous" href="#">previous</a> \
 										</div> \
@@ -90,9 +92,9 @@
 			iframe_markup: '<iframe src ="{path}" width="{width}" height="{height}" frameborder="no"></iframe>',
 			inline_markup: '<div class="pp_inline">{content}</div>',
 			custom_markup: '',
-			social_tools: '<div class="twitter"><a href="http://twitter.com/share" class="twitter-share-button" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></div><div class="facebook"><iframe src="//www.facebook.com/plugins/like.php?locale=en_US&href={location_href}&amp;layout=button_count&amp;show_faces=true&amp;width=500&amp;action=like&amp;font&amp;colorscheme=light&amp;height=23" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:500px; height:23px;" allowTransparency="true"></iframe></div>' /* html or false to disable */
+			social_tools: '<div class="pp_twitter"><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script><a href="https://twitter.com/intent/tweet?url={location_href}&amp;text={text}" class="twitter-share-button" data-count="none">Tweet</a></div><div class="pp_facebook"><a href="http://www.facebook.com/sharer.php?s=100&amp;p[images][0]={path}&amp;p[url]={location_href}&amp;p[title]={text}" target="_blank" onclick="shashinPopup(this.href, 550, 450); return false;">Share on Facebook</a></div><div class="pp_pinterest"><a href="http://pinterest.com/pin/create/button/?url={location_href}&amp;media={path}&amp;description={text}" target="_blank" onclick="shashinPopup(this.href, 550, 450); return false;">Pin it</a></div><div class="pp_link"><a href="#" onclick="shashinLinkPrompt(&#39;{location_href}&#39;); return false;">Share link</a></div>' /* html or false to disable */
 		}, pp_settings);
-		
+
 		// Global variables accessible only by prettyphoto
 		var matchedObjects = this, percentBased = false, pp_dimensions, pp_open,
 		
@@ -152,6 +154,10 @@
 			// Put the SRCs, TITLEs, ALTs into an array.
 			pp_images = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).attr('href'); }) : $.makeArray($(this).attr('href'));
 			pp_titles = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).find('img').attr('alt')) ? $(n).find('img').attr('alt') : ""; }) : $.makeArray($(this).find('img').attr('alt'));
+            //update for shashin - capture the photo and album ids
+            pp_photo_ids = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).data('shashinphoto'); }) : $.makeArray($(this).data('shashinphoto'));
+            pp_album_ids = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return $(n).parents('div[data-shashinalbum]').data('shashinalbum'); }) : $.makeArray($(this).parents('a[data-shashinalbum]'));
+
             // edit for Shashin - use content from a child elment instead for the description,
             // so we can customize it
 			//pp_descriptions = (isSet) ? jQuery.map(matchedObjects, function(n, i){ if($(n).attr(settings.hook).indexOf(theRel) != -1) return ($(n).attr('title')) ? $(n).attr('title') : ""; }) : $.makeArray($(this).attr('title'));
@@ -163,7 +169,7 @@
 			rel_index = (isSet) ? set_position : $("a["+settings.hook+"^='"+theRel+"']").index($(this));
 			
 			_build_overlay(this); // Build the overlay {this} being the caller
-			
+
 			if(settings.allow_resize)
 				$(window).bind('scroll.prettyphoto',function(){ _center_overlay(); });
 			
@@ -202,7 +208,37 @@
 		
 			// Rebuild Facebook Like Button with updated href
 			if(settings.social_tools){
-				facebook_like_link = settings.social_tools.replace('{location_href}', encodeURIComponent(location.href)); 
+                // updated for Shashin
+
+                var shashin_link = location.href;
+
+                // remove any shashin keys already in the url
+                if (shashin_link.indexOf('shashin_photo_key=') >= 0) {
+                    shashin_link = shashin_link.replace(new RegExp("[\?&]shashin_photo_key=\\d+"), "");
+                }
+
+                if (shashin_link.indexOf('shashin_album_key=') >= 0) {
+                    shashin_link = shashin_link.replace(new RegExp("[\?&]shashin_album_key=\\d+"), "");
+                }
+
+                var shashin_query_string = 'shashin_photo_key=' + pp_photo_ids[set_position];
+
+                if (typeof pp_album_ids[set_position] !== 'undefined') {
+                    shashin_query_string = shashin_query_string + '&shashin_album_key=' + pp_album_ids[set_position];
+                }
+
+
+                if (shashin_link.indexOf('?') >= 0) {
+                    shashin_link = shashin_link.replace('?', '?' + shashin_query_string + '&');
+                }
+                else {
+                    shashin_link = shashin_link + '?' + shashin_query_string;
+                }
+
+				facebook_like_link = settings.social_tools.replace(/{location_href}/g, encodeURIComponent(shashin_link));
+				facebook_like_link = facebook_like_link.replace(/{path}/g, pp_images[set_position]);
+                // crazy but true - http://viralpatel.net/blogs/jquery-get-text-element-without-child-element/
+				facebook_like_link = facebook_like_link.replace(/{text}/g, $(pp_descriptions[set_position] + ' .shashinPrettyPhotoCaption').clone().children().remove().end().text());
 				$pp_pic_holder.find('.pp_social').html(facebook_like_link);
 			}
 			
@@ -750,7 +786,7 @@
 		function _build_overlay(caller){
 			// Inject Social Tool markup into General markup
 			if(settings.social_tools)
-				facebook_like_link = settings.social_tools.replace('{location_href}', encodeURIComponent(location.href)); 
+				facebook_like_link = settings.social_tools.replace('{location_href}', encodeURIComponent(location.href));
 
 			settings.markup = settings.markup.replace('{pp_social}',''); 
 			
@@ -888,18 +924,22 @@
 	
 	function getHashtag(){
 		var url = location.href;
-		hashtag = (url.indexOf('#prettyphoto') !== -1) ? decodeURI(url.substring(url.indexOf('#prettyphoto')+1,url.length)) : false;
+        // updated for Shashin - bug fix "prettyphoto" was lower case - wasn't ever matching
+		hashtag = (url.indexOf('#prettyPhoto') !== -1) ? decodeURI(url.substring(url.indexOf('#prettyPhoto')+1,url.length)) : false;
 
 		return hashtag;
 	};
 	
 	function setHashtag(){
-		if(typeof theRel == 'undefined') return; // theRel is set on normal calls, it's impossible to deeplink using the API
-		location.hash = theRel + '/'+rel_index+'/';
+        // updated for Shashin - just return as we have our own way of setting image permalinks
+        return
+		//if(typeof theRel == 'undefined') return; // theRel is set on normal calls, it's impossible to deeplink using the API
+		//location.hash = theRel + '/'+rel_index+'/';
 	};
 	
 	function clearHashtag(){
-		if ( location.href.indexOf('#prettyphoto') !== -1 ) location.hash = "prettyphoto";
+        // updated for Shashin - bug fix "prettyphoto" was lower case - wasn't ever matching
+		if ( location.href.indexOf('#prettyPhoto') !== -1 ) location.hash = "prettyPhoto";
 	}
 	
 	function getParam(name,url){
@@ -909,7 +949,6 @@
 	  var results = regex.exec( url );
 	  return ( results == null ) ? "" : results[1];
 	}
-	
 })(jQuery);
 
 var pp_alreadyInitialized = false; // Used for the deep linking to make sure not to call the same function several times.
