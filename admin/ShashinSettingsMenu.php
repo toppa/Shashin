@@ -29,11 +29,7 @@ class Admin_ShashinSettingsMenu {
             'fancybox' => array(
                 'label' => __('Fancybox Settings', 'shashin'),
                 'description' => __('Fancybox is included with Shashin, but prettyphoto is recommended, as v1 of Fancybox (the GPL compliant version) is no longer updated. These settings apply only if you select "Use Fancybox" under General Settings.', 'shashin')
-            ),
-            'otherViewer' => array(
-                'label' => __('Other Viewer Settings', 'shashin'),
-                'description' => __('These settings apply only if you select "Use another viewer" above. There are a wide variety of configuration requirements for different viewers. Shashin accommodates them by letting you control the attributes for the link and image tags used for its thumbnails. All links and thumbnails automatically get unique IDs (e.g. "shashinThumbnailLink_24", "shashinThumbnailImage_24").', 'shashin')
-            ),
+            )
         );
         $this->refData = array(
             // General Settings
@@ -51,14 +47,13 @@ class Admin_ShashinSettingsMenu {
                     'subgroup' =>  array(
                         'source' => __('display at photo hosting site', 'shashin'),
                         'prettyphoto' => __('Use PrettyPhoto', 'shashin'),
-                        'fancybox' => __('Use FancyBox', 'shashin'),
-                        'other' => __('Use another viewer', 'shashin')
+                        'fancybox' => __('Use FancyBox', 'shashin')
                     )
                 ),
                 'validateFunction' => 'in_array',
-                'validValues' => array('source', 'prettyphoto', 'fancybox', 'other'),
+                'validValues' => array('source', 'prettyphoto', 'fancybox'),
                 'label' => __('How to display a full-size photo when its thumbnail is clicked', 'shashin'),
-                'help' => __('PrettyPhoto is included with Shashin and works "out of the box." FancyBox is also included, but is being phased out. If you select "Use another viewer," you are responsible for implementing your own image viewer (see the "Other Viewer Settings" tab).', 'shashin'),
+                'help' => __('PrettyPhoto is included with Shashin and works "out of the box." FancyBox is also included, but is being phased out.', 'shashin'),
                 'group' => 'general'
             ),
             'expandedImageSize' => array(
@@ -216,7 +211,7 @@ class Admin_ShashinSettingsMenu {
                 'validateFunction' => 'in_array',
                 'validValues' => array('1', '0'),
                 'label' => __('Show social connect buttons?', 'shashin'),
-                'help' => __('If "yes", shows Twitter and Facebook buttons in the photo caption.', 'shashin'),
+                'help' => __('If "yes", shows Twitter, Facebook, Pinterest, and Link buttons in the photo caption.', 'shashin'),
                 'group' => 'prettyphoto'
             ),
             'prettyPhotoAutoplaySlideshow' => array(
@@ -232,14 +227,6 @@ class Admin_ShashinSettingsMenu {
                 'validateFunction' => 'is_numeric_or_empty',
                 'label' => __('Autoplay image display time', 'shashin'),
                 'help' => __('Enter a duration in milliseconds (e.g. "5000" for 5 seconds) for your slideshow speed.', 'shashin'),
-                'group' => 'prettyphoto'
-            ),
-            'prettyPhotoLoadScript' => array(
-                'input' => array('type' => 'radio', 'subgroup' => array('y' => __('Yes', 'shashin'), 'n' => __('No', 'shashin'))),
-                'validateFunction' => 'in_array',
-                'validValues' => array('y', 'n'),
-                'label' => __('Load Shashin\'s PrettyPhoto script?', 'shashin'),
-                'help' => __('If you already have PrettyPhoto installed on your site, select "no" to prevent Shashin from loading its own copy of PrettyPhoto.', 'shashin'),
                 'group' => 'prettyphoto'
             ),
 
@@ -295,54 +282,7 @@ class Admin_ShashinSettingsMenu {
                 'label' => __('Load Shashin\'s Fancybox script?', 'shashin'),
                 'help' => __('If you already have Fancybox installed on your site, select "no" to prevent Shashin from loading its own copy of Fancybox. Note Shashin has been tested only with version 1.3.4 of Fancybox.', 'shashin'),
                 'group' => 'fancybox'
-            ),
-
-            // Other viewer settings
-            'otherRelImage' => array(
-                'input' => array('type' => 'text', 'size' => 15),
-                'validateFunction' => 'htmlentities',
-                'label' => __('Link "rel" for images', 'shashin'),
-                'help' => __('The "rel" attribute for image links; e.g. "lightbox" if you are using Lightbox.', 'shashin'),
-                'group' => 'otherViewer'
-            ),
-            'otherRelVideo' => array(
-                'input' => array('type' => 'text', 'size' => 15),
-                'validateFunction' => 'htmlentities',
-                'label' => __('Link "rel" for videos', 'shashin'),
-                'help' => __('The "rel" attribute for links if displaying a video; e.g. "vidbox" if you are using Videobox.', 'shashin'),
-                'group' => 'otherViewer'
-            ),
-            'otherRelDelimiter' => array(
-                'input' => array('type' => 'radio', 'subgroup' => array('brackets' => __('Brackets', 'shashin'), 'hyphen' => __('Hyphen', 'shashin'))),
-                'validateFunction' => 'in_array',
-                'validValues' => array('brackets', 'hyphen'),
-                'label' => __('"rel" delimiter for image groups', 'shashin'),
-                'help' => __('How to delimit image groups in a rel tag. Some viewers use brackets (e.g. "lightbox[33]") and some use hyphens (e.g. "lightbox-33").', 'shashin'),
-                'group' => 'otherViewer'
-            ),
-            'otherLinkClass' => array(
-                'input' => array('type' => 'text', 'size' => 15),
-                'validateFunction' => 'htmlentities',
-                'label' => __('Class for links', 'shashin'),
-                'help' => __('A CSS class to apply to the link tags for thumbnails. Leave blank for none.', 'shashin'),
-                'group' => 'otherViewer'
-            ),
-            'otherImageClass' => array(
-                'input' => array('type' => 'text', 'size' => 15),
-                'validateFunction' => 'htmlentities',
-                'label' => __('Class for thumbnails', 'shashin'),
-                'help' => __('A CSS class to apply to the thumbnail image tags. Leave blank for none.', 'shashin'),
-                'group' => 'otherViewer'
-            ),
-            'otherTitle' => array(
-                'input' => array('type' => 'checkbox', 'subgroup' => array('links' => __('Links', 'shashin'), 'images' => __('Images', 'shashin'))),
-                'validateFunction' => 'in_array',
-                'validValues' => array('links', 'images'),
-                'label' => __('Use photo caption as "title" for', 'shashin'),
-                'help' => __('You can use the photo\'s caption as the "title" for for its link tag, its image tag, or both.', 'shashin'),
-                'group' => 'otherViewer'
-            ),
-
+            )
         );
     }
 
@@ -362,7 +302,6 @@ class Admin_ShashinSettingsMenu {
     }
 
     public function run() {
-        $this->addExternalViewers();
         if (isset($this->request['shashinAction']) && $this->request['shashinAction'] == 'updateSettings') {
             $this->validateSettings();
             $this->updateSettingsAndSetSuccessMessageIfNeeded();
@@ -370,15 +309,6 @@ class Admin_ShashinSettingsMenu {
         }
 
         return $this->displayMenu();
-    }
-
-    public function addExternalViewers() {
-        foreach ($this->settings->externalViewers as $key => $label) {
-            $this->refData['imageDisplay']['input']['subgroup'][$key] = __('Use') . ' ' . $label;
-            $this->refData['imageDisplay']['validValues'][] = $key;
-        }
-
-        return true;
     }
 
     public function displayMenu() {
