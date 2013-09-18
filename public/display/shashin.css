@@ -69,18 +69,21 @@
     padding: 0px 5px 1px 5px;
     font-size: x-small;
     font-weight: bold;
+    line-height: 1.4em;
 }
 
 .shashinAlbumCaptionDate {
     display: block;
     padding: 0px 5px 1px 5px;
     font-size: x-small;
+    line-height: 1.4em;
 }
 
 .shashinAlbumCaptionLocation {
     display: block;
     padding: 0px 5px 5px 5px;
     font-size: x-small;
+    line-height: 1.4em;
 }
 
 .shashinAlbumCaptionLocation img {
@@ -94,20 +97,14 @@
 }
 
 .shashinLinkToOriginalPhoto {
-    float: right;
-    padding: 5px;
-    background-color: #f1f1f1;
-    border: thin #717171 solid;
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
+    display: inline;
+    padding-left: 5px;
     font-size: x-small;
-    text-shadow: 0px 1px 0px #fff;
+    font-style: italic;
 }
 
 .shashinLinkToOriginalPhoto a, .shashinLinkToOriginalPhoto a:visited, .shashinLinkToOriginalPhoto a:hover, .shashinLinkToOriginalPhoto a:active {
     color: #717171;
-    text-decoration: none;
 }
 
 .shashinFancyboxCaptionWrapper {
@@ -132,3 +129,4 @@
 .shashinPrettyphotoCaptionWrapper {
     display: none;
 }
+
