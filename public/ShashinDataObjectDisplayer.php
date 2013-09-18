@@ -244,6 +244,7 @@ abstract class Public_ShashinDataObjectDisplayer {
         $this->linkTitle = null;
         return $this->linkTitle;
     }
+
     abstract public function setLinkIdForImg();
     abstract public function setLinkIdForCaption();
 
@@ -263,6 +264,11 @@ abstract class Public_ShashinDataObjectDisplayer {
         $linkTag =
             '<a href="' . $this->linkHref . '"'
             . ' id="' . $linkId . '"'
+            . ' data-'
+                . preg_replace('/.*_/', '', get_class($this->dataObject))
+                . '="'
+                . $this->dataObject->id
+                . '"'
             . ($this->linkOnClick ? (' onclick="' . $this->linkOnClick . '"') : '')
             . ($this->linkClass ? (' class="' . $this->linkClass . '"') : '')
             . ($this->linkRel ? (' rel="' . $this->linkRel . '"') : '')
@@ -301,4 +307,13 @@ abstract class Public_ShashinDataObjectDisplayer {
     abstract public function setExifDataForCaption();
     abstract public function setDateForCaption($date = null);
     abstract public function adjustVideoDimensions();
+
+    public function makeImgSrcProtocolConsistent() {
+        // return $url as http if not on secure connection, so Shashin can work with Pinterest
+        if (!$_SERVER["HTTPS"] && substr(strtolower($this->imgSrc), 0, 5) == "https") {
+            $this->imgSrc = "http" . substr($this->imgSrc, 5);
+        }
+
+        return $this->imgSrc;
+    }
 }
