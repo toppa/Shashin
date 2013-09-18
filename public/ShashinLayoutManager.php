@@ -162,20 +162,23 @@ class Public_ShashinLayoutManager {
 
     public function addStyleForOpeningTableTag() {
         $style = ' style="';
-        $style .= $this->addStylePositionIfNeeded();
+        $style .= $this->addStylePositionAndMarginIfNeeded();
         $style .= $this->addStyleClearIfNeeded();
         $style .= $this->addStyleDisplayIfNeeded();
         $style .= '"';
         return $style;
     }
 
-    public function addStylePositionIfNeeded() {
+    public function addStylePositionAndMarginIfNeeded() {
         if ($this->shortcode->position == 'center') {
             return 'margin-left: auto; margin-right: auto;';
         }
 
         else if ($this->shortcode->position) {
-            return 'float: '. $this->shortcode->position . ';';
+            return 'float: '
+                . $this->shortcode->position
+                . '; '
+                . ($this->shortcode->position == 'left' ? 'margin-right: 6px;' : 'margin-left: 6px');
         }
 
         return null;
