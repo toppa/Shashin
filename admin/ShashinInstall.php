@@ -28,20 +28,12 @@ class Admin_ShashinInstall {
         'prettyPhotoShowSocialButtons' => '1',
         'prettyPhotoAutoplaySlideshow' => '0',
         'prettyPhotoSlideshow' => '5000',
-        'prettyPhotoLoadScript' => 'y',
         'fancyboxCyclic' => '0',
         'fancyboxVideoWidth' => '560',
         'fancyboxVideoHeight' => '340',
         'fancyboxTransition' => 'fade',
         'fancyboxInterval' => null,
-        'fancyboxLoadScript' => 'y',
-        'otherRelImage' => null,
-        'otherRelVideo' => null,
-        'otherRelDelimiter' => null,
-        'otherLinkClass' => null,
-        'otherImageClass' => null,
-        'otherTitle' => array(),
-        'externalViewers' => array()
+        'fancyboxLoadScript' => 'y'
     );
 
     public function __construct($version) {
@@ -75,24 +67,6 @@ class Admin_ShashinInstall {
 
     public function run() {
         return $this->functionsFacade->callFunctionForNetworkSites(array($this, 'runForNetworkSites'));
-    }
-
-    public function runtimeUpgrade() {
-        $status = shashinActivationChecks();
-
-        if (is_string($status)) {
-            shashinCancelActivation($status);
-            return null;
-        }
-
-        // update the version number if needed
-        $allSettings = $this->settings->refresh();
-
-        //if (!isset($allSettings['version']) || version_compare($allSettings['version'], $this->version, '<')) {
-            $this->updateSettings();
-        //}
-
-        return true;
     }
 
     public function runForNetworkSites() {
@@ -140,5 +114,41 @@ class Admin_ShashinInstall {
         $this->settings->refresh();
         $this->settings->set(array('version' => $this->version));
         return $this->settings->set($this->settingsDefaults, true);
+    }
+
+    public function runtimeUpgrade() {
+        $status = shashinActivationChecks();
+
+        if (is_string($status)) {
+            shashinCancelActivation($status);
+            return null;
+        }
+
+        $this->deactivateUnsupportedViewers();
+
+        $allSettings = $this->settings->refresh();
+
+        if (!isset($allSettings['version']) || version_compare($allSettings['version'], $this->version, '<')) {
+            $this->updateSettings();
+        }
+
+        return true;
+    }
+
+    public function deactivateUnsupportedViewers() {
+        if ($this->settings->imageDisplay == 'highslide' || $this->settings->imageDisplay == 'other') {
+            $this->settings->set(array('imageDisplay' => 'prettyphoto'));
+            $this->settings->purge(array('externalViewers'));
+            $_SESSION['shashin_highslide_deactivated'] = 1;
+        }
+
+        if ($_SESSION['shashin_highslide_deactivated'] && strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
+            unset($_SESSION['shashin_highslide_deactivated']);
+            echo '<div class="updated"><p><em>';
+            echo __('Highslide for Shashin', 'shashin');
+            echo '</em> ';
+            echo __('and other viewers are no longer supported and have been deactivated. Your viewer for Shashin has been upgraded to PrettyPhoto.', 'shashin');
+            echo '</p></div>' . PHP_EOL;
+        }
     }
 }
