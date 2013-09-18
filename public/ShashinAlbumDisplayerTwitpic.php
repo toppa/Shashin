@@ -8,6 +8,7 @@ class Public_ShashinAlbumDisplayerTwitpic extends Public_ShashinAlbumDisplayer {
 
     public function setImgSrc() {
         $this->imgSrc = str_replace('_normal.', '.', $this->thumbnail->coverPhotoUrl);
+        $this->makeImgSrcProtocolConsistent();
         return $this->imgSrc;
     }
 }

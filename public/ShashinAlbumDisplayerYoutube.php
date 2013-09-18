@@ -8,6 +8,7 @@ class Public_ShashinAlbumDisplayerYoutube extends Public_ShashinAlbumDisplayer {
 
     public function setImgSrc() {
         $this->imgSrc = $this->thumbnail->coverPhotoUrl;
+        $this->makeImgSrcProtocolConsistent();
         return $this->imgSrc;
     }
 }
