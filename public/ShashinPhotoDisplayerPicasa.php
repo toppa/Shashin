@@ -15,6 +15,7 @@ abstract class Public_ShashinPhotoDisplayerPicasa extends Public_ShashinPhotoDis
             $this->imgSrc .= '&amp;crop=1';
         }
 
+        $this->makeImgSrcProtocolConsistent();
         return $this->imgSrc;
     }
 
