@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.3.99';
+    private $version = '4.0';
 
     public function __construct() {
     }
@@ -56,24 +56,6 @@ class ShashinWp {
 
     public function runtimeUpgrade() {
         try {
-            $libContainer = new Lib_ShashinContainer();
-            $settings = $libContainer->getSettings();
-
-            if ($settings->imageDisplay == 'highslide') {
-                $settings->set(array('imageDisplay' => 'prettyphoto'));
-                $settings->purge(array('externalViewers', 'highslide'));
-                $_SESSION['shashin_highslide_deactivated'] = 1;
-            }
-
-            if ($_SESSION['shashin_highslide_deactivated'] && strpos($_SERVER['REQUEST_URI'], 'plugins.php')) {
-                unset($_SESSION['shashin_highslide_deactivated']);
-                echo '<div class="updated"><p><em>';
-                echo __('Highslide for Shashin', 'shashin');
-                echo '</em> ';
-                echo __('is no longer supported and has been deactivated (please delete it). Your viewer for Shashin has been upgraded to PrettyPhoto.', 'shashin');
-                echo '</p></div>' . PHP_EOL;
-            }
-
             // check if upgrading from Shashin 2
             $adminContainer = new Admin_ShashinContainer();
             $upgrader = $adminContainer->getUpgrader();
@@ -225,7 +207,11 @@ class ShashinWp {
                 'caption' => $settings->albumPhotosCaption
             );
 
-            echo '<div id="shashinAlbumPhotos_' . $shortcode['id'] . '" style="display: table; '
+            echo '<div data-shashinalbum="'
+                .  $shortcode['id']
+                . '" id="shashinAlbumPhotos_'
+                . $shortcode['id']
+                . '" style="display: table; '
                 . htmlentities($_REQUEST['shashinParentTableStyle'])
                 . '">' .$this->handleShortcode($shortcode) . '</div>';
         }
