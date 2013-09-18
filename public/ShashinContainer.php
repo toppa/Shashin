@@ -39,13 +39,6 @@ class Public_ShashinContainer extends Lib_ShashinContainer {
         $layoutManager->setDataObjectCollection($dataObjectCollection);
         $layoutManager->setRequest($request);
         $layoutManager->setSessionManager($this->sessionManager);
-
-        if (array_key_exists($this->settings->imageDisplay, $this->settings->externalViewers)) {
-            $className = 'Public_' . ucfirst($this->settings->imageDisplay) . 'SlideshowJs';
-            $slideshowJs = new $className;
-            $layoutManager->setSlideshowJs($slideshowJs);
-        }
-
         return $layoutManager;
     }
 
