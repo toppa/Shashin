@@ -9,6 +9,10 @@
         and then modified it so the left and right nav controls always appear
     ----------------------------------- */
 
+a.pp_closeMobile {
+    display: none !important;
+}
+
 @media screen and (max-device-width: 768px) {
     .pp_pic_holder.pp_default {
         width: 100% !important;
