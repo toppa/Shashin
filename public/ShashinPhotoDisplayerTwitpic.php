@@ -24,6 +24,7 @@ abstract class Public_ShashinPhotoDisplayerTwitpic extends Public_ShashinPhotoDi
             $this->imgSrc = str_replace('/mini/', '/large/', $this->thumbnail->contentUrl);
         }
 
+        $this->makeImgSrcProtocolConsistent();
         return $this->imgSrc;
     }
 

@@ -16,6 +16,7 @@ abstract class Public_ShashinPhotoDisplayerYoutube extends Public_ShashinPhotoDi
             $this->imgSrc = str_replace('/0.jpg', '/2.jpg', $this->thumbnail->contentUrl);
         }
 
+        $this->makeImgSrcProtocolConsistent();
         return $this->imgSrc;
     }
 
