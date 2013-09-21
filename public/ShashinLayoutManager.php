@@ -330,7 +330,17 @@ class Public_ShashinLayoutManager {
 
             // guess 10px for padding/margins
             $columns = $this->settings->themeMaxSize / ($thumbnailSize + 10);
-            $this->numericColumns = floor($columns) ? floor($columns) : 1;
+            $max_possible_columns = floor($columns) ? floor($columns) : 1;
+
+            // make sure the calculated number of columns isn't greater than
+            // the total number of photos
+            if ($max_possible_columns > count($this->collection)) {
+                $this->numericColumns = count($this->collection);
+            }
+
+            else {
+                $this->numericColumns = $max_possible_columns;
+            }
         }
 
 
@@ -438,7 +448,7 @@ class Public_ShashinLayoutManager {
                 $this->openingTableTag
                 . $this->tableCaptionTag
                 . $this->tableBody
-                . $this->tableCaptionTag
+                . str_replace('class="', 'class="shashinCaptionBottom ', $this->tableCaptionTag)
                 . '</div>'
                 . PHP_EOL
                 . $this->slideshowGroupCounter;
