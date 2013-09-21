@@ -152,7 +152,7 @@ jQuery(document).ready(function($) {
                 // Fancybox isn't aware of photos not included in the initial page load
                 // thank you http://jdmweb.com/resources/FancyBox (see comment reply to @pazul)
                 else if (shashinJs.imageDisplayer == 'fancybox') {
-                     $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox(fancyboxSettings);
+                    $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancybox').fancybox(fancyboxSettings);
                     $('#shashinAlbumPhotos_' + linkIdParts[2] + ' a.shashinFancyboxVideo').fancybox(fancyboxVideoSettings);
                 }
 
