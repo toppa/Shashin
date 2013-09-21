@@ -91,9 +91,20 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
 3. The Shashin media browser
 4. A Fancybox slideshow
 
+== Upgrade Notice ==
+
+= 3.4.1 =
+Fixes thumbnails showing up too small in certain situations, and thumbnail centering not working correctly.
+
+= 3.4 =
+Adds responsive design and social sharing of photos.
+
 == Changelog ==
 
-= 3.4.1 = bug fix: thumbnails were showing up too small in some cases with 'colums="max"' in the shortcode.
+= 3.4.1 =
+
+* bug fix: thumbnails were showing up too small in some cases with 'colums="max"' in the shortcode.
+* bug fix: 'position="center"' was not working correctly; fix by adding table layout styles to stylesheet
 
 = 3.4 =
 
