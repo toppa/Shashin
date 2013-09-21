@@ -3,8 +3,8 @@ Contributors: toppa
 Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, prettyPhoto, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
-Tested up to: 3.5.1
-Stable tag: 3.3.99
+Tested up to: 3.6.1
+Stable tag: 3.4.1
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
@@ -13,22 +13,24 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 
 **What's new in Shashin 3.4**
 
-* Responsive design: your photos will look good on any size display
+* Responsive design: your thumbnails will look good on any size display, and so will the expanded view.
+* Social sharing: link directly to the full size display of any Shashin photo from Twitter, Facebook, or Pinterest (and you can just share a link directly with someone)
 * Improved experience when navigating thumbnails of photos within an album
 * Captions now overlay the bottom of thumbnails
-* Updates to handle the latest changes from Google in how Google+ interacts with the Picasa API
+* Updated to handle the latest changes from Google in how Google+ interacts with the Picasa API
+* Removed support for viewers other than prettyPhoto and Fancybox. There is now too much custom javascript in Shashin for it work with any viewer.
 
+Note: on the Shashin settings page, you will want to pick prettyPhoto as your viewer to take full advantage of the new responsive design and social sharing features.
 **Overview**
 
 Shashin has many features for displaying photos and videos from Picasa, Youtube, and Twitpic in your Wordpress posts and pages:
 
-* Show a gallery of all your albums, photos, and videos, with multiple options for organizing them
-* Use the Media Manager to easily create and add galleries to your posts
-* Show your photos and vidoes with your favorite image viewer. PrettyPhoto and Fancybox are included with Shashin, or you can use a different viewer of your choice
-* Pick individual photos or videos to display, in any size, including captions and EXIF data
+* Show a gallery of all your Shashin albums, photos, and videos, with multiple options for how they are laid out and ordered
+* Use the Media Manager to easily add Shashin photos and albums to your posts, in any size, including captions and EXIF data
+* Show your photos and vidoes with PrettyPhoto or Fancybox, which are included with Shashin.
 * Pick photos and videos from any combination of Picasa, Youtube, and Twitpic to display in groups of thumbnails
 * Show thumbnails of your newest photos and videos, from one or more albums
-* Display album thumbnails for albums you choose, or all your albums, sorted however you like. Includes links to Google Maps (for Picasa albums with location data)
+* Display album thumbnails for albums you choose, or all your albums, sorted however you like.
 * Display any number of random photos and videos. You can also choose to exclude certain photos or albums from random display
 * Use a widget to display Shashin photos in your sidebar
 * Customize the Shashin stylesheet to suit the theme of your site.
@@ -78,9 +80,9 @@ Enter a post in [the wordpress.org support forum for Shashin](http://wordpress.o
 
 == Frequently Asked Questions ==
 
-Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a detailed usage guide.
+Please go to [the Shashin page on my site](http://www.toppa.com/shashin-wordpress-plugin) for a detailed usage guide. Also check out [the examples page](http://www.toppa.com/shashin-3-development-progress/).
 
-If you have a question, enter a post in [the wordpress.org support forum for Shashin](http://wordpress.org/support/plugin/shashin), and I'll respond there.
+If you have a question, enter a post in [the wordpress.org support forum for Shashin](http://wordpress.org/support/plugin/shashin), and I'll respond there. Please understand I have a busy schedule and my support for Shashin is free - it may take me up to a week to reply.
 
 == Screenshots ==
 
@@ -91,6 +93,8 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
 
 == Changelog ==
 
+= 3.4.1 = bug fix: thumbnails were showing up too small in some cases with 'colums="max"' in the shortcode.
+
 = 3.4 =
 
 * Responsive design
@@ -98,18 +102,23 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
   * Responsive images
   * If thumbnails shrink to less than 80% of their intended size, show them all in a single column
   * Dynamically update responsive display when the window is resized
+  * Enhanced prettyPhoto to show images at the full width of the display on mobile devices
+* Social sharing
+  * Enhanced prettyPhoto to include Twitter, Facebook, and Pinterest buttons that will share links for opening the full size image directly in prettyPhoto
+  * Also added a "link" button to prettyPhoto, so you can share a link directly for the photo, via email, in a web page, etc.
 * When viewing thumbnails of photos in an album:
   * Using the navigation controls will automatically scroll the view to the top row of photos
-  * T he title and navigation controls now appear at the top and bottom
+  * The title and navigation controls now appear at the top and bottom
   * Bug fix: in certain situations the pagination of thumbnails was not working correctly
 * Thumbnail captions
   * Overlay captions on thumbnails
-  * Truncate captions on thumbanils to the nearest word if they exceed 50 characters
+  * Use trunk8 to intelligently truncate captions so they don't overflow the image
   * Don't show captions on thumbnails if they take up more than 30% of the height
   * Don't show details in an album thumbnail caption if the thumbnail width is less than 300px
 * Add prettyPhoto setting for "Show social connect buttons?"
 * Update for how Google+ now handles viewing photos that are limited to people who have a link with an authkey
 * On the Shashin Tools menu, only default to the "How does this work?" tab if there are no albums added yet
+* Remove support for viewers other thank prettyPhoto and Fancybox (there is now too much custom javascript to support any viewer)
 
 = 3.3.3 =
 * Bug fix: Fancybox galleries weren't being recognized (they were showing only one photo at a time) - fixed
