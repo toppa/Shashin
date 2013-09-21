@@ -2,25 +2,34 @@
 }
 
 .shashinThumbnailsTable {
+    display: table;
 }
 
 .shashinCaption {
+    display: table-caption;
     text-align: center;
     margin: 5px;
     width: 100%;
 }
 
+.shashinCaptionBottom {
+    caption-side: bottom;
+}
+
 .shashinTableRow {
+    display: table-row;
     clear: both; /* do not change */
 }
 
 .shashinTableRowClear {
+    display: table-row;
     line-height: 0;
     font-size: 0;
     clear: both; /* do not change */
 }
 
 .shashinTableCell {
+    display: table-cell;
     float: left;
     margin: 2%; /* do not change */
     position: relative;
