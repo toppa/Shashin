@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2013-03-27 13:59:36+00:00\n"
+"POT-Creation-Date: 2013-09-21 21:30:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,37 +12,27 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: ShashinWp.php:71
-msgid "Highslide for Shashin"
-msgstr ""
-
-#: ShashinWp.php:73
-msgid ""
-"is no longer supported and has been deactivated (please delete it). Your "
-"viewer for Shashin has been upgraded to PrettyPhoto."
-msgstr ""
-
-#: ShashinWp.php:83
+#: ShashinWp.php:65
 msgid "You must deactivate and reactivate Shashin to upgrade from version 2"
 msgstr ""
 
-#: ShashinWp.php:201
+#: ShashinWp.php:183
 msgid "Invalid shashin shortcode type: "
 msgstr ""
 
-#: ShashinWp.php:242 admin/ShashinWidgetWp.php:25
+#: ShashinWp.php:228 admin/ShashinWidgetWp.php:25
 msgid "Shashin Photos"
 msgstr ""
 
-#: ShashinWp.php:243
+#: ShashinWp.php:229
 msgid "Shashin Albums"
 msgstr ""
 
-#: ShashinWp.php:359
+#: ShashinWp.php:345
 msgid "Please go to the Shashin Tools Menu to complete the upgrade."
 msgstr ""
 
-#: ShashinWp.php:367
+#: ShashinWp.php:353
 msgid "Shashin Error"
 msgstr ""
 
@@ -50,8 +40,18 @@ msgstr ""
 msgid "Invalid album type: "
 msgstr ""
 
-#: admin/ShashinInstall.php:119 admin/ShashinInstall.php:133
+#: admin/ShashinInstall.php:93 admin/ShashinInstall.php:107
 msgid "Failed to create table "
+msgstr ""
+
+#: admin/ShashinInstall.php:148
+msgid "Highslide for Shashin"
+msgstr ""
+
+#: admin/ShashinInstall.php:150
+msgid ""
+"and other viewers are no longer supported and have been deactivated. Your "
+"viewer for Shashin has been upgraded to PrettyPhoto."
 msgstr ""
 
 #: admin/ShashinMenuActionHandlerAlbums.php:68
@@ -144,26 +144,12 @@ msgid ""
 "apply only if you select \"Use Fancybox\" under General Settings."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:34
-msgid "Other Viewer Settings"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:35
-msgid ""
-"These settings apply only if you select \"Use another viewer\" above. There "
-"are a wide variety of configuration requirements for different viewers. "
-"Shashin accommodates them by letting you control the attributes for the link "
-"and image tags used for its thumbnails. All links and thumbnails "
-"automatically get unique IDs (e.g. \"shashinThumbnailLink_24\", "
-"\"shashinThumbnailImage_24\")."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:41 admin/ShashinSettingsMenu.php:89
-#: admin/ShashinSettingsMenu.php:138 admin/ShashinSettingsMenu.php:170
-#: admin/ShashinSettingsMenu.php:178 admin/ShashinSettingsMenu.php:206
-#: admin/ShashinSettingsMenu.php:214 admin/ShashinSettingsMenu.php:222
-#: admin/ShashinSettingsMenu.php:237 admin/ShashinSettingsMenu.php:247
-#: admin/ShashinSettingsMenu.php:291 admin/ShashinWidgetWp.php:126
+#: admin/ShashinSettingsMenu.php:37 admin/ShashinSettingsMenu.php:84
+#: admin/ShashinSettingsMenu.php:126 admin/ShashinSettingsMenu.php:158
+#: admin/ShashinSettingsMenu.php:166 admin/ShashinSettingsMenu.php:194
+#: admin/ShashinSettingsMenu.php:202 admin/ShashinSettingsMenu.php:210
+#: admin/ShashinSettingsMenu.php:218 admin/ShashinSettingsMenu.php:235
+#: admin/ShashinSettingsMenu.php:279 admin/ShashinWidgetWp.php:126
 #: admin/ShashinWidgetWp.php:136 admin/ShashinWidgetWp.php:146
 #: admin/display/mediaAlbums.php:95 admin/display/mediaAlbums.php:122
 #: admin/display/mediaAlbums.php:126 admin/display/mediaPhotos.php:209
@@ -171,12 +157,12 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:41 admin/ShashinSettingsMenu.php:89
-#: admin/ShashinSettingsMenu.php:138 admin/ShashinSettingsMenu.php:170
-#: admin/ShashinSettingsMenu.php:178 admin/ShashinSettingsMenu.php:206
-#: admin/ShashinSettingsMenu.php:214 admin/ShashinSettingsMenu.php:222
-#: admin/ShashinSettingsMenu.php:237 admin/ShashinSettingsMenu.php:247
-#: admin/ShashinSettingsMenu.php:291 admin/ShashinWidgetWp.php:127
+#: admin/ShashinSettingsMenu.php:37 admin/ShashinSettingsMenu.php:84
+#: admin/ShashinSettingsMenu.php:126 admin/ShashinSettingsMenu.php:158
+#: admin/ShashinSettingsMenu.php:166 admin/ShashinSettingsMenu.php:194
+#: admin/ShashinSettingsMenu.php:202 admin/ShashinSettingsMenu.php:210
+#: admin/ShashinSettingsMenu.php:218 admin/ShashinSettingsMenu.php:235
+#: admin/ShashinSettingsMenu.php:279 admin/ShashinWidgetWp.php:127
 #: admin/ShashinWidgetWp.php:137 admin/ShashinWidgetWp.php:147
 #: admin/display/mediaAlbums.php:94 admin/display/mediaAlbums.php:121
 #: admin/display/mediaAlbums.php:127 admin/display/mediaPhotos.php:208
@@ -184,428 +170,335 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:44
+#: admin/ShashinSettingsMenu.php:40
 msgid "Support old-style Shashin shortcodes?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:45
+#: admin/ShashinSettingsMenu.php:41
 msgid ""
 "Select \"yes\" only if you have blog posts containing the shortcode format "
 "used with previous versions of Shashin (any versions from prior to 2011)."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:52
+#: admin/ShashinSettingsMenu.php:48
 msgid "display at photo hosting site"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:53
+#: admin/ShashinSettingsMenu.php:49
 msgid "Use PrettyPhoto"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:54
+#: admin/ShashinSettingsMenu.php:50
 msgid "Use FancyBox"
 msgstr ""
 
 #: admin/ShashinSettingsMenu.php:55
-msgid "Use another viewer"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:60
 msgid "How to display a full-size photo when its thumbnail is clicked"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:61
+#: admin/ShashinSettingsMenu.php:56
 msgid ""
 "PrettyPhoto is included with Shashin and works \"out of the box.\" FancyBox "
-"is also included, but is being phased out. If you select \"Use another "
-"viewer,\" you are responsible for implementing your own image viewer (see "
-"the \"Other Viewer Settings\" tab)."
+"is also included, but is being phased out."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:68
+#: admin/ShashinSettingsMenu.php:63
 msgid "X-Small (400px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:69
+#: admin/ShashinSettingsMenu.php:64
 msgid "Small (640px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:70
+#: admin/ShashinSettingsMenu.php:65
 msgid "Medium (800px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:71
+#: admin/ShashinSettingsMenu.php:66
 msgid "Large (912px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:72
+#: admin/ShashinSettingsMenu.php:67
 msgid "X-Large (1024px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:77
+#: admin/ShashinSettingsMenu.php:72
 msgid "Expanded image size"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:78
+#: admin/ShashinSettingsMenu.php:73
 msgid ""
 "The expanded display size for a photo when its thumbnail is clicked. The "
 "actual size of a photo may be smaller if it's not available in the selected "
 "size."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:84
+#: admin/ShashinSettingsMenu.php:79
 msgid "Default maximum number of photos to show"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:85
+#: admin/ShashinSettingsMenu.php:80
 msgid ""
 "The maximum number of photos to show if no photo IDs are provided and no "
 "limit is specified. This is also used to control the number of photos per "
 "set in a display of album photos."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:92
+#: admin/ShashinSettingsMenu.php:87
 msgid "Sync all albums daily?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:93
+#: admin/ShashinSettingsMenu.php:88
 msgid ""
 "This will sync all your albums in Shashin once daily. It will not "
 "automatically add new albums."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:99
-msgid "Thumbnail div padding"
+#: admin/ShashinSettingsMenu.php:94
+msgid "Content width (in pixels) for your theme"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:100
+#: admin/ShashinSettingsMenu.php:95
 msgid ""
-"If you change the \".shashinThumbnailImage\" padding value in shashin.css, "
-"make this 2x that value"
+"This is used in layout calculations when you use \"max\" as the number of "
+"columns or the image size in a Shashin tag. For example, if you set this to "
+"600, and then in a shashin tag specify 3 columns and a \"max\" image size, "
+"each image will be approximately 200 pixels wide."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:106
-msgid "Content width for your theme"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:107
-msgid ""
-"The maximum width available in your theme for a Shashin photo (or set of "
-"photos). This number is used to determine photo sizes when you use \"max\" "
-"as the number of columns or the size in a Shashin tag. Shashin will use the "
-"closest, smaller size available."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:114
+#: admin/ShashinSettingsMenu.php:102
 msgid "Add camera EXIF data to expanded view caption?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:115
+#: admin/ShashinSettingsMenu.php:103
 msgid ""
 "\"All\" includes the camera make, model, fstop, focal length, exposure time, "
 "and ISO."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:124 admin/display/mediaAlbums.php:76
+#: admin/ShashinSettingsMenu.php:112 admin/display/mediaAlbums.php:76
 #: admin/display/mediaPhotos.php:190
 msgid "X-Small (72px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:125 admin/display/mediaAlbums.php:77
+#: admin/ShashinSettingsMenu.php:113 admin/display/mediaAlbums.php:77
 #: admin/display/mediaPhotos.php:191
 msgid "Small (150px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:126 admin/display/mediaAlbums.php:78
+#: admin/ShashinSettingsMenu.php:114 admin/display/mediaAlbums.php:78
 #: admin/display/mediaPhotos.php:192
 msgid "Medium (300px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:127 admin/display/mediaAlbums.php:79
+#: admin/ShashinSettingsMenu.php:115 admin/display/mediaAlbums.php:79
 #: admin/display/mediaPhotos.php:193
 msgid "Large (600px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:128 admin/display/mediaAlbums.php:80
+#: admin/ShashinSettingsMenu.php:116 admin/display/mediaAlbums.php:80
 #: admin/display/mediaPhotos.php:194
 msgid "X-Large (800px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:133
+#: admin/ShashinSettingsMenu.php:121
 msgid "Photo thumbnail size"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:141
+#: admin/ShashinSettingsMenu.php:129
 msgid "Crop thumbnail square if possible?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:142
+#: admin/ShashinSettingsMenu.php:130
 msgid ""
 "Certain photo sizes can be cropped square (which ones depends on the photo "
 "hosting service; for Picasa the X-Small and Small sizes can be cropped)."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:148
+#: admin/ShashinSettingsMenu.php:136
 msgid "Number of columns"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:156
+#: admin/ShashinSettingsMenu.php:144
 msgid "Date added to Shashin"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:157
+#: admin/ShashinSettingsMenu.php:145
 msgid "Date photos taken"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:158 admin/ShashinWidgetWp.php:116
+#: admin/ShashinSettingsMenu.php:146 admin/ShashinWidgetWp.php:116
 #: admin/display/mediaPhotos.php:156 admin/display/toolsPhotos.php:30
 msgid "Filename"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:159 admin/ShashinWidgetWp.php:110
+#: admin/ShashinSettingsMenu.php:147 admin/ShashinWidgetWp.php:110
 #: admin/display/mediaAlbums.php:102
 msgid "Random"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:160
+#: admin/ShashinSettingsMenu.php:148
 msgid "Order at photo hosting service"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:165
+#: admin/ShashinSettingsMenu.php:153
 msgid "Order thumbnails by"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:173
+#: admin/ShashinSettingsMenu.php:161
 msgid "Reverse the order?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:174
+#: admin/ShashinSettingsMenu.php:162
 msgid ""
 "For example, if you order by filename and then select \"yes\" for reversing "
 "the order, the thumbnails will appear in reverse alphabetical order."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:181
+#: admin/ShashinSettingsMenu.php:169
 msgid "Show captions under each thumbnail?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:191
+#: admin/ShashinSettingsMenu.php:179
 msgid "Default"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:192
+#: admin/ShashinSettingsMenu.php:180
 msgid "Light Rounded"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:193
+#: admin/ShashinSettingsMenu.php:181
 msgid "Dark Rounded"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:194
+#: admin/ShashinSettingsMenu.php:182
 msgid "Light Square"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:195
+#: admin/ShashinSettingsMenu.php:183
 msgid "Dark Square"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:196
+#: admin/ShashinSettingsMenu.php:184
 msgid "Facebook"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:201
+#: admin/ShashinSettingsMenu.php:189
 msgid "Theme"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:209
+#: admin/ShashinSettingsMenu.php:197
 msgid "Overlay gallery?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:210
+#: admin/ShashinSettingsMenu.php:198
 msgid ""
 "If \"yes\", a gallery will overlay the expanded view of an image when you "
 "mouse over it."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:217
+#: admin/ShashinSettingsMenu.php:205
 msgid "Show title?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:218
+#: admin/ShashinSettingsMenu.php:206
 msgid "If \"yes\", shows the photo caption in large text above the photo."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:225
+#: admin/ShashinSettingsMenu.php:213
+msgid "Show social connect buttons?"
+msgstr ""
+
+#: admin/ShashinSettingsMenu.php:214
+msgid ""
+"If \"yes\", shows Twitter, Facebook, Pinterest, and Link buttons in the "
+"photo caption."
+msgstr ""
+
+#: admin/ShashinSettingsMenu.php:221
 msgid "Auto-play slideshow?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:232 admin/ShashinSettingsMenu.php:286
+#: admin/ShashinSettingsMenu.php:228 admin/ShashinSettingsMenu.php:274
 msgid "Autoplay image display time"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:233
+#: admin/ShashinSettingsMenu.php:229
 msgid ""
 "Enter a duration in milliseconds (e.g. \"5000\" for 5 seconds) for your "
 "slideshow speed."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:240
-msgid "Load Shashin's PrettyPhoto script?"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:241
-msgid ""
-"If you already have PrettyPhoto installed on your site, select \"no\" to "
-"prevent Shashin from loading its own copy of PrettyPhoto."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:250
+#: admin/ShashinSettingsMenu.php:238
 msgid "Repeat slideshows?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:251
+#: admin/ShashinSettingsMenu.php:239
 msgid ""
 "When viewing the final photo in slideshow, whether clicking \"next\" will "
 "start the slideshow over again with the first photo."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:257
+#: admin/ShashinSettingsMenu.php:245
 msgid "Video Width"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:258
+#: admin/ShashinSettingsMenu.php:246
 msgid "Unfortunately video dimensions cannot be set dynamically with Fancybox"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:264
+#: admin/ShashinSettingsMenu.php:252
 msgid "Video Height"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:272
+#: admin/ShashinSettingsMenu.php:260
 msgid "Fade"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:273
+#: admin/ShashinSettingsMenu.php:261
 msgid "Elastic"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:274 admin/ShashinWidgetWp.php:99
+#: admin/ShashinSettingsMenu.php:262 admin/ShashinWidgetWp.php:99
 #: admin/display/mediaAlbums.php:115 admin/display/mediaPhotos.php:216
 msgid "None"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:279
+#: admin/ShashinSettingsMenu.php:267
 msgid "Trasition effect"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:280
+#: admin/ShashinSettingsMenu.php:268
 msgid "The transition effect to apply when navigating between photos"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:287
+#: admin/ShashinSettingsMenu.php:275
 msgid ""
 "Enter a duration in milliseconds (e.g. \"5000\" for 5 seconds) to have all "
 "your slideshows run on an automatic timer. Leave blank for manually "
 "navigated slideshows."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:294
+#: admin/ShashinSettingsMenu.php:282
 msgid "Load Shashin's Fancybox script?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:295
+#: admin/ShashinSettingsMenu.php:283
 msgid ""
 "If you already have Fancybox installed on your site, select \"no\" to "
 "prevent Shashin from loading its own copy of Fancybox. Note Shashin has been "
 "tested only with version 1.3.4 of Fancybox."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:303
-msgid "Link \"rel\" for images"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:304
-msgid ""
-"The \"rel\" attribute for image links; e.g. \"lightbox\" if you are using "
-"Lightbox."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:310
-msgid "Link \"rel\" for videos"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:311
-msgid ""
-"The \"rel\" attribute for links if displaying a video; e.g. \"vidbox\" if "
-"you are using Videobox."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:315
-msgid "Brackets"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:315
-msgid "Hyphen"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:318
-msgid "\"rel\" delimiter for image groups"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:319
-msgid ""
-"How to delimit image groups in a rel tag. Some viewers use brackets (e.g. "
-"\"lightbox[33]\") and some use hyphens (e.g. \"lightbox-33\")."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:325
-msgid "Class for links"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:326
-msgid ""
-"A CSS class to apply to the link tags for thumbnails. Leave blank for none."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:332
-msgid "Class for thumbnails"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:333
-msgid "A CSS class to apply to the thumbnail image tags. Leave blank for none."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:337
-msgid "Links"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:337
-msgid "Images"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:340
-msgid "Use photo caption as \"title\" for"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:341
-msgid ""
-"You can use the photo's caption as the \"title\" for for its link tag, its "
-"image tag, or both."
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:376
-msgid "Use"
-msgstr ""
-
-#: admin/ShashinSettingsMenu.php:436
+#: admin/ShashinSettingsMenu.php:367
 msgid "Unrecognized validation function"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:487
+#: admin/ShashinSettingsMenu.php:418
 msgid "The following settings have invalid values. Please try again."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:504
+#: admin/ShashinSettingsMenu.php:435
 msgid "Settings saved"
 msgstr ""
 
@@ -641,21 +534,21 @@ msgstr ""
 msgid "Google+ albums"
 msgstr ""
 
-#: admin/ShashinSynchronizerPicasa.php:67
+#: admin/ShashinSynchronizerPicasa.php:65
 #: admin/ShashinSynchronizerTwitpic.php:23
 #: admin/ShashinSynchronizerYoutube.php:20
 msgid "Unrecognized URL: "
 msgstr ""
 
-#: admin/ShashinSynchronizerPicasa.php:78
-msgid ""
-"Your installation of PHP has been configured without DOM support. DOM "
-"support is required to sync Picasa albums. If you are using Google+, try "
-"using the Google+ URL instead."
+#: admin/ShashinSynchronizerPicasa.php:85
+msgid "Unable to determine RSS feed for URL"
 msgstr ""
 
 #: admin/ShashinSynchronizerPicasa.php:93
-msgid "Unable to determine RSS feed for URL"
+msgid ""
+"Your installation of PHP has been configured without DOM support. DOM "
+"support is required to sync albums using Picasa URLs. Try synchronizing with "
+"the Google+ URL."
 msgstr ""
 
 #: admin/ShashinSynchronizerTwitpic.php:11
@@ -850,7 +743,7 @@ msgstr ""
 msgid "Your Albums"
 msgstr ""
 
-#: admin/display/mediaAlbums.php:49 public/ShashinAlbumDisplayer.php:85
+#: admin/display/mediaAlbums.php:49 public/ShashinAlbumDisplayer.php:90
 msgid "Photos"
 msgstr ""
 
@@ -959,11 +852,11 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: admin/display/mediaPhotos.php:170 public/ShashinLayoutManager.php:226
+#: admin/display/mediaPhotos.php:170 public/ShashinLayoutManager.php:229
 msgid "Previous"
 msgstr ""
 
-#: admin/display/mediaPhotos.php:172 public/ShashinLayoutManager.php:248
+#: admin/display/mediaPhotos.php:172 public/ShashinLayoutManager.php:251
 msgid "Next"
 msgstr ""
 
@@ -1029,11 +922,11 @@ msgstr ""
 msgid "You have not added any albums yet."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:93 admin/display/toolsAlbums.php:135
+#: admin/display/toolsAlbums.php:93 admin/display/toolsAlbums.php:137
 msgid "Add Albums"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:103
+#: admin/display/toolsAlbums.php:104
 msgid ""
 "Shashin can display photos and videos from several photo and video sharing "
 "sites. Shashin does not make copies of the photos or videos. Instead it "
@@ -1045,117 +938,121 @@ msgid ""
 "started, click the tab for the sites you want to synchronize with Shashin."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:111
+#: admin/display/toolsAlbums.php:112
 msgid ""
 "Enter the URL for a Picasa/Google+ user to synchronize Shashin with all of "
 "his or her albums, or enter the URL for an individual album."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:112 admin/display/toolsAlbums.php:146
+#: admin/display/toolsAlbums.php:113 admin/display/toolsAlbums.php:148
 msgid "Important notes:"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:114
+#: admin/display/toolsAlbums.php:115
 msgid ""
 "Google is migrating Picasa to Google+ and making changes without advance "
 "notification. If you are unable to add an album, please"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:115
+#: admin/display/toolsAlbums.php:116
 msgid "let me know"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:116
+#: admin/display/toolsAlbums.php:117
 msgid ""
 "Shashin works with albums where the visibility is set to \"public.\" Also, "
 "for albums with visibility set to \"limited, anyone with the link\", they "
 "will work if you include the \"authkey\" when pasting the URL in the form "
-"below (this is supported for Picasa, not Google+)."
+"below."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:118 admin/display/toolsAlbums.php:153
+#: admin/display/toolsAlbums.php:119 admin/display/toolsAlbums.php:155
 msgid "Examples"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:120
-msgid "All the Picasa/Google+ albums for a user"
+#: admin/display/toolsAlbums.php:121
+msgid "All the <strong>public</strong> Picasa/Google+ albums for a user"
 msgstr ""
 
 #: admin/display/toolsAlbums.php:125
-msgid "A single Picasa/Google+ album"
+msgid "A single <strong>public</strong> Picasa/Google+ album"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:131 admin/display/toolsAlbums.php:185
-msgid "URL:"
+#: admin/display/toolsAlbums.php:128
+msgid "A Picasa/Google+ album requiring a link to view"
 msgstr ""
 
 #: admin/display/toolsAlbums.php:133 admin/display/toolsAlbums.php:187
+msgid "URL:"
+msgstr ""
+
+#: admin/display/toolsAlbums.php:135 admin/display/toolsAlbums.php:189
 msgid "Include these photos in random photo displays?"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:145
+#: admin/display/toolsAlbums.php:147
 msgid ""
 "For YouTube, you need to enter the RSS URL for the feed you want to "
 "synchronize."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:148
+#: admin/display/toolsAlbums.php:150
 msgid ""
 "Unfortunately Youtube does not display links for its feeds, but there are "
 "many standard feeds available (top rated, etc) - see the"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:149
+#: admin/display/toolsAlbums.php:151
 msgid "YouTube API page for examples"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:150
+#: admin/display/toolsAlbums.php:152
 msgid "It also explains how to write the URLs for other kinds of feeds."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:151
+#: admin/display/toolsAlbums.php:153
 msgid "Shashin will synchronize with the first 50 videos in a YouTube feed."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:155
+#: admin/display/toolsAlbums.php:157
 msgid "A YouTube user's videos (put his or her username in the URL)"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:157
+#: admin/display/toolsAlbums.php:159
 msgid "Most popular YouTube videos"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:159
+#: admin/display/toolsAlbums.php:161
 msgid "Most recent videos in the comedy category"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:163
+#: admin/display/toolsAlbums.php:165
 msgid "RSS URL:"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:165
+#: admin/display/toolsAlbums.php:167
 msgid "Include these videos in random photo/video displays?"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:167
+#: admin/display/toolsAlbums.php:169
 msgid "Add Videos"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:177
+#: admin/display/toolsAlbums.php:179
 msgid ""
 "Enter the URL for a Twitpic user to synchronize Shashin with all of his or "
 "her photos."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:179
+#: admin/display/toolsAlbums.php:181
 msgid "Example"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:182
+#: admin/display/toolsAlbums.php:184
 msgid "A Twitpic user's photos"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:189
+#: admin/display/toolsAlbums.php:191
 msgid "Add Photos"
 msgstr ""
 
@@ -1271,7 +1168,7 @@ msgstr ""
 msgid "Failed to purge settings. Unsupport argument provided."
 msgstr ""
 
-#: public/ShashinDataObjectDisplayer.php:142
+#: public/ShashinDataObjectDisplayer.php:132
 msgid "invalid size requested"
 msgstr ""
 
@@ -1279,7 +1176,7 @@ msgstr ""
 msgid "No photos found for specified shortcode"
 msgstr ""
 
-#: public/ShashinLayoutManager.php:239
+#: public/ShashinLayoutManager.php:242
 msgid "Return"
 msgstr ""
 
@@ -1287,27 +1184,27 @@ msgstr ""
 msgid "View at"
 msgstr ""
 
-#: public/ShashinPhotoDisplayerTwitpic.php:42
+#: public/ShashinPhotoDisplayerTwitpic.php:43
 msgid "Unrecognized actualExpandedSize"
 msgstr ""
 
-#: public/ShashinShortcode.php:45
+#: public/ShashinShortcode.php:53
 msgid "Invalid data property __get for: "
 msgstr ""
 
-#: public/ShashinShortcode.php:93
+#: public/ShashinShortcode.php:101
 msgid " is not a valid value for: "
 msgstr ""
 
-#: public/ShashinShortcode.php:102
+#: public/ShashinShortcode.php:110
 msgid "is not a valid string of numbers"
 msgstr ""
 
-#: public/ShashinShortcode.php:118
+#: public/ShashinShortcode.php:126
 msgid "is not a valid numeric value"
 msgstr ""
 
-#: public/ShashinShortcode.php:123
+#: public/ShashinShortcode.php:131
 msgid "\"size\" and \"columns\" can not both me \"max\""
 msgstr ""
 
