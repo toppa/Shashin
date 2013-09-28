@@ -164,8 +164,7 @@ jQuery(document).ready(function($) {
         event.preventDefault();
     });
 
-    var albumWidthsToUpdate = {}
-    var albumHeightsToUpdate = {}
+    var shashinThumbnailDimensions = [];
 
     function shashinAdjustThumbnailDisplay(element) {
         element = element ? element : '.shashinThumbnailsTable';
@@ -176,16 +175,26 @@ jQuery(document).ready(function($) {
                 // the containing div's max-width is set to the width of the image. But
                 // there are cases where the image width is unknown until after the
                 // page renders, so use the imagesLoaded plugin to set the div's
-                // max-width dynamically.
+                // max-width dynamically. Also, we're going to save the thumbnail
+                // dimensions via ajax, so this problem only happens once per image.
+                // Having the image size ahead of time also makes it more likely the
+                // images will render at the intended size.
 
                 if ($(this).css('max-width') == 'none' && typeof $(this).find('.shashinThumbnailImage').prop('naturalWidth') != 'undefined') {
                     $(this).css('max-width', $(this).find('.shashinThumbnailImage').prop('naturalWidth') + 'px');
-                    albumWidthsToUpdate[$(this).find('a[data-shashinalbum]').data('shashinalbum')] = $(this).find('.shashinThumbnailImage').prop('naturalWidth');
-                    albumHeightsToUpdate[$(this).find('a[data-shashinalbum]').data('shashinalbum')] = $(this).find('.shashinThumbnailImage').prop('naturalHeight');
-                    console.log(albumWidthsToUpdate);
-                    console.log(albumHeightsToUpdate);
+                    var shashinThumbnailData = $(this).find('.shashinAlbumThumbLink').data();
+
+                    for (var i in shashinThumbnailData) {
+                        shashinThumbnailDimensions.push(i); // shashinalbum or shashinphoto
+                        shashinThumbnailDimensions.push(shashinThumbnailData[i]); // the album or photo id
+                    }
+
+                    shashinThumbnailDimensions.push($(this).find('.shashinThumbnailImage').prop('naturalWidth'));
+                    shashinThumbnailDimensions.push($(this).find('.shashinThumbnailImage').prop('naturalHeight'));
                 }
 
+                // truncate captions, and dont' display them at all if
+                // they'll cover more than 30% of the thumbnail
                 var $caption = $(this).find('.shashinThumbnailCaption');
                 $caption.trunk8();
 
@@ -198,43 +207,55 @@ jQuery(document).ready(function($) {
                 }
             });
 
-            // if the desired sizes for the images in a sample row exceed the current
-            // width of the containing element by too much, remove the row markers
-            // (i.e. display the images in a single column), so the images don't
-            // shrink too much.
-            var rowWidth = 0;
-
-            $(element).find('.shashinTableRow:first').find('.shashinTableCell').each(function() {
-                rowWidth += parseInt($(this).css('max-width'));
-                rowWidth += parseInt($(this).css('margin-left'));
-                rowWidth += parseInt($(this).css('margin-right'));
-                rowWidth += parseInt($(this).css('padding-left'));
-                rowWidth += parseInt($(this).css('padding-right'));
-            });
-
-
-            if ((rowWidth * .9) > $(element).parents('.shashinPhotoGroups').parent().width()) {
-                $(element).css('display', 'block');
-                $(element).find('.shashinTableRowClear:not(:last)').css('clear', 'none');
-                $(element).find('.shashinTableRowClear').css('display', 'block');
-                $(element).find('.shashinTableRow').css('clear', 'none');
-                $(element).find('.shashinTableRow').css('display', 'block');
-                $(element).find('.shashinTableCell').css('width', '100%');
-                $(element).find('.shashinTableCell').css('display', 'block');
-            }
-
-            else {
-                $(element).css('display', 'table');
-                $(element).find('.shashinTableRowClear').css('clear', 'both');
-                $(element).find('.shashinTableRowClear').css('display', 'table-row');
-                $(element).find('.shashinTableRow').css('clear', 'both');
-                $(element).find('.shashinTableRow').css('display', 'table-row');
-                $(element).find('.shashinTableCell').css('display', 'table-cell');
-                $(element).find('.shashinTableCell').each(function() {
-                    $(this).css('width', $(this).data('original_width'));
-                });
+            if (shashinThumbnailDimensions.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: shashinJs.ajaxUrl,
+                    data: {
+                        action: 'saveAlbumDimensions',
+                        dimensions: shashinThumbnailDimensions
+                    }
+                })
+                shashinThumbnailDimensions = [];
             }
         });
+
+        // if the desired sizes for the images in a sample row come to close to
+        // the current width of the containing element, remove the row markers
+        // (i.e. display the images in a single column), so the images don't
+        // shrink too much.
+        var idealRowWidth = 0;
+
+        $(element).find('.shashinTableRow:first').find('.shashinTableCell').each(function() {
+            idealRowWidth += parseInt($(this).css('max-width'));
+            idealRowWidth += parseInt($(this).css('margin-left'));
+            idealRowWidth += parseInt($(this).css('margin-right'));
+            idealRowWidth += parseInt($(this).css('padding-left'));
+            idealRowWidth += parseInt($(this).css('padding-right'));
+        });
+
+
+        if ((idealRowWidth * .9) > $(element).parents('.shashinPhotoGroups').parent().width()) {
+            $(element).css('display', 'block');
+            $(element).find('.shashinTableRowClear:not(:last)').css('clear', 'none');
+            $(element).find('.shashinTableRowClear').css('display', 'block');
+            $(element).find('.shashinTableRow').css('clear', 'none');
+            $(element).find('.shashinTableRow').css('display', 'block');
+            $(element).find('.shashinTableCell').css('width', '100%');
+            $(element).find('.shashinTableCell').css('display', 'block');
+        }
+
+        else {
+            $(element).css('display', 'table');
+            $(element).find('.shashinTableRowClear').css('clear', 'both');
+            $(element).find('.shashinTableRowClear').css('display', 'table-row');
+            $(element).find('.shashinTableRow').css('clear', 'both');
+            $(element).find('.shashinTableRow').css('display', 'table-row');
+            $(element).find('.shashinTableCell').css('display', 'table-cell');
+            $(element).find('.shashinTableCell').each(function() {
+                $(this).css('width', $(this).data('original_width'));
+            });
+        }
     }
 
     $('.shashinPhotoGroups').on('click', '.shashinNext', function(event) {
