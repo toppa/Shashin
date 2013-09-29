@@ -384,7 +384,7 @@ class Public_ShashinLayoutManager {
 
     public function addTableCell() {
         $linkAndImageTags = $this->currentDataObjectDisplayer->run();
-        $width = floor(100 / $this->numericColumns) - 4; // there is a 2% margin in the stylesheet
+        $width = floor(100 / $this->numericColumns);
         $maxWidth = $this->currentDataObjectDisplayer->getImgWidth();
         $cell = '<div class="shashinTableCell"'
             . ' data-original_width="' . $width . '%"' // to recalculate the width if the browser is being resized

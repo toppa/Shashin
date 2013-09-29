@@ -30,9 +30,9 @@
 
 .shashinTableCell {
     display: table-cell;
-    float: left;
-    margin: 2%; /* do not change */
+    padding: 10px;
     position: relative;
+    text-align: center;
     /* width and max-width are set dynamically, to make the images responsive */
 }
 
@@ -54,28 +54,31 @@
 .shashinThumbnailCaption {
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0,0,0,0.7);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb000000, endColorstr=#bb000000); /* for IE 8 and below */
+    left: 50%; /* do not change - used for centering */
     padding: 10px;
+    margin-bottom: 10px; /* needs to match the bottom padding of .shashinTableCell */
+    text-align: center;
+    font-size: x-small;
+    color: #fff;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     pointer-events: none;
-    text-align: center;
-    font-size: x-small;
-    color: #fff;
+    background: rgba(0,0,0,0.7);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb000000, endColorstr=#bb000000); /* for IE 8 and below */
 }
 
-.shashinThumbnailCaption a, .shashinThumbnailCaption a:visited, .shashinThumbnailCaption a:hover, .shashinThumbnailCaption a:active {
+.shashinThumbnailCaption a,
+.shashinThumbnailCaption a:visited,
+.shashinThumbnailCaption a:hover,
+.shashinThumbnailCaption a:active {
     color: #fff;
     text-decoration: underline;
 }
 
 .shashinAlbumCaptionTitle {
     display: block;
-    padding: 0px 5px 1px 5px;
+    padding: 0 5px 1px 5px;
     font-size: x-small;
     font-weight: bold;
     line-height: 1.4em;
@@ -83,14 +86,14 @@
 
 .shashinAlbumCaptionDate {
     display: block;
-    padding: 0px 5px 1px 5px;
+    padding: 0 5px 1px 5px;
     font-size: x-small;
     line-height: 1.4em;
 }
 
 .shashinAlbumCaptionLocation {
     display: block;
-    padding: 0px 5px 5px 5px;
+    padding: 0 5px 5px 5px;
     font-size: x-small;
     line-height: 1.4em;
 }
@@ -112,7 +115,10 @@
     font-style: italic;
 }
 
-.shashinLinkToOriginalPhoto a, .shashinLinkToOriginalPhoto a:visited, .shashinLinkToOriginalPhoto a:hover, .shashinLinkToOriginalPhoto a:active {
+.shashinLinkToOriginalPhoto a,
+.shashinLinkToOriginalPhoto a:visited,
+.shashinLinkToOriginalPhoto a:hover,
+.shashinLinkToOriginalPhoto a:active {
     color: #717171;
 }
 
@@ -131,7 +137,7 @@
 #fancybox-left, #fancybox-right {
     /* this prevents the navigation overlay from hiding video controls */
     bottom: auto;
-    top: 0px;
+    top: 0;
     height: 90%;
 }
 
