@@ -34,6 +34,8 @@ class ShashinWp {
         add_shortcode('shashin', array($this, 'handleShortcode'));
         add_action('wp_ajax_nopriv_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
         add_action('wp_ajax_displayAlbumPhotos', array($this, 'ajaxDisplayAlbumPhotos'));
+        add_action('wp_ajax_nopriv_saveAlbumDimensions', array($this, 'ajaxSaveAlbumDimensions'));
+        add_action('wp_ajax_saveAlbumDimensions', array($this, 'ajaxSaveAlbumDimensions'));
         add_filter('media_upload_tabs', array($this, 'addMediaMenuTabs'));
         add_action('media_upload_shashinPhotos', array($this, 'initPhotoMediaMenu'));
         add_action('media_upload_shashinAlbums', array($this, 'initAlbumMediaMenu'));
@@ -220,6 +222,36 @@ class ShashinWp {
             echo $this->formatExceptionMessage($e);
         }
 
+        die();
+    }
+
+    public function ajaxSaveAlbumDimensions() {
+        // 1st: shashinalbum or shashinphoto
+        // 2nd: the album or photo id
+        // 3rd: the thumbnail width
+        // 4th: the thumbnail height
+        $thumbnailData = array_chunk($_REQUEST['dimensions'], 4);
+        $container = new Lib_ShashinContainer();
+        $clonableAlbum = $container->getClonableAlbum();
+        $clonablePhoto = $container->getClonablePhoto();
+
+        foreach ($thumbnailData as $data) {
+            if ($data[0] == 'shashinalbum') {
+                $album = clone $clonableAlbum;
+                $album->get($data[1]);
+                $album->width = $data[2];
+                $album->height = $data[3];
+                $album->flush();
+            }
+
+            else if ($data[0] == 'shashinphoto') {
+                $photo = clone $clonablePhoto;
+                $photo->get($data[1]);
+                $photo->width = $data[2];
+                $photo->height = $data[3];
+                $photo->flush();
+            }
+        }
         die();
     }
 
