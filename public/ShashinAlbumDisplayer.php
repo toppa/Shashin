@@ -50,7 +50,7 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
             $this->caption = '<div class="shashinThumbnailCaption">';
             $this->generateCaptionTitle();
 
-            if ($this->displayThumbnailSize >= 300) {
+            if ($this->displayThumbnailSize >= 300 || $this->settings->thumbnailDisplay != 'rounded') {
                 $this->generateCaptionDate();
                 $this->generateCaptionLocationAndPhotoCount();
             }
@@ -82,7 +82,7 @@ abstract class Public_ShashinAlbumDisplayer extends Public_ShashinDataObjectDisp
         if ($this->dataObject->geoPos) {
             $this->caption .= '<a href="http://maps.google.com/maps?q='
                 . urlencode($this->dataObject->geoPos)
-                . '"><img src="'
+                . '" target="_blank"><img src="'
                 . $this->functionsFacade->getPluginsUrl('/display/mapped_sm.gif', __FILE__)
                 . '" alt="Google Maps Location" width="15" height="12" /></a> ';
         }
