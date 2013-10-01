@@ -114,7 +114,7 @@ class Admin_ShashinSettingsMenu {
                 'validateFunction' => 'in_array',
                 'validValues' => array('rounded', 'square'),
                 'label' => __('Thumbnail display', 'shashin'),
-                'help' => __('Whether to show thumbnails with rounded corners, or square corners with a border. Rounded thumbnails have their captions shown in an overlay, and long captions are truncated. Square thumbanils show the full caption under the thumbnail.', 'shashin'),
+                'help' => __('Rounded thumbnails have their captions shown in an overlay, and long captions are truncated. Square thumbanils show the full caption under the thumbnail.', 'shashin'),
                 'group' => 'general'
             ),
 
