@@ -102,7 +102,9 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
 * Performance improvement: save thumbnail dimensions via ajax if they weren't previously saved, so we don't have to do dimension calculations in javascript every page load
 * Performance improvement: use "smartresize" jquery plugin, to reduce the number of resize events fired in certain browsers when the window is resized
 * Performance improvement: make display of truncated captions smarter
+* Performance improvement: use a smarter technique to hide text of prettyPhoto links
 * Update to the current version of the "imagesloaded" jquery plugin
+* Open Google Maps links in a new window
 
 = 3.4.1 =
 Fixes thumbnails showing up too small in certain situations, and thumbnail gallery centering not working correctly.
