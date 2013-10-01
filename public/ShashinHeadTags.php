@@ -25,6 +25,7 @@ class Public_ShashinHeadTags {
         $shashinJsParams = array(
             'ajaxUrl' => $this->functionsFacade->getAdminUrl('admin-ajax.php'),
             'imageDisplayer' => $this->settings->imageDisplay,
+            'thumbnailDisplay' => $this->settings->thumbnailDisplay,
         );
 
         if ($this->settings->imageDisplay == 'prettyphoto') {

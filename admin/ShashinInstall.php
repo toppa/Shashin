@@ -15,6 +15,7 @@ class Admin_ShashinInstall {
         'defaultPhotoLimit' => 18,
         'scheduledUpdate' => 'n',
         'captionExif' => 'all',
+        'thumbnailDisplay' => 'rounded',
         'themeMaxSize' => 600,
         'albumPhotosSize' => 'small',
         'albumPhotosCrop' => 'y',
@@ -125,7 +126,6 @@ class Admin_ShashinInstall {
         }
 
         $this->deactivateUnsupportedViewers();
-
         $allSettings = $this->settings->refresh();
 
         if (!isset($allSettings['version']) || version_compare($allSettings['version'], $this->version, '<')) {

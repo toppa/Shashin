@@ -103,6 +103,20 @@ class Admin_ShashinSettingsMenu {
                 'help' => __('"All" includes the camera make, model, fstop, focal length, exposure time, and ISO.', 'shashin'),
                 'group' => 'general'
             ),
+            'thumbnailDisplay' => array(
+                'input' => array(
+                    'type' => 'select',
+                    'subgroup' =>  array(
+                        'rounded' => __('Rounded, overlay captions', 'shashin'),
+                        'square' => __('Square, captions underneath', 'shashin'),
+                    )
+                ),
+                'validateFunction' => 'in_array',
+                'validValues' => array('rounded', 'square'),
+                'label' => __('Thumbnail display', 'shashin'),
+                'help' => __('Whether to show thumbnails with rounded corners, or square corners with a border. Rounded thumbnails have their captions shown in an overlay, and long captions are truncated. Square thumbanils show the full caption under the thumbnail.', 'shashin'),
+                'group' => 'general'
+            ),
 
             // Album Photos settings
             'albumPhotosSize' => array(

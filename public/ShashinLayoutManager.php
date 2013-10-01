@@ -153,7 +153,9 @@ class Public_ShashinLayoutManager {
     }
 
     public function setOpeningTableTag() {
-        $this->openingTableTag = '<div class="shashinThumbnailsTable" id="' . $this->currentTableId . '"'
+        $this->openingTableTag = '<div class="'
+            . ($this->settings->thumbnailDisplay == 'square' ? 'shashinTableSquare ' : '')
+            . 'shashinThumbnailsTable" id="' . $this->currentTableId . '"'
             . $this->addStyleForOpeningTableTag()
             . '>'
             . PHP_EOL;
@@ -390,9 +392,9 @@ class Public_ShashinLayoutManager {
             . ' data-original_width="' . $width . '%"' // to recalculate the width if the browser is being resized
             . ' style=" width: ' . $width . '%;'
             . ' max-width: ' . ($maxWidth ? ($maxWidth . 'px;') : 'none')
-            . '">'
+            . '"><div class="shashinThumbnailWrapper">'
             . $linkAndImageTags
-            . '</div>' . PHP_EOL;
+            . '</div></div>' . PHP_EOL;
         return $cell;
     }
 

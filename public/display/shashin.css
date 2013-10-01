@@ -36,6 +36,20 @@
     /* width and max-width are set dynamically, to make the images responsive */
 }
 
+.shashinTableSquare .shashinTableCell {
+    position: static;
+}
+
+.shashinThumbnailWrapper {
+    margin: 3px auto;
+}
+
+.shashinTableSquare .shashinThumbnailWrapper {
+    border: thin solid black;
+    padding: 3px;
+    background-color: white;
+}
+
 .shashinThumbnailImage {
     max-width: 100%; /* do not change */
     vertical-align: bottom;
@@ -44,8 +58,21 @@
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow:  0 1px 4px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow:  0 1px 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.shashinTableSquare .shashinThumbnailImage {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+}
+
+.shashinTableSquare .shashinThumbnailImage:hover {
+    border-color: silver;
 }
 
 /* thank you
@@ -59,27 +86,54 @@
     margin-bottom: 10px; /* needs to match the bottom padding of .shashinTableCell */
     text-align: center;
     font-size: x-small;
-    color: #fff;
+    line-height: 1.2em;
+    color: white;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     pointer-events: none;
     background: rgba(0,0,0,0.7);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb000000, endColorstr=#bb000000); /* for IE 8 and below */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#bb000000, endColorstr=#bb000000)"; /* for IE 8 and below */
+}
+
+.shashinTableSquare .shashinThumbnailCaption {
+    display: block;
+    position: static;
+    bottom: auto;
+    left: auto;
+    padding: 2px 0;
+    margin: 0;
+    text-align: center;
+    font-size: x-small;
+    color: black;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    pointer-events: auto;
+    background: transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(enabled=false)"; /* for IE 8 and below */
+    font-weight: bold;
 }
 
 .shashinThumbnailCaption a,
 .shashinThumbnailCaption a:visited,
 .shashinThumbnailCaption a:hover,
 .shashinThumbnailCaption a:active {
-    color: #fff;
+    color: white;
+    text-decoration: underline;
+}
+
+.shashinTableSquare .shashinThumbnailCaption a,
+.shashinTableSquare .shashinThumbnailCaption a:visited,
+.shashinTableSquare .shashinThumbnailCaption a:hover,
+.shashinTableSquare .shashinThumbnailCaption a:active {
+    color: black;
     text-decoration: underline;
 }
 
 .shashinAlbumCaptionTitle {
     display: block;
     padding: 0 5px 1px 5px;
-    font-size: x-small;
     font-weight: bold;
     line-height: 1.4em;
 }
@@ -87,14 +141,12 @@
 .shashinAlbumCaptionDate {
     display: block;
     padding: 0 5px 1px 5px;
-    font-size: x-small;
     line-height: 1.4em;
 }
 
 .shashinAlbumCaptionLocation {
     display: block;
     padding: 0 5px 5px 5px;
-    font-size: x-small;
     line-height: 1.4em;
 }
 
@@ -144,4 +196,5 @@
 .shashinPrettyphotoCaptionWrapper {
     display: none;
 }
+
 
