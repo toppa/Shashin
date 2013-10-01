@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2013-09-21 21:30:17+00:00\n"
+"POT-Creation-Date: 2013-10-01 12:57:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,27 +12,27 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: ShashinWp.php:65
+#: ShashinWp.php:67
 msgid "You must deactivate and reactivate Shashin to upgrade from version 2"
 msgstr ""
 
-#: ShashinWp.php:183
+#: ShashinWp.php:185
 msgid "Invalid shashin shortcode type: "
 msgstr ""
 
-#: ShashinWp.php:228 admin/ShashinWidgetWp.php:25
+#: ShashinWp.php:260 admin/ShashinWidgetWp.php:25
 msgid "Shashin Photos"
 msgstr ""
 
-#: ShashinWp.php:229
+#: ShashinWp.php:261
 msgid "Shashin Albums"
 msgstr ""
 
-#: ShashinWp.php:345
+#: ShashinWp.php:377
 msgid "Please go to the Shashin Tools Menu to complete the upgrade."
 msgstr ""
 
-#: ShashinWp.php:353
+#: ShashinWp.php:385
 msgid "Shashin Error"
 msgstr ""
 
@@ -40,7 +40,7 @@ msgstr ""
 msgid "Invalid album type: "
 msgstr ""
 
-#: admin/ShashinInstall.php:93 admin/ShashinInstall.php:107
+#: admin/ShashinInstall.php:94 admin/ShashinInstall.php:108
 msgid "Failed to create table "
 msgstr ""
 
@@ -145,11 +145,11 @@ msgid ""
 msgstr ""
 
 #: admin/ShashinSettingsMenu.php:37 admin/ShashinSettingsMenu.php:84
-#: admin/ShashinSettingsMenu.php:126 admin/ShashinSettingsMenu.php:158
-#: admin/ShashinSettingsMenu.php:166 admin/ShashinSettingsMenu.php:194
-#: admin/ShashinSettingsMenu.php:202 admin/ShashinSettingsMenu.php:210
-#: admin/ShashinSettingsMenu.php:218 admin/ShashinSettingsMenu.php:235
-#: admin/ShashinSettingsMenu.php:279 admin/ShashinWidgetWp.php:126
+#: admin/ShashinSettingsMenu.php:140 admin/ShashinSettingsMenu.php:172
+#: admin/ShashinSettingsMenu.php:180 admin/ShashinSettingsMenu.php:208
+#: admin/ShashinSettingsMenu.php:216 admin/ShashinSettingsMenu.php:224
+#: admin/ShashinSettingsMenu.php:232 admin/ShashinSettingsMenu.php:249
+#: admin/ShashinSettingsMenu.php:293 admin/ShashinWidgetWp.php:126
 #: admin/ShashinWidgetWp.php:136 admin/ShashinWidgetWp.php:146
 #: admin/display/mediaAlbums.php:95 admin/display/mediaAlbums.php:122
 #: admin/display/mediaAlbums.php:126 admin/display/mediaPhotos.php:209
@@ -158,11 +158,11 @@ msgid "Yes"
 msgstr ""
 
 #: admin/ShashinSettingsMenu.php:37 admin/ShashinSettingsMenu.php:84
-#: admin/ShashinSettingsMenu.php:126 admin/ShashinSettingsMenu.php:158
-#: admin/ShashinSettingsMenu.php:166 admin/ShashinSettingsMenu.php:194
-#: admin/ShashinSettingsMenu.php:202 admin/ShashinSettingsMenu.php:210
-#: admin/ShashinSettingsMenu.php:218 admin/ShashinSettingsMenu.php:235
-#: admin/ShashinSettingsMenu.php:279 admin/ShashinWidgetWp.php:127
+#: admin/ShashinSettingsMenu.php:140 admin/ShashinSettingsMenu.php:172
+#: admin/ShashinSettingsMenu.php:180 admin/ShashinSettingsMenu.php:208
+#: admin/ShashinSettingsMenu.php:216 admin/ShashinSettingsMenu.php:224
+#: admin/ShashinSettingsMenu.php:232 admin/ShashinSettingsMenu.php:249
+#: admin/ShashinSettingsMenu.php:293 admin/ShashinWidgetWp.php:127
 #: admin/ShashinWidgetWp.php:137 admin/ShashinWidgetWp.php:147
 #: admin/display/mediaAlbums.php:94 admin/display/mediaAlbums.php:121
 #: admin/display/mediaAlbums.php:127 admin/display/mediaPhotos.php:208
@@ -276,229 +276,248 @@ msgid ""
 "and ISO."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:112 admin/display/mediaAlbums.php:76
+#: admin/ShashinSettingsMenu.php:110
+msgid "Rounded, overlay captions"
+msgstr ""
+
+#: admin/ShashinSettingsMenu.php:111
+msgid "Square, captions underneath"
+msgstr ""
+
+#: admin/ShashinSettingsMenu.php:116
+msgid "Thumbnail display"
+msgstr ""
+
+#: admin/ShashinSettingsMenu.php:117
+msgid ""
+"Rounded thumbnails have their captions shown in an overlay, and long "
+"captions are truncated. Square thumbanils show the full caption under the "
+"thumbnail."
+msgstr ""
+
+#: admin/ShashinSettingsMenu.php:126 admin/display/mediaAlbums.php:76
 #: admin/display/mediaPhotos.php:190
 msgid "X-Small (72px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:113 admin/display/mediaAlbums.php:77
+#: admin/ShashinSettingsMenu.php:127 admin/display/mediaAlbums.php:77
 #: admin/display/mediaPhotos.php:191
 msgid "Small (150px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:114 admin/display/mediaAlbums.php:78
+#: admin/ShashinSettingsMenu.php:128 admin/display/mediaAlbums.php:78
 #: admin/display/mediaPhotos.php:192
 msgid "Medium (300px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:115 admin/display/mediaAlbums.php:79
+#: admin/ShashinSettingsMenu.php:129 admin/display/mediaAlbums.php:79
 #: admin/display/mediaPhotos.php:193
 msgid "Large (600px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:116 admin/display/mediaAlbums.php:80
+#: admin/ShashinSettingsMenu.php:130 admin/display/mediaAlbums.php:80
 #: admin/display/mediaPhotos.php:194
 msgid "X-Large (800px)"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:121
+#: admin/ShashinSettingsMenu.php:135
 msgid "Photo thumbnail size"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:129
+#: admin/ShashinSettingsMenu.php:143
 msgid "Crop thumbnail square if possible?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:130
+#: admin/ShashinSettingsMenu.php:144
 msgid ""
 "Certain photo sizes can be cropped square (which ones depends on the photo "
 "hosting service; for Picasa the X-Small and Small sizes can be cropped)."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:136
+#: admin/ShashinSettingsMenu.php:150
 msgid "Number of columns"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:144
+#: admin/ShashinSettingsMenu.php:158
 msgid "Date added to Shashin"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:145
+#: admin/ShashinSettingsMenu.php:159
 msgid "Date photos taken"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:146 admin/ShashinWidgetWp.php:116
+#: admin/ShashinSettingsMenu.php:160 admin/ShashinWidgetWp.php:116
 #: admin/display/mediaPhotos.php:156 admin/display/toolsPhotos.php:30
 msgid "Filename"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:147 admin/ShashinWidgetWp.php:110
+#: admin/ShashinSettingsMenu.php:161 admin/ShashinWidgetWp.php:110
 #: admin/display/mediaAlbums.php:102
 msgid "Random"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:148
+#: admin/ShashinSettingsMenu.php:162
 msgid "Order at photo hosting service"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:153
+#: admin/ShashinSettingsMenu.php:167
 msgid "Order thumbnails by"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:161
+#: admin/ShashinSettingsMenu.php:175
 msgid "Reverse the order?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:162
+#: admin/ShashinSettingsMenu.php:176
 msgid ""
 "For example, if you order by filename and then select \"yes\" for reversing "
 "the order, the thumbnails will appear in reverse alphabetical order."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:169
+#: admin/ShashinSettingsMenu.php:183
 msgid "Show captions under each thumbnail?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:179
+#: admin/ShashinSettingsMenu.php:193
 msgid "Default"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:180
+#: admin/ShashinSettingsMenu.php:194
 msgid "Light Rounded"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:181
+#: admin/ShashinSettingsMenu.php:195
 msgid "Dark Rounded"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:182
+#: admin/ShashinSettingsMenu.php:196
 msgid "Light Square"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:183
+#: admin/ShashinSettingsMenu.php:197
 msgid "Dark Square"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:184
+#: admin/ShashinSettingsMenu.php:198
 msgid "Facebook"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:189
+#: admin/ShashinSettingsMenu.php:203
 msgid "Theme"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:197
+#: admin/ShashinSettingsMenu.php:211
 msgid "Overlay gallery?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:198
+#: admin/ShashinSettingsMenu.php:212
 msgid ""
 "If \"yes\", a gallery will overlay the expanded view of an image when you "
 "mouse over it."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:205
+#: admin/ShashinSettingsMenu.php:219
 msgid "Show title?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:206
+#: admin/ShashinSettingsMenu.php:220
 msgid "If \"yes\", shows the photo caption in large text above the photo."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:213
+#: admin/ShashinSettingsMenu.php:227
 msgid "Show social connect buttons?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:214
+#: admin/ShashinSettingsMenu.php:228
 msgid ""
 "If \"yes\", shows Twitter, Facebook, Pinterest, and Link buttons in the "
 "photo caption."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:221
+#: admin/ShashinSettingsMenu.php:235
 msgid "Auto-play slideshow?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:228 admin/ShashinSettingsMenu.php:274
+#: admin/ShashinSettingsMenu.php:242 admin/ShashinSettingsMenu.php:288
 msgid "Autoplay image display time"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:229
+#: admin/ShashinSettingsMenu.php:243
 msgid ""
 "Enter a duration in milliseconds (e.g. \"5000\" for 5 seconds) for your "
 "slideshow speed."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:238
+#: admin/ShashinSettingsMenu.php:252
 msgid "Repeat slideshows?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:239
+#: admin/ShashinSettingsMenu.php:253
 msgid ""
 "When viewing the final photo in slideshow, whether clicking \"next\" will "
 "start the slideshow over again with the first photo."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:245
+#: admin/ShashinSettingsMenu.php:259
 msgid "Video Width"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:246
+#: admin/ShashinSettingsMenu.php:260
 msgid "Unfortunately video dimensions cannot be set dynamically with Fancybox"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:252
+#: admin/ShashinSettingsMenu.php:266
 msgid "Video Height"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:260
+#: admin/ShashinSettingsMenu.php:274
 msgid "Fade"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:261
+#: admin/ShashinSettingsMenu.php:275
 msgid "Elastic"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:262 admin/ShashinWidgetWp.php:99
+#: admin/ShashinSettingsMenu.php:276 admin/ShashinWidgetWp.php:99
 #: admin/display/mediaAlbums.php:115 admin/display/mediaPhotos.php:216
 msgid "None"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:267
+#: admin/ShashinSettingsMenu.php:281
 msgid "Trasition effect"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:268
+#: admin/ShashinSettingsMenu.php:282
 msgid "The transition effect to apply when navigating between photos"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:275
+#: admin/ShashinSettingsMenu.php:289
 msgid ""
 "Enter a duration in milliseconds (e.g. \"5000\" for 5 seconds) to have all "
 "your slideshows run on an automatic timer. Leave blank for manually "
 "navigated slideshows."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:282
+#: admin/ShashinSettingsMenu.php:296
 msgid "Load Shashin's Fancybox script?"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:283
+#: admin/ShashinSettingsMenu.php:297
 msgid ""
 "If you already have Fancybox installed on your site, select \"no\" to "
 "prevent Shashin from loading its own copy of Fancybox. Note Shashin has been "
 "tested only with version 1.3.4 of Fancybox."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:367
+#: admin/ShashinSettingsMenu.php:381
 msgid "Unrecognized validation function"
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:418
+#: admin/ShashinSettingsMenu.php:432
 msgid "The following settings have invalid values. Please try again."
 msgstr ""
 
-#: admin/ShashinSettingsMenu.php:435
+#: admin/ShashinSettingsMenu.php:449
 msgid "Settings saved"
 msgstr ""
 
@@ -852,11 +871,11 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: admin/display/mediaPhotos.php:170 public/ShashinLayoutManager.php:229
+#: admin/display/mediaPhotos.php:170 public/ShashinLayoutManager.php:231
 msgid "Previous"
 msgstr ""
 
-#: admin/display/mediaPhotos.php:172 public/ShashinLayoutManager.php:251
+#: admin/display/mediaPhotos.php:172 public/ShashinLayoutManager.php:253
 msgid "Next"
 msgstr ""
 
@@ -1176,7 +1195,7 @@ msgstr ""
 msgid "No photos found for specified shortcode"
 msgstr ""
 
-#: public/ShashinLayoutManager.php:242
+#: public/ShashinLayoutManager.php:244
 msgid "Return"
 msgstr ""
 
