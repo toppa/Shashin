@@ -95,10 +95,14 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
 
 = 3.4.2 =
 
+* Add option to continue using the previous thumbnail style, with square corners and captions underneath the thumbnails (and the captions are not truncated)
 * Bug fix: make sure number of calculated columns never exceeds number of thumbnails (fixes thumbnails appearing too small)
 * Bug fix: revise css and js so thumbnails naturally appear at their actual size (they were showing up slightly smaller)
 * Bug fix: get portrait-oriented thumbnails to always be centered in a gallery
-* Save thumbnail dimensions via ajax if they weren't previously saved, to speed front-end performance
+* Performance improvement: save thumbnail dimensions via ajax if they weren't previously saved, so we don't have to do dimension calculations in javascript every page load
+* Performance improvement: use "smartresize" jquery plugin, to reduce the number of resize events fired in certain browsers when the window is resized
+* Performance improvement: make display of truncated captions smarter
+* Update to the current version of the "imagesloaded" jquery plugin
 
 = 3.4.1 =
 Fixes thumbnails showing up too small in certain situations, and thumbnail gallery centering not working correctly.
