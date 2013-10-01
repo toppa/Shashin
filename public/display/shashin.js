@@ -240,28 +240,40 @@ jQuery(document).ready(function($) {
                         }
                     }
 
-                    // truncate captions, and dont' display them at all if
-                    // they'll cover more than 30% of the thumbnail
-                    var $caption = $(this).find('.shashinThumbnailCaption');
-                    $caption.trunk8();
+                    if (shashinJs.thumbnailDisplay == 'rounded') {
+                        var $shashinCaption = $(this).find('.shashinThumbnailCaption');
 
-                    if ($caption.height() > ($(this).height() * .3)) {
-                        $caption.css('display', 'none');
+                        if ($shashinCaption.length > 0) {
+                            // center the caption
+                            $shashinCaption.width(
+                                $(this).find('.shashinThumbnailImage').width()
+                                    - parseInt($shashinCaption.css('padding-left'))
+                                    - parseInt($shashinCaption.css('padding-right'))
+                            );
+                            $shashinCaption.css('margin-left', (
+                                ($(this).find('.shashinThumbnailImage').width() / 2) * -1) + 'px'
+                            );
+
+                            // truncate captions
+                            $shashinCaption.trunk8();
+
+                            // don't display captions if they'll cover more than 45% of the thumbnail
+                            // (this means no more than 2 lines of captions)
+                            if (($shashinCaption.innerHeight() > ($(this).height() * .45)) || $shashinCaption.text() == '') {
+                                $shashinCaption.css('display', 'none');
+                            }
+
+                            else {
+                                $shashinCaption.css('display', 'block');
+                            }
+                        }
                     }
 
-                    else {
-                        $caption.css('display', 'block');
-                        // center the caption
-                        console.log(
-                            $(this).find('.shashinThumbnailImage').width()
-                        );
-                        $caption.width(
-                            $(this).find('.shashinThumbnailImage').width()
-                            - parseInt($caption.css('padding-left'))
-                            - parseInt($caption.css('padding-right'))
-                        );
-                        $caption.css('margin-left', (
-                            ($(this).find('.shashinThumbnailImage').width() / 2) * -1) + 'px'
+                    else if (shashinJs.thumbnailDisplay == 'square') {
+                        // so we get a snug border on portrait-oriented thumbnails
+                        // (otherwise the caption may push it wider)
+                        $(this).find('.shashinThumbnailWrapper').css('max-width',
+                            $(this).find('.shashinThumbnailImage').outerWidth()
                         );
                     }
                 });
@@ -332,7 +344,7 @@ jQuery(document).ready(function($) {
     shashinAdjustThumbnailDisplay();
     shashinDisableFancyboxForMobile();
 
-    $(window).resize(function() {
+    $(window).smartresize(function() {
         shashinAdjustThumbnailDisplay();
         shashinDisableFancyboxForMobile();
     });
@@ -348,6 +360,37 @@ jQuery(document).ready(function($) {
         $('a[data-shashinphoto="' + shashinPhotoId + '"]:first').click();
     }
 });
+
+// smart resize plugin
+// http://www.paulirish.com/2009/throttled-smartresize-jquery-event-handler/
+if (!jQuery().smartresize) {
+    (function($,sr) {
+        // debouncing function from John Hann
+        // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+        var debounce = function (func, threshold, execAsap) {
+            var timeout;
+
+            return function debounced () {
+                var obj = this, args = arguments;
+                function delayed () {
+                    if (!execAsap)
+                        func.apply(obj, args);
+                    timeout = null;
+                };
+
+                if (timeout)
+                    clearTimeout(timeout);
+                else if (execAsap)
+                    func.apply(obj, args);
+
+                timeout = setTimeout(delayed, threshold || 100);
+            };
+        }
+        // smartresize
+        jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+
+    })(jQuery,'smartresize');
+}
 
 // used by shashinPrettyPhoto
 function shashinPopup(url, width, height) {
