@@ -9,19 +9,19 @@
         and then modified it so the left and right nav controls always appear
     ----------------------------------- */
 
-a.pp_closeMobile {
-    display: none !important;
+a.pp_close.pp_closeMobile {
+    display: none;
 }
 
 @media screen and (max-device-width: 768px) {
-    .pp_pic_holder.pp_default {
+    .pp_pic_holder {
         width: 100% !important;
         left: 0 !important;
     }
-    div.pp_default .pp_content_container .pp_left {
+    .pp_content_container .pp_left {
         padding-left: 0 !important;
     }
-    div.pp_default .pp_content_container .pp_right {
+    .pp_content_container .pp_right {
         padding-right: 0 !important;
     }
     .pp_content {
@@ -40,7 +40,7 @@ a.pp_closeMobile {
         height: 100% !important;
     }
     a.pp_closeMobile {
-        display: block;
+        display: block !important;
         position: absolute;
         top: 10px;
         right: 10px;
@@ -105,10 +105,15 @@ a.pp_closeMobile {
         width: 94% !important;
         padding: 15px 3% 15px 3%;
         min-height: 35px;
-        background-color: #fff;
         margin: 0 !important;
     }
-    div.pp_default .pp_description {
+    div.pp_default .pp_details,
+    div.light_rounded .pp_details,
+    div.light_square .pp_details,
+    div.facebook .pp_details {
+        background-color: #fff;
+    }
+    .pp_description {
         margin: 11px 50px 5px 153px !important;
     }
     div.ppt {
@@ -120,8 +125,11 @@ a.pp_closeMobile {
     .pp_arrow_previous {
         margin-right: 5px !important;
     }
-    div.pp_default .pp_nav .currentTextHolder {
-        left: 96px;
+    .pp_nav .currentTextHolder {
+        left: 96px !important;
+    }
+    a.pp_close {
+        margin: 14px 8px 0 0;
     }
 }
 
@@ -725,3 +733,4 @@ a.pp_closeMobile {
 			margin: 0 0 5px 15px;
 			z-index: 9999;
 		}
+
