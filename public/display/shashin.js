@@ -188,16 +188,18 @@ jQuery(document).ready(function($) {
 
                 if ((idealRowWidth * .9) > $(this).parents('.shashinPhotoGroups').parent().width()) {
                     $(this).css('display', 'block');
+                    $(this).find('.shashinCaption').css('display', 'block');
                     $(this).find('.shashinTableRowClear:not(:last)').css('clear', 'none');
-                    $(this).find('.shashinTableRowClear').css('display', 'block');
+                    $(this).find('.shashinTableRowClear').css('display', 'inline-block');
                     $(this).find('.shashinTableRow').css('clear', 'none');
-                    $(this).find('.shashinTableRow').css('display', 'block');
-                    $(this).find('.shashinTableCell').css('width', '100%');
-                    $(this).find('.shashinTableCell').css('display', 'block');
+                    $(this).find('.shashinTableRow').css('display', 'inline-block');
+                    $(this).find('.shashinTableCell').css('width', 'auto');
+                    $(this).find('.shashinTableCell').css('display', 'inline-block');
                 }
 
                 else if ($(this).css('display') != 'none') {
                     $(this).css('display', 'table');
+                    $(this).find('.shashinCaption').css('display', 'table-caption');
                     $(this).find('.shashinTableRowClear').css('clear', 'both');
                     $(this).find('.shashinTableRowClear').css('display', 'table-row');
                     $(this).find('.shashinTableRow').css('clear', 'both');
