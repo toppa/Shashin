@@ -114,7 +114,9 @@ else {
         <ul>
         <li><?php _e('Google is migrating Picasa to Google+ and making changes without advance notification. If you are unable to add an album, please', 'shashin'); ?>
             <a href="http://wordpress.org/support/plugin/shashin/"><?php _e('let me know', 'shashin'); ?></a>.</li>
-        <li><?php _e('Shashin works with albums where the visibility is set to "public." Also, for albums with visibility set to "limited, anyone with the link", they will work if you include the "authkey" when pasting the URL in the form below.', 'shashin'); ?></li>
+        <li><?php _e('Shashin works with albums where the visibility is set to "public." Also, for albums with visibility set to "limited, anyone with the link", you can add them if you enter the URL for the album that includes it\'s "authkey" (see the', 'shashin'); ?>
+        <a href="https://support.google.com/picasa/answer/48446?hl=en&ref_topic=1689807"><?php _e('Picasa authorization key help page'); ?></a>
+        <?php _e('for more information).'); ?></li>
         </ul>
         <p><strong><?php _e('Examples', 'shashin'); ?>:</strong></p>
         <dl>
@@ -147,19 +149,16 @@ else {
         <p><?php _e('For YouTube, you need to enter the RSS URL for the feed you want to synchronize.', 'shashin'); ?></p>
         <p><strong><?php _e('Important notes:', 'shashin'); ?></strong></p>
             <ul>
-            <li><?php _e('Unfortunately Youtube does not display links for its feeds, but there are many standard feeds available (top rated, etc) - see the', 'shashin'); ?>
-                <a href="http://code.google.com/apis/youtube/2.0/developers_guide_protocol.html#Retrieving_and_searching_for_videos"><?php _e('YouTube API page for examples', 'shashin'); ?>.</a>
-                <?php _e('It also explains how to write the URLs for other kinds of feeds.', 'shashin'); ?></li>
+            <li><?php _e('You can enter the feed URL for a user\'s account, or for YouTube\'s "most popular" feed (see the examples below). See the', 'shashin'); ?>
+                <a href="http://code.google.com/apis/youtube/2.0/developers_guide_protocol.html#Retrieving_and_searching_for_videos"><?php _e('YouTube API page if you want to retrieve a country-specific "most popular" feed', 'shashin'); ?></a>.</li>
             <li><?php _e('Shashin will synchronize with the first 50 videos in a YouTube feed.', 'shashin'); ?></li>
             </ul>
         <p><strong><?php _e('Examples', 'shashin'); ?>:</strong></p>
         <dl>
-        <dt><?php _e("A YouTube user's videos (put his or her username in the URL)", 'shashin'); ?>:</dt>
+        <dt><?php _e("A YouTube user's videos (put his or her YouTube username in the URL)", 'shashin'); ?>:</dt>
             <dd>https://gdata.youtube.com/feeds/api/users/<strong>mttoppa</strong>/uploads</dd>
         <dt><?php _e('Most popular YouTube videos', 'shashin'); ?>:</strong></dt>
             <dd>https://gdata.youtube.com/feeds/api/standardfeeds/most_popular</dd>
-        <dt><?php _e('Most recent videos in the comedy category', 'shashin'); ?>:</dt>
-            <dd>https://gdata.youtube.com/feeds/api/videos/-/Comedy</dd>
         </dl>
 
         <p><strong><?php _e("RSS URL:", 'shashin'); ?></strong>
