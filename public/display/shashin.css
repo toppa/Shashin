@@ -79,6 +79,7 @@
    http://stackoverflow.com/questions/13114069/responsive-transparent-css-image-caption-with-graceful-degradation
  */
 .shashinThumbnailCaption {
+    visibility: hidden;
     position: absolute;
     bottom: 0;
     left: 50%; /* do not change - used for centering */
