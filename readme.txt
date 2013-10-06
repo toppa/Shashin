@@ -21,6 +21,7 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 * Removed support for viewers other than prettyPhoto and Fancybox. There is now too much custom javascript in Shashin for it work with any viewer.
 
 Note: on the Shashin settings page, you will want to pick prettyPhoto as your viewer to take full advantage of the new responsive design and social sharing features.
+
 **Overview**
 
 Shashin has many features for displaying photos and videos from Picasa, Youtube, and Twitpic in your Wordpress posts and pages:
@@ -63,10 +64,9 @@ Enter a post in [the wordpress.org support forum for Shashin](http://wordpress.o
 1. Download and activate Shahsin just like any other plugin
 1. Go to the Shashin Tools Menu to add your Picasa, Youtube, or Twitpic feeds (there are detailed instructions on the page)
 1. Go to the Shashin Settings Menu to review and update your preferences
-  * If you want to use an image viewer other than PrettyPhoto or Fancybox, you need to set it up and configure it yourself. The Shashin Settings Menu provides several options to support the use of other image viewers.
 1. Go to the WordPress widget menu to add the Shashin widget to your sidebar if you want
 1. Edit a post or page and use the media manager to add photos and albums from Shashin
-1. Note that Shashin will add two tables to your WordPress database, named wp\_shashin\_album and wp\_shashin\_photo. **It's important to include these tables when making backups of your WordPress tables.** The Shashin shortcodes rely on ID numbers from these tables that will be permanently lost if anything happens to these tables.
+1. Note that Shashin will add two tables to your WordPress database, named wp\_shashin\_album and wp\_shashin\_photo. **It's important to include these tables when making backups of your WordPress tables.** The Shashin shortcodes rely on ID numbers stored in these tables.
 
 **Upgrading from Shashin 2**
 
