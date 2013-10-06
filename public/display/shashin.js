@@ -14,6 +14,21 @@ jQuery(document).ready(function($) {
             return decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
+    function setShashinFancyBoxCaption(currentArray, currentIndex, currentOpts) {
+        var link = currentArray[ currentIndex ];
+        var linkId = $(link).attr('id');
+        var linkIdParts = linkId.split('_');
+        var captionId = '#shashinFancyboxCaption_' + linkIdParts[1]
+
+        if (linkIdParts[2]) {
+            captionId = captionId + '_' + linkIdParts[2];
+        }
+
+        this.title = $(captionId).html();
+        this.title = this.title.replace('<!-- comment for image counter --></div>', '');
+        this.title = this.title + 'Image ' + (currentIndex + 1) + ' of ' + currentArray.length + '</div>';
+    }
+
     if (shashinJs.imageDisplayer == 'prettyphoto') {
         // The "-0" and "!!" below are for type casting, as all vars brought over
         // from wp_localize_script come in as strings
@@ -71,22 +86,6 @@ jQuery(document).ready(function($) {
                 'wmode': 'transparent',
                 'allowfullscreen': 'true'
             }
-        }
-
-        // made this a separarte function as it is used below as well
-        function setShashinFancyBoxCaption(currentArray, currentIndex, currentOpts) {
-            var link = currentArray[ currentIndex ];
-            var linkId = $(link).attr('id');
-            var linkIdParts = linkId.split('_');
-            var captionId = '#shashinFancyboxCaption_' + linkIdParts[1]
-
-            if (linkIdParts[2]) {
-                captionId = captionId + '_' + linkIdParts[2];
-            }
-
-            this.title = $(captionId).html();
-            this.title = this.title.replace('<!-- comment for image counter --></div>', '');
-            this.title = this.title + 'Image ' + (currentIndex + 1) + ' of ' + currentArray.length + '</div>';
         }
 
         var fancyboxInterval = shashinJs.fancyboxInterval - 0;
@@ -266,7 +265,7 @@ jQuery(document).ready(function($) {
                             }
 
                             else {
-                                $shashinCaption.css('display', 'block');
+                                $shashinCaption.css('visibility','visible').hide().fadeIn('slow');
                             }
                         }
                     }
