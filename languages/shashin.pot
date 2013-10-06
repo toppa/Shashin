@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2013-10-01 12:57:11+00:00\n"
+"POT-Creation-Date: 2013-10-06 00:55:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -941,7 +941,7 @@ msgstr ""
 msgid "You have not added any albums yet."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:93 admin/display/toolsAlbums.php:137
+#: admin/display/toolsAlbums.php:93 admin/display/toolsAlbums.php:139
 msgid "Add Albums"
 msgstr ""
 
@@ -963,7 +963,7 @@ msgid ""
 "his or her albums, or enter the URL for an individual album."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:113 admin/display/toolsAlbums.php:148
+#: admin/display/toolsAlbums.php:113 admin/display/toolsAlbums.php:150
 msgid "Important notes:"
 msgstr ""
 
@@ -980,98 +980,100 @@ msgstr ""
 #: admin/display/toolsAlbums.php:117
 msgid ""
 "Shashin works with albums where the visibility is set to \"public.\" Also, "
-"for albums with visibility set to \"limited, anyone with the link\", they "
-"will work if you include the \"authkey\" when pasting the URL in the form "
-"below."
+"for albums with visibility set to \"limited, anyone with the link\", you can "
+"add them if you enter the URL for the album that includes it's \"authkey"
+"\" (see the"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:119 admin/display/toolsAlbums.php:155
+#: admin/display/toolsAlbums.php:118
+msgid "Picasa authorization key help page"
+msgstr ""
+
+#: admin/display/toolsAlbums.php:119
+msgid "for more information)."
+msgstr ""
+
+#: admin/display/toolsAlbums.php:121 admin/display/toolsAlbums.php:156
 msgid "Examples"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:121
+#: admin/display/toolsAlbums.php:123
 msgid "All the <strong>public</strong> Picasa/Google+ albums for a user"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:125
+#: admin/display/toolsAlbums.php:127
 msgid "A single <strong>public</strong> Picasa/Google+ album"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:128
+#: admin/display/toolsAlbums.php:130
 msgid "A Picasa/Google+ album requiring a link to view"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:133 admin/display/toolsAlbums.php:187
+#: admin/display/toolsAlbums.php:135 admin/display/toolsAlbums.php:186
 msgid "URL:"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:135 admin/display/toolsAlbums.php:189
+#: admin/display/toolsAlbums.php:137 admin/display/toolsAlbums.php:188
 msgid "Include these photos in random photo displays?"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:147
+#: admin/display/toolsAlbums.php:149
 msgid ""
 "For YouTube, you need to enter the RSS URL for the feed you want to "
 "synchronize."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:150
-msgid ""
-"Unfortunately Youtube does not display links for its feeds, but there are "
-"many standard feeds available (top rated, etc) - see the"
-msgstr ""
-
-#: admin/display/toolsAlbums.php:151
-msgid "YouTube API page for examples"
-msgstr ""
-
 #: admin/display/toolsAlbums.php:152
-msgid "It also explains how to write the URLs for other kinds of feeds."
+msgid ""
+"You can enter the feed URL for a user's account, or for YouTube's \"most "
+"popular\" feed (see the examples below). See the"
 msgstr ""
 
 #: admin/display/toolsAlbums.php:153
+msgid ""
+"YouTube API page if you want to retrieve a country-specific \"most popular\" "
+"feed"
+msgstr ""
+
+#: admin/display/toolsAlbums.php:154
 msgid "Shashin will synchronize with the first 50 videos in a YouTube feed."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:157
-msgid "A YouTube user's videos (put his or her username in the URL)"
+#: admin/display/toolsAlbums.php:158
+msgid "A YouTube user's videos (put his or her YouTube username in the URL)"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:159
+#: admin/display/toolsAlbums.php:160
 msgid "Most popular YouTube videos"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:161
-msgid "Most recent videos in the comedy category"
-msgstr ""
-
-#: admin/display/toolsAlbums.php:165
+#: admin/display/toolsAlbums.php:164
 msgid "RSS URL:"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:167
+#: admin/display/toolsAlbums.php:166
 msgid "Include these videos in random photo/video displays?"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:169
+#: admin/display/toolsAlbums.php:168
 msgid "Add Videos"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:179
+#: admin/display/toolsAlbums.php:178
 msgid ""
 "Enter the URL for a Twitpic user to synchronize Shashin with all of his or "
 "her photos."
 msgstr ""
 
-#: admin/display/toolsAlbums.php:181
+#: admin/display/toolsAlbums.php:180
 msgid "Example"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:184
+#: admin/display/toolsAlbums.php:183
 msgid "A Twitpic user's photos"
 msgstr ""
 
-#: admin/display/toolsAlbums.php:191
+#: admin/display/toolsAlbums.php:190
 msgid "Add Photos"
 msgstr ""
 
