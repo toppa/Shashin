@@ -31,7 +31,6 @@
 .shashinTableCell {
     display: table-cell;
     padding: 10px;
-    position: relative;
     text-align: center;
     /* width and max-width are set dynamically, to make the images responsive */
 }
@@ -42,6 +41,7 @@
 
 .shashinThumbnailWrapper {
     margin: 3px auto;
+    position: relative;
 }
 
 .shashinTableSquare .shashinThumbnailWrapper {
@@ -84,7 +84,6 @@
     bottom: 0;
     left: 50%; /* do not change - used for centering */
     padding: 10px;
-    margin-bottom: 10px; /* needs to match the bottom padding of .shashinTableCell */
     text-align: center;
     font-size: x-small;
     line-height: 1.2em;
