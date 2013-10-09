@@ -166,6 +166,14 @@ jQuery(document).ready(function($) {
     var shashinThumbnailDimensions = [];
 
     function shashinAdjustThumbnailDisplay(element) {
+        // If this is a version of IE less than 9, force the captions
+        // to "square," make the captions visible, and then bail
+        if ((document.documentMode || 100) < 9) {
+            $('.shashinThumbnailCaption').css('visibility','visible');
+            $('.shashinTableCell').addClass('shashinTableSquare');
+            return;
+        }
+
         element = element ? element : '.shashinThumbnailsTable';
 
         $(element).imagesLoaded().done(function() {
@@ -276,6 +284,9 @@ jQuery(document).ready(function($) {
                         $(this).find('.shashinThumbnailWrapper').css('max-width',
                             $(this).find('.shashinThumbnailImage').outerWidth()
                         );
+
+                        $(this).find('.shashinThumbnailCaption').css('visibility','visible').hide().fadeIn('slow');
+
                     }
                 });
             });
