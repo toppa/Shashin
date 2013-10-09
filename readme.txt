@@ -4,7 +4,7 @@ Donate link: http://www.toppa.com/shashin-wordpress-plugin
 Tags: Picasa, Fancybox, prettyPhoto, Twitpic, Youtube, image, images, photo, photos, picture, pictures, gallery, widget, widgets, video
 Requires at least: 3.0
 Tested up to: 3.6.1
-Stable tag: 3.4.4
+Stable tag: 3.4.5
 License: GPLv2 or later
 
 Shashin is a powerful WordPress plugin that lets you easily display photos and videos from Picasa, Twitpic, and Youtube in your WordPress site.
@@ -92,6 +92,12 @@ If you have a question, enter a post in [the wordpress.org support forum for Sha
 4. A Fancybox slideshow
 
 == Changelog ==
+
+= 3.4.5 =
+
+* Bug fix: fix positioning of caption overlays in Firefox
+* Bug fix: make captions visible for "square" thumbnail presentation
+* Degrade gracefully for thumbnail display for versions of IE less than 9 (always show "square" caption style, and don't try to dynamically set caption widths via JS, which old IE can't handle).
 
 = 3.4.4 =
 
