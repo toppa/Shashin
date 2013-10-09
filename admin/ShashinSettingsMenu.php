@@ -114,7 +114,7 @@ class Admin_ShashinSettingsMenu {
                 'validateFunction' => 'in_array',
                 'validValues' => array('rounded', 'square'),
                 'label' => __('Thumbnail display', 'shashin'),
-                'help' => __('Rounded thumbnails have their captions shown in an overlay, and long captions are truncated. Square thumbanils show the full caption under the thumbnail.', 'shashin'),
+                'help' => __('Rounded thumbnails have their captions shown in an overlay, and long captions are truncated. Square thumbanils show the full caption under the thumbnail. Note version of Internet Explorer less than 9 will always show square thumbnails, for browser compatibility.', 'shashin'),
                 'group' => 'general'
             ),
 
