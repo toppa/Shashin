@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
             prettyPhotoSettings['social_tools'] = false;
         }
 
-        $("a[rel^='prettyPhoto']").shashinPrettyPhoto(prettyPhotoSettings);
+        $("a[rel^='shashinPrettyPhoto']").shashinPrettyPhoto(prettyPhotoSettings);
     }
 
     else if (shashinJs.imageDisplayer == 'fancybox') {
@@ -142,7 +142,7 @@ jQuery(document).ready(function($) {
                 shashinAdjustThumbnailDisplay('#' + $(photosContainer).find('.shashinThumbnailsTable').first().attr('id'));
 
                 if (shashinJs.imageDisplayer == 'prettyphoto') {
-                    $('#shashinAlbumPhotos_' + linkIdParts[2] + " a[rel^='prettyphoto']").shashinPrettyPhoto(prettyPhotoSettings);
+                    $('#shashinAlbumPhotos_' + linkIdParts[2] + " a[rel^='shashinPrettyPhoto']").shashinPrettyPhoto(prettyPhotoSettings);
                 }
 
                 // Fancybox isn't aware of photos not included in the initial page load
@@ -263,8 +263,14 @@ jQuery(document).ready(function($) {
                                 ($(this).find('.shashinThumbnailImage').width() / 2) * -1) + 'px'
                             );
 
-                            // truncate captions
-                            $shashinCaption.trunk8();
+                            // parsing html when truncating captions is expensive, so do it only
+                            // where we need to (on album captions)
+                            if ($shashinCaption.find('.shashinAlbumCaptionTitle').length > 0) {
+                                $shashinCaption.trunk8({ parseHTML: true });
+                            }
+                            else {
+                                $shashinCaption.trunk8();
+                            }
 
                             // don't display captions if they'll cover more than 45% of the thumbnail
                             // (this means no more than 2 lines of captions)
