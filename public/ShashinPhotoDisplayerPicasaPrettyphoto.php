@@ -12,7 +12,7 @@ class Public_ShashinPhotoDisplayerPicasaPrettyphoto extends Public_ShashinPhotoD
             $groupNumber .= '_' . $this->albumIdForAjaxPhotoDisplay;
         }
 
-        $this->linkRel .= "prettyPhoto[$groupNumber]";
+        $this->linkRel .= "shashinPrettyPhoto[$groupNumber]";
         return $this->linkRel;
     }
 

@@ -5,7 +5,7 @@
 	Version: 3.1.5
 ------------------------------------------------------------------------- */
 (function($) {
-	$.prettyPhoto = {version: '3.1.5'};
+	$.shashinPrettyPhoto = {version: '3.1.5'};
 	
 	$.fn.shashinPrettyPhoto = function(pp_settings) {
 		pp_settings = jQuery.extend({
@@ -35,7 +35,7 @@
 			callback: function(){}, /* Called when prettyphoto is closed */
 			ie6_fallback: true,
             /* edit for Shashin - added pp_closeMoble and customized social_tools */
-			markup: '<div class="pp_pic_holder"> \
+			markup: '<div class="shashin_pp_pic_holder"> \
 						<div class="ppt">&nbsp;</div> \
 						<div class="pp_top"> \
 							<div class="pp_left"></div> \
@@ -118,16 +118,16 @@
 					if($pp_pic_holder.is(':visible')){
 						switch(e.keyCode){
 							case 37:
-								$.prettyPhoto.changePage('previous');
+								$.shashinPrettyPhoto.changePage('previous');
 								e.preventDefault();
 								break;
 							case 39:
-								$.prettyPhoto.changePage('next');
+								$.shashinPrettyPhoto.changePage('next');
 								e.preventDefault();
 								break;
 							case 27:
 								if(!settings.modal)
-								$.prettyPhoto.close();
+								$.shashinPrettyPhoto.close();
 								e.preventDefault();
 								break;
 						};
@@ -140,7 +140,7 @@
 		/**
 		* Initialize prettyphoto.
 		*/
-		$.prettyPhoto.initialize = function() {
+		$.shashinPrettyPhoto.initialize = function() {
 			
 			settings = pp_settings;
 			
@@ -174,7 +174,7 @@
 				$(window).bind('scroll.prettyphoto',function(){ _center_overlay(); });
 			
 			
-			$.prettyPhoto.open();
+			$.shashinPrettyPhoto.open();
 			
 			return false;
 		}
@@ -186,7 +186,7 @@
 		* @param title {String,Array} The title to be displayed with the picture, can also be an array containing all the titles.
 		* @param description {String,Array} The description to be displayed with the picture, can also be an array containing all the descriptions.
 		*/
-		$.prettyPhoto.open = function(event) {
+		$.shashinPrettyPhoto.open = function(event) {
 			if(typeof settings == "undefined"){ // Means it's an API call, need to manually get the settings and set the variables
 				settings = pp_settings;
 				pp_images = $.makeArray(arguments[0]);
@@ -295,7 +295,7 @@
 
 						imgPreloader.onerror = function(){
 							alert('Image cannot be loaded. Make sure the path is correct and image exist.');
-							$.prettyPhoto.close();
+							$.shashinPrettyPhoto.close();
 						};
 					
 						imgPreloader.src = pp_images[set_position];
@@ -416,7 +416,7 @@
 		* Change page in the prettyphoto modal box
 		* @param direction {String} Direction of the paging, previous or next.
 		*/
-		$.prettyPhoto.changePage = function(direction){
+		$.shashinPrettyPhoto.changePage = function(direction){
 			currentGalleryPage = 0;
 			
 			if(direction == 'previous') {
@@ -436,7 +436,7 @@
 				$('.pp_contract').removeClass('pp_contract').addClass('pp_expand');
 			}
 
-			_hideContent(function(){ $.prettyPhoto.open(); });
+			_hideContent(function(){ $.shashinPrettyPhoto.open(); });
 		};
 
 
@@ -444,7 +444,7 @@
 		* Change gallery page in the prettyphoto modal box
 		* @param direction {String} Direction of the paging, previous or next.
 		*/
-		$.prettyPhoto.changeGalleryPage = function(direction){
+		$.shashinPrettyPhoto.changeGalleryPage = function(direction){
 			if(direction=='next'){
 				currentGalleryPage ++;
 
@@ -468,15 +468,15 @@
 		/**
 		* Start the slideshow...
 		*/
-		$.prettyPhoto.startSlideshow = function(){
+		$.shashinPrettyPhoto.startSlideshow = function(){
 			if(typeof pp_slideshow == 'undefined'){
 				$pp_pic_holder.find('.pp_play').unbind('click').removeClass('pp_play').addClass('pp_pause').click(function(){
-					$.prettyPhoto.stopSlideshow();
+					$.shashinPrettyPhoto.stopSlideshow();
 					return false;
 				});
-				pp_slideshow = setInterval($.prettyPhoto.startSlideshow,settings.slideshow);
+				pp_slideshow = setInterval($.shashinPrettyPhoto.startSlideshow,settings.slideshow);
 			}else{
-				$.prettyPhoto.changePage('next');	
+				$.shashinPrettyPhoto.changePage('next');
 			};
 		}
 
@@ -484,9 +484,9 @@
 		/**
 		* Stop the slideshow...
 		*/
-		$.prettyPhoto.stopSlideshow = function(){
+		$.shashinPrettyPhoto.stopSlideshow = function(){
 			$pp_pic_holder.find('.pp_pause').unbind('click').removeClass('pp_pause').addClass('pp_play').click(function(){
-				$.prettyPhoto.startSlideshow();
+				$.shashinPrettyPhoto.startSlideshow();
 				return false;
 			});
 			clearInterval(pp_slideshow);
@@ -497,14 +497,14 @@
 		/**
 		* Closes prettyphoto.
 		*/
-		$.prettyPhoto.close = function(){
+		$.shashinPrettyPhoto.close = function(){
 			if($pp_overlay.is(":animated")) return;
 			
-			$.prettyPhoto.stopSlideshow();
+			$.shashinPrettyPhoto.stopSlideshow();
 			
 			$pp_pic_holder.stop().find('object,embed').css('visibility','hidden');
 			
-			$('div.pp_pic_holder,div.ppt,.pp_fade').fadeOut(settings.animation_speed,function(){ $(this).remove(); });
+			$('div.shashin_pp_pic_holder,div.ppt,.pp_fade').fadeOut(settings.animation_speed,function(){ $(this).remove(); });
 			
 			$pp_overlay.fadeOut(settings.animation_speed, function(){
 				
@@ -566,7 +566,7 @@
 					}
 				}
 				
-				if(settings.autoplay_slideshow && !pp_slideshow && !pp_open) $.prettyPhoto.startSlideshow();
+				if(settings.autoplay_slideshow && !pp_slideshow && !pp_open) $.shashinPrettyPhoto.startSlideshow();
 				
 				settings.changepicturecallback(); // Callback!
 				
@@ -774,7 +774,7 @@
 				
 				goToPage = (Math.floor(set_position/itemsPerPage) < totalPage) ? Math.floor(set_position/itemsPerPage) : totalPage;
 
-				$.prettyPhoto.changeGalleryPage(goToPage);
+				$.shashinPrettyPhoto.changeGalleryPage(goToPage);
 				
 				$pp_gallery_li.filter(':eq('+set_position+')').addClass('selected');
 			}else{
@@ -792,7 +792,7 @@
 			
 			$('body').append(settings.markup); // Inject the markup
 			
-			$pp_pic_holder = $('.pp_pic_holder') , $ppt = $('.ppt'), $pp_overlay = $('div.pp_overlay'); // Set my global selectors
+			$pp_pic_holder = $('.shashin_pp_pic_holder') , $ppt = $('.ppt'), $pp_overlay = $('div.pp_overlay'); // Set my global selectors
 			
 			// Inject the inline gallery!
 			if(isSet && settings.overlay_gallery) {
@@ -814,17 +814,17 @@
 				
 				$pp_pic_holder.find('#pp_full_res').after(toInject);
 				
-				$pp_gallery = $('.pp_pic_holder .pp_gallery'), $pp_gallery_li = $pp_gallery.find('li'); // Set the gallery selectors
+				$pp_gallery = $('.shashin_pp_pic_holder .pp_gallery'), $pp_gallery_li = $pp_gallery.find('li'); // Set the gallery selectors
 				
 				$pp_gallery.find('.pp_arrow_next').click(function(){
-					$.prettyPhoto.changeGalleryPage('next');
-					$.prettyPhoto.stopSlideshow();
+					$.shashinPrettyPhoto.changeGalleryPage('next');
+					$.shashinPrettyPhoto.stopSlideshow();
 					return false;
 				});
 				
 				$pp_gallery.find('.pp_arrow_previous').click(function(){
-					$.prettyPhoto.changeGalleryPage('previous');
-					$.prettyPhoto.stopSlideshow();
+					$.shashinPrettyPhoto.changeGalleryPage('previous');
+					$.shashinPrettyPhoto.stopSlideshow();
 					return false;
 				});
 				
@@ -841,8 +841,8 @@
 					$(this)
 						.find('a')
 						.click(function(){
-							$.prettyPhoto.changePage(i);
-							$.prettyPhoto.stopSlideshow();
+							$.shashinPrettyPhoto.changePage(i);
+							$.shashinPrettyPhoto.stopSlideshow();
 							return false;
 						});
 				});
@@ -853,12 +853,12 @@
 			if(settings.slideshow){
 				$pp_pic_holder.find('.pp_nav').prepend('<a href="#" class="pp_play">Play</a>')
 				$pp_pic_holder.find('.pp_nav .pp_play').click(function(){
-					$.prettyPhoto.startSlideshow();
+					$.shashinPrettyPhoto.startSlideshow();
 					return false;
 				});
 			}
 			
-			$pp_pic_holder.attr('class','pp_pic_holder ' + settings.theme); // Set the proper theme
+			$pp_pic_holder.attr('class','shashin_pp_pic_holder ' + settings.theme); // Set the proper theme
 			
 			$pp_overlay
 				.css({
@@ -867,10 +867,10 @@
 					'width':$(window).width()
 					})
 				.bind('click',function(){
-					if(!settings.modal) $.prettyPhoto.close();
+					if(!settings.modal) $.shashinPrettyPhoto.close();
 				});
 
-			$('a.pp_close').bind('click',function(){ $.prettyPhoto.close(); return false; });
+			$('a.pp_close').bind('click',function(){ $.shashinPrettyPhoto.close(); return false; });
 
 
 			if(settings.allow_expand) {
@@ -884,21 +884,21 @@
 						doresize = true;
 					};
 				
-					_hideContent(function(){ $.prettyPhoto.open(); });
+					_hideContent(function(){ $.shashinPrettyPhoto.open(); });
 			
 					return false;
 				});
 			}
 		
 			$pp_pic_holder.find('.pp_previous, .pp_nav .pp_arrow_previous').bind('click',function(){
-				$.prettyPhoto.changePage('previous');
-				$.prettyPhoto.stopSlideshow();
+				$.shashinPrettyPhoto.changePage('previous');
+				$.shashinPrettyPhoto.stopSlideshow();
 				return false;
 			});
 		
 			$pp_pic_holder.find('.pp_next, .pp_nav .pp_arrow_next').bind('click',function(){
-				$.prettyPhoto.changePage('next');
-				$.prettyPhoto.stopSlideshow();
+				$.shashinPrettyPhoto.changePage('next');
+				$.shashinPrettyPhoto.stopSlideshow();
 				return false;
 			});
 			
@@ -919,7 +919,7 @@
 			setTimeout(function(){ $("a["+pp_settings.hook+"^='"+hashRel+"']:eq("+hashIndex+")").trigger('click'); },50);
 		}
 		
-		return this.unbind('click.prettyphoto').bind('click.prettyphoto',$.prettyPhoto.initialize); // Return the jQuery object for chaining. The unbind method is used to avoid click conflict when the plugin is called more than once
+		return this.unbind('click.prettyphoto').bind('click.prettyphoto',$.shashinPrettyPhoto.initialize); // Return the jQuery object for chaining. The unbind method is used to avoid click conflict when the plugin is called more than once
 	};
 	
 	function getHashtag(){

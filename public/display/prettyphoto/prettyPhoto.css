@@ -14,7 +14,7 @@ a.pp_close.pp_closeMobile {
 }
 
 @media screen and (max-device-width: 768px) {
-    .pp_pic_holder {
+    .shashin_pp_pic_holder {
         width: 100% !important;
         left: 0 !important;
     }
@@ -450,7 +450,7 @@ a.pp_close.pp_closeMobile {
 	DO NOT CHANGE
 ------------------------------------------------------------------------- */
 
-	div.pp_pic_holder a:focus { outline:none; }
+	div.shashin_pp_pic_holder a:focus { outline:none; }
 
 	div.pp_overlay {
 		background: #000;
@@ -462,7 +462,7 @@ a.pp_close.pp_closeMobile {
 		z-index: 9500;
 	}
 	
-	div.pp_pic_holder {
+	div.shashin_pp_pic_holder {
 		display: none;
 		position: absolute;
 		width: 100px;
