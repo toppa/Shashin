@@ -44,8 +44,6 @@ function shashinActivate() {
         return null;
     }
 
-    require_once dirname(__FILE__) . '/lib/ShashinAutoLoader.php';
-    new ShashinAutoLoader('/shashin');
     $shashin = new ShashinWp();
     $status = $shashin->install();
 
