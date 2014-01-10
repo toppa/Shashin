@@ -174,13 +174,22 @@ abstract class Admin_ShashinSynchronizer {
 
     abstract public function syncAlbumPhotos(array $decodedAlbumData, $sourceOrder = 0);
 
-    // I increased the time buffer on this to 5 minutes - hopefully this will prevent the
-    // unwanted deletions that are occasionally reported
     public function deleteOldPhotos() {
-        $sql = 'delete from ' . $this->clonablePhoto->getTableName()
+        // before deleting anything, make sure the number of photos we synchronized matches
+        // the number of photos that are supposed to be in the album, to confirm syncing of
+        // the album photos was successful
+        $confirmSql = 'select count(1) from ' . $this->clonablePhoto->getTableName()
             . ' where albumId = ' . $this->album->id
-            . ' and lastSync < ' . ($this->syncTime - 300);
-        return $this->dbFacade->executeQuery($sql);
+            . ' and lastSync = ' . $this->syncTime;
+
+        if ($this->dbFacade->executeQuery($confirmSql, 'get_var') == $this->album->photoCount) {
+            $sql = 'delete from ' . $this->clonablePhoto->getTableName()
+                . ' where albumId = ' . $this->album->id
+                . ' and lastSync < ' . $this->syncTime;
+            return $this->dbFacade->executeQuery($sql);
+        }
+
+        return 0;
     }
 
     abstract public function getHighestResolutionVideoIfNeeded(array $entry, array $photoRefData);
