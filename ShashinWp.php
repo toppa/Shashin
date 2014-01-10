@@ -1,7 +1,7 @@
 <?php
 
 class ShashinWp {
-    private $version = '3.4.6';
+    private $version = '3.4.7';
 
     public function __construct() {
     }
