@@ -84,14 +84,6 @@ class Public_ShashinHeadTags {
         }
 
         $this->functionsFacade->enqueueScript(
-            'shashinJs',
-            $this->baseUrl . 'shashin.js',
-            array('jquery'),
-            $this->version,
-            true
-        );
-
-        $this->functionsFacade->enqueueScript(
             'jquery-imagesloaded',
             $this->baseUrl . 'jquery.imagesloaded.min.js',
             array('jquery'),
@@ -103,6 +95,14 @@ class Public_ShashinHeadTags {
             'jquery-trunk8',
             $this->baseUrl . 'trunk8.js',
             array('jquery'),
+            $this->version,
+            true
+        );
+
+        $this->functionsFacade->enqueueScript(
+            'shashinJs',
+            $this->baseUrl . 'shashin.js',
+            array('jquery', 'jquery-imagesloaded', 'jquery-trunk8'),
             $this->version,
             true
         );
