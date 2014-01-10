@@ -1,14 +1,14 @@
-# Copyright (C) 2013 
+# Copyright (C) 2014 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/shashin\n"
-"POT-Creation-Date: 2013-10-09 13:05:50+00:00\n"
+"POT-Creation-Date: 2014-01-10 13:21:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2014-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -1230,11 +1230,11 @@ msgstr ""
 msgid "\"size\" and \"columns\" can not both me \"max\""
 msgstr ""
 
-#: start.php:62
+#: start.php:60
 msgid "Shashin not activated. You must have at least PHP 5.1.2 to use Shashin"
 msgstr ""
 
-#: start.php:66
+#: start.php:64
 msgid ""
 "Shashin not activated. You must have at least WordPress 3.0 to use Shashin"
 msgstr ""
