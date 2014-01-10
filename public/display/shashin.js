@@ -1,9 +1,11 @@
-jQuery(document).ready(function($) {
-    var shashinAlbumId = shashinGetParameterByName('shashin_album_key');
-    var shashinPhotoId = shashinGetParameterByName('shashin_photo_key');
+var Shashin = (function($) {
+
+    /*
+        HANDLE PHOTO IDS AND/OR ALBUMS IDS PASSED IN THE URL
+     */
 
     // thank you - http://stackoverflow.com/questions/4548487/jquery-read-query-string
-    function shashinGetParameterByName(name) {
+    var getParameterByName = function(name) {
         name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
         var regexS = "[\\?&]"+name+"=([^&#]*)";
         var regex = new RegExp(regexS);
@@ -14,7 +16,25 @@ jQuery(document).ready(function($) {
             return decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
-    function setShashinFancyBoxCaption(currentArray, currentIndex, currentOpts) {
+    var albumId = getParameterByName('shashin_album_key');
+    var photoId = getParameterByName('shashin_photo_key');
+
+    // automatically open an album if its shashin id is in the URL
+    if (albumId && !isNaN(albumId)) {
+        $('a[data-shashinalbum="' + albumId + '"]:first').click();
+    }
+
+    // automatically load a photo if its shashin id is in the URL
+    // (but not if it's in an album - that's already handled in the ajax album loading)
+    if (photoId && !albumId && !isNaN(photoId)) {
+        $('a[data-shashinphoto="' + photoId + '"]:first').click();
+    }
+
+    /*
+        SETUP IMAGE VIEWERS
+     */
+
+    var setFancyBoxCaption = function(currentArray, currentIndex, currentOpts) {
         var link = currentArray[ currentIndex ];
         var linkId = $(link).attr('id');
         var linkIdParts = linkId.split('_');
@@ -56,7 +76,7 @@ jQuery(document).ready(function($) {
             'cyclic': !!(shashinJs.fancyboxCyclic-0),
             'transitionIn': shashinJs.fancyboxTransition,
             'transitionOut': shashinJs.fancyboxTransition,
-            'onStart': setShashinFancyBoxCaption
+            'onStart': setFancyBoxCaption
         }
 
         /* The problem with videos in groups with Fancybox:
@@ -98,6 +118,10 @@ jQuery(document).ready(function($) {
         $(".shashinFancyboxVideo").fancybox(fancyboxVideoSettings);
     }
 
+    /*
+        HANDLE AJAX LOADING OF ALBUMS WHEN THUMBNAIL IS CLICKED
+     */
+
     $('.shashinTableCell').on('click', '.shashinAlbumThumbLink', function(event) {
         if (shashinJs.imageDisplayer == 'source') {
             return true;
@@ -115,13 +139,14 @@ jQuery(document).ready(function($) {
         var parentTableIdParts = $(parentTable).attr('id').split('_');
         var parentTableStyle = $(parentTable).attr('style');
         var linkIdParts = $(this).attr('id').split('_');
+        var albumTitle = '';
 
         if (linkIdParts[1] == 'img') {
-            var albumTitle = $(this).children('img').attr('alt');
+            albumTitle = $(this).children('img').attr('alt');
         }
 
         else if (linkIdParts[1] == 'caption') {
-            var albumTitle = $(this).text();
+            albumTitle = $(this).text();
         }
 
         var dataToSend = {
@@ -133,13 +158,13 @@ jQuery(document).ready(function($) {
         };
 
         $.get(shashinJs.ajaxUrl, dataToSend, function(dataReceived) {
-            shashinScrollTo(parentTable);
+            scrollTo(parentTable);
 
             $(parentTable).fadeOut('slow', function() {
                 $(parentTable).after($(dataReceived).hide());
                 var photosContainer = '#shashinAlbumPhotos_' + linkIdParts[2];
                 $(photosContainer).fadeIn('slow');
-                shashinAdjustThumbnailDisplay('#' + $(photosContainer).find('.shashinThumbnailsTable').first().attr('id'));
+                adjustThumbnailDisplay('#' + $(photosContainer).find('.shashinThumbnailsTable').first().attr('id'));
 
                 if (shashinJs.imageDisplayer == 'prettyphoto') {
                     $('#shashinAlbumPhotos_' + linkIdParts[2] + " a[rel^='shashinPrettyPhoto']").shashinPrettyPhoto(prettyPhotoSettings);
@@ -154,8 +179,8 @@ jQuery(document).ready(function($) {
 
                 // if there was an album id and a photo id in the url, now we can open the
                 // photo in the album
-                if (shashinAlbumId && shashinPhotoId) {
-                    $('a[data-shashinphoto="' + shashinPhotoId + '"]:first').click();
+                if (albumId && photoId) {
+                    $('a[data-shashinphoto="' + photoId + '"]:first').click();
                 }
             });
         });
@@ -163,9 +188,9 @@ jQuery(document).ready(function($) {
         event.preventDefault();
     });
 
-    var shashinThumbnailDimensions = [];
+    var adjustThumbnailDisplay = function(element) {
+        var thumbnailDimensions = [];
 
-    function shashinAdjustThumbnailDisplay(element) {
         // If this is a version of IE less than 9, force the captions
         // to "square," make the captions visible, and then bail
         if ((document.documentMode || 100) < 9) {
@@ -226,60 +251,60 @@ jQuery(document).ready(function($) {
                     // dimensions via ajax, so this problem only happens once per image.
                     if ($(this).css('max-width') == 'none' && typeof $(this).find('.shashinThumbnailImage').prop('naturalWidth') != 'undefined') {
                         $(this).css('max-width', $(this).find('.shashinThumbnailImage').prop('naturalWidth') + 'px');
-                        var shashinThumbnailData = $(this).find('.shashinAlbumThumbLink').data();
+                        var thumbnailData = $(this).find('.shashinAlbumThumbLink').data();
 
-                        for (var i in shashinThumbnailData) {
-                            shashinThumbnailDimensions.push(i); // shashinalbum or shashinphoto
-                            shashinThumbnailDimensions.push(shashinThumbnailData[i]); // the album or photo id
+                        for (var i in thumbnailData) {
+                            thumbnailDimensions.push(i); // shashinalbum or shashinphoto
+                            thumbnailDimensions.push(thumbnailData[i]); // the album or photo id
                         }
 
-                        shashinThumbnailDimensions.push($(this).find('.shashinThumbnailImage').prop('naturalWidth'));
-                        shashinThumbnailDimensions.push($(this).find('.shashinThumbnailImage').prop('naturalHeight'));
+                        thumbnailDimensions.push($(this).find('.shashinThumbnailImage').prop('naturalWidth'));
+                        thumbnailDimensions.push($(this).find('.shashinThumbnailImage').prop('naturalHeight'));
 
-                        if (shashinThumbnailDimensions.length > 0) {
+                        if (thumbnailDimensions.length > 0) {
                             $.ajax({
                                 type: "POST",
                                 url: shashinJs.ajaxUrl,
                                 data: {
                                     action: 'saveAlbumDimensions',
-                                    dimensions: shashinThumbnailDimensions
+                                    dimensions: thumbnailDimensions
                                 }
                             })
-                            shashinThumbnailDimensions = [];
+                            thumbnailDimensions = [];
                         }
                     }
 
                     if (shashinJs.thumbnailDisplay == 'rounded') {
-                        var $shashinCaption = $(this).find('.shashinThumbnailCaption');
+                        var $caption = $(this).find('.shashinThumbnailCaption');
 
-                        if ($shashinCaption.length > 0) {
+                        if ($caption.length > 0) {
                             // center the caption
-                            $shashinCaption.width(
+                            $caption.width(
                                 $(this).find('.shashinThumbnailImage').width()
-                                    - parseInt($shashinCaption.css('padding-left'))
-                                    - parseInt($shashinCaption.css('padding-right'))
+                                    - parseInt($caption.css('padding-left'))
+                                    - parseInt($caption.css('padding-right'))
                             );
-                            $shashinCaption.css('margin-left', (
+                            $caption.css('margin-left', (
                                 ($(this).find('.shashinThumbnailImage').width() / 2) * -1) + 'px'
                             );
 
                             // parsing html when truncating captions is expensive, so do it only
                             // where we need to (on album captions)
-                            if ($shashinCaption.find('.shashinAlbumCaptionTitle').length > 0) {
-                                $shashinCaption.trunk8({ parseHTML: true });
+                            if ($caption.find('.shashinAlbumCaptionTitle').length > 0) {
+                                $caption.trunk8({ parseHTML: true });
                             }
                             else {
-                                $shashinCaption.trunk8();
+                                $caption.trunk8();
                             }
 
                             // don't display captions if they'll cover more than 45% of the thumbnail
                             // (this means no more than 2 lines of captions)
-                            if (($shashinCaption.innerHeight() > ($(this).height() * .45)) || $shashinCaption.text() == '') {
-                                $shashinCaption.css('display', 'none');
+                            if (($caption.innerHeight() > ($(this).height() * .45)) || $caption.text() == '') {
+                                $caption.css('display', 'none');
                             }
 
                             else {
-                                $shashinCaption.css('visibility','visible').hide().fadeIn('slow');
+                                $caption.css('visibility','visible').hide().fadeIn('slow');
                             }
                         }
                     }
@@ -299,16 +324,26 @@ jQuery(document).ready(function($) {
         });
     }
 
+    var scrollTo = function(element) {
+        $('html, body').animate({
+            scrollTop: $(element).offset().top
+        }, 1000);
+    }
+
+    /*
+        HANDLE NAVIGATION WITHIN AN ALBUM
+     */
+
     $('.shashinPhotoGroups').on('click', '.shashinNext', function(event) {
         var $parentTable = $(this).closest('.shashinThumbnailsTable');
         var tableIdParts = $parentTable.attr('id').split('_');
         var currentTableId = '#shashinGroup_' + tableIdParts[1] + '_' + tableIdParts[2];
         var nextTableGroupCounter = parseInt(tableIdParts[1]) + 1;
         var nextTableId = '#shashinGroup_' + nextTableGroupCounter + '_' + tableIdParts[2];
-        shashinScrollTo($parentTable);
+        scrollTo($parentTable);
         $(currentTableId).fadeOut('slow', function() {
             $(nextTableId).fadeIn('slow');
-            shashinAdjustThumbnailDisplay(nextTableId);
+            adjustThumbnailDisplay(nextTableId);
         })
 
         event.preventDefault();
@@ -320,19 +355,13 @@ jQuery(document).ready(function($) {
         var currentTableId = '#shashinGroup_' + tableIdParts[1] + '_' + tableIdParts[2];
         var previousTableGroupCounter = parseInt(tableIdParts[1]) - 1;
         var previousTableId = '#shashinGroup_' + previousTableGroupCounter + '_' + tableIdParts[2];
-        shashinScrollTo($parentTable);
+        scrollTo($parentTable);
         $(currentTableId).fadeOut('slow', function() {
             $(previousTableId).fadeIn('slow');
         })
 
         event.preventDefault();
     });
-
-    function shashinScrollTo(element) {
-        $('html, body').animate({
-            scrollTop: $(element).offset().top
-        }, 1000);
-    }
 
     $('.shashinPhotoGroups').on('click', '.shashinReturn', function(event) {
         $('.shashinAlbumThumbLink').data('clicked', false); // ok to click an album thumbnail again
@@ -342,14 +371,14 @@ jQuery(document).ready(function($) {
 
         $(selectedAlbumPhotosId).fadeOut('slow', function() {
             $(parentTableId).fadeIn('slow');
-            shashinScrollTo($(parentTableId));
+            scrollTo($(parentTableId));
             $(selectedAlbumPhotosId).remove();
         })
 
         event.preventDefault();
     });
 
-    function shashinDisableFancyboxForMobile() {
+    var disableFancyboxForMobile = function() {
         if (window.innerWidth < 768 && shashinJs.imageDisplayer == 'fancybox') {
             $('.shashinFancybox').unbind('click.fb');
             $('.shashinFancyboxVideo').unbind('click.fb');
@@ -357,68 +386,54 @@ jQuery(document).ready(function($) {
 
     }
 
-    // Keep this near the end of the file so it doesn't interfere with "on"
-    // delegation calls above.
-    shashinAdjustThumbnailDisplay();
-    shashinDisableFancyboxForMobile();
+    // debouncing function from John Hann
+    // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+    var debounce = function(func, threshold, execAsap) {
+        var timeout;
 
-    $(window).smartresize(function() {
-        shashinAdjustThumbnailDisplay();
-        shashinDisableFancyboxForMobile();
-    });
-
-    // automatically open an album if its shashin id is in the URL
-    if (shashinAlbumId && !isNaN(shashinAlbumId)) {
-        $('a[data-shashinalbum="' + shashinAlbumId + '"]:first').click();
-    }
-
-    // automatically load a photo if its shashin id is in the URL
-    // (but not if it's in an album - that's already handled in the ajax album loading)
-    if (shashinPhotoId && !shashinAlbumId && !isNaN(shashinPhotoId)) {
-        $('a[data-shashinphoto="' + shashinPhotoId + '"]:first').click();
-    }
-});
-
-// smart resize plugin
-// http://www.paulirish.com/2009/throttled-smartresize-jquery-event-handler/
-if (!jQuery().smartresize) {
-    (function($,sr) {
-        // debouncing function from John Hann
-        // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
-        var debounce = function (func, threshold, execAsap) {
-            var timeout;
-
-            return function debounced () {
-                var obj = this, args = arguments;
-                function delayed () {
-                    if (!execAsap)
-                        func.apply(obj, args);
-                    timeout = null;
-                };
-
-                if (timeout)
-                    clearTimeout(timeout);
-                else if (execAsap)
+        return function debounced() {
+            var obj = this, args = arguments;
+            function delayed() {
+                if (!execAsap)
                     func.apply(obj, args);
-
-                timeout = setTimeout(delayed, threshold || 100);
+                timeout = null;
             };
-        }
-        // smartresize
-        jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
 
-    })(jQuery,'smartresize');
-}
+            if (timeout)
+                clearTimeout(timeout);
+            else if (execAsap)
+                func.apply(obj, args);
 
-// used by shashinPrettyPhoto
-function shashinPopup(url, width, height) {
-    var leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
-    var topPosition = (window.screen.height / 2) - ((height / 2) + 50);
-    window.open(url, "shashinPopup", "status=no,height=" + height + ",width=" + width + ",resizable=yes,left=" + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY=" + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=yes,directories=no");
-    return false;
-}
+            timeout = setTimeout(delayed, threshold || 100);
+        };
+    }
 
-// used by shashinPrettyPhoto
-function shashinLinkPrompt(url) {
-    window.prompt ("To share a direct link to this picture, copy this link (ctrl+c, enter)", decodeURIComponent(url));
-}
+    // wait until the user is done moving the mouse, then execute
+    document.onmousemove = debounce(function (e) {
+        adjustThumbnailDisplay();
+        disableFancyboxForMobile();
+    }, 250, false);
+
+    // Keep this near the end so it doesn't interfere with "on" delegation calls above.
+    adjustThumbnailDisplay();
+    disableFancyboxForMobile();
+
+    // used by shashinPrettyPhoto
+    var popup = function(url, width, height) {
+        var leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
+        var topPosition = (window.screen.height / 2) - ((height / 2) + 50);
+        window.open(url, "shashinPopup", "status=no,height=" + height + ",width=" + width + ",resizable=yes,left=" + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY=" + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=yes,directories=no");
+        return false;
+    }
+
+    // used by shashinPrettyPhoto
+    var linkPrompt = function(url) {
+        window.prompt ("To share a direct link to this picture, copy this link (ctrl+c, enter)", decodeURIComponent(url));
+    }
+
+
+    return {
+        shashinPopup: popup,
+        shashinLinkPrompt: linkPrompt
+    }
+})(jQuery);
