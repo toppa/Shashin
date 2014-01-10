@@ -1,5 +1,35 @@
-var Shashin = (function($) {
+// smart resize plugin
+// http://www.paulirish.com/2009/throttled-smartresize-jquery-event-handler/
+if (!jQuery().smartresize) {
+    (function($,sr) {
+        // debouncing function from John Hann
+        // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+        var debounce = function (func, threshold, execAsap) {
+            var timeout;
 
+            return function debounced () {
+                var obj = this, args = arguments;
+                function delayed () {
+                    if (!execAsap)
+                        func.apply(obj, args);
+                    timeout = null;
+                };
+
+                if (timeout)
+                    clearTimeout(timeout);
+                else if (execAsap)
+                    func.apply(obj, args);
+
+                timeout = setTimeout(delayed, threshold || 100);
+            };
+        }
+        // smartresize
+        jQuery.fn[sr] = function(fn){  return fn ? this.bind('resize', debounce(fn)) : this.trigger(sr); };
+
+    })(jQuery,'smartresize');
+}
+
+var Shashin = (function($) {
     /*
         HANDLE PHOTO IDS AND/OR ALBUMS IDS PASSED IN THE URL
      */
@@ -386,37 +416,14 @@ var Shashin = (function($) {
 
     }
 
-    // debouncing function from John Hann
-    // http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
-    var debounce = function(func, threshold, execAsap) {
-        var timeout;
-
-        return function debounced() {
-            var obj = this, args = arguments;
-            function delayed() {
-                if (!execAsap)
-                    func.apply(obj, args);
-                timeout = null;
-            };
-
-            if (timeout)
-                clearTimeout(timeout);
-            else if (execAsap)
-                func.apply(obj, args);
-
-            timeout = setTimeout(delayed, threshold || 100);
-        };
-    }
-
-    // wait until the user is done moving the mouse, then execute
-    document.onmousemove = debounce(function (e) {
-        adjustThumbnailDisplay();
-        disableFancyboxForMobile();
-    }, 250, false);
-
     // Keep this near the end so it doesn't interfere with "on" delegation calls above.
     adjustThumbnailDisplay();
     disableFancyboxForMobile();
+
+    $(window).smartresize(function() {
+        adjustThumbnailDisplay();
+        disableFancyboxForMobile();
+    });
 
     // used by shashinPrettyPhoto
     var popup = function(url, width, height) {
