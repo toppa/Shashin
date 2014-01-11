@@ -440,7 +440,7 @@ var Shashin = (function($) {
 
 
     return {
-        shashinPopup: popup,
-        shashinLinkPrompt: linkPrompt
+        popup: popup,
+        linkPrompt: linkPrompt
     }
 })(jQuery);
