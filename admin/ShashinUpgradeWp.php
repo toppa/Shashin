@@ -129,7 +129,7 @@ class Admin_ShashinUpgradeWp {
         $this->dbFacade->executeQuery("alter table {$this->photoTable} change title filename varchar(255)");
         $this->dbFacade->executeQuery("alter table {$this->photoTable} change link_url linkUrl text");
         $this->dbFacade->executeQuery("alter table {$this->photoTable} change content_url contentUrl text");
-        $this->dbFacade->executeQuery("alter table {$this->photoTable} change taken_timestamp takenTimestamp int unsigned");
+        $this->dbFacade->executeQuery("alter table {$this->photoTable} change taken_timestamp takenTimestamp bigint");
         $this->dbFacade->executeQuery("alter table {$this->photoTable} change uploaded_timestamp uploadedTimestamp int unsigned");
         $this->dbFacade->executeQuery("alter table {$this->photoTable} change include_in_random includeInRandom char(1)");
         $this->dbFacade->executeQuery("alter table {$this->photoTable} change enclosure_type contentType varchar(255)");
