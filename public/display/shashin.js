@@ -31,36 +31,6 @@ if (!jQuery().smartresize) {
 
 var Shashin = (function($) {
     /*
-        HANDLE PHOTO IDS AND/OR ALBUMS IDS PASSED IN THE URL
-     */
-
-    // thank you - http://stackoverflow.com/questions/4548487/jquery-read-query-string
-    var getParameterByName = function(name) {
-        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-        var regexS = "[\\?&]"+name+"=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(window.location.href);
-        if (results == null)
-            return "";
-        else
-            return decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-
-    var albumId = getParameterByName('shashin_album_key');
-    var photoId = getParameterByName('shashin_photo_key');
-
-    // automatically open an album if its shashin id is in the URL
-    if (albumId && !isNaN(albumId)) {
-        $('a[data-shashinalbum="' + albumId + '"]:first').click();
-    }
-
-    // automatically load a photo if its shashin id is in the URL
-    // (but not if it's in an album - that's already handled in the ajax album loading)
-    if (photoId && !albumId && !isNaN(photoId)) {
-        $('a[data-shashinphoto="' + photoId + '"]:first').click();
-    }
-
-    /*
         SETUP IMAGE VIEWERS
      */
 
@@ -218,7 +188,7 @@ var Shashin = (function($) {
         event.preventDefault();
     });
 
-    var adjustThumbnailDisplay = function(element) {
+    var adjustThumbnailDisplay = function(thumbnailsTables) {
         var thumbnailDimensions = [];
 
         // If this is a version of IE less than 9, force the captions
@@ -229,10 +199,13 @@ var Shashin = (function($) {
             return;
         }
 
-        element = element ? element : '.shashinThumbnailsTable';
+        thumbnailsTables = thumbnailsTables ? thumbnailsTables : '.shashinThumbnailsTable';
 
-        $(element).imagesLoaded().done(function() {
-            $(element).each(function() {
+        // for paginated album photos, sets after the first are hidden - don't process them yet
+        var $visibleThumbnailsTables = $(thumbnailsTables).filter(':visible');
+
+        $visibleThumbnailsTables.imagesLoaded().done(function() {
+            $visibleThumbnailsTables.each(function() {
 
                 // if the desired sizes for the images in a sample row come to close to
                 // the current width of the containing element, remove the row markers
@@ -438,6 +411,36 @@ var Shashin = (function($) {
         window.prompt ("To share a direct link to this picture, copy this link (ctrl+c, enter)", decodeURIComponent(url));
     }
 
+    /*
+     HANDLE PHOTO IDS AND/OR ALBUMS IDS PASSED IN THE URL
+     KEEP THIS AT THE END
+     */
+
+    // thank you - http://stackoverflow.com/questions/4548487/jquery-read-query-string
+    var getParameterByName = function(name) {
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        if (results == null)
+            return "";
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    var albumId = getParameterByName('shashin_album_key');
+    var photoId = getParameterByName('shashin_photo_key');
+
+    // automatically open an album if its shashin id is in the URL
+    if (albumId && !isNaN(albumId)) {
+        $('a[data-shashinalbum="' + albumId + '"]:first').click();
+    }
+
+    // automatically load a photo if its shashin id is in the URL
+    // (but not if it's in an album - that's already handled in the ajax album loading)
+    if (photoId && !albumId && !isNaN(photoId)) {
+        $('a[data-shashinphoto="' + photoId + '"]:first').click();
+    }
 
     return {
         popup: popup,
