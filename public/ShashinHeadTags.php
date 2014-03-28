@@ -27,6 +27,7 @@ class Public_ShashinHeadTags {
             'imageDisplayer' => $this->settings->imageDisplay,
             'thumbnailDisplay' => $this->settings->thumbnailDisplay,
         );
+	    $shashinJSdependencies = array( 'jquery', 'jquery-imagesloaded', 'jquery-trunk8' );
 
         if ($this->settings->imageDisplay == 'prettyphoto') {
             $shashinJsParams['prettyPhotoTheme'] = $this->settings->prettyPhotoTheme;
@@ -75,11 +76,12 @@ class Public_ShashinHeadTags {
                     '1.3.4'
                 );
                 $this->functionsFacade->enqueueScript(
-                    'fancybox',
+                    'jquery-fancybox',
                     $this->baseUrl . 'fancybox/jquery.fancybox.js',
                     array('jquery'),
                     '1.3.4'
                 );
+                $shashinJSdependencies[] = 'jquery-fancybox';
             }
         }
 
@@ -102,7 +104,7 @@ class Public_ShashinHeadTags {
         $this->functionsFacade->enqueueScript(
             'shashinJs',
             $this->baseUrl . 'shashin.js',
-            array('jquery', 'jquery-imagesloaded', 'jquery-trunk8'),
+            $shashinJSdependencies,
             $this->version,
             true
         );
