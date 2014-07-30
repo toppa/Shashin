@@ -11,6 +11,8 @@ Shashin is a powerful WordPress plugin that lets you easily display photos and v
 
 == Description ==
 
+**I am currently no longer developing or supporting this plugin. I may resume development and support in the future, but I'm not sure when.**
+
 **What's new in Shashin 3.4**
 
 * Responsive design: your thumbnails will look good on any size display, and so will the expanded view.
