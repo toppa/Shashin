@@ -22,7 +22,7 @@ class Public_ShashinPhotoDisplayerYoutubePrettyphoto extends Public_ShashinPhoto
             $groupNumber .= '_' . $this->albumIdForAjaxPhotoDisplay;
         }
 
-        $this->linkRel = "prettyPhoto[$groupNumber]";
+        $this->linkRel = "shashinPrettyPhoto[$groupNumber]";
         return $this->linkRel;
     }
 
