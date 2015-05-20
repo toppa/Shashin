@@ -2,14 +2,14 @@
 	Class: prettyPhoto
 	Use: Lightbox clone for jQuery
 	Author: Stephane Caron (http://www.no-margin-for-errors.com)
-	Version: 3.1.5
+	Version: 3.1.6
 ------------------------------------------------------------------------- */
 (function($) {
-	$.shashinPrettyPhoto = {version: '3.1.5'};
+	$.shashinPrettyPhoto = {version: '3.1.6'};
 	
 	$.fn.shashinPrettyPhoto = function(pp_settings) {
 		pp_settings = jQuery.extend({
-			hook: 'rel', /* the attribute tag to use for prettyphoto hooks. default: 'rel'. For HTML5, use "data-rel" or similar. */
+			hook: 'rel', /* the attribute tag to use for prettyPhoto hooks. default: 'rel'. For HTML5, use "data-rel" or similar. */
 			animation_speed: 'fast', /* fast/slow/normal */
 			ajaxcallback: function() {},
 			slideshow: 5000, /* false OR interval time in ms */
@@ -23,16 +23,16 @@
 			counter_separator_label: '/', /* The separator for the gallery counter 1 "of" 2 */
 			theme: 'pp_default', /* light_rounded / dark_rounded / light_square / dark_square / facebook */
 			horizontal_padding: 20, /* The padding on each side of the picture */
-			hideflash: false, /* Hides all the flash object on a page, set to TRUE if flash appears over prettyphoto */
+			hideflash: false, /* Hides all the flash object on a page, set to TRUE if flash appears over prettyPhoto */
 			wmode: 'opaque', /* Set the flash wmode attribute */
 			autoplay: true, /* Automatically start videos: True/False */
 			modal: false, /* If set to true, only the close button will close the window */
-			deeplinking: true, /* Allow prettyphoto to update the url to enable deeplinking. */
+			deeplinking: true, /* Allow prettyPhoto to update the url to enable deeplinking. */
 			overlay_gallery: true, /* If set to true, a gallery will overlay the fullscreen image on mouse over */
 			overlay_gallery_max: 30, /* Maximum number of pictures in the overlay gallery */
-			keyboard_shortcuts: true, /* Set to false if you open forms inside prettyphoto */
+			keyboard_shortcuts: true, /* Set to false if you open forms inside prettyPhoto */
 			changepicturecallback: function(){}, /* Called everytime an item is shown/changed */
-			callback: function(){}, /* Called when prettyphoto is closed */
+			callback: function(){}, /* Called when prettyPhoto is closed */
 			ie6_fallback: true,
             /* edit for Shashin - added pp_closeMoble and customized social_tools */
 			markup: '<div class="shashin_pp_pic_holder"> \
@@ -95,10 +95,10 @@
 			social_tools: '<div class="pp_twitter"><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script><a href="https://twitter.com/intent/tweet?url={location_href}&amp;text={text}" class="twitter-share-button" data-count="none">Tweet</a></div><div class="pp_facebook"><a href="http://www.facebook.com/sharer.php?s=100&amp;p[images][0]={path}&amp;p[url]={location_href}&amp;p[title]={text}" target="_blank" onclick="Shashin.popup(this.href, 550, 450); return false;">Share on Facebook</a></div><div class="pp_pinterest"><a href="http://pinterest.com/pin/create/button/?url={location_href}&amp;media={path}&amp;description={text}" target="_blank" onclick="Shashin.popup(this.href, 550, 450); return false;">Pin it</a></div><div class="pp_link"><a href="#" onclick="Shashin.linkPrompt(&#39;{location_href}&#39;); return false;">Share link</a></div>' /* html or false to disable */
 		}, pp_settings);
 
-		// Global variables accessible only by prettyphoto
+		// Global variables accessible only by prettyPhoto
 		var matchedObjects = this, percentBased = false, pp_dimensions, pp_open,
 		
-		// prettyphoto container specific
+		// prettyPhoto container specific
 		pp_contentHeight, pp_contentWidth, pp_containerHeight, pp_containerWidth,
 		
 		// Window size
@@ -138,7 +138,7 @@
 		};
 		
 		/**
-		* Initialize prettyphoto.
+		* Initialize prettyPhoto.
 		*/
 		$.shashinPrettyPhoto.initialize = function() {
 			
@@ -169,7 +169,7 @@
 			rel_index = (isSet) ? set_position : $("a["+settings.hook+"^='"+theRel+"']").index($(this));
 			
 			_build_overlay(this); // Build the overlay {this} being the caller
-
+			
 			if(settings.allow_resize)
 				$(window).bind('scroll.prettyphoto',function(){ _center_overlay(); });
 			
@@ -181,7 +181,7 @@
 
 
 		/**
-		* Opens the prettyphoto modal box.
+		* Opens the prettyPhoto modal box.
 		* @param image {String,Array} Full path to the image to be open, can also be an array containing full images paths.
 		* @param title {String,Array} The title to be displayed with the picture, can also be an array containing all the titles.
 		* @param description {String,Array} The description to be displayed with the picture, can also be an array containing all the descriptions.
@@ -246,7 +246,7 @@
 			if($ppt.is(':hidden')) $ppt.css('opacity',0).show();
 			$pp_overlay.show().fadeTo(settings.animation_speed,settings.opacity);
 
-			// display the current position
+			// Display the current position
 			$pp_pic_holder.find('.currentTextHolder').text((set_position+1) + settings.counter_separator_label + $(pp_images).size());
 
 			// Set the description
@@ -356,8 +356,8 @@
 
 						filename = pp_images[set_position];
 						filename = filename.substring(0,filename.indexOf('?'));
-
-                        toInject =  settings.flash_markup.replace(/{width}/g,pp_dimensions['width']).replace(/{height}/g,pp_dimensions['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,filename+'?'+flash_vars);
+					
+						toInject =  settings.flash_markup.replace(/{width}/g,pp_dimensions['width']).replace(/{height}/g,pp_dimensions['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,filename+'?'+flash_vars);
 					break;
 				
 					case 'iframe':
@@ -390,7 +390,7 @@
 					break;
 				
 					case 'inline':
-						// to get the item height clone it, apply default width, wrap it in the prettyphoto containers , then delete
+						// to get the item height clone it, apply default width, wrap it in the prettyPhoto containers , then delete
 						myClone = $(pp_images[set_position]).clone().append('<br clear="all" />').css({'width':settings.default_width}).wrapInner('<div id="pp_full_res"><div class="pp_inline"></div></div>').appendTo($('body')).show();
 						doresize = false; // Make sure the dimensions are not resized.
 						pp_dimensions = _fitToViewport($(myClone).width(),$(myClone).height());
@@ -413,7 +413,7 @@
 
 	
 		/**
-		* Change page in the prettyphoto modal box
+		* Change page in the prettyPhoto modal box
 		* @param direction {String} Direction of the paging, previous or next.
 		*/
 		$.shashinPrettyPhoto.changePage = function(direction){
@@ -441,7 +441,7 @@
 
 
 		/**
-		* Change gallery page in the prettyphoto modal box
+		* Change gallery page in the prettyPhoto modal box
 		* @param direction {String} Direction of the paging, previous or next.
 		*/
 		$.shashinPrettyPhoto.changeGalleryPage = function(direction){
@@ -495,7 +495,7 @@
 
 
 		/**
-		* Closes prettyphoto.
+		* Closes prettyPhoto.
 		*/
 		$.shashinPrettyPhoto.close = function(){
 			if($pp_overlay.is(":animated")) return;
@@ -510,7 +510,7 @@
 				
 				if(settings.hideflash) $('object,embed,iframe[src*=youtube],iframe[src*=vimeo]').css('visibility','visible'); // Show the flash
 				
-				$(this).remove(); // No more need for the prettyphoto markup
+				$(this).remove(); // No more need for the prettyPhoto markup
 				
 				$(window).unbind('scroll.prettyphoto');
 				
@@ -914,7 +914,7 @@
 			hashIndex = hashIndex.substring(hashIndex.indexOf('/')+1,hashIndex.length-1);
 			hashRel = hashRel.substring(0,hashRel.indexOf('/'));
 
-			// Little timeout to make sure all the prettyphoto initialize scripts has been run.
+			// Little timeout to make sure all the prettyPhoto initialize scripts has been run.
 			// Useful in the event the page contain several init scripts.
 			setTimeout(function(){ $("a["+pp_settings.hook+"^='"+hashRel+"']:eq("+hashIndex+")").trigger('click'); },50);
 		}
@@ -924,9 +924,8 @@
 	
 	function getHashtag(){
 		var url = location.href;
-        // updated for Shashin - bug fix "prettyphoto" was lower case - wasn't ever matching
 		hashtag = (url.indexOf('#prettyPhoto') !== -1) ? decodeURI(url.substring(url.indexOf('#prettyPhoto')+1,url.length)) : false;
-
+		if(hashtag){  hashtag = hashtag.replace(/<|>/g,''); }
 		return hashtag;
 	};
 	
@@ -938,7 +937,6 @@
 	};
 	
 	function clearHashtag(){
-        // updated for Shashin - bug fix "prettyphoto" was lower case - wasn't ever matching
 		if ( location.href.indexOf('#prettyPhoto') !== -1 ) location.hash = "prettyPhoto";
 	}
 	
@@ -949,6 +947,7 @@
 	  var results = regex.exec( url );
 	  return ( results == null ) ? "" : results[1];
 	}
+	
 })(jQuery);
 
 var pp_alreadyInitialized = false; // Used for the deep linking to make sure not to call the same function several times.
